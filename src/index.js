@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import indigo from 'material-ui/colors/indigo';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -21,10 +23,18 @@ const store = createStore(
   applyMiddleware(thunk,loggerMiddleware, routerMiddleware(history)),
 );
 
+const theme = createMuiTheme({
+  palette: {
+    primary: indigo,
+  },
+});
+
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <App />
+      <MuiThemeProvider theme={theme}>
+        <App />
+      </MuiThemeProvider>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root'));

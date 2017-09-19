@@ -17,9 +17,6 @@ const styles = {
     bottom: 0,
     left: 0,
   },
-  slide: {
-    height: '100%',
-  }
 }
 
 class EventListPage extends Component {
@@ -53,28 +50,32 @@ class EventListPage extends Component {
   render() {
     console.log("Render EventListPage");
 
-    const tabs = (
-      <Tabs
-        value={this.state.tabIdx}
-        onChange={this.handleChange}
-        indicatorColor="white"
-        scrollable
-        scrollButtons="auto"
-      >
-        <Tab label="Week 1" />
-        <Tab label="Week 2" />
-        <Tab label="Week 3" />
-        <Tab label="Week 4" />
-        <Tab label="Week 5" />
-        <Tab label="Week 6" />
-        <Tab label="Week 7" />
-      </Tabs>
-    )
-
-    var events = null
-    if (this.props.eventsByYear[2017] && this.props.eventsByYear[2017].data) {
-      events = this.props.eventsByYear[2017].data
+    let tabList = this.props.yearEventTabs.tabNames.map(function(tabName, i){
+      return (
+        <Tab key={i} label={tabName} />
+      )
+    })
+    var tabs
+    if (tabList.length !== 0) {
+      tabs = (
+        <Tabs
+          value={this.state.tabIdx}
+          onChange={this.handleChange}
+          indicatorColor="white"
+          scrollable
+          scrollButtons="auto"
+        >
+          {tabList}
+        </Tabs>
+      )
+    } else {
+      tabs = null
     }
+    let tabContentList = this.props.yearEventTabs.tabsByEventType.map(function(events, i){
+      return (
+        <EventsList key={i} events={events} />
+      )
+    })
 
     return (
       <AppNavContainer
@@ -86,6 +87,7 @@ class EventListPage extends Component {
             2017 Events
           </Button>
         }
+        refreshFunction={this.refreshFunction}
         tabs={tabs}
       >
         <YearPickerDialog
@@ -93,28 +95,12 @@ class EventListPage extends Component {
           open={this.state.open}
           onRequestClose={this.handleRequestClose}
         />
-        <SwipeableViews className={this.props.classes.slideContainer} index={this.state.tabIdx} onChangeIndex={this.handleChangeIndex}>
-          <div className={this.props.classes.slide}>
-            <EventsList events={events} week={0}/>
-          </div>
-          <div className={this.props.classes.slide}>
-            <EventsList events={events} week={1}/>
-          </div>
-          <div className={this.props.classes.slide}>
-            <EventsList events={events} week={2}/>
-          </div>
-          <div className={this.props.classes.slide}>
-            <EventsList events={events} week={3}/>
-          </div>
-          <div className={this.props.classes.slide}>
-            <EventsList events={events} week={4}/>
-          </div>
-          <div className={this.props.classes.slide}>
-            <EventsList events={events} week={5}/>
-          </div>
-          <div className={this.props.classes.slide}>
-            <EventsList events={events} week={6}/>
-          </div>
+        <SwipeableViews
+          containerStyle={styles.slideContainer}
+          index={this.state.tabIdx}
+          onChangeIndex={this.handleChangeIndex}
+        >
+          {tabContentList}
         </SwipeableViews>
       </AppNavContainer>
     );

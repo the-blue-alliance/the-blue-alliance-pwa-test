@@ -3,11 +3,6 @@ import * as types from '../constants/ActionTypes'
 // This is Eugene's key. If you abuse it, he will hunt you down.
 const TBA_KEY = '61bdelekzYp5TY5MueT8OokJsgT1ewwLjywZnTKCAYPCLDeoNnURu1O61DeNy8z3'
 
-export const setTeamList = (teams) => ({
-  type: types.SET_TEAM_LIST,
-  teams,
-})
-
 // Event Page
 export const requestEventInfo = (eventKey) => ({
   type: types.REQUEST_EVENT_INFO,

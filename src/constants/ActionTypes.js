@@ -1,5 +1,3 @@
-export const SET_TEAM_LIST = 'SET_TEAM_LIST'
-
 // Event Page
 export const REQUEST_EVENT_INFO = 'REQUEST_EVENT_INFO'
 export const RECEIVE_EVENT_INFO = 'RECEIVE_EVENT_INFO'

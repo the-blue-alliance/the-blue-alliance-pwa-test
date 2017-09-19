@@ -30,10 +30,6 @@ const styles = {
     left: 0,
     overflow: 'hidden',
   },
-  children: {
-    width: '1170px',
-    margin: '0 auto',
-  },
 };
 
 class AppNav extends Component {
@@ -75,9 +71,7 @@ class AppNav extends Component {
           {this.props.tabs}
         </AppBar>
         <div className={this.props.classes.container} style={{top: this.props.tabs === undefined ? '64px' : '112px'}}>
-          <div className={this.props.classes.children}>
-            {this.props.children}
-          </div>
+          {this.props.children}
         </div>
         <Drawer
           open={this.state.drawer}
