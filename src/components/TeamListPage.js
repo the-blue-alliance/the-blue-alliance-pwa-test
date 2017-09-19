@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import { withStyles } from 'material-ui/styles';
 import Tabs, { Tab } from 'material-ui/Tabs';
-import Button from 'material-ui/Button';
 
 import AppNavContainer from '../containers/AppNavContainer'
-import EventsList from './EventsList'
-import YearPickerDialog from './YearPickerDialog'
-
+import TeamsList from './TeamsList'
 
 const styles = {
   slideContainer: {
@@ -19,12 +16,11 @@ const styles = {
   },
 }
 
-class EventListPage extends Component {
+class TeamListPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tabIdx: 0,
-      open: false,
     };
   }
 
@@ -33,7 +29,7 @@ class EventListPage extends Component {
   }
 
   refreshFunction = () => {
-    this.props.fetchYearEvents(2017)
+    this.props.fetchTeamListAll()
   }
 
   handleChangeIndex = tabIdx => {
@@ -44,14 +40,10 @@ class EventListPage extends Component {
     this.setState({tabIdx});
   };
 
-  handleRequestClose = value => {
-    this.setState({ selectedValue: value, open: false });
-  };
-
   render() {
-    console.log("Render EventListPage");
+    console.log("Render TeamListPage");
 
-    let tabList = this.props.yearEventTabs.tabNames.map(function(tabName, i){
+    let tabList = this.props.teamListTabs.tabNames.map(function(tabName, i){
       return (
         <Tab key={i} label={tabName} />
       )
@@ -72,30 +64,17 @@ class EventListPage extends Component {
     } else {
       tabs = null
     }
-    let tabContentList = this.props.yearEventTabs.tabsByEventType.map(function(events, i){
+    let tabContentList = this.props.teamListTabs.tabTeams.map(function(teams, i){
       return (
-        <EventsList key={i} events={events} />
+        <TeamsList key={i} teams={teams} />
       )
     })
-
     return (
       <AppNavContainer
-        title={
-          <Button
-            color="contrast"
-            onClick={() => this.setState({ open: true })}
-          >
-            2017 Events
-          </Button>
-        }
+        title={"Teams"}
         refreshFunction={this.refreshFunction}
         tabs={tabs}
       >
-        <YearPickerDialog
-          selectedValue={this.state.selectedValue}
-          open={this.state.open}
-          onRequestClose={this.handleRequestClose}
-        />
         <SwipeableViews
           containerStyle={styles.slideContainer}
           index={this.state.tabIdx}
@@ -104,8 +83,8 @@ class EventListPage extends Component {
           {tabContentList}
         </SwipeableViews>
       </AppNavContainer>
-    );
+    )
   }
 }
 
-export default withStyles(styles)(EventListPage);
+export default withStyles(styles)(TeamListPage);

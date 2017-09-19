@@ -77,3 +77,31 @@ export const getYearEventTabs = createSelector(
     return yearEventTabs
   }
 )
+
+
+const getTeams = state => state.database.teams
+const getPaginatedTeams = state => state.database.paginatedTeams
+export const getTeamListTabs = createSelector(
+  [getTeams, getPaginatedTeams],
+  (teams, paginatedTeams) => {
+    let teamListTabs = {
+      'tabNames': [],
+      'tabTeams': [],
+    }
+
+    for (var pageNum in paginatedTeams) {
+      var start = Math.max(pageNum * 500, 1)
+      var end = pageNum * 500 + 499
+      teamListTabs.tabNames.push(`${start}-${end}`)
+
+      if (paginatedTeams[pageNum].data) {
+        teamListTabs.tabTeams.push(paginatedTeams[pageNum].data.map(
+          teamKey => teams[teamKey]
+        ))
+      } else {
+        teamListTabs.tabTeams.push([])
+      }
+    }
+    return teamListTabs
+  }
+)

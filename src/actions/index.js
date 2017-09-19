@@ -78,8 +78,8 @@ export function fetchYearEvents(year) {
     }).then(
       response => response.json(),
       error => console.log('An error occured.', error)
-    ).then(event => {
-      dispatch(receiveYearEvents(year, event))
+    ).then(events => {
+      dispatch(receiveYearEvents(year, events))
     })
   }
 }
@@ -137,5 +137,41 @@ export function fetchTeamYearEvents(teamNumber, year) {
       dispatch(receiveTeamYearEvents(teamNumber, year, events))
       events.map(event => dispatch(receiveEventInfo(event.key, event)))
     })
+  }
+}
+
+// Team List Page
+export const requestTeamListPage = (pageNum) => ({
+  type: types.REQUEST_TEAM_LIST_PAGE,
+  pageNum,
+})
+
+export const receiveTeamListPage = (pageNum, data) => ({
+  type: types.RECEIVE_TEAM_LIST_PAGE,
+  pageNum,
+  data,
+  receivedAt: Date.now(),
+})
+
+export function fetchTeamListHelper(pageNum) {
+  return (dispatch) => {
+    dispatch(requestTeamListPage(pageNum))
+    return fetch(`https://www.thebluealliance.com/api/v3/teams/${pageNum}`,
+      {headers: {'X-TBA-Auth-Key': TBA_KEY}
+    }).then(
+      response => response.json(),
+      error => console.log('An error occured.', error)
+    ).then(teams => {
+      dispatch(receiveTeamListPage(pageNum, teams))
+      if (teams.length !== 0) {
+        dispatch(fetchTeamListHelper(pageNum+1))
+      }
+    })
+  }
+}
+
+export function fetchTeamListAll() {
+  return (dispatch) => {
+    dispatch(fetchTeamListHelper(0))
   }
 }
