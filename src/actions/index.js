@@ -62,6 +62,33 @@ export function fetchEventTeams(eventKey) {
   }
 }
 
+// Event List Page
+export const requestYearEvents = (year) => ({
+  type: types.REQUEST_YEAR_EVENTS,
+  year,
+})
+
+export const receiveYearEvents = (year, data) => ({
+  type: types.RECEIVE_YEAR_EVENTS,
+  year,
+  data,
+  receivedAt: Date.now(),
+})
+
+export function fetchYearEvents(year) {
+  return (dispatch) => {
+    dispatch(requestYearEvents(year))
+    return fetch(`https://www.thebluealliance.com/api/v3/events/${year}`,
+      {headers: {'X-TBA-Auth-Key': TBA_KEY}
+    }).then(
+      response => response.json(),
+      error => console.log('An error occured.', error)
+    ).then(event => {
+      dispatch(receiveYearEvents(year, event))
+    })
+  }
+}
+
 // Team Page
 export const requestTeamInfo = (teamNumber) => ({
   type: types.REQUEST_TEAM_INFO,

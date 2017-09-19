@@ -22,13 +22,20 @@ const styles = {
   }
 }
 
-class Events extends Component {
+class EventListPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tabIdx: 0,
       open: false,
     };
+  }
+  componentDidMount() {
+    this.refreshFunction()
+  }
+
+  refreshFunction = () => {
+    this.props.fetchYearEvents(2017)
   }
 
   handleChangeIndex = tabIdx => {
@@ -44,7 +51,7 @@ class Events extends Component {
   };
 
   render() {
-    console.log("Render Events");
+    console.log("Render EventListPage");
 
     const tabs = (
       <Tabs
@@ -61,9 +68,13 @@ class Events extends Component {
         <Tab label="Week 5" />
         <Tab label="Week 6" />
         <Tab label="Week 7" />
-        <Tab label="Week 8" />
       </Tabs>
     )
+
+    var events = null
+    if (this.props.eventsByYear[2017] && this.props.eventsByYear[2017].data) {
+      events = this.props.eventsByYear[2017].data
+    }
 
     return (
       <AppNavContainer
@@ -84,28 +95,25 @@ class Events extends Component {
         />
         <SwipeableViews className={this.props.classes.slideContainer} index={this.state.tabIdx} onChangeIndex={this.handleChangeIndex}>
           <div className={this.props.classes.slide}>
-            <EventsList temp="1"/>
+            <EventsList events={events} week={0}/>
           </div>
           <div className={this.props.classes.slide}>
-            <EventsList temp="2"/>
+            <EventsList events={events} week={1}/>
           </div>
           <div className={this.props.classes.slide}>
-            {'Week 3'}
+            <EventsList events={events} week={2}/>
           </div>
           <div className={this.props.classes.slide}>
-            {'Week 4'}
+            <EventsList events={events} week={3}/>
           </div>
           <div className={this.props.classes.slide}>
-            {'Week 5'}
+            <EventsList events={events} week={4}/>
           </div>
           <div className={this.props.classes.slide}>
-            {'Week 6'}
+            <EventsList events={events} week={5}/>
           </div>
           <div className={this.props.classes.slide}>
-            {'Week 7'}
-          </div>
-          <div className={this.props.classes.slide}>
-            {'Week 8'}
+            <EventsList events={events} week={6}/>
           </div>
         </SwipeableViews>
       </AppNavContainer>
@@ -113,4 +121,4 @@ class Events extends Component {
   }
 }
 
-export default withStyles(styles)(Events);
+export default withStyles(styles)(EventListPage);
