@@ -1,5 +1,4 @@
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 import { fetchYearEvents } from '../actions'
 import { getYearEventTabs } from '../selectors'
 import EventListPage from '../components/EventListPage.js'
@@ -13,9 +12,9 @@ const mapDispatchToProps = (dispatch) => ({
   fetchYearEvents: (year) => dispatch(fetchYearEvents(year)),
 });
 
-const EventListPageContainer = withRouter(connect(
+const EventListPageContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(EventListPage));
+)(EventListPage);
 
 export default EventListPageContainer;

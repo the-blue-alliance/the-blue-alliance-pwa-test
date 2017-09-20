@@ -1,5 +1,4 @@
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 import AppNav from '../components/AppNav'
 
 
@@ -9,9 +8,9 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = {
 };
 
-const AppNavContainer = withRouter(connect(
+const AppNavContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(AppNav));
+)(AppNav);
 
 export default AppNavContainer;

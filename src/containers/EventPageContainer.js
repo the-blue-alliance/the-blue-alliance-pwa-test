@@ -1,5 +1,4 @@
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 import { toJS } from './to-js'
 import { fetchEventInfo, fetchEventTeams } from '../actions'
 import { getEvent, getEventTeams } from '../selectors/EventPageSelectors'
@@ -16,9 +15,9 @@ const mapDispatchToProps = (dispatch) => ({
   fetchEventTeams: (eventKey) => dispatch(fetchEventTeams(eventKey)),
 });
 
-const EventPageContainer = withRouter(connect(
+const EventPageContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(toJS(EventPage)));
+)(toJS(EventPage))
 
 export default EventPageContainer;

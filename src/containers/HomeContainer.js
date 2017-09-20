@@ -1,5 +1,4 @@
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 import Home from '../components/Home.js'
 
 
@@ -9,9 +8,9 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = {
 };
 
-const HomeContainer = withRouter(connect(
+const HomeContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Home));
+)(Home)
 
 export default HomeContainer;
