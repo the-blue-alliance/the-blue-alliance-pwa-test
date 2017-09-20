@@ -8,6 +8,7 @@ import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import SearchIcon from 'material-ui-icons/Search';
+import FilterListIcon from 'material-ui-icons/FilterList';
 import RefreshIcon from 'material-ui-icons/Refresh';
 import Drawer from 'material-ui/Drawer';
 import { ListItem, ListItemText } from 'material-ui/List';
@@ -48,6 +49,7 @@ class AppNav extends Component {
 
   render() {
     console.log("Render AppNav");
+
     return (
       <div>
         <AppBar position="fixed">
@@ -58,6 +60,9 @@ class AppNav extends Component {
             <Typography type="title" color="inherit" className={this.props.classes.flex}>
               {this.props.title}
             </Typography>
+            {this.props.filterFunction && <IconButton color="contrast" onClick={this.props.filterFunction}>
+              <FilterListIcon />
+            </IconButton>}
             {!this.props.isFetching && <IconButton color="contrast" onClick={this.props.refreshFunction}>
               <RefreshIcon />
             </IconButton>}

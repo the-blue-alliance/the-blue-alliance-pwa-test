@@ -6,6 +6,7 @@ import Button from 'material-ui/Button';
 
 import AppNavContainer from '../containers/AppNavContainer'
 import EventsList from './EventsList'
+import EventFilterDialog from './EventFilterDialog'
 import YearPickerDialog from './YearPickerDialog'
 
 
@@ -24,7 +25,8 @@ class EventListPage extends Component {
     super(props);
     this.state = {
       tabIdx: 0,
-      open: false,
+      eventFilterOpen: false,
+      yearPickerOpen: false,
     };
   }
 
@@ -36,16 +38,20 @@ class EventListPage extends Component {
     this.props.fetchYearEvents(2017)
   }
 
-  handleChangeIndex = tabIdx => {
+  tabHandleChangeIndex = tabIdx => {
     this.setState({tabIdx});
   };
 
-  handleChange = (event, tabIdx) => {
+  tabHandleChange = (event, tabIdx) => {
     this.setState({tabIdx});
   };
 
-  handleRequestClose = value => {
-    this.setState({ selectedValue: value, open: false });
+  eventFilterHandleRequestClose = value => {
+    this.setState({ eventFilterValue: value, eventFilterOpen: false });
+  };
+
+  yearPickerHandleRequestClose = value => {
+    this.setState({ yearPickerValue: value, yearPickerOpen: false });
   };
 
   render() {
@@ -61,7 +67,7 @@ class EventListPage extends Component {
       tabs = (
         <Tabs
           value={this.state.tabIdx}
-          onChange={this.handleChange}
+          onChange={this.tabHandleChange}
           indicatorColor="white"
           scrollable
           scrollButtons="auto"
@@ -83,23 +89,29 @@ class EventListPage extends Component {
         title={
           <Button
             color="contrast"
-            onClick={() => this.setState({ open: true })}
+            onClick={() => this.setState({ yearPickerOpen: true })}
           >
             2017 Events
           </Button>
         }
         refreshFunction={this.refreshFunction}
+        filterFunction={() => this.setState({ eventFilterOpen: true })}
         tabs={tabs}
       >
+        <EventFilterDialog
+          selectedValue={this.state.eventFilterValue}
+          open={this.state.eventFilterOpen}
+          onRequestClose={this.eventFilterHandleRequestClose}
+        />
         <YearPickerDialog
-          selectedValue={this.state.selectedValue}
-          open={this.state.open}
-          onRequestClose={this.handleRequestClose}
+          selectedValue={this.state.yearPickerValue}
+          open={this.state.yearPickerOpen}
+          onRequestClose={this.yearPickerHandleRequestClose}
         />
         <SwipeableViews
           containerStyle={styles.slideContainer}
           index={this.state.tabIdx}
-          onChangeIndex={this.handleChangeIndex}
+          onChangeIndex={this.tabHandleChangeIndex}
         >
           {tabContentList}
         </SwipeableViews>

@@ -29,8 +29,11 @@ export const getYearEventTabs = createSelector(
     }
 
     if (yearEventKeys) {
-      const yearEvents = yearEventKeys.map(
+      let yearEvents = yearEventKeys.map(
         yearEventKey => events[yearEventKey])
+
+      // yearEvents = yearEvents.filter(event => event.district && event.district.abbreviation === 'pnw')
+
       yearEvents.sort((a, b) => {
         if (a.start_date < b.start_date) {
           return -1
