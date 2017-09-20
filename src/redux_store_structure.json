@@ -1,0 +1,144 @@
+{
+    "apiStatus" : {
+        "isFetching": false,
+        "lastUpdated": 12345,
+        "error": null,
+        "record": {
+            "currentSeason": 2017,
+            "maxSeason": 2018,
+            "maxTeamPage": 14
+        }
+    },
+    "models": {
+        "events": {
+            "byKey": {
+                "2017casj": {
+                    "isFetching": false,
+                    "lastUpdated": 12345,
+                    "error": null,
+                    "record": {}
+                },
+                "2017cmp": {
+                    "isFetching": false,
+                    "lastUpdated": 12345,
+                    "error": null,
+                    "record": {}
+                }
+            },
+            "collections": {
+                "byYear": {
+                    "2017": {
+                        "isFetching": false,
+                        "lastUpdated": 12345,
+                        "error": null,
+                        "record": ["2017casj", "2017cama"]
+                    }
+                },
+                "byTeamYear": {
+                    "frc254": {
+                        "2017": {
+                            "isFetching": false,
+                            "lastUpdated": 12345,
+                            "error": null,
+                            "record": ["2017casj", "2017cama"]
+                        }
+                    }
+                }
+            }
+        },
+        "teams": {
+            "byKey": {
+                "frc254": {
+                    "isFetching": false,
+                    "lastUpdated": 12345,
+                    "error": null,
+                    "record": {}
+                },
+                "frc604": {
+                    "isFetching": false,
+                    "lastUpdated": 12345,
+                    "error": null,
+                    "record": {}
+                }
+            },
+            "collections": {
+                "byPage": {
+                    "0": {
+                        "isFetching": false,
+                        "lastUpdated": 12345,
+                        "error": null,
+                        "record": ["frc1", "frc4"]
+                    }
+                },
+                "byEvent": {
+                    "2017casj": {
+                        "isFetching": false,
+                        "lastUpdated": 12345,
+                        "error": null,
+                        "record": ["frc254", "frc604"]
+                    }
+                }
+            }
+        },
+        "matches": {
+            "byKey": {
+                "2017casj_qm1": {
+                    "isFetching": false,
+                    "lastUpdated": 12345,
+                    "error": null,
+                    "record": {}
+                },
+                "2017casj_qf1m1": {
+                    "isFetching": false,
+                    "lastUpdated": 12345,
+                    "error": null,
+                    "record": {}
+                }
+            },
+            "collections": {
+                "byEvent": {
+                    "2017casj": {
+                        "isFetching": false,
+                        "lastUpdated": 12345,
+                        "error": null,
+                        "record": ["2017casj_qm1", "2017casj_qm2"]
+                    }
+                },
+                "byTeamYear": {
+                    "frc254": {
+                        "2017": {
+                            "isFetching": false,
+                            "lastUpdated": 12345,
+                            "error": null,
+                            "record": ["2017casj_qm1", "2017casj_qm2"]
+                        }
+                    }
+                }
+            }
+        },
+    },
+    "pages": {
+        "eventListPage": {
+            "year": 2017,
+            "showTypes": [0, 1, 2, 3],
+            "showDistricts": ["fim", "pnw"]
+        },
+        "eventPage": {
+            "eventKey": "2017casj"
+        },
+        "teamListPage": {
+            "pageNum": 0,
+            "locationFilter": "CA"
+        },
+        "teamPage": {
+            "teamKey": "frc604"
+        },
+        "matchPage": {
+            "matchKey": "2017casj_qm1"
+        },
+    },
+    "userInfo": {
+        "loggedIn": false,
+        "userId": null
+    }
+}
