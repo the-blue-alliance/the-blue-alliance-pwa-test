@@ -52,7 +52,6 @@ export function fetchEventTeams(eventKey) {
       error => console.log('An error occured.', error)
     ).then(teams => {
       dispatch(receiveEventTeams(eventKey, teams))
-      teams.map(team => dispatch(receiveTeamInfo(team.team_number, team)))
     })
   }
 }
@@ -83,43 +82,43 @@ export function fetchYearEvents(year) {
     })
   }
 }
-
 // Team Page
-export const requestTeamInfo = (teamNumber) => ({
+export const requestTeamInfo = (teamKey) => ({
   type: types.REQUEST_TEAM_INFO,
-  teamNumber,
+  teamKey,
 })
 
-export const receiveTeamInfo = (teamNumber, data) => ({
+export const receiveTeamInfo = (teamKey, data) => ({
   type: types.RECEIVE_TEAM_INFO,
-  teamNumber,
+  teamKey,
   data,
   receivedAt: Date.now(),
 })
 
 export function fetchTeamInfo(teamNumber) {
   return (dispatch) => {
-    dispatch(requestTeamInfo(teamNumber))
-    return fetch(`https://www.thebluealliance.com/api/v3/team/frc${teamNumber}`,
+    const teamKey = `frc${teamNumber}`
+    dispatch(requestTeamInfo(teamKey))
+    return fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}`,
       {headers: {'X-TBA-Auth-Key': TBA_KEY}
     }).then(
       response => response.json(),
       error => console.log('An error occured.', error)
     ).then(team => {
-      dispatch(receiveTeamInfo(teamNumber, team))
+      dispatch(receiveTeamInfo(teamKey, team))
     })
   }
 }
 
-export const requestTeamYearEvents = (teamNumber, year) => ({
+export const requestTeamYearEvents = (teamKey, year) => ({
   type: types.REQUEST_TEAM_YEAR_EVENTS,
-  teamNumber,
+  teamKey,
   year,
 })
 
-export const receiveTeamYearEvents = (teamNumber, year, data) => ({
+export const receiveTeamYearEvents = (teamKey, year, data) => ({
   type: types.RECEIVE_TEAM_YEAR_EVENTS,
-  teamNumber,
+  teamKey,
   year,
   data,
   receivedAt: Date.now(),
@@ -127,15 +126,15 @@ export const receiveTeamYearEvents = (teamNumber, year, data) => ({
 
 export function fetchTeamYearEvents(teamNumber, year) {
   return (dispatch) => {
-    dispatch(requestTeamYearEvents(teamNumber, year))
-    return fetch(`https://www.thebluealliance.com/api/v3/team/frc${teamNumber}/events/${year}`,
+    const teamKey = `frc${teamNumber}`
+    dispatch(requestTeamYearEvents(teamKey, year))
+    return fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/events/${year}`,
       {headers: {'X-TBA-Auth-Key': TBA_KEY}
     }).then(
       response => response.json(),
       error => console.log('An error occured.', error)
     ).then(events => {
-      dispatch(receiveTeamYearEvents(teamNumber, year, events))
-      events.map(event => dispatch(receiveEventInfo(event.key, event)))
+      dispatch(receiveTeamYearEvents(teamKey, year, events))
     })
   }
 }
@@ -163,15 +162,14 @@ export function fetchTeamListHelper(pageNum) {
       error => console.log('An error occured.', error)
     ).then(teams => {
       dispatch(receiveTeamListPage(pageNum, teams))
-      if (teams.length !== 0) {
-        dispatch(fetchTeamListHelper(pageNum+1))
-      }
     })
   }
 }
 
 export function fetchTeamListAll() {
   return (dispatch) => {
-    dispatch(fetchTeamListHelper(0))
+    for (let pageNum=0; pageNum<14; pageNum++) {
+      dispatch(fetchTeamListHelper(pageNum))
+    }
   }
 }

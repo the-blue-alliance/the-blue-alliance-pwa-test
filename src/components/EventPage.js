@@ -7,7 +7,6 @@ import AppNavContainer from '../containers/AppNavContainer'
 class EventPage extends Component {
   constructor(props) {
     super(props)
-
     this.state = {
       eventKey: props.match.params.eventKey,
     }
@@ -23,24 +22,25 @@ class EventPage extends Component {
   }
 
   render() {
-    console.log("Render Event Page");
+    console.log("Render Event Page")
+
     const eventKey = this.state.eventKey
-    const eventInfo = this.props.infoByEvent[eventKey]
-    const eventTeams = this.props.teamsByEvent[eventKey]
+    const event = this.props.event
+    const eventTeams = this.props.eventTeams
 
     var name = eventKey
     var isFetching = false
     var teamList = <CircularProgress color="accent" size={20} />
-    if (eventInfo) {
-      isFetching = isFetching || eventInfo.isFetching
-      if (eventInfo.data) {
-        name = eventInfo.data.name
+    if (event) {
+      isFetching = isFetching || event.isFetching
+      if (event.record) {
+        name = event.record.name
       }
     }
     if (eventTeams) {
       isFetching = isFetching || eventTeams.isFetching
-      if (eventTeams.data) {
-        teamList = eventTeams.data.map(function(team){
+      if (eventTeams.record) {
+        teamList = eventTeams.record.map(function(team){
           return <li key={team.key}><Link to={`/team/${team.team_number}`}>{team.team_number} - {team.nickname}</Link></li>;
         })
       }

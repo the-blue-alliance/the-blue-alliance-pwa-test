@@ -1,11 +1,12 @@
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import { toJS } from './to-js'
 import { fetchTeamListAll } from '../actions'
-import { getTeamListTabs } from '../selectors'
+import { getTeamsByTab } from '../selectors/TeamListPageSelectors'
 import TeamListPage from '../components/TeamListPage'
 
-const mapStateToProps = (state, ownProps) => ({
-  teamListTabs: getTeamListTabs(state),
+const mapStateToProps = (state, props) => ({
+  teamsByTab: getTeamsByTab(state, props),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -15,6 +16,6 @@ const mapDispatchToProps = (dispatch) => ({
 const TeamListPageContainer = withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(TeamListPage));
+)(toJS(TeamListPage)));
 
 export default TeamListPageContainer;

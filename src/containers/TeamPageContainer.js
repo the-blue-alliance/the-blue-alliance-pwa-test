@@ -1,12 +1,14 @@
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import { toJS } from './to-js'
 import { fetchTeamInfo, fetchTeamYearEvents } from '../actions'
-import TeamPage from '../components/TeamPage.js'
+import { getTeam, getTeamYearEvents } from '../selectors/TeamPageSelectors'
+import TeamPage from '../components/TeamPage'
 
 
-const mapStateToProps = (state, ownProps) => ({
-  infoByTeam: state.infoByTeam,
-  eventsByTeamByYear: state.eventsByTeamByYear,
+const mapStateToProps = (state, props) => ({
+  team: getTeam(state, props),
+  teamYearEvents: getTeamYearEvents(state, props),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -17,6 +19,6 @@ const mapDispatchToProps = (dispatch) => ({
 const TeamPageContainer = withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(TeamPage));
+)(toJS(TeamPage)));
 
 export default TeamPageContainer;

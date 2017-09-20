@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Map } from 'immutable';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import indigo from 'material-ui/colors/indigo';
 import './index.css';
@@ -17,10 +18,15 @@ import App from './App.js'
 
 
 const history = createHistory();
-const loggerMiddleware = createLogger()
+const loggerMiddleware = createLogger({
+  // Convert Immutable to normal JS object
+  stateTransformer: state => state.toJS()
+})
+const initialState = Map()
 const store = createStore(
   reducer,
-  applyMiddleware(thunk,loggerMiddleware, routerMiddleware(history)),
+  initialState,
+  applyMiddleware(thunk, loggerMiddleware, routerMiddleware(history)),
 );
 
 const theme = createMuiTheme({

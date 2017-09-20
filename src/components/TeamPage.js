@@ -7,7 +7,6 @@ import AppNavContainer from '../containers/AppNavContainer'
 class TeamPage extends Component {
   constructor(props) {
     super(props)
-
     this.state = {
       teamNumber: props.match.params.teamNumber,
       year: props.match.params.year === undefined ? 2017 : props.match.params.year,
@@ -24,31 +23,28 @@ class TeamPage extends Component {
   }
 
   render() {
-    console.log("Render Team Page");
+    console.log("Render Team Page")
+
     const teamNumber = this.state.teamNumber
     const year = this.state.year
-    const teamInfo = this.props.infoByTeam[teamNumber]
-    const teamEvents = this.props.eventsByTeamByYear[teamNumber]
-    var yearEvents = null
-    if (teamEvents) {
-      yearEvents = teamEvents[year]
-    }
+    const team = this.props.team
+    const teamYearEvents = this.props.teamYearEvents
 
     var name = null
     var nickname = null
     var isFetching = false
-    var eventList = <CircularProgress color="accent" size={20} />
-    if (teamInfo) {
-      isFetching = isFetching || teamInfo.isFetching
-      if (teamInfo.data) {
-        name = teamInfo.data.name
-        nickname = teamInfo.data.nickname
+    var eventList = <CircularProgress color="accent" size={100} />
+    if (team) {
+      isFetching = isFetching || team.isFetching
+      if (team.record) {
+        name = team.record.name
+        nickname = team.record.nickname
       }
     }
-    if (yearEvents) {
-      isFetching = isFetching || yearEvents.isFetching
-      if (yearEvents.data) {
-        eventList = yearEvents.data.map(function(event){
+    if (teamYearEvents) {
+      isFetching = isFetching || teamYearEvents.isFetching
+      if (teamYearEvents.record) {
+        eventList = teamYearEvents.record.map(function(event){
           return <li key={event.key}><Link to={`/event/${event.key}`}>{event.name}</Link></li>;
         })
       }

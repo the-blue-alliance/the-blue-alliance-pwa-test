@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import { withStyles } from 'material-ui/styles';
 import Tabs, { Tab } from 'material-ui/Tabs';
+import { CircularProgress } from 'material-ui/Progress';
 
 import AppNavContainer from '../containers/AppNavContainer'
 import TeamsList from './TeamsList'
@@ -41,11 +42,11 @@ class TeamListPage extends Component {
   };
 
   render() {
-    console.log("Render TeamListPage");
+    console.log("Render TeamListPage")
 
-    let tabList = this.props.teamListTabs.tabNames.map(function(tabName, i){
+    let tabList = this.props.teamsByTab.map(function(tab, i){
       return (
-        <Tab key={i} label={tabName} />
+        <Tab key={i} label={tab.tabLabel} />
       )
     })
     var tabs
@@ -64,11 +65,14 @@ class TeamListPage extends Component {
     } else {
       tabs = null
     }
-    let tabContentList = this.props.teamListTabs.tabTeams.map(function(teams, i){
-      return (
-        <TeamsList key={i} teams={teams} />
-      )
+    let tabContentList = this.props.teamsByTab.map(function(tab, i){
+      if (tab.tabTeams.record) {
+        return <TeamsList key={i} teams={tab.tabTeams.record} />
+      } else {
+        return <CircularProgress key={i} color="accent" size={100} />
+      }
     })
+
     return (
       <AppNavContainer
         title={"Teams"}
