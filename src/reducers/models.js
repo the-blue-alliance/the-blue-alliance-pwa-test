@@ -48,12 +48,13 @@ const updateByKeyFetchStatusFromCollection = (state = Map(), action) => {
     case types.RECEIVE_EVENT_TEAMS:
     case types.RECEIVE_TEAM_YEAR_EVENTS:
     case types.RECEIVE_TEAM_LIST_PAGE:
-      action.data.forEach(o => state = state.set(o.key, Map({
+      let mutableState = state.asMutable()
+      action.data.forEach(o => mutableState.set(o.key, Map({
         isFetching: false,
         lastUpdated: action.receivedAt,
         record: fromJS(o),
       })))
-      return state
+      return mutableState.asImmutable()
     default:
       return state
   }

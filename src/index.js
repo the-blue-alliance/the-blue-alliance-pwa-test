@@ -18,15 +18,15 @@ import App from './App.js'
 
 
 const history = createHistory();
-const loggerMiddleware = createLogger({
-  // Convert Immutable to normal JS object
-  stateTransformer: state => state.toJS()
-})
+// const loggerMiddleware = createLogger({
+//   // Convert Immutable to normal JS object
+//   stateTransformer: state => state.toJS()
+// })
 const initialState = Map()
 const store = createStore(
   reducer,
   initialState,
-  applyMiddleware(thunk, loggerMiddleware, routerMiddleware(history)),
+  applyMiddleware(thunk, routerMiddleware(history)),
 );
 
 const theme = createMuiTheme({
