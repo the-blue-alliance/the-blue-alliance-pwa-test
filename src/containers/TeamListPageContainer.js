@@ -1,5 +1,4 @@
 import { connect } from 'react-redux'
-import { toJS } from './to-js'
 import { fetchTeamListAll } from '../actions'
 import { getTeamsByTab } from '../selectors/TeamListPageSelectors'
 import TeamListPage from '../components/TeamListPage'
@@ -15,6 +14,6 @@ const mapDispatchToProps = (dispatch) => ({
 const TeamListPageContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(toJS(TeamListPage))
+)(TeamListPage)
 
 export default TeamListPageContainer;

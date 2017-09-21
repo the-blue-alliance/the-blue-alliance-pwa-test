@@ -11,29 +11,25 @@ const styles = {
 
 class TeamsList extends Component {
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.teams.length !== nextProps.teams.length) {
+    if (this.props.teams.size !== nextProps.teams.size) {
       return true;
     }
     return false;
   }
 
+  rowRenderer = ({index, isScrolling, isVisible, key, parent, style}) => {
+    const team = this.props.teams.get(index).toJS()
+    return (
+      <div key={team.key} style={style}>
+        <ListItem divider component={Link} to={`/team/${team.team_number}`}>
+          <ListItemText primary={`${team.team_number} | ${team.nickname}`} />
+        </ListItem>
+      </div>
+    )
+  }
+
   render() {
     console.log("Render TeamsList");
-
-    const teams = this.props.teams
-
-    function rowRenderer ({
-      index, isScrolling, isVisible, key, parent, style
-    }) {
-      const team = teams[index]
-      return (
-        <div key={team.key} style={style}>
-          <ListItem divider component={Link} to={`/team/${team.team_number}`}>
-            <ListItemText primary={`${team.team_number} | ${team.nickname}`} />
-          </ListItem>
-        </div>
-      )
-    }
 
     return (
       <AutoSizer>
@@ -41,9 +37,9 @@ class TeamsList extends Component {
           <List
             width={width}
             height={height}
-            rowCount={this.props.teams.length}
+            rowCount={this.props.teams.size}
             rowHeight={50}
-            rowRenderer={rowRenderer}
+            rowRenderer={this.rowRenderer}
           />
         )}
       </AutoSizer>

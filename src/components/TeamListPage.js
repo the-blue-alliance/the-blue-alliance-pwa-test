@@ -46,7 +46,7 @@ class TeamListPage extends Component {
 
     let tabList = this.props.teamsByTab.map(function(tab, i){
       return (
-        <Tab key={i} label={tab.tabLabel} />
+        <Tab key={i} label={tab.get('tabLabel')} />
       )
     })
     var tabs
@@ -66,8 +66,8 @@ class TeamListPage extends Component {
       tabs = null
     }
     let tabContentList = this.props.teamsByTab.map(function(tab, i){
-      if (tab.tabTeams.record) {
-        return <TeamsList key={i} teams={tab.tabTeams.record} />
+      if (tab.getIn(['tabTeams', 'record'])) {
+        return <TeamsList key={i} teams={tab.getIn(['tabTeams', 'record'])} />
       } else {
         return <CircularProgress key={i} color="accent" size={100} />
       }
