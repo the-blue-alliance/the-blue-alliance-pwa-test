@@ -32,17 +32,14 @@ class TeamPage extends Component {
 
     var name = null
     var nickname = null
-    var isFetching = false
     var eventList = <CircularProgress color="accent" size={100} />
     if (team) {
-      isFetching = isFetching || team.isFetching
       if (team.record) {
         name = team.record.name
         nickname = team.record.nickname
       }
     }
     if (teamYearEvents) {
-      isFetching = isFetching || teamYearEvents.isFetching
       if (teamYearEvents.record) {
         eventList = teamYearEvents.record.map(function(event){
           return <li key={event.key}><Link to={`/event/${event.key}`}>{event.name}</Link></li>;
@@ -53,7 +50,6 @@ class TeamPage extends Component {
     return (
       <AppNavContainer
         title={"Team " + teamNumber + " (" + year + ")"}
-        isFetching={isFetching}
         refreshFunction={this.refreshFunction}
       >
         <h1>Team {teamNumber}{nickname && ` - ${nickname}`}</h1>

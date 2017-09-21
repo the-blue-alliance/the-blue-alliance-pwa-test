@@ -29,16 +29,13 @@ class EventPage extends Component {
     const eventTeams = this.props.eventTeams
 
     var name = eventKey
-    var isFetching = false
     var teamList = <CircularProgress color="accent" size={20} />
     if (event) {
-      isFetching = isFetching || event.isFetching
       if (event.record) {
         name = event.record.name
       }
     }
     if (eventTeams) {
-      isFetching = isFetching || eventTeams.isFetching
       if (eventTeams.record) {
         teamList = eventTeams.record.map(function(team){
           return <li key={team.key}><Link to={`/team/${team.team_number}`}>{team.team_number} - {team.nickname}</Link></li>;
@@ -49,7 +46,6 @@ class EventPage extends Component {
     return (
       <AppNavContainer
         title={name}
-        isFetching={isFetching}
         refreshFunction={this.refreshFunction}
       >
         <h1>{name}</h1>

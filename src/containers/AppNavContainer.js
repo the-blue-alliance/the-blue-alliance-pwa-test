@@ -2,7 +2,8 @@ import { connect } from 'react-redux'
 import AppNav from '../components/AppNav'
 
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, props) => ({
+  isLoading: state.getIn(['appBar', 'loadingCount']) > 0,
 });
 
 const mapDispatchToProps = {

@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux-immutable'
 // import { routerReducer } from 'react-router-redux';
+import appBar from './appBar'
 import models from './models'
 // import router from './router'
 // import database from './database'
@@ -9,6 +10,7 @@ import models from './models'
 // import teamsByEvent from './teamsByEvent'
 
 const reducer = combineReducers({
+  appBar,
   models,
   // router,
   // database,
