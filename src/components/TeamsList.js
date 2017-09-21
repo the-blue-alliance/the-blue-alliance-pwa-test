@@ -10,19 +10,12 @@ const styles = {
 
 
 class TeamsList extends Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.teams.size !== nextProps.teams.size) {
-      return true;
-    }
-    return false;
-  }
-
   rowRenderer = ({index, isScrolling, isVisible, key, parent, style}) => {
-    const team = this.props.teams.get(index).toJS()
+    const team = this.filteredTeams.get(index).toJS()
     return (
       <div key={team.key} style={style}>
         <ListItem divider component={Link} to={`/team/${team.team_number}`}>
-          <ListItemText primary={`${team.team_number} | ${team.nickname}`} />
+          <ListItemText primary={`${team.team_number} | ${team.nickname}`} secondary={team.country} />
         </ListItem>
       </div>
     )
@@ -30,6 +23,8 @@ class TeamsList extends Component {
 
   render() {
     console.log("Render TeamsList");
+    this.filteredTeams = this.props.teams.filter(team =>
+      team.get('nickname') && team.get('nickname').toLowerCase().includes(this.props.filter))
 
     return (
       <AutoSizer>
@@ -37,8 +32,8 @@ class TeamsList extends Component {
           <List
             width={width}
             height={height}
-            rowCount={this.props.teams.size}
-            rowHeight={50}
+            rowCount={this.filteredTeams.size}
+            rowHeight={69}
             rowRenderer={this.rowRenderer}
           />
         )}

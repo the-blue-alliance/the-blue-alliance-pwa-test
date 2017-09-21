@@ -3,25 +3,19 @@ import SwipeableViews from 'react-swipeable-views';
 import { withStyles } from 'material-ui/styles';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import { CircularProgress } from 'material-ui/Progress';
+import TextField from 'material-ui/TextField';
 
 import AppNavContainer from '../containers/AppNavContainer'
 import TeamsList from './TeamsList'
 
 const styles = {
-  slideContainer: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-  },
 }
 
 class TeamListPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabIdx: 0,
+      filter: '',
     };
   }
 
@@ -33,62 +27,27 @@ class TeamListPage extends Component {
     this.props.fetchTeamListAll()
   }
 
-  handleChangeIndex = tabIdx => {
-    this.setState({tabIdx});
-  };
-
-  handleChange = (event, tabIdx) => {
-    this.setState({tabIdx});
-  };
+  handleTextFieldChange = (e) => {
+    this.setState({
+      filter: e.target.value.toLowerCase()
+    })
+  }
 
   render() {
     console.log("Render TeamListPage")
-
-    let tabList = this.props.teamsByTab.map(function(tab, i){
-      return (
-        <Tab key={i} label={tab.get('tabLabel')} />
-      )
-    })
-    var tabs
-    if (tabList.length !== 0) {
-      tabs = (
-        <Tabs
-          value={this.state.tabIdx}
-          onChange={this.handleChange}
-          indicatorColor="white"
-          scrollable
-          scrollButtons="auto"
-        >
-          {tabList}
-        </Tabs>
-      )
-    } else {
-      tabs = null
-    }
-    let tabContentList = this.props.teamsByTab.map(function(tab, i){
-      if (tab.get('tabTeams')) {
-        return <TeamsList key={i} teams={tab.get('tabTeams')} />
-      } else {
-        return <CircularProgress key={i} color="accent" size={100} />
-      }
-    })
-    if (this.props.teamsByTab.size === 0) {
-      tabContentList = <CircularProgress color="accent" size={100} />
-    }
 
     return (
       <AppNavContainer
         title={"Teams"}
         refreshFunction={this.refreshFunction}
-        tabs={tabs}
       >
-        <SwipeableViews
-          containerStyle={styles.slideContainer}
-          index={this.state.tabIdx}
-          onChangeIndex={this.handleChangeIndex}
-        >
-          {tabContentList}
-        </SwipeableViews>
+        <TextField
+          label="Filter teams by number, name, or location"
+          fullWidth
+          margin="normal"
+          onChange={this.handleTextFieldChange}
+        />
+        <TeamsList teams={this.props.allTeams} filter={this.state.filter}/>
       </AppNavContainer>
     )
   }

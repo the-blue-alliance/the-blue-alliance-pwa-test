@@ -1,10 +1,10 @@
 import { connect } from 'react-redux'
 import { fetchTeamListAll } from '../actions'
-import { getTeamsByTab } from '../selectors/TeamListPageSelectors'
+import { getAllTeams } from '../selectors/TeamListPageSelectors'
 import TeamListPage from '../components/TeamListPage'
 
 const mapStateToProps = (state, props) => ({
-  teamsByTab: getTeamsByTab(state, props),
+  allTeams: getAllTeams(state, props),
 });
 
 const mapDispatchToProps = (dispatch) => ({
