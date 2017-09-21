@@ -10,7 +10,6 @@ import EventsList from './EventsList'
 import EventFilterDialog from './EventFilterDialog'
 import YearPickerDialog from './YearPickerDialog'
 
-
 const styles = {
   slideContainer: {
     position: 'absolute',
@@ -21,6 +20,16 @@ const styles = {
   },
 }
 
+let CMP_TYPES = new Set()
+CMP_TYPES.add(3)
+CMP_TYPES.add(4)
+
+let SEASON_TYPES = new Set()
+SEASON_TYPES.add(0)
+SEASON_TYPES.add(1)
+SEASON_TYPES.add(2)
+SEASON_TYPES.add(5)
+
 class EventListPage extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +37,14 @@ class EventListPage extends Component {
       tabIdx: 0,
       eventFilterOpen: false,
       yearPickerOpen: false,
-    };
+    }
+    this.resetTabMem()
+  }
+
+  resetTabMem = ()  => {
+    this.tabs = []
+    this.lastEvents = null
+    this.tabContentList = []
   }
 
   componentDidMount() {
@@ -41,52 +57,72 @@ class EventListPage extends Component {
 
   tabHandleChangeIndex = tabIdx => {
     this.setState({tabIdx});
-  };
+  }
 
   tabHandleChange = (event, tabIdx) => {
     this.setState({tabIdx});
-  };
+  }
 
   eventFilterHandleRequestClose = value => {
     this.setState({ eventFilterValue: value, eventFilterOpen: false });
-  };
+  }
 
   yearPickerHandleRequestClose = value => {
     this.setState({ yearPickerValue: value, yearPickerOpen: false });
-  };
+  }
+
+  computeTabs = events => {
+    this.tabs = []
+    let tabIdx = -1
+    let lastTabName = null
+    let tabName = null
+    let tabEvents = []
+    events.forEach(event => {
+      // Create tabs
+      if (CMP_TYPES.has(event.get('event_type'))) {
+        if (event.get('year') >= 2017) {
+          tabName = `${event.get('city')} Championship`
+        } else {
+          tabName = 'Championship'
+        }
+      } else if (event.get('week') != null) {
+        tabName = `Week ${event.get('week') + 1}`
+      } else if (event.get('event_type') === 100) {
+        tabName = 'Preseason'
+      } else {
+        tabName = 'Offseason'
+      }
+
+      if (tabName !== lastTabName) {
+        tabIdx++
+        this.tabs.push(<Tab key={tabIdx} label={tabName} />)
+        lastTabName = tabName
+      }
+
+      if (tabEvents[tabIdx]) {
+        tabEvents[tabIdx].push(event)
+      } else {
+        tabEvents[tabIdx] = [event]
+      }
+    })
+    // Create tab content
+    this.tabContentList = tabEvents.map(function(events, i){
+      return <EventsList key={i} events={events} />
+    })
+  }
 
   render() {
     console.log("Render EventListPage")
 
-    let tabList = this.props.yearEventsByWeekTab.get('tabNames').map(function(tabName, i){
-      return (
-        <Tab key={i} label={tabName} />
-      )
-    })
-    var tabs
-    if (tabList.length !== 0) {
-      tabs = (
-        <Tabs
-          value={this.state.tabIdx}
-          onChange={this.tabHandleChange}
-          indicatorColor="white"
-          scrollable
-          scrollButtons="auto"
-        >
-          {tabList}
-        </Tabs>
-      )
+    let events = this.props.yearEvents
+    if (events) {
+      // events = events.filter(event => event.getIn(['district', 'abbreviation']) === 'fim')
+      if (!events.equals(this.lastEvents)) {  // Only compute if events changed
+        this.computeTabs(events)
+        this.lastEvents = events
+      }
     } else {
-      tabs = null
-    }
-
-    let tabContentList
-    if (this.props.yearEventsByWeekTab.get('tabsByEventType').size !== 0) {
-      tabContentList = this.props.yearEventsByWeekTab.get('tabsByEventType').map(function(events, i){
-        return <EventsList key={i} events={events} />
-      })
-    } else {
-      tabContentList = <CircularProgress color="accent" size={100} />
+      this.resetTabMem()
     }
 
     return (
@@ -101,7 +137,17 @@ class EventListPage extends Component {
         }
         refreshFunction={this.refreshFunction}
         filterFunction={() => this.setState({ eventFilterOpen: true })}
-        tabs={tabs}
+        tabs={
+          <Tabs
+            value={this.state.tabIdx}
+            onChange={this.tabHandleChange}
+            indicatorColor="white"
+            scrollable
+            scrollButtons="auto"
+          >
+            {this.tabs}
+          </Tabs>
+        }
       >
         <EventFilterDialog
           selectedValue={this.state.eventFilterValue}
@@ -118,7 +164,7 @@ class EventListPage extends Component {
           index={this.state.tabIdx}
           onChangeIndex={this.tabHandleChangeIndex}
         >
-          {tabContentList}
+          {this.tabContentList}
         </SwipeableViews>
       </AppNavContainer>
     );

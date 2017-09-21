@@ -15,30 +15,22 @@ const styles = {
   },
 }
 
-
 class EventsList extends PureComponent {
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.events.size !== nextProps.events.size) {
-      return true;
-    }
-    return false;
-  }
-
-
   rowRenderer = ({index, isScrolling, isVisible, key, parent, style}) => {
     const classes = this.props.classes
-    if (index === 0) {
+    const item = this.listItems[index]
+    if (item.type == 'label') {
       return (
-        <div key={'label0'} style={style}>
+        <div key={index} style={style}>
           <ListSubheader className={classes.subHeader}>
-            <ListItemText primary="Type Label TODO" classes={{text: classes.subHeaderText}}/>
+            <ListItemText primary={item.value} classes={{text: classes.subHeaderText}}/>
           </ListSubheader>
         </div>
       )
     } else {
-      const event = this.props.events.get(index).toJS()
+      const event = item.value.toJS()
       return (
-        <div key={event.key} style={style}>
+        <div key={index} style={style}>
           <ListItem divider component={Link} to={`/event/${event.key}`}>
             <ListItemText primary={event.short_name} secondary={`${event.city}, ${event.state_prov}, ${event.country} | ${event.start_date} - ${event.end_date}`} />
           </ListItem>
@@ -47,10 +39,158 @@ class EventsList extends PureComponent {
     }
   }
 
-
-
   render() {
     console.log("Render EventsList")
+
+    let eventsByType = {}
+    let eventsByDistrictLabel = {}
+    this.props.events.forEach(event => {
+      const eventType = event.get('event_type')
+      if (eventType === 1) {  // District Qualifier
+        let label = `${event.getIn(['district', 'display_name'])} District Events`
+        if (eventsByDistrictLabel[label]) {
+          eventsByDistrictLabel[label].push(event)
+        } else {
+          eventsByDistrictLabel[label] = [event]
+        }
+      } else {
+        if (eventsByType[eventType]) {
+          eventsByType[eventType].push(event)
+        } else {
+          eventsByType[eventType] = [event]
+        }
+      }
+    })
+
+    // Combine everything in display order:
+    // Regional, District Qualifier (alphabetical), District Div, District CMP, CMP DIV, CMP, FoC, Preseason, Offseason
+    let sortedLabels = []
+    for (let label in eventsByDistrictLabel) {
+      sortedLabels.push(label)
+    }
+    sortedLabels.sort()
+
+    let labelIdxs = new Set()
+    this.listItems = []
+    if (eventsByType[0]) {
+      labelIdxs.add(this.listItems.length)
+      this.listItems.push({
+        type: 'label',
+        value: 'Regional Events',
+      })
+      eventsByType[0].forEach(event => {
+        this.listItems.push({
+          type: 'event',
+          value: event,
+        })
+      })
+    }
+    if (eventsByDistrictLabel) {
+      sortedLabels.forEach(label => {
+        labelIdxs.add(this.listItems.length)
+        this.listItems.push({
+          type: 'label',
+          value: label,
+        })
+        eventsByDistrictLabel[label].forEach(event => {
+          this.listItems.push({
+            type: 'event',
+            value: event,
+          })
+        })
+      })
+    }
+    if (eventsByType[5]) {
+      labelIdxs.add(this.listItems.length)
+      this.listItems.push({
+        type: 'label',
+        value: 'District Championship Divisions',
+      })
+      eventsByType[5].forEach(event => {
+        this.listItems.push({
+          type: 'event',
+          value: event,
+        })
+      })
+    }
+    if (eventsByType[2]) {
+      labelIdxs.add(this.listItems.length)
+      this.listItems.push({
+        type: 'label',
+        value: 'District Championships',
+      })
+      eventsByType[2].forEach(event => {
+        this.listItems.push({
+          type: 'event',
+          value: event,
+        })
+      })
+    }
+    if (eventsByType[3]) {
+      labelIdxs.add(this.listItems.length)
+      this.listItems.push({
+        type: 'label',
+        value: 'Championship Divisions',
+      })
+      eventsByType[3].forEach(event => {
+        this.listItems.push({
+          type: 'event',
+          value: event,
+        })
+      })
+    }
+    if (eventsByType[4]) {
+      labelIdxs.add(this.listItems.length)
+      this.listItems.push({
+        type: 'label',
+        value: 'Championship Finals',
+      })
+      eventsByType[4].forEach(event => {
+        this.listItems.push({
+          type: 'event',
+          value: event,
+        })
+      })
+    }
+    if (eventsByType[6]) {
+      labelIdxs.add(this.listItems.length)
+      this.listItems.push({
+        type: 'label',
+        value: 'Festival of Champions',
+      })
+      eventsByType[6].forEach(event => {
+        this.listItems.push({
+          type: 'event',
+          value: event,
+        })
+      })
+    }
+    if (eventsByType[100]) {
+      labelIdxs.add(this.listItems.length)
+      this.listItems.push({
+        type: 'label',
+        value: 'Preseason Events',
+      })
+      eventsByType[100].forEach(event => {
+        this.listItems.push({
+          type: 'event',
+          value: event,
+        })
+      })
+    }
+    if (eventsByType[99]) {
+      labelIdxs.add(this.listItems.length)
+      this.listItems.push({
+        type: 'label',
+        value: 'Offseason Events',
+      })
+      eventsByType[99].forEach(event => {
+        this.listItems.push({
+          type: 'event',
+          value: event,
+        })
+      })
+    }
 
     return (
       <AutoSizer>
@@ -58,8 +198,8 @@ class EventsList extends PureComponent {
           <List
             width={width}
             height={height}
-            rowCount={this.props.events.size}
-            rowHeight={({ index }) => index === 0 ? 24 : 70}
+            rowCount={this.listItems.length}
+            rowHeight={({ index }) => labelIdxs.has(index) ? 24 : 69}
             rowRenderer={this.rowRenderer}
           />
         )}
