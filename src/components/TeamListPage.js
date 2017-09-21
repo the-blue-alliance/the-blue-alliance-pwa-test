@@ -66,12 +66,15 @@ class TeamListPage extends Component {
       tabs = null
     }
     let tabContentList = this.props.teamsByTab.map(function(tab, i){
-      if (tab.getIn(['tabTeams', 'record'])) {
-        return <TeamsList key={i} teams={tab.getIn(['tabTeams', 'record'])} />
+      if (tab.get('tabTeams')) {
+        return <TeamsList key={i} teams={tab.get('tabTeams')} />
       } else {
         return <CircularProgress key={i} color="accent" size={100} />
       }
     })
+    if (this.props.teamsByTab.size === 0) {
+      tabContentList = <CircularProgress color="accent" size={100} />
+    }
 
     return (
       <AppNavContainer

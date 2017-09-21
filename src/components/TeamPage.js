@@ -34,17 +34,15 @@ class TeamPage extends Component {
     var nickname = null
     var eventList = <CircularProgress color="accent" size={100} />
     if (team) {
-      if (team.record) {
-        name = team.record.name
-        nickname = team.record.nickname
+      if (team) {
+        name = team.name
+        nickname = team.nickname
       }
     }
     if (teamYearEvents) {
-      if (teamYearEvents.record) {
-        eventList = teamYearEvents.record.map(function(event){
-          return <li key={event.key}><Link to={`/event/${event.key}`}>{event.name}</Link></li>;
-        })
-      }
+      eventList = teamYearEvents.map(function(event){
+        return <li key={event.key}><Link to={`/event/${event.key}`}>{event.name}</Link></li>;
+      })
     }
 
     return (

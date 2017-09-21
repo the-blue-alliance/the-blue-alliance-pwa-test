@@ -21,15 +21,14 @@ const getYearEventKeys = (state, props) => {
 export const getYearEventsByWeekTab = createSelector(
   [getEvents, getYearEventKeys],
   (events, eventKeys) => {
-    console.time("HI")
     let yearEventTabs = Map({
       'tabNames': List().asMutable(),
       'tabsByEventType': List().asMutable(),
     }).asMutable()
 
 
-    if (events && eventKeys && eventKeys.get('record')) {
-      let yearEvents = eventKeys.get('record').map(ek => events.getIn([ek, 'record']))
+    if (events && eventKeys) {
+      let yearEvents = eventKeys.map(ek => events.get(ek))
 
       yearEvents = yearEvents.sort((a, b) => {
         if (a.get('start_date') < b.get('start_date')) {
@@ -74,7 +73,6 @@ export const getYearEventsByWeekTab = createSelector(
         }
       })
     }
-    console.timeEnd("HI")
     return yearEventTabs.asImmutable()
   }
 )

@@ -17,7 +17,6 @@ export const receiveEventInfo = (eventKey, data) => ({
   type: types.RECEIVE_EVENT_INFO,
   eventKey,
   data,
-  receivedAt: Date.now(),
 })
 
 export function fetchEventInfo(eventKey) {
@@ -39,7 +38,6 @@ export const receiveEventTeams = (eventKey, data) => ({
   type: types.RECEIVE_EVENT_TEAMS,
   eventKey,
   data,
-  receivedAt: Date.now(),
 })
 
 export function fetchEventTeams(eventKey) {
@@ -62,7 +60,6 @@ export const receiveYearEvents = (year, data) => ({
   type: types.RECEIVE_YEAR_EVENTS,
   year,
   data,
-  receivedAt: Date.now(),
 })
 
 export function fetchYearEvents(year) {
@@ -85,7 +82,6 @@ export const receiveTeamInfo = (teamKey, data) => ({
   type: types.RECEIVE_TEAM_INFO,
   teamKey,
   data,
-  receivedAt: Date.now(),
 })
 
 export function fetchTeamInfo(teamNumber) {
@@ -109,7 +105,6 @@ export const receiveTeamYearEvents = (teamKey, year, data) => ({
   teamKey,
   year,
   data,
-  receivedAt: Date.now(),
 })
 
 export function fetchTeamYearEvents(teamNumber, year) {
@@ -133,7 +128,6 @@ export const receiveTeamListPage = (pageNum, data) => ({
   type: types.RECEIVE_TEAM_LIST_PAGE,
   pageNum,
   data,
-  receivedAt: Date.now(),
 })
 
 export function fetchTeamListHelper(pageNum) {

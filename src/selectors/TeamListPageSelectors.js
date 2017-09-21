@@ -12,16 +12,23 @@ export const getTeamsByTab = createSelector(
   [getTeams, getTeamsByPage],
   (teams, teamKeysByPage) => {
     let teamsByTab = List()
-    let teamsByPage = teamKeysByPage
+    let teamsByPage = List()
     if (teams && teamKeysByPage) {
       teamKeysByPage.map((pageTeamKeys, pageNum) => {
-        teamsByPage = teamsByPage.setIn([pageNum, 'record'], null)
-        if (pageTeamKeys.get('record') !==  null) {
-          teamsByPage = teamsByPage.setIn(
-            [pageNum, 'record'],
-            pageTeamKeys.get('record').map(teamKey =>
-              teams.getIn([teamKey, 'record']))
-          )
+        teamsByPage = teamsByPage.set(pageNum, null)
+        if (pageTeamKeys !==  null) {
+          let pageTeams = pageTeamKeys.map(teamKey =>
+            teams.get(teamKey)).toList()
+          pageTeams = pageTeams.sort((a, b) => {
+            if (a.get('team_number') < b.get('team_number')) {
+              return -1
+            }
+            if (a.get('team_number') > b.get('team_number')) {
+              return 1
+            }
+            return 0
+          })
+          teamsByPage = teamsByPage.set(pageNum, pageTeams)
         }
       })
 

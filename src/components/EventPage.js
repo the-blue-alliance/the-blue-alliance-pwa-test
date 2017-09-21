@@ -31,13 +31,13 @@ class EventPage extends Component {
     var name = eventKey
     var teamList = <CircularProgress color="accent" size={20} />
     if (event) {
-      if (event.record) {
-        name = event.record.name
+      if (event) {
+        name = event.name
       }
     }
     if (eventTeams) {
-      if (eventTeams.record) {
-        teamList = eventTeams.record.map(function(team){
+      if (eventTeams) {
+        teamList = eventTeams.map(function(team){
           return <li key={team.key}><Link to={`/team/${team.team_number}`}>{team.team_number} - {team.nickname}</Link></li>;
         })
       }

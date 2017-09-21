@@ -13,10 +13,9 @@ const getEventTeamKeys = (state, props) => {
 export const getEventTeams = createSelector(
   [getTeams, getEventTeamKeys],
   (teams, eventTeamKeys) => {
-    let eventTeams = eventTeamKeys
-    if (teams && eventTeamKeys && eventTeamKeys.get('record')) {
-      const fullTeams = eventTeamKeys.get('record').map(teamKey => teams.getIn([teamKey, 'record']))
-      eventTeams = eventTeamKeys.set('record', fullTeams)
+    let eventTeams = null
+    if (teams && eventTeamKeys) {
+      eventTeams = eventTeamKeys.map(teamKey => teams.get(teamKey))
     }
     return eventTeams
   }
