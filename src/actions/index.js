@@ -82,6 +82,7 @@ export function fetchYearEvents(year) {
     })
   }
 }
+
 // Team Page
 export const requestTeamInfo = (teamKey) => ({
   type: types.REQUEST_TEAM_INFO,

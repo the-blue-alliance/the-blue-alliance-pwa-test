@@ -29,11 +29,13 @@ const updateCollectionFetchStatus = (state = defaultFetchState, action) => {
     case types.REQUEST_EVENT_TEAMS:
     case types.REQUEST_TEAM_YEAR_EVENTS:
     case types.REQUEST_TEAM_LIST_PAGE:
+    case types.REQUEST_YEAR_EVENTS:
       return state
         .set('isFetching', true)
     case types.RECEIVE_EVENT_TEAMS:
     case types.RECEIVE_TEAM_YEAR_EVENTS:
     case types.RECEIVE_TEAM_LIST_PAGE:
+    case types.RECEIVE_YEAR_EVENTS:
       return state
         .set('isFetching', false)
         .set('lastUpdated', action.receivedAt)
@@ -48,6 +50,7 @@ const updateByKeyFetchStatusFromCollection = (state = Map(), action) => {
     case types.RECEIVE_EVENT_TEAMS:
     case types.RECEIVE_TEAM_YEAR_EVENTS:
     case types.RECEIVE_TEAM_LIST_PAGE:
+    case types.RECEIVE_YEAR_EVENTS:
       let mutableState = state.asMutable()
       action.data.forEach(o => mutableState.set(o.key, Map({
         isFetching: false,
@@ -101,6 +104,12 @@ const models = (state = Map({
       return state
         .setIn(tcbpNum, updateCollectionFetchStatus(state.getIn(tcbpNum), action))
         .setIn(tbk, updateByKeyFetchStatusFromCollection(state.getIn(tbk), action))
+    case types.REQUEST_YEAR_EVENTS:
+    case types.RECEIVE_YEAR_EVENTS:
+      const ecbyYear = ['events', 'collections', 'byYear', action.year]
+      return state
+        .setIn(ecbyYear, updateCollectionFetchStatus(state.getIn(ecbyYear), action))
+        .setIn(ebk, updateByKeyFetchStatusFromCollection(state.getIn(ebk), action))
     default:
       return state
   }

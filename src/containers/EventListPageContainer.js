@@ -1,11 +1,11 @@
 import { connect } from 'react-redux'
 import { fetchYearEvents } from '../actions'
-import { getYearEventTabs } from '../selectors'
+import { getYearEventsByWeekTab } from '../selectors/EventListPageSelectors'
 import EventListPage from '../components/EventListPage.js'
 
 
-const mapStateToProps = (state, ownProps) => ({
-  yearEventTabs: getYearEventTabs(state),
+const mapStateToProps = (state, props) => ({
+  yearEventsByWeekTab: getYearEventsByWeekTab(state, props),
 });
 
 const mapDispatchToProps = (dispatch) => ({

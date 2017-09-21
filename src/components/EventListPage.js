@@ -3,6 +3,7 @@ import SwipeableViews from 'react-swipeable-views';
 import { withStyles } from 'material-ui/styles';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Button from 'material-ui/Button';
+import { CircularProgress } from 'material-ui/Progress';
 
 import AppNavContainer from '../containers/AppNavContainer'
 import EventsList from './EventsList'
@@ -55,9 +56,9 @@ class EventListPage extends Component {
   };
 
   render() {
-    console.log("Render EventListPage");
+    console.log("Render EventListPage")
 
-    let tabList = this.props.yearEventTabs.tabNames.map(function(tabName, i){
+    let tabList = this.props.yearEventsByWeekTab.get('tabNames').map(function(tabName, i){
       return (
         <Tab key={i} label={tabName} />
       )
@@ -78,11 +79,15 @@ class EventListPage extends Component {
     } else {
       tabs = null
     }
-    let tabContentList = this.props.yearEventTabs.tabsByEventType.map(function(events, i){
-      return (
-        <EventsList key={i} events={events} />
-      )
-    })
+
+    let tabContentList
+    if (this.props.yearEventsByWeekTab.get('tabsByEventType').size !== 0) {
+      tabContentList = this.props.yearEventsByWeekTab.get('tabsByEventType').map(function(events, i){
+        return <EventsList key={i} events={events} />
+      })
+    } else {
+      tabContentList = <CircularProgress color="accent" size={100} />
+    }
 
     return (
       <AppNavContainer

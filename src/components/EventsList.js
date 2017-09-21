@@ -18,41 +18,39 @@ const styles = {
 
 class EventsList extends PureComponent {
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.events.length !== nextProps.events.length) {
+    if (this.props.events.size !== nextProps.events.size) {
       return true;
     }
     return false;
   }
 
-  render() {
-    console.log("Render EventsList");
 
-    const events = this.props.events
+  rowRenderer = ({index, isScrolling, isVisible, key, parent, style}) => {
     const classes = this.props.classes
-
-    function rowRenderer ({
-      index, isScrolling, isVisible, key, parent, style
-    }) {
-      if (index === 0) {
-        return (
-          <div key={'label0'} style={style}>
-            <ListSubheader className={classes.subHeader}>
-              <ListItemText primary="Type Label TODO" classes={{text: classes.subHeaderText}}/>
-            </ListSubheader>
-          </div>
-        )
-      } else {
-        const event = events[index]
-        return (
-          <div key={event.key} style={style}>
-            <ListItem divider component={Link} to={`/event/${event.key}`}>
-              <ListItemText primary={event.short_name} secondary={`${event.city}, ${event.state_prov}, ${event.country} | ${event.start_date} - ${event.end_date}`} />
-            </ListItem>
-          </div>
-        )
-      }
+    if (index === 0) {
+      return (
+        <div key={'label0'} style={style}>
+          <ListSubheader className={classes.subHeader}>
+            <ListItemText primary="Type Label TODO" classes={{text: classes.subHeaderText}}/>
+          </ListSubheader>
+        </div>
+      )
+    } else {
+      const event = this.props.events.get(index).toJS()
+      return (
+        <div key={event.key} style={style}>
+          <ListItem divider component={Link} to={`/event/${event.key}`}>
+            <ListItemText primary={event.short_name} secondary={`${event.city}, ${event.state_prov}, ${event.country} | ${event.start_date} - ${event.end_date}`} />
+          </ListItem>
+        </div>
+      )
     }
+  }
 
+
+
+  render() {
+    console.log("Render EventsList")
 
     return (
       <AutoSizer>
@@ -60,9 +58,9 @@ class EventsList extends PureComponent {
           <List
             width={width}
             height={height}
-            rowCount={this.props.events.length}
+            rowCount={this.props.events.size}
             rowHeight={({ index }) => index === 0 ? 24 : 70}
-            rowRenderer={rowRenderer}
+            rowRenderer={this.rowRenderer}
           />
         )}
       </AutoSizer>
