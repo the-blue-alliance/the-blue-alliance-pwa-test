@@ -10,6 +10,7 @@ class EventPage extends Component {
     this.state = {
       eventKey: props.match.params.eventKey,
     }
+    this.props.resetPage()
   }
 
   componentDidMount() {

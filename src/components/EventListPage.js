@@ -39,6 +39,7 @@ class EventListPage extends Component {
       yearPickerOpen: false,
       filters: [],
     }
+    this.props.resetPage()
     this.resetTabMem()
   }
 

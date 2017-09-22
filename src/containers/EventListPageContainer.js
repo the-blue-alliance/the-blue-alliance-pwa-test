@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { fetchYearEvents } from '../actions'
+import { resetPage, fetchYearEvents } from '../actions'
 import { getSortedEvents } from '../selectors/EventListPageSelectors'
 import EventListPage from '../components/EventListPage.js'
 
@@ -9,6 +9,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  resetPage: () => dispatch(resetPage()),
   fetchYearEvents: (year) => dispatch(fetchYearEvents(year)),
 });
 

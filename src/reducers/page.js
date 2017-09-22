@@ -6,7 +6,7 @@ const updateFromSource = (state = Map({
   data: Map(),
   source: sources.DEFAULT,
 }), action) => {
-  if (action.source > state.get('source') || true) {
+  if (action.source > state.get('source')) {
     return state
       .set('data', state.get('data').mergeDeep(action.data))
       .set('source', action.source)
@@ -18,7 +18,7 @@ const updateSetFromSource = (state = Map({
   data: Set(),
   source: sources.DEFAULT,
 }), action) => {
-  if (action.source > state.get('source') || true) {
+  if (action.source > state.get('source')) {
     const newSet = fromJS(action.data).toSet()
     const toAdd = newSet.subtract(state.get('data'))
     return state
@@ -30,6 +30,8 @@ const updateSetFromSource = (state = Map({
 
 const page = (state = Map(), action) => {
   switch (action.type) {
+    case types.RESET_PAGE:
+      return Map()
     case types.RECEIVE_EVENT_INFO:
       return state.set('event', updateFromSource(state.get('event'), action))
     case types.RECEIVE_YEAR_EVENTS:

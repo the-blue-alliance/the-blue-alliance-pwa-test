@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { fetchTeamListAll } from '../actions'
+import { resetPage, fetchTeamListAll } from '../actions'
 import { getAllTeams } from '../selectors/TeamListPageSelectors'
 import TeamListPage from '../components/TeamListPage'
 
@@ -8,6 +8,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  resetPage: () => dispatch(resetPage()),
   fetchTeamListAll: () => dispatch(fetchTeamListAll()),
 })
 

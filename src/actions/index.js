@@ -14,6 +14,11 @@ export const decrementLoadingCount = () => ({
   type: types.DECREMENT_LOADING_COUNT,
 })
 
+// Resetting Page
+export const resetPage = () => ({
+  type: types.RESET_PAGE,
+})
+
 // Event Page
 export const receiveEventInfo = (eventKey, data, source) => ({
   type: types.RECEIVE_EVENT_INFO,
