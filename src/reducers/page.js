@@ -36,8 +36,10 @@ const page = (state = Map(), action) => {
       return state.set('event', updateFromSource(state.get('event'), action))
     case types.RECEIVE_YEAR_EVENTS:
       return state.set('events', updateSetFromSource(state.get('events'), action))
+    case types.RECEIVE_EVENT_MATCHES:
+      return state.set('matches', updateSetFromSource(state.get('matches'), action))
     case types.RECEIVE_EVENT_TEAMS:
-      return state.set('eventTeams', updateSetFromSource(state.get('eventTeams'), action))
+      return state.set('teams', updateSetFromSource(state.get('teams'), action))
     case types.RECEIVE_TEAM_INFO:
       return state.set('team', updateFromSource(state.get('team'), action))
     case types.RECEIVE_TEAM_LIST_PAGE:

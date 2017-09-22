@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes'
 import * as sources from '../constants/DataSources'
-import db, { addEvent, addEvents, addEventTeams, addTeam, addTeams, addTeamEvents } from '../db'
+import db, { addEvent, addEvents, addEventTeams, addMatches, addTeam, addTeams, addTeamEvents } from '../db'
 
 // This is Eugene's key. If you abuse it, he will hunt you down.
 const TBA_KEY = '61bdelekzYp5TY5MueT8OokJsgT1ewwLjywZnTKCAYPCLDeoNnURu1O61DeNy8z3'
@@ -46,6 +46,38 @@ export function fetchEventInfo(eventKey) {
       if (event) {
         dispatch(receiveEventInfo(eventKey, event, sources.API))
         addEvent(event)
+      }
+      dispatch(decrementLoadingCount())
+    })
+  }
+}
+
+export const receiveEventMatches = (eventKey, data, source) => ({
+  type: types.RECEIVE_EVENT_MATCHES,
+  eventKey,
+  data,
+  source,
+})
+
+export function fetchEventMatches(eventKey) {
+  return (dispatch) => {
+    dispatch(incrementLoadingCount())
+
+    // Update from IndexedDB
+    db.matches.where('event_key').equals(eventKey).toArray(matches => {
+      dispatch(receiveEventMatches(eventKey, matches, sources.IDB))
+    })
+
+    // Update from API
+    fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/matches`,
+      {headers: {'X-TBA-Auth-Key': TBA_KEY}
+    }).then(
+      response => response.json(),
+      error => console.log('An error occured.', error)
+    ).then(matches => {
+      if (matches) {
+        dispatch(receiveEventMatches(eventKey, matches, sources.API))
+        addMatches(matches)
       }
       dispatch(decrementLoadingCount())
     })

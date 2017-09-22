@@ -7,6 +7,7 @@ export const RESET_PAGE = 'RESET_PAGE'
 
 // Event Page
 export const RECEIVE_EVENT_INFO = 'RECEIVE_EVENT_INFO'
+export const RECEIVE_EVENT_MATCHES = 'RECEIVE_EVENT_MATCHES'
 export const RECEIVE_EVENT_TEAMS = 'RECEIVE_EVENT_TEAMS'
 
 // Event List Page

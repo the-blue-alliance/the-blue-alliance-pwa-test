@@ -19,6 +19,7 @@ class EventPage extends Component {
 
   refreshFunction = () => {
     this.props.fetchEventInfo(this.state.eventKey)
+    this.props.fetchEventMatches(this.state.eventKey)
     this.props.fetchEventTeams(this.state.eventKey)
   }
 
@@ -27,21 +28,26 @@ class EventPage extends Component {
 
     const eventKey = this.state.eventKey
     const event = this.props.event
-    const eventTeams = this.props.eventTeams
+    const matches = this.props.matches
+    const teams = this.props.teams
 
     var name = eventKey
-    var teamList = <CircularProgress color="accent" size={20} />
     if (event) {
       if (event) {
         name = event.get('name')
       }
     }
-    if (eventTeams) {
-      if (eventTeams) {
-        teamList = eventTeams.map(function(team){
-          return <li key={team.get('key')}><Link to={`/team/${team.get('team_number')}`}>{team.get('team_number')} - {team.get('nickname')}</Link></li>;
-        })
-      }
+    var matchList = <CircularProgress color="accent" size={20} />
+    if (matches) {
+      matchList = matches.map(function(match){
+        return <li key={match.get('key')}><Link to={`/match/${match.get('key')}`}>{match.get('key')}</Link></li>;
+      })
+    }
+    var teamList = <CircularProgress color="accent" size={20} />
+    if (teams) {
+      teamList = teams.map(function(team){
+        return <li key={team.get('key')}><Link to={`/team/${team.get('team_number')}`}>{team.get('team_number')} - {team.get('nickname')}</Link></li>;
+      })
     }
 
     return (
@@ -51,6 +57,7 @@ class EventPage extends Component {
       >
         <h1>{name}</h1>
         {teamList && <ul>{teamList}</ul>}
+        {matchList && <ul>{matchList}</ul>}
       </AppNavContainer>
     )
   }
