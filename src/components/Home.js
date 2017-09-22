@@ -9,7 +9,7 @@ class Home extends Component {
     console.log("Render Home");
     return (
       <AppNavContainer
-        title={"The Blue Alliance"}
+        smallTitle={"The Blue Alliance"}
       >
         <h1>Home</h1>
         <Link to="/team/254">254</Link>

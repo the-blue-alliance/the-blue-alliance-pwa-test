@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "classnames": "^2.2.5",
     "dexie": "^1.5.1",
     "immutable": "^3.8.1",
-    "material-ui": "^1.0.0-beta.10",
+    "material-ui": "^1.0.0-beta.11",
     "material-ui-icons": "^1.0.0-alpha.19",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",

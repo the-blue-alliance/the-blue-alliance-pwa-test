@@ -9,6 +9,15 @@ import AppNavContainer from '../containers/AppNavContainer'
 import TeamsList from './TeamsList'
 
 const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+  },
+  teamsList: {
+    flexGrow: 1,
+    height: '100%',
+  }
 }
 
 class TeamListPage extends Component {
@@ -41,13 +50,20 @@ class TeamListPage extends Component {
         title={"Teams"}
         refreshFunction={this.refreshFunction}
       >
-        <TextField
-          label="Filter teams by number, name, or location"
-          fullWidth
-          margin="normal"
-          onChange={this.handleTextFieldChange}
-        />
-        <TeamsList teams={this.props.allTeams} filter={this.state.filter}/>
+        <div className={this.props.classes.container}>
+          <TextField
+            label="Filter teams by number, name, or location"
+            fullWidth
+            margin="normal"
+            onChange={this.handleTextFieldChange}
+          />
+          <div className={this.props.classes.teamsList}>
+            <TeamsList
+              teams={this.props.allTeams}
+              filter={this.state.filter}
+            />
+          </div>
+        </div>
       </AppNavContainer>
     )
   }
