@@ -37,6 +37,7 @@ class EventListPage extends Component {
       tabIdx: 0,
       eventFilterOpen: false,
       yearPickerOpen: false,
+      filters: [],
     }
     this.resetTabMem()
   }
@@ -63,13 +64,29 @@ class EventListPage extends Component {
     this.setState({tabIdx});
   }
 
-  eventFilterHandleRequestClose = value => {
-    this.setState({ eventFilterValue: value, eventFilterOpen: false });
+  eventFilterHandleRequestClose = () => {
+    this.setState({ eventFilterOpen: false });
   }
 
   yearPickerHandleRequestClose = value => {
     this.setState({ yearPickerValue: value, yearPickerOpen: false });
   }
+
+  handleToggle = value => () => {
+    const { filters } = this.state;
+    const currentIndex = filters.indexOf(value);
+    const newFilters = [...filters];
+
+    if (currentIndex === -1) {
+      newFilters.push(value);
+    } else {
+      newFilters.splice(currentIndex, 1);
+    }
+
+    this.setState({
+      filters: newFilters,
+    });
+  };
 
   computeTabs = events => {
     this.tabs = []
@@ -115,8 +132,18 @@ class EventListPage extends Component {
     console.log("Render EventListPage")
 
     let events = this.props.yearEvents
+    let filters = {
+    }
     if (events) {
-      // events = events.filter(event => event.getIn(['district', 'abbreviation']) === 'fim')
+      events.forEach(event => {
+        if (event.get('district') && !filters[event.getIn(['district', 'display_name'])]) {
+          filters[event.getIn(['district', 'display_name'])] = event.getIn(['district', 'abbreviation'])
+        }
+      })
+
+      if (this.state.filters.length > 0) {
+        events = events.filter(event => this.state.filters.indexOf(event.getIn(['district', 'abbreviation'])) !== -1)
+      }
       if (!events.equals(this.lastEvents)) {  // Only compute if events changed
         this.computeTabs(events)
         this.lastEvents = events
@@ -150,9 +177,11 @@ class EventListPage extends Component {
         }
       >
         <EventFilterDialog
-          selectedValue={this.state.eventFilterValue}
           open={this.state.eventFilterOpen}
           onRequestClose={this.eventFilterHandleRequestClose}
+          eventFilters={filters}
+          handleToggle={this.handleToggle}
+          activeFilters={this.state.filters}
         />
         <YearPickerDialog
           selectedValue={this.state.yearPickerValue}

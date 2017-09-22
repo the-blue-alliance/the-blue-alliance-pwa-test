@@ -21,58 +21,38 @@ const styles = {
 
 class EventFilterDialog extends Component {
   state = {
-    checked: [0, 1, 2],
+    checked: [],
   };
 
   handleRequestClose = () => {
-    this.props.onRequestClose(this.props.selectedValue);
-  };
-
-  handleToggle = value => () => {
-    const { checked } = this.state;
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    this.setState({
-      checked: newChecked,
-    });
+    this.props.onRequestClose();
   };
 
   render() {
-    const { classes, onRequestClose, selectedValue, ...other } = this.props;
+    let filterNames = []
+    for (let label in this.props.eventFilters) {
+      filterNames.push(label)
+    }
+    filterNames.sort()
+
+    const listItems = filterNames.map((name, i) =>{
+      return (
+        <ListItem button onClick={this.props.handleToggle(this.props.eventFilters[name])} key={i}>
+          <Checkbox
+            checked={this.props.activeFilters.indexOf(this.props.eventFilters[name]) !== -1}
+            disableRipple
+          />
+          <ListItemText primary={`${name} District`} />
+        </ListItem>
+      )
+    })
 
     return (
-      <Dialog onRequestClose={this.handleRequestClose} {...other}>
+      <Dialog onRequestClose={this.handleRequestClose} open={this.props.open}>
         <DialogTitle>Filter Events</DialogTitle>
-        <div className={classes.listWrapper}>
+        <div className={this.props.classes.listWrapper}>
           <List>
-            <ListItem button onClick={this.handleToggle(0)}>
-              <Checkbox
-                checked={this.state.checked.indexOf(0) !== -1}
-                disableRipple
-              />
-              <ListItemText primary="Regionals" />
-            </ListItem>
-            <ListItem button onClick={this.handleToggle(1)}>
-              <Checkbox
-                checked={this.state.checked.indexOf(1) !== -1}
-                disableRipple
-              />
-              <ListItemText primary="Michigan District" />
-            </ListItem>
-            <ListItem button onClick={this.handleToggle(2)}>
-              <Checkbox
-                checked={this.state.checked.indexOf(2) !== -1}
-                disableRipple
-              />
-              <ListItemText primary="Pacific Northwest District" />
-            </ListItem>
+            {listItems}
           </List>
         </div>
         <DialogActions>
@@ -84,11 +64,5 @@ class EventFilterDialog extends Component {
     );
   }
 }
-
-EventFilterDialog.propTypes = {
-  classes: PropTypes.object.isRequired,
-  onRequestClose: PropTypes.func,
-  selectedValue: PropTypes.string,
-};
 
 export default withStyles(styles)(EventFilterDialog);
