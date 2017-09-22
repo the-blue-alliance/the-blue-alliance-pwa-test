@@ -1,9 +1,22 @@
 import { createSelector } from 'reselect'
+import memoize from 'lodash.memoize'
 import { List, Map } from 'immutable'
 
 const getTeamsByPage = (state, props) => {
   return state.getIn(['page', 'teams'])
 }
+
+const sortTeams = memoize((pageTeams) => {
+  return pageTeams.sort((a, b) => {
+    if (a.get('team_number') < b.get('team_number')) {
+      return -1
+    }
+    if (a.get('team_number') > b.get('team_number')) {
+      return 1
+    }
+    return 0
+  })
+})
 
 export const getAllTeams = createSelector(
   [getTeamsByPage],
@@ -13,16 +26,7 @@ export const getAllTeams = createSelector(
       for (let pageNum=0; pageNum<14; pageNum++) {
         let pageTeams = teamsByPage.getIn([pageNum, 'data'])
         if (pageTeams) {
-          pageTeams = pageTeams.sort((a, b) => {
-            if (a.get('team_number') < b.get('team_number')) {
-              return -1
-            }
-            if (a.get('team_number') > b.get('team_number')) {
-              return 1
-            }
-            return 0
-          })
-          allTeams = allTeams.concat(pageTeams)
+          allTeams = allTeams.concat(sortTeams(pageTeams, pageNum))
         }
       }
     }
