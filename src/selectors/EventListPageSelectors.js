@@ -2,19 +2,13 @@ import { createSelector } from 'reselect'
 import { List, Map } from 'immutable'
 
 const getEvents = (state, props) =>
-  state.getIn(['models', 'events', 'byKey'])
+  state.getIn(['page', 'events', 'data'])
 
-const getYearEventKeys = (state, props) => {
-  return state.getIn(['models', 'events', 'collections', 'byYear', 2017])
-}
-
-export const getYearEvents = createSelector(
-  [getEvents, getYearEventKeys],
-  (events, eventKeys) => {
-    let yearEvents = null
-    if (events && eventKeys) {
-      yearEvents = eventKeys.map(ek => events.get(ek)).toList()
-      yearEvents = yearEvents.sort((a, b) => {
+export const getSortedEvents = createSelector(
+  [getEvents],
+  (events) => {
+    if (events) {
+      events = events.sort((a, b) => {
         if (a.get('start_date') < b.get('start_date')) {
           return -1
         }
@@ -24,6 +18,6 @@ export const getYearEvents = createSelector(
         return 0
       })
     }
-    return yearEvents
+    return events
   }
 )

@@ -131,7 +131,7 @@ class EventListPage extends Component {
   render() {
     console.log("Render EventListPage")
 
-    let events = this.props.yearEvents
+    let events = this.props.sortedEvents
     let filters = {
     }
     if (events) {

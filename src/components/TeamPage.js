@@ -35,13 +35,13 @@ class TeamPage extends Component {
     var eventList = <CircularProgress color="accent" size={100} />
     if (team) {
       if (team) {
-        name = team.name
-        nickname = team.nickname
+        name = team.get('name')
+        nickname = team.get('nickname')
       }
     }
     if (teamYearEvents) {
       eventList = teamYearEvents.map(function(event){
-        return <li key={event.key}><Link to={`/event/${event.key}`}>{event.name}</Link></li>;
+        return <li key={event.get('key')}><Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link></li>;
       })
     }
 
