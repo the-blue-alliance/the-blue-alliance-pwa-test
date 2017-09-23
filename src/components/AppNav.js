@@ -17,7 +17,8 @@ import FilterListIcon from 'material-ui-icons/FilterList';
 import RefreshIcon from 'material-ui-icons/Refresh';
 import Drawer from 'material-ui/Drawer';
 import Hidden from 'material-ui/Hidden'
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import List, { ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
+import Switch from 'material-ui/Switch';
 import { CircularProgress } from 'material-ui/Progress';
 import Divider from 'material-ui/Divider';
 import classNames from 'classnames';
@@ -168,6 +169,18 @@ class AppNav extends Component {
               <ListItemText primary="Teams" />
             </ListItem>
           </LinkContainer>
+        </List>
+        <Divider />
+        <List>
+          <ListItem>
+            <ListItemText primary="Offline Only" />
+            <ListItemSecondaryAction>
+              <Switch
+                onClick={this.props.toggleOffline}
+                checked={this.props.offlineOnly}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
         </List>
       </div>
     )

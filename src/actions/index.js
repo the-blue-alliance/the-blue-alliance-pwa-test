@@ -14,6 +14,10 @@ export const decrementLoadingCount = () => ({
   type: types.DECREMENT_LOADING_COUNT,
 })
 
+export const toggleOffline = () => ({
+  type: types.TOGGLE_OFFLINE,
+})
+
 // Resetting Page
 export const resetPage = () => ({
   type: types.RESET_PAGE,
@@ -28,27 +32,28 @@ export const receiveEventInfo = (eventKey, data, source) => ({
 })
 
 export function fetchEventInfo(eventKey) {
-  return (dispatch) => {
-    dispatch(incrementLoadingCount())
-
+  return (dispatch, getState) => {
     // Update from IndexedDB
     db.events.get(eventKey).then(event => {
       dispatch(receiveEventInfo(eventKey, event, sources.IDB))
     })
 
     // Update from API
-    fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}`,
-      {headers: {'X-TBA-Auth-Key': TBA_KEY}
-    }).then(
-      response => response.json(),
-      error => console.log('An error occured.', error)
-    ).then(event => {
-      if (event) {
-        dispatch(receiveEventInfo(eventKey, event, sources.API))
-        addEvent(event)
-      }
-      dispatch(decrementLoadingCount())
-    })
+    if (!getState().getIn(['appBar', 'offlineOnly'])) {
+      dispatch(incrementLoadingCount())
+      fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}`,
+        {headers: {'X-TBA-Auth-Key': TBA_KEY}
+      }).then(
+        response => response.json(),
+        error => console.log('An error occured.', error)
+      ).then(event => {
+        if (event) {
+          dispatch(receiveEventInfo(eventKey, event, sources.API))
+          addEvent(event)
+        }
+        dispatch(decrementLoadingCount())
+      })
+    }
   }
 }
 
@@ -60,27 +65,28 @@ export const receiveEventMatches = (eventKey, data, source) => ({
 })
 
 export function fetchEventMatches(eventKey) {
-  return (dispatch) => {
-    dispatch(incrementLoadingCount())
-
+  return (dispatch, getState) => {
     // Update from IndexedDB
     db.matches.where('event_key').equals(eventKey).toArray(matches => {
       dispatch(receiveEventMatches(eventKey, matches, sources.IDB))
     })
 
     // Update from API
-    fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/matches`,
-      {headers: {'X-TBA-Auth-Key': TBA_KEY}
-    }).then(
-      response => response.json(),
-      error => console.log('An error occured.', error)
-    ).then(matches => {
-      if (matches) {
-        dispatch(receiveEventMatches(eventKey, matches, sources.API))
-        addMatches(matches)
-      }
-      dispatch(decrementLoadingCount())
-    })
+    if (!getState().getIn(['appBar', 'offlineOnly'])) {
+      dispatch(incrementLoadingCount())
+      fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/matches`,
+        {headers: {'X-TBA-Auth-Key': TBA_KEY}
+      }).then(
+        response => response.json(),
+        error => console.log('An error occured.', error)
+      ).then(matches => {
+        if (matches) {
+          dispatch(receiveEventMatches(eventKey, matches, sources.API))
+          addMatches(matches)
+        }
+        dispatch(decrementLoadingCount())
+      })
+    }
   }
 }
 
@@ -92,9 +98,7 @@ export const receiveEventTeams = (eventKey, data, source) => ({
 })
 
 export function fetchEventTeams(eventKey) {
-  return (dispatch) => {
-    dispatch(incrementLoadingCount())
-
+  return (dispatch, getState) => {
     // Update from IndexedDB
     db.eventTeams.where('eventKey').equals(eventKey).toArray(eventTeams => {
       Promise.all(
@@ -105,18 +109,21 @@ export function fetchEventTeams(eventKey) {
     })
 
     // Update from API
-    fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/teams`,
-      {headers: {'X-TBA-Auth-Key': TBA_KEY}
-    }).then(
-      response => response.json(),
-      error => console.log('An error occured.', error)
-    ).then(teams => {
-      if (teams) {
-        dispatch(receiveEventTeams(eventKey, teams, sources.API))
-        addEventTeams(eventKey, teams)
-      }
-      dispatch(decrementLoadingCount())
-    })
+    if (!getState().getIn(['appBar', 'offlineOnly'])) {
+      dispatch(incrementLoadingCount())
+      fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/teams`,
+        {headers: {'X-TBA-Auth-Key': TBA_KEY}
+      }).then(
+        response => response.json(),
+        error => console.log('An error occured.', error)
+      ).then(teams => {
+        if (teams) {
+          dispatch(receiveEventTeams(eventKey, teams, sources.API))
+          addEventTeams(eventKey, teams)
+        }
+        dispatch(decrementLoadingCount())
+      })
+    }
   }
 }
 
@@ -129,27 +136,28 @@ export const receiveYearEvents = (year, data, source) => ({
 })
 
 export function fetchYearEvents(year) {
-  return (dispatch) => {
-    dispatch(incrementLoadingCount())
-
+  return (dispatch, getState) => {
     // Update from IndexedDB
     db.events.where('year').equals(year).toArray(events => {
       dispatch(receiveYearEvents(year, events, sources.IDB))
     })
 
     // Update from API
-    fetch(`https://www.thebluealliance.com/api/v3/events/${year}`,
-      {headers: {'X-TBA-Auth-Key': TBA_KEY}
-    }).then(
-      response => response.json(),
-      error => console.log('An error occured.', error)
-    ).then(events => {
-      if (events) {
-        dispatch(receiveYearEvents(year, events, sources.API))
-        addEvents(events)
-      }
-      dispatch(decrementLoadingCount())
-    })
+    if (!getState().getIn(['appBar', 'offlineOnly'])) {
+      dispatch(incrementLoadingCount())
+      fetch(`https://www.thebluealliance.com/api/v3/events/${year}`,
+        {headers: {'X-TBA-Auth-Key': TBA_KEY}
+      }).then(
+        response => response.json(),
+        error => console.log('An error occured.', error)
+      ).then(events => {
+        if (events) {
+          dispatch(receiveYearEvents(year, events, sources.API))
+          addEvents(events)
+        }
+        dispatch(decrementLoadingCount())
+      })
+    }
   }
 }
 
@@ -162,28 +170,29 @@ export const receiveTeamInfo = (teamKey, data, source) => ({
 })
 
 export function fetchTeamInfo(teamNumber) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const teamKey = `frc${teamNumber}`
-    dispatch(incrementLoadingCount())
-
     // Update from IndexedDB
     db.teams.get(teamKey).then(team => {
       dispatch(receiveTeamInfo(teamKey, team, sources.IDB))
     })
 
     // Update from API
-    fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}`,
-      {headers: {'X-TBA-Auth-Key': TBA_KEY}
-    }).then(
-      response => response.json(),
-      error => console.log('An error occured.', error)
-    ).then(team => {
-      if (team) {
-        dispatch(receiveTeamInfo(teamKey, team, sources.API))
-        addTeam(team)
-      }
-      dispatch(decrementLoadingCount())
-    })
+    if (!getState().getIn(['appBar', 'offlineOnly'])) {
+      dispatch(incrementLoadingCount())
+      fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}`,
+        {headers: {'X-TBA-Auth-Key': TBA_KEY}
+      }).then(
+        response => response.json(),
+        error => console.log('An error occured.', error)
+      ).then(team => {
+        if (team) {
+          dispatch(receiveTeamInfo(teamKey, team, sources.API))
+          addTeam(team)
+        }
+        dispatch(decrementLoadingCount())
+      })
+    }
   }
 }
 
@@ -196,10 +205,8 @@ export const receiveTeamYearEvents = (teamKey, year, data, source) => ({
 })
 
 export function fetchTeamYearEvents(teamNumber, year) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const teamKey = `frc${teamNumber}`
-    dispatch(incrementLoadingCount())
-
     // Update from IndexedDB
     db.eventTeams.where('teamKey_year').equals(`${teamKey}_${year}`).toArray(eventTeams => {
       Promise.all(
@@ -210,18 +217,21 @@ export function fetchTeamYearEvents(teamNumber, year) {
     })
 
     // Update from API
-    fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/events/${year}`,
-      {headers: {'X-TBA-Auth-Key': TBA_KEY}
-    }).then(
-      response => response.json(),
-      error => console.log('An error occured.', error)
-    ).then(events => {
-      if (events) {
-        dispatch(receiveTeamYearEvents(teamKey, year, events, sources.API))
-        addTeamEvents(teamKey, events)
-      }
-      dispatch(decrementLoadingCount())
-    })
+    if (!getState().getIn(['appBar', 'offlineOnly'])) {
+      dispatch(incrementLoadingCount())
+      fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/events/${year}`,
+        {headers: {'X-TBA-Auth-Key': TBA_KEY}
+      }).then(
+        response => response.json(),
+        error => console.log('An error occured.', error)
+      ).then(events => {
+        if (events) {
+          dispatch(receiveTeamYearEvents(teamKey, year, events, sources.API))
+          addTeamEvents(teamKey, events)
+        }
+        dispatch(decrementLoadingCount())
+      })
+    }
   }
 }
 
@@ -234,27 +244,28 @@ export const receiveTeamListPage = (pageNum, data, source) => ({
 })
 
 export function fetchTeamListHelper(pageNum) {
-  return (dispatch) => {
-    dispatch(incrementLoadingCount())
-
+  return (dispatch, getState) => {
     // Update from IndexedDB
     db.teams.where('team_number').between(pageNum * 500, pageNum * 500 + 500).toArray(teams => {
       dispatch(receiveTeamListPage(pageNum, teams, sources.IDB))
     })
 
     // Update from API
-    fetch(`https://www.thebluealliance.com/api/v3/teams/${pageNum}`,
-      {headers: {'X-TBA-Auth-Key': TBA_KEY}
-    }).then(
-      response => response.json(),
-      error => console.log('An error occured.', error)
-    ).then(teams => {
-      if (teams) {
-        dispatch(receiveTeamListPage(pageNum, teams, sources.API))
-        addTeams(teams)
-      }
-      dispatch(decrementLoadingCount())
-    })
+    if (!getState().getIn(['appBar', 'offlineOnly'])) {
+      dispatch(incrementLoadingCount())
+      fetch(`https://www.thebluealliance.com/api/v3/teams/${pageNum}`,
+        {headers: {'X-TBA-Auth-Key': TBA_KEY}
+      }).then(
+        response => response.json(),
+        error => console.log('An error occured.', error)
+      ).then(teams => {
+        if (teams) {
+          dispatch(receiveTeamListPage(pageNum, teams, sources.API))
+          addTeams(teams)
+        }
+        dispatch(decrementLoadingCount())
+      })
+    }
   }
 }
 
