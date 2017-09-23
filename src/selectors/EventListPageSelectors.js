@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect'
-import { List, Map } from 'immutable'
 
 const getEvents = (state, props) =>
   state.getIn(['page', 'events', 'data'])

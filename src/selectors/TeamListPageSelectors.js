@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
 import memoize from 'lodash.memoize'
-import { List, Map } from 'immutable'
+import { List } from 'immutable'
 
 const getTeamsByPage = (state, props) => {
   return state.getIn(['page', 'teams'])

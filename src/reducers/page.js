@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
 import * as sources from '../constants/DataSources'
-import { List, Map, Set, fromJS } from 'immutable';
+import { Map, Set, fromJS } from 'immutable';
 
 const updateFromSource = (state = Map({
   data: Map(),

@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import SwipeableViews from 'react-swipeable-views';
 import { withStyles } from 'material-ui/styles';
-import Tabs, { Tab } from 'material-ui/Tabs';
-import { CircularProgress } from 'material-ui/Progress';
 import TextField from 'material-ui/TextField';
 
 import AppNavContainer from '../containers/AppNavContainer'

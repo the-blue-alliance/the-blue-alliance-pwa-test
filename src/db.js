@@ -24,7 +24,7 @@ export const addEventTeams = (eventKey, teams) => {
       key: `${eventKey}_${team.key}`,
       eventKey: eventKey,
       teamKey: team.key,
-      teamKey_year: `${team.key}_${parseInt(eventKey.substring(0, 4))}`,
+      teamKey_year: `${team.key}_${parseInt(eventKey.substring(0, 4), 10)}`,
     }
   }))
 }

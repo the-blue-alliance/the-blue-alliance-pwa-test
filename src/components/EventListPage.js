@@ -3,7 +3,6 @@ import SwipeableViews from 'react-swipeable-views';
 import { withStyles } from 'material-ui/styles';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Button from 'material-ui/Button';
-import { CircularProgress } from 'material-ui/Progress';
 
 import AppNavContainer from '../containers/AppNavContainer'
 import EventsList from './EventsList'

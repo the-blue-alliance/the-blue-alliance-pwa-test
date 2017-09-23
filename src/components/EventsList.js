@@ -19,7 +19,7 @@ class EventsList extends PureComponent {
   rowRenderer = ({index, isScrolling, isVisible, key, parent, style}) => {
     const classes = this.props.classes
     const item = this.listItems[index]
-    if (item.type == 'label') {
+    if (item.type === 'label') {
       return (
         <div key={index} style={style}>
           <ListSubheader className={classes.subHeader}>
