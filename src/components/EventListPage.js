@@ -56,6 +56,10 @@ class EventListPage extends Component {
     this.props.fetchYearEvents(2017)
   }
 
+  filterFunction = () => {
+    this.setState({ eventFilterOpen: true })
+  }
+
   tabHandleChangeIndex = tabIdx => {
     this.setState({tabIdx});
   }
@@ -154,16 +158,17 @@ class EventListPage extends Component {
 
     return (
       <AppNavContainer
-        title={
-          <Button
-            color="contrast"
-            onClick={() => this.setState({ yearPickerOpen: true })}
-          >
-            2017 Events
-          </Button>
-        }
+        title={'Events'}
+        // title={
+        //   <Button
+        //     color="contrast"
+        //     onClick={() => this.setState({ yearPickerOpen: true })}
+        //   >
+        //     2017 Events
+        //   </Button>
+        // }
         refreshFunction={this.refreshFunction}
-        filterFunction={() => this.setState({ eventFilterOpen: true })}
+        filterFunction={this.filterFunction}
         tabs={
           <Tabs
             value={this.state.tabIdx}

@@ -1,17 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
-import IconButton from 'material-ui/IconButton';
-import MenuIcon from 'material-ui-icons/Menu';
-import SearchIcon from 'material-ui-icons/Search';
-import FilterListIcon from 'material-ui-icons/FilterList';
-import RefreshIcon from 'material-ui-icons/Refresh';
-import Hidden from 'material-ui/Hidden'
-import { CircularProgress } from 'material-ui/Progress';
 import classNames from 'classnames';
+import AppBar from 'material-ui/AppBar';
+import TBAAppBar from './TBAAppBar'
 import NavDrawer from '../containers/NavDrawerContainer'
 
 const DRAWER_WIDTH = 200  // TODO put in global constants
@@ -34,19 +26,16 @@ const styles = theme => ({
       height: '100%'
     },
   },
-  appFrame: {
-    display: 'flex',
-    alignItems: 'stretch',
-    minHeight: '100%',
-    width: '100%',
-  },
   appBar: {
     [theme.breakpoints.up('lg')]: {
       width: 'calc(100% - ' + DRAWER_WIDTH + 'px)',
     },
   },
-  appBarTitle: {
-    flex: 1,
+  appFrame: {
+    display: 'flex',
+    alignItems: 'stretch',
+    minHeight: '100%',
+    width: '100%',
   },
   content: {
     position: 'absolute',
@@ -93,31 +82,13 @@ class AppNav extends PureComponent {
     return (
       <div className={this.props.classes.appFrame}>
         <AppBar className={this.props.classes.appBar}>
-          <Toolbar>
-            <Hidden lgUp implementation="css">
-              <IconButton color="contrast" aria-label="Menu" onClick={this.handleDrawerToggle}>
-                <MenuIcon />
-              </IconButton>
-            </Hidden>
-            <Typography type="title" color="inherit" className={this.props.classes.appBarTitle}>
-              {this.props.title}
-              <Hidden lgUp implementation="css">{this.props.smallTitle}</Hidden>
-            </Typography>
-            {this.props.filterFunction && <IconButton color="contrast" onClick={this.props.filterFunction}>
-              <FilterListIcon />
-            </IconButton>}
-            {!this.props.isLoading && this.props.refreshFunction &&
-              <IconButton color="contrast" onClick={this.props.refreshFunction}>
-                <RefreshIcon />
-              </IconButton>
-            }
-            {this.props.isLoading &&  <IconButton color="contrast" disabled>
-              <CircularProgress color="accent" size={20} />
-            </IconButton>}
-            <IconButton color="contrast">
-              <SearchIcon />
-            </IconButton>
-          </Toolbar>
+          <TBAAppBar
+            title={this.props.title}
+            handleDrawerToggle={this.handleDrawerToggle}
+            isLoading={this.props.isLoading}
+            refreshFunction={this.props.refreshFunction}
+            filterFunction={this.props.filterFunction}
+          />
           {this.props.tabs}
         </AppBar>
         <NavDrawer
