@@ -1,30 +1,20 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
-import HomeIcon from 'material-ui-icons/Home';
-import StarIcon from 'material-ui-icons/Star';
-import VideocamIcon from 'material-ui-icons/Videocam';
-import EventIcon from 'material-ui-icons/Event';
-import PeopleIcon from 'material-ui-icons/People';
 import MenuIcon from 'material-ui-icons/Menu';
 import SearchIcon from 'material-ui-icons/Search';
 import FilterListIcon from 'material-ui-icons/FilterList';
 import RefreshIcon from 'material-ui-icons/Refresh';
-import Drawer from 'material-ui/Drawer';
 import Hidden from 'material-ui/Hidden'
-import List, { ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
-import Switch from 'material-ui/Switch';
 import { CircularProgress } from 'material-ui/Progress';
-import Divider from 'material-ui/Divider';
 import classNames from 'classnames';
-import TBAlogo from '../icons/tba_icon_blue.svg';
+import NavDrawer from '../containers/NavDrawerContainer'
 
-const DRAWER_WIDTH = 200
+const DRAWER_WIDTH = 200  // TODO put in global constants
 const styles = theme => ({
   '@global': {
     html: {
@@ -58,25 +48,6 @@ const styles = theme => ({
   appBarTitle: {
     flex: 1,
   },
-  drawer: {
-    [theme.breakpoints.up('lg')]: {
-      width: DRAWER_WIDTH,
-    },
-  },
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '0 8px',
-    height: '100px',
-  },
-  drawerPaper: {
-    width: DRAWER_WIDTH,
-    backgroundColor: theme.palette.background.paper,
-  },
-  logo: {
-    height: '50%',
-    margin: '0 10px',
-  },
   content: {
     position: 'absolute',
     top: 56,
@@ -101,7 +72,7 @@ const styles = theme => ({
   }
 })
 
-class AppNav extends Component {
+class AppNav extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -118,72 +89,6 @@ class AppNav extends Component {
 
   render() {
     console.log("Render AppNav")
-
-    const drawer = (
-      <div>
-        <div className={this.props.classes.drawerHeader}>
-          <img src={TBAlogo} className={this.props.classes.logo} alt="logo" />
-          <Typography type="title" color="inherit">
-            The Blue Alliance
-          </Typography>
-        </div>
-        <Divider />
-        <List>
-          <LinkContainer to="/">
-            <ListItem button>
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
-            </ListItem>
-          </LinkContainer>
-          <LinkContainer to="/">
-            <ListItem button>
-              <ListItemIcon>
-                <StarIcon />
-              </ListItemIcon>
-              <ListItemText primary="myTBA" />
-            </ListItem>
-          </LinkContainer>
-          <LinkContainer to="/">
-            <ListItem button>
-              <ListItemIcon>
-                <VideocamIcon />
-              </ListItemIcon>
-              <ListItemText primary="GameDay" />
-            </ListItem>
-          </LinkContainer>
-          <LinkContainer to="/events">
-            <ListItem button>
-              <ListItemIcon>
-                <EventIcon />
-              </ListItemIcon>
-              <ListItemText primary="Events" />
-            </ListItem>
-          </LinkContainer>
-          <LinkContainer to="/teams">
-            <ListItem button>
-              <ListItemIcon>
-                <PeopleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Teams" />
-            </ListItem>
-          </LinkContainer>
-        </List>
-        <Divider />
-        <List>
-          <ListItem>
-            <ListItemText primary="Offline Only" />
-            <ListItemSecondaryAction>
-              <Switch
-                onClick={this.props.toggleOffline}
-                checked={this.props.offlineOnly}
-              />
-            </ListItemSecondaryAction>
-          </ListItem>
-        </List>
-      </div>
-    )
 
     return (
       <div className={this.props.classes.appFrame}>
@@ -215,34 +120,10 @@ class AppNav extends Component {
           </Toolbar>
           {this.props.tabs}
         </AppBar>
-        <div className={this.props.classes.drawer}>
-          <Hidden lgUp>
-            <Drawer
-              classes={{
-                paper: this.props.classes.drawerPaper,
-              }}
-              type="temporary"
-              open={this.state.mobileDrawerOpen}
-              onRequestClose={this.handleDrawerClose}
-              ModalProps={{
-                keepMounted: true,
-              }}
-            >
-              {drawer}
-            </Drawer>
-          </Hidden>
-          <Hidden lgDown implementation="css">
-            <Drawer
-              classes={{
-                paper: this.props.classes.drawerPaper,
-              }}
-              type="permanent"
-              open
-            >
-              {drawer}
-            </Drawer>
-          </Hidden>
-        </div>
+        <NavDrawer
+          mobileOpen={this.state.mobileDrawerOpen}
+          closeHandler={this.handleDrawerClose}
+        />
         <div className={classNames({
           [this.props.classes.tabbedContent]: this.props.tabs !== undefined,
           [this.props.classes.content]: true,
