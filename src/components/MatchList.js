@@ -8,35 +8,30 @@ import { CircularProgress } from 'material-ui/Progress';
 const styles = {
 }
 
-class TeamsList extends PureComponent {
+class MatchList extends PureComponent {
   rowRenderer = ({index, isScrolling, isVisible, key, parent, style}) => {
-    const team = this.filteredTeams.get(index).toJS()
+    const team = this.matches.get(index).toJS()
     return (
       <div key={team.key} style={style}>
-        <ListItem divider component={Link} to={`/team/${team.team_number}`}>
-          <ListItemText primary={`${team.team_number} | ${team.nickname}`} secondary={team.country} />
+        <ListItem divider component={Link} to={`/match/${team.key}`}>
+          <ListItemText primary={`${team.key}`} />
         </ListItem>
       </div>
     )
   }
 
   render() {
-    console.log("Render TeamsList");
-    if (this.props.filter) {
-      this.filteredTeams = this.props.teams.filter(team =>
-        team.get('nickname') && team.get('nickname').toLowerCase().includes(this.props.filter))
-    } else {
-      this.filteredTeams = this.props.teams
-    }
+    console.log("Render MatchList");
+    this.matches = this.props.matches
 
-    if (this.props.teams !== undefined) {
+    if (this.props.matches !== undefined) {
       return (
         <AutoSizer>
           {({ height, width }) => (
             <List
               width={width}
               height={height}
-              rowCount={this.filteredTeams.size}
+              rowCount={this.matches.size}
               rowHeight={69}
               rowRenderer={this.rowRenderer}
             />
@@ -49,4 +44,4 @@ class TeamsList extends PureComponent {
   }
 }
 
-export default withStyles(styles)(TeamsList);
+export default withStyles(styles)(MatchList);

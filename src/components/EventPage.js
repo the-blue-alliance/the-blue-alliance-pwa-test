@@ -1,14 +1,29 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import SwipeableViews from 'react-swipeable-views';
+import { withStyles } from 'material-ui/styles';
 import { CircularProgress } from 'material-ui/Progress';
+import Tabs, { Tab } from 'material-ui/Tabs';
 import AppNavContainer from '../containers/AppNavContainer'
+import MatchList from './MatchList'
+import TeamsList from './TeamsList'
 
+const styles = {
+  slideContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  },
+}
 
 class EventPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
       eventKey: props.match.params.eventKey,
+      tabIdx: 0,
     }
     this.props.resetPage()
   }
@@ -21,6 +36,14 @@ class EventPage extends Component {
     this.props.fetchEventInfo(this.state.eventKey)
     this.props.fetchEventMatches(this.state.eventKey)
     this.props.fetchEventTeams(this.state.eventKey)
+  }
+
+  tabHandleChangeIndex = tabIdx => {
+    this.setState({tabIdx});
+  }
+
+  tabHandleChange = (event, tabIdx) => {
+    this.setState({tabIdx});
   }
 
   render() {
@@ -37,30 +60,39 @@ class EventPage extends Component {
         name = event.get('name')
       }
     }
-    var matchList = <CircularProgress color="accent" size={20} />
-    if (matches) {
-      matchList = matches.map(function(match){
-        return <li key={match.get('key')}><Link to={`/match/${match.get('key')}`}>{match.get('key')}</Link></li>;
-      })
-    }
-    var teamList = <CircularProgress color="accent" size={20} />
-    if (teams) {
-      teamList = teams.map(function(team){
-        return <li key={team.get('key')}><Link to={`/team/${team.get('team_number')}`}>{team.get('team_number')} - {team.get('nickname')}</Link></li>;
-      })
-    }
 
     return (
       <AppNavContainer
         title={name}
         refreshFunction={this.refreshFunction}
+        tabs={
+          <Tabs
+            value={this.state.tabIdx}
+            onChange={this.tabHandleChange}
+            indicatorColor="white"
+            scrollable
+            scrollButtons="auto"
+          >
+            <Tab label={"Matches"} />
+            <Tab label={"Teams"} />
+          </Tabs>
+        }
       >
-        <h1>{name}</h1>
-        {teamList && <ul>{teamList}</ul>}
-        {matchList && <ul>{matchList}</ul>}
+        <SwipeableViews
+          containerStyle={styles.slideContainer}
+          index={this.state.tabIdx}
+          onChangeIndex={this.tabHandleChangeIndex}
+        >
+          <MatchList
+            matches={matches}
+          />
+          <TeamsList
+            teams={teams}
+          />
+        </SwipeableViews>
       </AppNavContainer>
     )
   }
 }
 
-export default EventPage;
+export default withStyles(styles)(EventPage);

@@ -1,12 +1,13 @@
 import { connect } from 'react-redux'
 import { resetPage, fetchEventInfo, fetchEventMatches, fetchEventTeams } from '../actions'
+import { getEventMatches, getEventTeams } from '../selectors/EventPageSelectors'
 import EventPage from '../components/EventPage.js'
 
 
 const mapStateToProps = (state, props) => ({
   event: state.getIn(['page', 'event', 'data']),
-  matches: state.getIn(['page', 'matches', 'data']),
-  teams: state.getIn(['page', 'teams', 'data']),
+  matches: getEventMatches(state, props),
+  teams: getEventTeams(state, props),
 });
 
 const mapDispatchToProps = (dispatch) => ({
