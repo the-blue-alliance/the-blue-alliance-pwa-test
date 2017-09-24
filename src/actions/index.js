@@ -271,6 +271,10 @@ export function fetchTeamListHelper(pageNum) {
 
 export function fetchTeamListAll() {
   return (dispatch) => {
+    // Load partial first
+    db.teams.where('team_number').between(0, 20).toArray(teams => {
+      dispatch(receiveTeamListPage(0, teams, sources.IDB_FAST))
+    })
     for (let pageNum=0; pageNum<14; pageNum++) {
       dispatch(fetchTeamListHelper(pageNum))
     }
