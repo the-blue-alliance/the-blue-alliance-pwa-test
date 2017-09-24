@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux-immutable'
 // import { routerReducer } from 'react-router-redux';
-import appBar from './appBar'
+import appNav from './appNav'
 import page from './page'
 // import router from './router'
 
 const reducer = combineReducers({
-  appBar,
+  appNav,
   page,
   // router,
   // router: routerReducer,

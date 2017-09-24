@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { CircularProgress } from 'material-ui/Progress';
-import AppNavContainer from '../containers/AppNavContainer'
 
+import TBAPageContainer from '../containers/TBAPageContainer'
 
-class TeamPage extends Component {
+class TeamPage extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -47,14 +47,14 @@ class TeamPage extends Component {
     }
 
     return (
-      <AppNavContainer
-        title={"Team " + teamNumber + " (" + year + ")"}
+      <TBAPageContainer
+        title={`Team ${teamNumber} (${year})`}
         refreshFunction={this.refreshFunction}
       >
         <h1>Team {teamNumber}{nickname && ` - ${nickname}`}</h1>
         {name && <p>aka {name}</p>}
         {eventList && <ul>{eventList}</ul>}
-      </AppNavContainer>
+      </TBAPageContainer>
     )
   }
 }

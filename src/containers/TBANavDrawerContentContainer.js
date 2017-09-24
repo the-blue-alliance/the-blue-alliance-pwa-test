@@ -1,19 +1,19 @@
 import { connect } from 'react-redux'
 import { toggleOffline } from '../actions'
-import NavDrawer from '../components/NavDrawer'
+import TBANavDrawerContent from '../components/TBANavDrawerContent'
 
 
 const mapStateToProps = (state, props) => ({
-  offlineOnly: state.getIn(['appBar', 'offlineOnly']),
+  offlineOnly: state.getIn(['appNav', 'offlineOnly']),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   toggleOffline: () => dispatch(toggleOffline()),
 });
 
-const NavDrawerContainer = connect(
+const TBANavDrawerContentContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(NavDrawer);
+)(TBANavDrawerContent);
 
-export default NavDrawerContainer;
+export default TBANavDrawerContentContainer;

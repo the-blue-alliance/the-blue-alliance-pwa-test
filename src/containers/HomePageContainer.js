@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import Home from '../components/Home.js'
+import HomePage from '../components/HomePage.js'
 
 
 const mapStateToProps = (state, ownProps) => ({
@@ -8,9 +8,9 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = {
 };
 
-const HomeContainer = connect(
+const HomePageContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Home)
+)(HomePage)
 
-export default HomeContainer;
+export default HomePageContainer;

@@ -7,29 +7,17 @@ import StarIcon from 'material-ui-icons/Star';
 import VideocamIcon from 'material-ui-icons/Videocam';
 import EventIcon from 'material-ui-icons/Event';
 import PeopleIcon from 'material-ui-icons/People';
-import Drawer from 'material-ui/Drawer';
-import Hidden from 'material-ui/Hidden'
 import List, { ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
 import Switch from 'material-ui/Switch';
 import Divider from 'material-ui/Divider';
 import TBAlogo from '../icons/tba_icon_blue.svg';
 
-const DRAWER_WIDTH = 200  // TODO put in global constants
 const styles = theme => ({
-  drawer: {
-    [theme.breakpoints.up('lg')]: {
-      width: DRAWER_WIDTH,
-    },
-  },
   drawerHeader: {
     display: 'flex',
     alignItems: 'center',
     padding: '0 8px',
     height: '100px',
-  },
-  drawerPaper: {
-    width: DRAWER_WIDTH,
-    backgroundColor: theme.palette.background.paper,
   },
   logo: {
     height: '50%',
@@ -37,11 +25,11 @@ const styles = theme => ({
   },
 })
 
-class NavDrawer extends PureComponent {
+class TBANavDrawerContent extends PureComponent {
   render() {
-    console.log("Render NavDrawer")
+    console.log("Render TBANavDrawerContent")
 
-    const drawer = (
+    return (
       <div>
         <div className={this.props.classes.drawerHeader}>
           <img src={TBAlogo} className={this.props.classes.logo} alt="logo" />
@@ -106,38 +94,7 @@ class NavDrawer extends PureComponent {
         </List>
       </div>
     )
-
-    return (
-      <div className={this.props.classes.drawer}>
-        <Hidden lgUp>
-          <Drawer
-            classes={{
-              paper: this.props.classes.drawerPaper,
-            }}
-            type="temporary"
-            open={this.props.mobileOpen}
-            onRequestClose={this.props.closeHandler}
-            ModalProps={{
-              keepMounted: true,
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden lgDown implementation="css">
-          <Drawer
-            classes={{
-              paper: this.props.classes.drawerPaper,
-            }}
-            type="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </div>
-    );
   }
 }
 
-export default withStyles(styles)(NavDrawer);
+export default withStyles(styles)(TBANavDrawerContent);

@@ -14,7 +14,7 @@ import createHistory from 'history/createBrowserHistory';
 import { ConnectedRouter, routerMiddleware } from 'react-router-redux'
 import reducer from './reducers'
 
-import App from './App.js'
+import TBAApp from './TBAApp'
 
 
 const history = createHistory();
@@ -39,7 +39,7 @@ ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <MuiThemeProvider theme={theme}>
-        <App />
+        <TBAApp />
       </MuiThemeProvider>
     </ConnectedRouter>
   </Provider>,

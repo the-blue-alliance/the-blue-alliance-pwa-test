@@ -2,9 +2,15 @@ import React, { Component } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import { withStyles } from 'material-ui/styles';
 import Tabs, { Tab } from 'material-ui/Tabs';
-import AppNavContainer from '../containers/AppNavContainer'
+import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import Divider from 'material-ui/Divider';
+import InfoOutlineIcon from 'material-ui-icons/InfoOutline';
+import EventIcon from 'material-ui-icons/Event';
+
 import MatchList from './MatchList'
 import TeamsList from './TeamsList'
+
+import TBAPageContainer from '../containers/TBAPageContainer'
 
 const styles = {
   slideContainer: {
@@ -20,7 +26,6 @@ class EventPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      eventKey: props.match.params.eventKey,
       tabIdx: 0,
     }
     this.props.resetPage()
@@ -31,9 +36,9 @@ class EventPage extends Component {
   }
 
   refreshFunction = () => {
-    this.props.fetchEventInfo(this.state.eventKey)
-    this.props.fetchEventMatches(this.state.eventKey)
-    this.props.fetchEventTeams(this.state.eventKey)
+    this.props.fetchEventInfo(this.props.match.params.eventKey)
+    this.props.fetchEventMatches(this.props.match.params.eventKey)
+    this.props.fetchEventTeams(this.props.match.params.eventKey)
   }
 
   tabHandleChangeIndex = tabIdx => {
@@ -47,20 +52,17 @@ class EventPage extends Component {
   render() {
     console.log("Render Event Page")
 
-    const eventKey = this.state.eventKey
     const event = this.props.event
     const matches = this.props.matches
     const teams = this.props.teams
 
-    var name = eventKey
+    var name = null
     if (event) {
-      if (event) {
-        name = event.get('name')
-      }
+      name = event.get('name')
     }
 
     return (
-      <AppNavContainer
+      <TBAPageContainer
         title={name}
         refreshFunction={this.refreshFunction}
         tabs={
@@ -71,8 +73,9 @@ class EventPage extends Component {
             scrollable
             scrollButtons="auto"
           >
-            <Tab label={"Matches"} />
+            <Tab label={"Info"} />
             <Tab label={"Teams"} />
+            <Tab label={"Matches"} />
           </Tabs>
         }
       >
@@ -81,14 +84,29 @@ class EventPage extends Component {
           index={this.state.tabIdx}
           onChangeIndex={this.tabHandleChangeIndex}
         >
-          <MatchList
-            matches={matches}
-          />
-          <TeamsList
-            teams={teams}
-          />
+          <div>
+            <List>
+              <ListItem>
+                <ListItemIcon>
+                  <InfoOutlineIcon />
+                </ListItemIcon>
+                <ListItemText primary={name} />
+              </ListItem>
+            </List>
+            <Divider />
+            <List>
+              <ListItem>
+                <ListItemIcon>
+                  <EventIcon />
+                </ListItemIcon>
+                <ListItemText primary="Dates go here" />
+              </ListItem>
+            </List>
+          </div>
+          <TeamsList teams={teams} />
+          <MatchList matches={matches} />
         </SwipeableViews>
-      </AppNavContainer>
+      </TBAPageContainer>
     )
   }
 }

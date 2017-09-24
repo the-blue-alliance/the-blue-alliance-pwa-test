@@ -12,9 +12,10 @@ const updateLoadingCount = (state = 0, action) => {
   }
 }
 
-const models = (state = Map({
+const appNav = (state = Map({
   loadingCount: 0,
   offlineOnly: false,
+  mobileDrawerOpen: false,
 }), action) => {
   switch (action.type) {
     case types.INCREMENT_LOADING_COUNT:
@@ -24,8 +25,14 @@ const models = (state = Map({
     case types.TOGGLE_OFFLINE:
       return state
         .set('offlineOnly', !state.get('offlineOnly'))
+    case types.TOGGLE_MOBILE_DRAWER:
+      return state
+        .set('mobileDrawerOpen', !state.get('mobileDrawerOpen'))
+    case types.CLOSE_MOBILE_DRAWER:
+      return state
+        .set('mobileDrawerOpen', false)
     default:
       return state
   }
 }
-export default models
+export default appNav

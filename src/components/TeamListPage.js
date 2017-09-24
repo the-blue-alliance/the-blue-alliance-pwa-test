@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
 
-import AppNavContainer from '../containers/AppNavContainer'
+import TBAPageContainer from '../containers/TBAPageContainer'
 import TeamsList from './TeamsList'
 
 const styles = {
@@ -44,8 +44,8 @@ class TeamListPage extends Component {
     console.log("Render TeamListPage")
 
     return (
-      <AppNavContainer
-        title={"Teams"}
+      <TBAPageContainer
+        title='Teams'
         refreshFunction={this.refreshFunction}
       >
         <div className={this.props.classes.container}>
@@ -62,7 +62,7 @@ class TeamListPage extends Component {
             />
           </div>
         </div>
-      </AppNavContainer>
+      </TBAPageContainer>
     )
   }
 }

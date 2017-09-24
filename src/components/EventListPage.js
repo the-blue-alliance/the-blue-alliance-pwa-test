@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import { withStyles } from 'material-ui/styles';
 import Tabs, { Tab } from 'material-ui/Tabs';
-import Button from 'material-ui/Button';
 
-import AppNavContainer from '../containers/AppNavContainer'
+import TBAPageContainer from '../containers/TBAPageContainer'
 import EventsList from './EventsList'
 import EventFilterDialog from './EventFilterDialog'
 import YearPickerDialog from './YearPickerDialog'
@@ -29,10 +28,11 @@ SEASON_TYPES.add(1)
 SEASON_TYPES.add(2)
 SEASON_TYPES.add(5)
 
-class EventListPage extends Component {
+class EventListPage extends PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
+      isFirstRender: true,
       tabIdx: 0,
       eventFilterOpen: false,
       yearPickerOpen: false,
@@ -52,6 +52,17 @@ class EventListPage extends Component {
     this.refreshFunction()
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.sortedEvents !== this.props.sortedEvents) {
+      this.setState({ isFirstRender: true })
+    }
+  }
+
+  componentDidUpdate() {
+    // Rerender without cascading
+    setTimeout(() => this.setState({ isFirstRender: false }), 0)
+  }
+
   refreshFunction = () => {
     this.props.fetchYearEvents(2017)
   }
@@ -69,11 +80,11 @@ class EventListPage extends Component {
   }
 
   eventFilterHandleRequestClose = () => {
-    this.setState({ eventFilterOpen: false });
+    this.setState({ eventFilterOpen: false })
   }
 
   yearPickerHandleRequestClose = value => {
-    this.setState({ yearPickerValue: value, yearPickerOpen: false });
+    this.setState({ yearPickerValue: value, yearPickerOpen: false })
   }
 
   handleToggle = value => () => {
@@ -89,6 +100,7 @@ class EventListPage extends Component {
 
     this.setState({
       filters: newFilters,
+      isFirstRender: true,
     });
   };
 
@@ -127,8 +139,12 @@ class EventListPage extends Component {
       }
     })
     // Create tab content
-    this.tabContentList = tabEvents.map(function(events, i){
-      return <EventsList key={i} events={events} />
+    this.tabContentList = tabEvents.map((events, i) => {
+      if (!this.state.isFirstRender || i === this.state.tabIdx) {
+        return <EventsList key={i} events={events} />
+      } else {
+        return <div key={i} />
+      }
     })
   }
 
@@ -148,16 +164,35 @@ class EventListPage extends Component {
       if (this.state.filters.length > 0) {
         events = events.filter(event => this.state.filters.indexOf(event.getIn(['district', 'abbreviation'])) !== -1)
       }
-      if (!events.equals(this.lastEvents)) {  // Only compute if events changed
+
+      // Only compute if events changed or isFirstRender changed
+      if (!events.equals(this.lastEvents) || this.state.isFirstRender !== this.lastIsFirstRender) {
         this.computeTabs(events)
         this.lastEvents = events
+        this.lastIsFirstRender = this.state.isFirstRender
       }
     } else {
       this.resetTabMem()
     }
 
     return (
-      <AppNavContainer
+      <TBAPageContainer
+        title='Events'
+        refreshFunction={this.refreshFunction}
+        filterFunction={this.filterFunction}
+        tabs={
+          <Tabs
+            value={this.state.tabIdx}
+            onChange={this.tabHandleChange}
+            indicatorColor="white"
+            scrollable
+            scrollButtons="auto"
+          >
+            {this.tabs}
+          </Tabs>
+        }
+      >
+      {/*<AppNavContainer
         title={'Events'}
         // title={
         //   <Button
@@ -180,7 +215,7 @@ class EventListPage extends Component {
             {this.tabs}
           </Tabs>
         }
-      >
+      >*/}
         <EventFilterDialog
           open={this.state.eventFilterOpen}
           onRequestClose={this.eventFilterHandleRequestClose}
@@ -200,8 +235,8 @@ class EventListPage extends Component {
         >
           {this.tabContentList}
         </SwipeableViews>
-      </AppNavContainer>
-    );
+      </TBAPageContainer>
+    )
   }
 }
 
