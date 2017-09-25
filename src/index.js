@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Map } from 'immutable';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import indigo from 'material-ui/colors/indigo';
+import 'typeface-roboto'
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 

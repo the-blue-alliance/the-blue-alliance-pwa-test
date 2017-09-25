@@ -10,6 +10,7 @@ import EventIcon from 'material-ui-icons/Event';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 
+import MatchTable from './MatchTable'
 import MatchList from './MatchList'
 import TeamsList from './TeamsList'
 
@@ -17,7 +18,7 @@ import TBAPageContainer from '../containers/TBAPageContainer'
 
 const styles = theme => ({
   root: {
-    maxWidth: 1600,
+    maxWidth: 1200,
     margin: '0 auto',
     padding: '0 48px',
   },
@@ -80,11 +81,22 @@ class EventPage extends Component {
                       onChange={this.tabHandleChange}
                       fullWidth
                     >
-                      <Tab label="Matches" />
+                      <Tab label="Results" />
                       <Tab label="Teams" />
                     </Tabs>
                   </Paper>
-                  {this.state.tabIdx === 0 && <div>Our old, familiar match table goes here!</div>}
+                  {this.state.tabIdx === 0 && <div>
+                    <Grid container spacing={24}>
+                      <Grid item xs={6}>
+                        <h3>Qualification Results</h3>
+                        <MatchTable matches={matches} />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <h3>Playoff Results</h3>
+                        <MatchTable matches={matches} />
+                      </Grid>
+                    </Grid>
+                  </div>}
                   {this.state.tabIdx === 1 && <div>TEAMS!</div>}
                 </Grid>
               </Grid>
