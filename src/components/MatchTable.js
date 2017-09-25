@@ -96,7 +96,7 @@ class MatchTable extends PureComponent {
                         key={teamKey}
                         className={classNames({
                             [this.props.classes.td]: true,
-                            [this.props.classes.red]: true,
+                            [this.props.classes.blue]: true,
                             [this.props.classes.winner]: blueWin
                         })}
                       >
