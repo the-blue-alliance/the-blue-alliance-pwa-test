@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import SwipeableViews from 'react-swipeable-views';
 import { withStyles } from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
@@ -22,6 +23,9 @@ const styles = theme => ({
     margin: '0 auto',
     padding: '0 48px',
   },
+  hidden: {
+    display: 'none',
+  }
 })
 
 class EventPage extends Component {
@@ -85,7 +89,7 @@ class EventPage extends Component {
                       <Tab label="Teams" />
                     </Tabs>
                   </Paper>
-                  {this.state.tabIdx === 0 && <div>
+                  <div className={classNames({[this.props.classes.hidden]: this.state.tabIdx !== 0})}>
                     <Grid container spacing={24}>
                       <Grid item xs={6}>
                         <h3>Qualification Results</h3>
@@ -96,8 +100,10 @@ class EventPage extends Component {
                         <MatchTable matches={matches} />
                       </Grid>
                     </Grid>
-                  </div>}
-                  {this.state.tabIdx === 1 && <div>TEAMS!</div>}
+                  </div>
+                  <div className={classNames({[this.props.classes.hidden]: this.state.tabIdx !== 1})}>
+                    TEAMS!
+                  </div>
                 </Grid>
               </Grid>
             </div>
