@@ -73,7 +73,9 @@ class MatchTable extends PureComponent {
               const blueWin = blueScore > redScore
               return (
                 <tr key={i} className={this.props.classes.tr}>
-                  <td className={this.props.classes.td}>{match.get('match_number')}</td>
+                  <td className={this.props.classes.td}>
+                    <Link to={{pathname: `/match/${match.get('key')}`, state: {modal: true}}}>{match.get('match_number')}</Link>
+                  </td>
                   {match.getIn(['alliances', 'red', 'team_keys']).map(teamKey => {
                     const teamNum = teamKey.substr(3)
                     return (
