@@ -1,14 +1,6 @@
 import { createSelector } from 'reselect'
 import { List } from 'immutable'
 
-const PLAY_ORDER = {
-  qm: 1,
-  ef: 2,
-  qf: 3,
-  sf: 4,
-  f: 5,
-}
-
 const getMatches = (state, props) => {
   return state.getIn(['page', 'matches', 'data'])
 }
@@ -18,8 +10,8 @@ export const getEventMatches = createSelector(
   (matches) => {
     if (matches) {
       return matches.sort((a, b) => {
-        const orderA = PLAY_ORDER[a.get('comp_level')]*100000 + a.get('match_number')*100 + a.get('set_number')
-        const orderB = PLAY_ORDER[b.get('comp_level')]*100000 + b.get('match_number')*100 + b.get('set_number')
+        const orderA = a.getPlayOrder()
+        const orderB = b.getPlayOrder()
         if (orderA < orderB) {
           return -1
         }

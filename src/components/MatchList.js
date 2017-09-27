@@ -10,11 +10,11 @@ const styles = {
 
 class MatchList extends PureComponent {
   rowRenderer = ({index, isScrolling, isVisible, key, parent, style}) => {
-    const match = this.matches.get(index).toJS()
+    const match = this.matches.get(index)
     return (
       <div key={match.key} style={style}>
         <ListItem divider component={Link} to={{pathname: `/match/${match.key}`, state: {modal: true}}}>
-          <ListItemText primary={`${match.key}`} />
+          <ListItemText primary={`${match.getDisplayName()}`} />
         </ListItem>
       </div>
     )

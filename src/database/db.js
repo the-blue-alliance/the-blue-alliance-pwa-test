@@ -10,6 +10,7 @@ db.version(1).stores({
 db.version(2).stores({
   matches: '&key, event_key',
 })
+
 export default db;
 
 // Write helpers. TODO: needs to handle deletion

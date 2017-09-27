@@ -1,6 +1,7 @@
 import * as types from '../constants/ActionTypes'
 import * as sources from '../constants/DataSources'
-import db, { addEvent, addEvents, addEventTeams, addMatches, addTeam, addTeams, addTeamEvents } from '../db'
+import db, { addEvent, addEvents, addEventTeams, addMatches, addTeam, addTeams, addTeamEvents } from '../database/db'
+import Match from '../database/Match'
 
 // This is Eugene's key. If you abuse it, he will hunt you down.
 const TBA_KEY = '61bdelekzYp5TY5MueT8OokJsgT1ewwLjywZnTKCAYPCLDeoNnURu1O61DeNy8z3'
@@ -65,10 +66,10 @@ export function fetchEventInfo(eventKey) {
   }
 }
 
-export const receiveEventMatches = (eventKey, data, source) => ({
+export const receiveEventMatches = (eventKey, matches, source) => ({
   type: types.RECEIVE_EVENT_MATCHES,
   eventKey,
-  data,
+  data: matches.map(match => new Match(match)),
   source,
 })
 
