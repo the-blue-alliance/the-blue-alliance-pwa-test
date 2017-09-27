@@ -3,7 +3,7 @@ import memoize from 'lodash.memoize'
 import { List } from 'immutable'
 
 const getTeamsByPage = (state, props) => {
-  return state.getIn(['page', 'teams'])
+  return state.getIn(['page', 'pageHistory', state.getIn(['page', 'currentKey']), 'teams'])
 }
 
 const sortTeams = memoize((pageTeams) => {

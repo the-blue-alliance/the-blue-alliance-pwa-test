@@ -2,7 +2,7 @@ import { createSelector } from 'reselect'
 import { List } from 'immutable'
 
 const getMatches = (state, props) => {
-  return state.getIn(['page', 'matches', 'data'])
+  return state.getIn(['page', 'pageHistory', state.getIn(['page', 'currentKey']), 'matches', 'data'])
 }
 
 export const getEventMatches = createSelector(
@@ -26,7 +26,7 @@ export const getEventMatches = createSelector(
 )
 
 const getTeams = (state, props) => {
-  return state.getIn(['page', 'teams', 'data'])
+  return state.getIn(['page', 'pageHistory', state.getIn(['page', 'currentKey']), 'teams', 'data'])
 }
 
 export const getEventTeams = createSelector(

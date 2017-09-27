@@ -38,7 +38,7 @@ class EventListPage extends PureComponent {
       yearPickerOpen: false,
       filters: [],
     }
-    this.props.resetPage()
+    this.props.resetPage(this.props.location.key)
     this.resetTabMem()
   }
 

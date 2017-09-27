@@ -9,7 +9,7 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  resetPage: () => dispatch(resetPage()),
+  resetPage: (key) => dispatch(resetPage(key)),
   fetchYearEvents: (year) => dispatch(fetchYearEvents(year)),
 });
 

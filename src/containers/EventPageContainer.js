@@ -5,13 +5,13 @@ import EventPage from '../components/EventPage.js'
 
 
 const mapStateToProps = (state, props) => ({
-  event: state.getIn(['page', 'event', 'data']),
+  event: state.getIn(['page', 'pageHistory', state.getIn(['page', 'currentKey']), 'event', 'data']),
   matches: getEventMatches(state, props),
   teams: getEventTeams(state, props),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  resetPage: () => dispatch(resetPage()),
+  resetPage: (key) => dispatch(resetPage(key)),
   fetchEventInfo: (eventKey) => dispatch(fetchEventInfo(eventKey)),
   fetchEventMatches: (eventKey) => dispatch(fetchEventMatches(eventKey)),
   fetchEventTeams: (eventKey) => dispatch(fetchEventTeams(eventKey)),

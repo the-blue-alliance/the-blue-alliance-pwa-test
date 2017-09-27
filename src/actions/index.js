@@ -31,8 +31,9 @@ export const closeMobileDrawer = () => ({
 })
 
 // Resetting Page
-export const resetPage = () => ({
+export const resetPage = (key) => ({
   type: types.RESET_PAGE,
+  key,
 })
 
 // Event Page
