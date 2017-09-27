@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Map } from 'immutable';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import indigo from 'material-ui/colors/indigo';
+import amber from 'material-ui/colors/amber';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -32,6 +33,7 @@ const store = createStore(
 const theme = createMuiTheme({
   palette: {
     primary: indigo,
+    secondary: amber,
   },
 });
 
