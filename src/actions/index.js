@@ -4,6 +4,8 @@ import * as sources from '../constants/DataSources'
 import db, { addEvent, addEvents, addEventTeams, addMatches, addTeam, addTeams, addTeamEvents } from '../database/db'
 import Match from '../database/Match'
 
+// TODO: This can use a lot of refactoring to make things DRY. 2017-09-27 @fangeugene
+
 // This is Eugene's key. If you abuse it, he will hunt you down.
 const TBA_KEY = '61bdelekzYp5TY5MueT8OokJsgT1ewwLjywZnTKCAYPCLDeoNnURu1O61DeNy8z3'
 
@@ -34,18 +36,21 @@ export const resetPage = () => ({
 })
 
 // Event Page
-export const receiveEventInfo = (eventKey, data, source) => ({
+export const receiveEventInfo = (eventKey, data) => ({
   type: types.RECEIVE_EVENT_INFO,
   eventKey,
   data,
-  source,
 })
 
 export function fetchEventInfo(eventKey) {
   return (dispatch, getState) => {
+    let dataSource = sources.DEFAULT
     // Update from IndexedDB
     db.events.get(eventKey).then(event => {
-      dispatch(receiveEventInfo(eventKey, event, sources.IDB))
+      if (dataSource < sources.IDB) {
+        dataSource = sources.IDB
+        dispatch(receiveEventInfo(eventKey, event))
+      }
     })
 
     // Update from API
@@ -57,9 +62,12 @@ export function fetchEventInfo(eventKey) {
         response => response.json(),
         error => console.log('An error occured.', error)
       ).then(event => {
-        if (event) {
-          dispatch(receiveEventInfo(eventKey, event, sources.API))
-          addEvent(event)
+        if (dataSource < sources.API) {
+          dataSource = sources.API
+          if (event) {
+            dispatch(receiveEventInfo(eventKey, event))
+            addEvent(event)
+          }
         }
         dispatch(decrementLoadingCount())
       })
@@ -67,18 +75,21 @@ export function fetchEventInfo(eventKey) {
   }
 }
 
-export const receiveEventMatches = (eventKey, matches, source) => ({
+export const receiveEventMatches = (eventKey, matches) => ({
   type: types.RECEIVE_EVENT_MATCHES,
   eventKey,
   data: List(matches.map(match => new Match(fromJS(match)))),
-  source,
 })
 
 export function fetchEventMatches(eventKey) {
   return (dispatch, getState) => {
+    let dataSource = sources.DEFAULT
     // Update from IndexedDB
     db.matches.where('event_key').equals(eventKey).toArray(matches => {
-      dispatch(receiveEventMatches(eventKey, matches, sources.IDB))
+      if (dataSource < sources.IDB) {
+        dataSource = sources.IDB
+        dispatch(receiveEventMatches(eventKey, matches))
+      }
     })
 
     // Update from API
@@ -90,9 +101,12 @@ export function fetchEventMatches(eventKey) {
         response => response.json(),
         error => console.log('An error occured.', error)
       ).then(matches => {
-        if (matches) {
-          dispatch(receiveEventMatches(eventKey, matches, sources.API))
-          addMatches(matches)
+        if (dataSource < sources.API) {
+          dataSource = sources.API
+          if (matches) {
+            dispatch(receiveEventMatches(eventKey, matches))
+            addMatches(matches)
+          }
         }
         dispatch(decrementLoadingCount())
       })
@@ -100,21 +114,24 @@ export function fetchEventMatches(eventKey) {
   }
 }
 
-export const receiveEventTeams = (eventKey, teams, source) => ({
+export const receiveEventTeams = (eventKey, teams) => ({
   type: types.RECEIVE_EVENT_TEAMS,
   eventKey,
   data: List(fromJS(teams)),  // TODO: create Team object
-  source,
 })
 
 export function fetchEventTeams(eventKey) {
   return (dispatch, getState) => {
+    let dataSource = sources.DEFAULT
     // Update from IndexedDB
     db.eventTeams.where('eventKey').equals(eventKey).toArray(eventTeams => {
       Promise.all(
         eventTeams.map(eventTeam => db.teams.get(eventTeam.teamKey))
       ).then(teams => {
-        dispatch(receiveEventTeams(eventKey, teams, sources.IDB))
+        if (dataSource < sources.IDB) {
+          dataSource = sources.IDB
+          dispatch(receiveEventTeams(eventKey, teams))
+        }
       })
     })
 
@@ -127,9 +144,12 @@ export function fetchEventTeams(eventKey) {
         response => response.json(),
         error => console.log('An error occured.', error)
       ).then(teams => {
-        if (teams) {
-          dispatch(receiveEventTeams(eventKey, teams, sources.API))
-          addEventTeams(eventKey, teams)
+        if (dataSource < sources.API) {
+          dataSource = sources.API
+          if (teams) {
+            dispatch(receiveEventTeams(eventKey, teams))
+            addEventTeams(eventKey, teams)
+          }
         }
         dispatch(decrementLoadingCount())
       })
@@ -138,18 +158,21 @@ export function fetchEventTeams(eventKey) {
 }
 
 // Event List Page
-export const receiveYearEvents = (year, events, source) => ({
+export const receiveYearEvents = (year, events) => ({
   type: types.RECEIVE_YEAR_EVENTS,
   year,
   data: List(fromJS(events)),  // TODO: create Event object
-  source,
 })
 
 export function fetchYearEvents(year) {
   return (dispatch, getState) => {
+    let dataSource = sources.DEFAULT
     // Update from IndexedDB
     db.events.where('year').equals(year).toArray(events => {
-      dispatch(receiveYearEvents(year, events, sources.IDB))
+      if (dataSource < sources.IDB) {
+        dataSource = sources.IDB
+        dispatch(receiveYearEvents(year, events))
+      }
     })
 
     // Update from API
@@ -161,9 +184,12 @@ export function fetchYearEvents(year) {
         response => response.json(),
         error => console.log('An error occured.', error)
       ).then(events => {
-        if (events) {
-          dispatch(receiveYearEvents(year, events, sources.API))
-          addEvents(events)
+        if (dataSource < sources.API) {
+          dataSource = sources.API
+          if (events) {
+            dispatch(receiveYearEvents(year, events))
+            addEvents(events)
+          }
         }
         dispatch(decrementLoadingCount())
       })
@@ -172,19 +198,22 @@ export function fetchYearEvents(year) {
 }
 
 // Team Page
-export const receiveTeamInfo = (teamKey, data, source) => ({
+export const receiveTeamInfo = (teamKey, data) => ({
   type: types.RECEIVE_TEAM_INFO,
   teamKey,
   data,
-  source,
 })
 
 export function fetchTeamInfo(teamNumber) {
   return (dispatch, getState) => {
+    let dataSource = sources.DEFAULT
     const teamKey = `frc${teamNumber}`
     // Update from IndexedDB
     db.teams.get(teamKey).then(team => {
-      dispatch(receiveTeamInfo(teamKey, team, sources.IDB))
+      if (dataSource < sources.IDB) {
+        dataSource = sources.IDB
+        dispatch(receiveTeamInfo(teamKey, team))
+      }
     })
 
     // Update from API
@@ -196,9 +225,12 @@ export function fetchTeamInfo(teamNumber) {
         response => response.json(),
         error => console.log('An error occured.', error)
       ).then(team => {
-        if (team) {
-          dispatch(receiveTeamInfo(teamKey, team, sources.API))
-          addTeam(team)
+        if (dataSource < sources.API) {
+          dataSource = sources.API
+          if (team) {
+            dispatch(receiveTeamInfo(teamKey, team))
+            addTeam(team)
+          }
         }
         dispatch(decrementLoadingCount())
       })
@@ -206,23 +238,26 @@ export function fetchTeamInfo(teamNumber) {
   }
 }
 
-export const receiveTeamYearEvents = (teamKey, year, events, source) => ({
+export const receiveTeamYearEvents = (teamKey, year, events) => ({
   type: types.RECEIVE_TEAM_YEAR_EVENTS,
   teamKey,
   year,
   data: List(fromJS(events)),  // TODO: create Event object
-  source,
 })
 
 export function fetchTeamYearEvents(teamNumber, year) {
   return (dispatch, getState) => {
+    let dataSource = sources.DEFAULT
     const teamKey = `frc${teamNumber}`
     // Update from IndexedDB
     db.eventTeams.where('teamKey_year').equals(`${teamKey}_${year}`).toArray(eventTeams => {
       Promise.all(
         eventTeams.map(eventTeam => db.events.get(eventTeam.eventKey))
       ).then(events => {
-        dispatch(receiveTeamYearEvents(teamKey, year, events, sources.IDB))
+        if (dataSource < sources.IDB) {
+          dataSource = sources.IDB
+          dispatch(receiveTeamYearEvents(teamKey, year, events))
+        }
       })
     })
 
@@ -235,9 +270,12 @@ export function fetchTeamYearEvents(teamNumber, year) {
         response => response.json(),
         error => console.log('An error occured.', error)
       ).then(events => {
-        if (events) {
-          dispatch(receiveTeamYearEvents(teamKey, year, events, sources.API))
-          addTeamEvents(teamKey, events)
+        if (dataSource < sources.API) {
+          dataSource = sources.API
+          if (events) {
+            dispatch(receiveTeamYearEvents(teamKey, year, events))
+            addTeamEvents(teamKey, events)
+          }
         }
         dispatch(decrementLoadingCount())
       })
@@ -246,18 +284,32 @@ export function fetchTeamYearEvents(teamNumber, year) {
 }
 
 // Team List Page
-export const receiveTeamListPage = (pageNum, teams, source) => ({
+export const receiveTeamListPage = (pageNum, teams) => ({
   type: types.RECEIVE_TEAM_LIST_PAGE,
   pageNum,
   data: List(fromJS(teams)),  // TODO: create Team object
-  source,
 })
 
 export function fetchTeamListHelper(pageNum) {
   return (dispatch, getState) => {
+    let dataSource = sources.DEFAULT
+
+    // Load partial first
+    if (pageNum === 0) {
+      db.teams.where('team_number').between(0, 20).toArray(teams => {
+        if (dataSource < sources.IDB_FAST) {
+          dataSource = sources.IDB_FAST
+          dispatch(receiveTeamListPage(0, teams))
+        }
+      })
+    }
+
     // Update from IndexedDB
     db.teams.where('team_number').between(pageNum * 500, pageNum * 500 + 500).toArray(teams => {
-      dispatch(receiveTeamListPage(pageNum, teams, sources.IDB))
+      if (dataSource < sources.IDB) {
+        dataSource = sources.IDB
+        dispatch(receiveTeamListPage(pageNum, teams))
+      }
     })
 
     // Update from API
@@ -269,9 +321,12 @@ export function fetchTeamListHelper(pageNum) {
         response => response.json(),
         error => console.log('An error occured.', error)
       ).then(teams => {
-        if (teams) {
-          dispatch(receiveTeamListPage(pageNum, teams, sources.API))
-          addTeams(teams)
+        if (dataSource < sources.API) {
+          dataSource = sources.API
+          if (teams) {
+            dispatch(receiveTeamListPage(pageNum, teams))
+            addTeams(teams)
+          }
         }
         dispatch(decrementLoadingCount())
       })
@@ -281,10 +336,6 @@ export function fetchTeamListHelper(pageNum) {
 
 export function fetchTeamListAll() {
   return (dispatch) => {
-    // Load partial first
-    db.teams.where('team_number').between(0, 20).toArray(teams => {
-      dispatch(receiveTeamListPage(0, teams, sources.IDB_FAST))
-    })
     for (let pageNum=0; pageNum<14; pageNum++) {
       dispatch(fetchTeamListHelper(pageNum))
     }

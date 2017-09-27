@@ -1,30 +1,22 @@
 import * as types from '../constants/ActionTypes';
-import * as sources from '../constants/DataSources'
 import { Map, Set } from 'immutable';
 
 const updateFromSource = (state = Map({
   data: Map(),
-  source: sources.DEFAULT,
 }), action) => {
-  if (action.source > state.get('source')) {
-    return state
-      .set('data', state.get('data').mergeDeep(action.data))
-      .set('source', action.source)
-  }
+  return state
+    .set('data', state.get('data').mergeDeep(action.data))
   return state
 }
 
 const updateSetFromSource = (state = Map({
   data: Set(),
-  source: sources.DEFAULT,
 }), action) => {
-  if (action.source > state.get('source')) {
-    const newSet = action.data.toSet()
-    const toAdd = newSet.subtract(state.get('data'))
-    return state
-      .set('data', state.get('data').intersect(newSet).union(toAdd))
-      .set('source', action.source)
-  }
+  const newSet = action.data.toSet()
+  const toAdd = newSet.subtract(state.get('data'))
+  return state
+    .set('data', state.get('data').intersect(newSet).union(toAdd))
+
   return state
 }
 
