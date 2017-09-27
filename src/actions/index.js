@@ -1,3 +1,4 @@
+import { List, fromJS } from 'immutable';
 import * as types from '../constants/ActionTypes'
 import * as sources from '../constants/DataSources'
 import db, { addEvent, addEvents, addEventTeams, addMatches, addTeam, addTeams, addTeamEvents } from '../database/db'
@@ -69,7 +70,7 @@ export function fetchEventInfo(eventKey) {
 export const receiveEventMatches = (eventKey, matches, source) => ({
   type: types.RECEIVE_EVENT_MATCHES,
   eventKey,
-  data: matches.map(match => new Match(match)),
+  data: List(matches.map(match => new Match(fromJS(match)))),
   source,
 })
 
@@ -99,10 +100,10 @@ export function fetchEventMatches(eventKey) {
   }
 }
 
-export const receiveEventTeams = (eventKey, data, source) => ({
+export const receiveEventTeams = (eventKey, teams, source) => ({
   type: types.RECEIVE_EVENT_TEAMS,
   eventKey,
-  data,
+  data: List(fromJS(teams)),  // TODO: create Team object
   source,
 })
 
@@ -137,10 +138,10 @@ export function fetchEventTeams(eventKey) {
 }
 
 // Event List Page
-export const receiveYearEvents = (year, data, source) => ({
+export const receiveYearEvents = (year, events, source) => ({
   type: types.RECEIVE_YEAR_EVENTS,
   year,
-  data,
+  data: List(fromJS(events)),  // TODO: create Event object
   source,
 })
 
@@ -205,11 +206,11 @@ export function fetchTeamInfo(teamNumber) {
   }
 }
 
-export const receiveTeamYearEvents = (teamKey, year, data, source) => ({
+export const receiveTeamYearEvents = (teamKey, year, events, source) => ({
   type: types.RECEIVE_TEAM_YEAR_EVENTS,
   teamKey,
   year,
-  data,
+  data: List(fromJS(events)),  // TODO: create Event object
   source,
 })
 
@@ -245,10 +246,10 @@ export function fetchTeamYearEvents(teamNumber, year) {
 }
 
 // Team List Page
-export const receiveTeamListPage = (pageNum, data, source) => ({
+export const receiveTeamListPage = (pageNum, teams, source) => ({
   type: types.RECEIVE_TEAM_LIST_PAGE,
   pageNum,
-  data,
+  data: List(fromJS(teams)),  // TODO: create Team object
   source,
 })
 

@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
 import * as sources from '../constants/DataSources'
-import { Map, Set, fromJS } from 'immutable';
+import { Map, Set } from 'immutable';
 
 const updateFromSource = (state = Map({
   data: Map(),
@@ -19,7 +19,7 @@ const updateSetFromSource = (state = Map({
   source: sources.DEFAULT,
 }), action) => {
   if (action.source > state.get('source')) {
-    const newSet = fromJS(action.data).toSet()
+    const newSet = action.data.toSet()
     const toAdd = newSet.subtract(state.get('data'))
     return state
       .set('data', state.get('data').intersect(newSet).union(toAdd))

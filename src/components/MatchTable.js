@@ -67,8 +67,8 @@ class MatchTable extends PureComponent {
           </thead>
           <tbody>
             {this.props.matches.map((match, i) => {
-              const redScore = match.alliances.red.score
-              const blueScore = match.alliances.blue.score
+              const redScore = match.alliances.getIn(['red', 'score'])
+              const blueScore = match.alliances.getIn(['blue', 'score'])
               const redWin = match.winning_alliance === 'red'
               const blueWin = match.winning_alliance === 'blue'
               return (
@@ -76,7 +76,7 @@ class MatchTable extends PureComponent {
                   <td className={this.props.classes.td}>
                     <Link to={{pathname: `/match/${match.key}`, state: {modal: true}}}>{match.getDisplayName()}</Link>
                   </td>
-                  {match.alliances.red.team_keys.map(teamKey => {
+                  {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
                     const teamNum = teamKey.substr(3)
                     return (
                       <td
@@ -91,7 +91,7 @@ class MatchTable extends PureComponent {
                       </td>
                     )
                   })}
-                  {match.alliances.blue.team_keys.map(teamKey => {
+                  {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
                     const teamNum = teamKey.substr(3)
                     return (
                       <td
