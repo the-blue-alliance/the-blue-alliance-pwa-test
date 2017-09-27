@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
-import Paper from 'material-ui/Paper';
 import { Link } from 'react-router-dom';
 
 const styles = theme => ({
@@ -55,65 +54,63 @@ class MatchTable extends PureComponent {
     console.log('Render MatchTable');
 
     return (
-      <Paper>
-        <table className={this.props.classes.table} border='1'>
-          <thead className={this.props.classes.thead}>
-            <tr className={classNames({[this.props.classes.tr]: true, [this.props.classes.key]: true})}>
-              <th className={this.props.classes.th}>Match</th>
-              <th className={this.props.classes.th} colSpan='3'>Red Alliance</th>
-              <th className={this.props.classes.th} colSpan='3'>Blue Alliance</th>
-              <th className={this.props.classes.th} colSpan='2'>Scores</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.props.matches.map((match, i) => {
-              const redScore = match.alliances.getIn(['red', 'score'])
-              const blueScore = match.alliances.getIn(['blue', 'score'])
-              const redWin = match.winning_alliance === 'red'
-              const blueWin = match.winning_alliance === 'blue'
-              return (
-                <tr key={match.key} className={this.props.classes.tr}>
-                  <td className={this.props.classes.td}>
-                    <Link to={{pathname: `/match/${match.key}`, state: {modal: true}}}>{match.getDisplayName()}</Link>
-                  </td>
-                  {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
-                    const teamNum = teamKey.substr(3)
-                    return (
-                      <td
-                        key={teamKey}
-                        className={classNames({
-                            [this.props.classes.td]: true,
-                            [this.props.classes.red]: true,
-                            [this.props.classes.winner]: redWin
-                        })}
-                      >
-                        <Link to={`/team/${teamNum}`}>{teamNum}</Link>
-                      </td>
-                    )
-                  })}
-                  {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
-                    const teamNum = teamKey.substr(3)
-                    return (
-                      <td
-                        key={teamKey}
-                        className={classNames({
-                            [this.props.classes.td]: true,
-                            [this.props.classes.blue]: true,
-                            [this.props.classes.winner]: blueWin
-                        })}
-                      >
-                        <Link to={`/team/${teamNum}`}>{teamNum}</Link>
-                      </td>
-                    )
-                  })}
-                  <td className={classNames({[this.props.classes.td]: true, [this.props.classes.redScore]: true, [this.props.classes.winner]: redWin})}>{redScore}</td>
-                  <td className={classNames({[this.props.classes.td]: true, [this.props.classes.blueScore]: true, [this.props.classes.winner]: blueWin})}>{blueScore}</td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </Paper>
+      <table className={this.props.classes.table} border='1'>
+        <thead className={this.props.classes.thead}>
+          <tr className={classNames({[this.props.classes.tr]: true, [this.props.classes.key]: true})}>
+            <th className={this.props.classes.th}>Match</th>
+            <th className={this.props.classes.th} colSpan='3'>Red Alliance</th>
+            <th className={this.props.classes.th} colSpan='3'>Blue Alliance</th>
+            <th className={this.props.classes.th} colSpan='2'>Scores</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.props.matches.map((match, i) => {
+            const redScore = match.alliances.getIn(['red', 'score'])
+            const blueScore = match.alliances.getIn(['blue', 'score'])
+            const redWin = match.winning_alliance === 'red'
+            const blueWin = match.winning_alliance === 'blue'
+            return (
+              <tr key={match.key} className={this.props.classes.tr}>
+                <td className={this.props.classes.td}>
+                  <Link to={{pathname: `/match/${match.key}`, state: {modal: true}}}>{match.getDisplayName()}</Link>
+                </td>
+                {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
+                  const teamNum = teamKey.substr(3)
+                  return (
+                    <td
+                      key={teamKey}
+                      className={classNames({
+                          [this.props.classes.td]: true,
+                          [this.props.classes.red]: true,
+                          [this.props.classes.winner]: redWin
+                      })}
+                    >
+                      <Link to={`/team/${teamNum}`}>{teamNum}</Link>
+                    </td>
+                  )
+                })}
+                {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
+                  const teamNum = teamKey.substr(3)
+                  return (
+                    <td
+                      key={teamKey}
+                      className={classNames({
+                          [this.props.classes.td]: true,
+                          [this.props.classes.blue]: true,
+                          [this.props.classes.winner]: blueWin
+                      })}
+                    >
+                      <Link to={`/team/${teamNum}`}>{teamNum}</Link>
+                    </td>
+                  )
+                })}
+                <td className={classNames({[this.props.classes.td]: true, [this.props.classes.redScore]: true, [this.props.classes.winner]: redWin})}>{redScore}</td>
+                <td className={classNames({[this.props.classes.td]: true, [this.props.classes.blueScore]: true, [this.props.classes.winner]: blueWin})}>{blueScore}</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
     )
   }
 }
