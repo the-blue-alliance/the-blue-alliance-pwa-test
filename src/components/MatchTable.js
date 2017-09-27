@@ -72,7 +72,7 @@ class MatchTable extends PureComponent {
               const redWin = match.winning_alliance === 'red'
               const blueWin = match.winning_alliance === 'blue'
               return (
-                <tr key={i} className={this.props.classes.tr}>
+                <tr key={match.key} className={this.props.classes.tr}>
                   <td className={this.props.classes.td}>
                     <Link to={{pathname: `/match/${match.key}`, state: {modal: true}}}>{match.getDisplayName()}</Link>
                   </td>
