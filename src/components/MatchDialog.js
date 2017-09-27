@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import Dialog, { DialogTitle } from 'material-ui/Dialog';
 
-import TBAPageContainer from '../containers/TBAPageContainer'
-
 class MatchDialog extends PureComponent {
   handleRequestClose = (e) => {
     e.stopPropagation()

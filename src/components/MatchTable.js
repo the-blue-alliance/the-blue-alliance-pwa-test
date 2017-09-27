@@ -69,8 +69,8 @@ class MatchTable extends PureComponent {
             {this.props.matches.map((match, i) => {
               const redScore = match.alliances.red.score
               const blueScore = match.alliances.blue.score
-              const redWin = match.winning_alliance == 'red'
-              const blueWin = match.winning_alliance == 'blue'
+              const redWin = match.winning_alliance === 'red'
+              const blueWin = match.winning_alliance === 'blue'
               return (
                 <tr key={i} className={this.props.classes.tr}>
                   <td className={this.props.classes.td}>

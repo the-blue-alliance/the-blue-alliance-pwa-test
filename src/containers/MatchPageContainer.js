@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { resetPage, fetchEventInfo, fetchEventMatches, fetchEventTeams } from '../actions'
+import { resetPage } from '../actions'
 import MatchPage from '../components/MatchPage.js'
 
 

@@ -24,7 +24,7 @@ export default class Match extends Record({
   winning_alliance: undefined,
 }) {
   getDisplayName() {
-    if (this.comp_level == 'qm' || this.comp_level == 'f') {
+    if (this.comp_level === 'qm' || this.comp_level === 'f') {
       return `${COMP_LEVELS[this.comp_level]} ${this.match_number}`
     } else {
       return `${COMP_LEVELS[this.comp_level]} ${this.set_number} Match ${this.match_number}`
