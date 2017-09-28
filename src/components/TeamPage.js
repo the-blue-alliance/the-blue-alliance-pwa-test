@@ -46,6 +46,7 @@ class TeamPage extends PureComponent {
 
     return (
       <TBAPageContainer
+        documentTitle={`Team ${teamNumber} (${year})`}
         title={`Team ${teamNumber} (${year})`}
         refreshFunction={this.refreshFunction}
       >

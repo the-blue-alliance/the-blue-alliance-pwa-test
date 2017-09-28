@@ -47,11 +47,11 @@ class EventPage extends Component {
   }
 
   tabHandleChangeIndex = tabIdx => {
-    this.props.setPageState({tabIdx});
+    this.props.setPageState({tabIdx, 'hash': tabIdx});
   }
 
   tabHandleChange = (event, tabIdx) => {
-    this.props.setPageState({tabIdx});
+    this.props.setPageState({tabIdx, 'hash': tabIdx});
   }
 
   render() {
@@ -70,6 +70,7 @@ class EventPage extends Component {
       <div>
         <Hidden smDown>
           <TBAPageContainer
+            documentTitle={name}
             refreshFunction={this.refreshFunction}
           >
             <div className={this.props.classes.root}>
@@ -110,6 +111,7 @@ class EventPage extends Component {
         </Hidden>
         <Hidden mdUp>
           <TBAPageContainer
+            documentTitle={name}
             title={name}
             refreshFunction={this.refreshFunction}
             tabs={

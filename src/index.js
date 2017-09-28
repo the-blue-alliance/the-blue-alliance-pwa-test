@@ -19,16 +19,27 @@ import TBAApp from './TBAApp'
 
 
 const history = createBrowserHistory()
-// const loggerMiddleware = createLogger({
-//   // Convert Immutable to normal JS object
-//   stateTransformer: state => state.toJS()
-// })
+const loggerMiddleware = createLogger({
+  // Convert Immutable to normal JS object
+  stateTransformer: state => state.toJS()
+})
 const initialState = Map()
 const store = createStore(
   connectRouter(history)(reducer),
   initialState,
-  applyMiddleware(thunk, routerMiddleware(history)),
+  applyMiddleware(thunk, loggerMiddleware, routerMiddleware(history)),
 );
+
+// Subscribe to the store to keep the url hash in sync
+let lastHash = null
+store.subscribe(() => {
+  const state = store.getState()
+  const newHash = state.getIn(['page', 'pageHistory', state.getIn(['page', 'currentKey']), 'state', 'hash'])
+  if (newHash !== undefined && newHash !== lastHash ) {
+    window.history.replaceState(null, null, `#${newHash}`)
+    lastHash = newHash
+  }
+})
 
 const theme = createMuiTheme({
   palette: {

@@ -31,8 +31,21 @@ class TBAPage extends PureComponent {
     super(props)
   }
 
+  getDocumentTitle = () => {
+    if (this.props.documentTitle) {
+      return `${this.props.documentTitle} - The Blue Alliance`
+    } else {
+      return 'The Blue Alliance'
+    }
+  }
+
   componentWillMount() {
     this.props.closeMobileDrawer()
+    document.title = this.getDocumentTitle()
+  }
+
+  componentWillUpdate() {
+    document.title = this.getDocumentTitle()
   }
 
   render() {
