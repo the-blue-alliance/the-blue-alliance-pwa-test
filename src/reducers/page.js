@@ -6,7 +6,6 @@ const updateFromSource = (state = Map({
 }), action) => {
   return state
     .set('data', state.get('data').mergeDeep(action.data))
-  return state
 }
 
 const updateSetFromSource = (state = Map({
@@ -16,8 +15,6 @@ const updateSetFromSource = (state = Map({
   const toAdd = newSet.subtract(state.get('data'))
   return state
     .set('data', state.get('data').intersect(newSet).union(toAdd))
-
-  return state
 }
 
 const page = (state = Map({
