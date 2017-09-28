@@ -10,6 +10,9 @@ export const CLOSE_MOBILE_DRAWER = 'CLOSE_MOBILE_DRAWER'
 // Resetting Page
 export const RESET_PAGE = 'RESET_PAGE'
 
+// Set page state
+export const SET_PAGE_STATE = 'SET_PAGE_STATE'
+
 // Event Page
 export const RECEIVE_EVENT_INFO = 'RECEIVE_EVENT_INFO'
 export const RECEIVE_EVENT_MATCHES = 'RECEIVE_EVENT_MATCHES'

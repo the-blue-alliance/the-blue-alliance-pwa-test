@@ -31,11 +31,23 @@ export const closeMobileDrawer = () => ({
 })
 
 // Resetting Page
-export function resetPage() {
+export function resetPage(defaultState) {
   return (dispatch, getState) => {
     dispatch({
       type: types.RESET_PAGE,
-      key: getState().getIn(['router', 'location', 'key'])
+      pageKey: getState().getIn(['router', 'location', 'key']),
+      defaultState,
+    })
+  }
+}
+
+// Set page state
+export function setPageState(pageState) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: types.SET_PAGE_STATE,
+      // pageKey: getState().getIn(['router', 'location', 'key']),
+      pageState,
     })
   }
 }

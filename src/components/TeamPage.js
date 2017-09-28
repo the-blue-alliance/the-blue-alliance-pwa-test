@@ -7,10 +7,9 @@ import TBAPageContainer from '../containers/TBAPageContainer'
 class TeamPage extends PureComponent {
   constructor(props) {
     super(props)
-    this.state = {
-      teamNumber: props.match.params.teamNumber,
-      year: props.match.params.year === undefined ? 2017 : props.match.params.year,
-    }
+    props.resetPage()
+    // props.setPageState({
+    // })
   }
 
   componentDidMount() {
@@ -18,15 +17,15 @@ class TeamPage extends PureComponent {
   }
 
   refreshFunction = () => {
-    this.props.fetchTeamInfo(this.state.teamNumber)
-    this.props.fetchTeamYearEvents(this.state.teamNumber, this.state.year)
+    this.props.fetchTeamInfo(this.props.teamNumber)
+    this.props.fetchTeamYearEvents(this.props.teamNumber, this.props.year)
   }
 
   render() {
     console.log("Render Team Page")
 
-    const teamNumber = this.state.teamNumber
-    const year = this.state.year
+    const teamNumber = this.props.teamNumber
+    const year = this.props.year
     const team = this.props.team
     const teamYearEvents = this.props.teamYearEvents
 

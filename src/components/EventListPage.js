@@ -31,12 +31,14 @@ SEASON_TYPES.add(5)
 class EventListPage extends PureComponent {
   constructor(props) {
     super(props)
-    this.state = {
-      isFirstRender: true,
+    props.resetPage({
       tabIdx: 0,
       eventFilterOpen: false,
-      yearPickerOpen: false,
+      // yearPickerOpen: false,
       filters: [],
+    })
+    this.state = {
+      isFirstRender: true,
     }
     this.resetTabMem()
   }
@@ -67,27 +69,27 @@ class EventListPage extends PureComponent {
   }
 
   filterFunction = () => {
-    this.setState({ eventFilterOpen: true })
+    this.props.setPageState({ eventFilterOpen: true })
   }
 
   tabHandleChangeIndex = tabIdx => {
-    this.setState({tabIdx});
+    this.props.setPageState({tabIdx});
   }
 
   tabHandleChange = (event, tabIdx) => {
-    this.setState({tabIdx});
+    this.props.setPageState({tabIdx});
   }
 
   eventFilterHandleRequestClose = () => {
-    this.setState({ eventFilterOpen: false })
+    this.props.setPageState({ eventFilterOpen: false })
   }
 
-  yearPickerHandleRequestClose = value => {
-    this.setState({ yearPickerValue: value, yearPickerOpen: false })
-  }
+  // yearPickerHandleRequestClose = value => {
+  //   this.props.setPageState({ yearPickerValue: value, yearPickerOpen: false })
+  // }
 
   handleToggle = value => () => {
-    const { filters } = this.state;
+    const filters = this.props.pageState.get('filters');
     const currentIndex = filters.indexOf(value);
     const newFilters = [...filters];
 
@@ -97,10 +99,12 @@ class EventListPage extends PureComponent {
       newFilters.splice(currentIndex, 1);
     }
 
-    this.setState({
+    this.props.setPageState({
       filters: newFilters,
+    })
+    this.setState({
       isFirstRender: true,
-    });
+    })
   };
 
   computeTabs = events => {
@@ -139,7 +143,7 @@ class EventListPage extends PureComponent {
     })
     // Create tab content
     this.tabContentList = tabEvents.map((events, i) => {
-      if (!this.state.isFirstRender || i === this.state.tabIdx) {
+      if (!this.state.isFirstRender || i === this.props.pageState.get('tabIdx')) {
         return <EventsList key={i} events={events} />
       } else {
         return <div key={i} />
@@ -160,8 +164,8 @@ class EventListPage extends PureComponent {
         }
       })
 
-      if (this.state.filters.length > 0) {
-        events = events.filter(event => this.state.filters.indexOf(event.getIn(['district', 'abbreviation'])) !== -1)
+      if (this.props.pageState.get('filters').size > 0) {
+        events = events.filter(event => this.props.pageState.get('filters').indexOf(event.getIn(['district', 'abbreviation'])) !== -1)
       }
 
       // Only compute if events changed or isFirstRender changed
@@ -181,7 +185,7 @@ class EventListPage extends PureComponent {
         filterFunction={this.filterFunction}
         tabs={
           <Tabs
-            value={this.state.tabIdx}
+            value={this.props.pageState.get('tabIdx')}
             onChange={this.tabHandleChange}
             indicatorColor="white"
             scrollable
@@ -196,7 +200,7 @@ class EventListPage extends PureComponent {
         // title={
         //   <Button
         //     color="contrast"
-        //     onClick={() => this.setState({ yearPickerOpen: true })}
+        //     onClick={() => this.props.setPageState({ yearPickerOpen: true })}
         //   >
         //     2017 Events
         //   </Button>
@@ -205,7 +209,7 @@ class EventListPage extends PureComponent {
         filterFunction={this.filterFunction}
         tabs={
           <Tabs
-            value={this.state.tabIdx}
+            value={this.props.pageState.get('tabIdx')}
             onChange={this.tabHandleChange}
             indicatorColor="white"
             scrollable
@@ -216,20 +220,20 @@ class EventListPage extends PureComponent {
         }
       >*/}
         <EventFilterDialog
-          open={this.state.eventFilterOpen}
+          open={this.props.pageState.get('eventFilterOpen')}
           onRequestClose={this.eventFilterHandleRequestClose}
           eventFilters={filters}
           handleToggle={this.handleToggle}
-          activeFilters={this.state.filters}
+          activeFilters={this.props.pageState.get('filters')}
         />
         <YearPickerDialog
-          selectedValue={this.state.yearPickerValue}
-          open={this.state.yearPickerOpen}
+          selectedValue={this.props.pageState.yearPickerValue}
+          open={this.props.pageState.yearPickerOpen}
           onRequestClose={this.yearPickerHandleRequestClose}
         />
         <SwipeableViews
           containerStyle={styles.slideContainer}
-          index={this.state.tabIdx}
+          index={this.props.pageState.get('tabIdx')}
           onChangeIndex={this.tabHandleChangeIndex}
         >
           {this.tabContentList}

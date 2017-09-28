@@ -1,5 +1,5 @@
 import * as types from '../constants/ActionTypes';
-import { Map, Set } from 'immutable';
+import { fromJS, Map, Set } from 'immutable';
 
 const updateFromSource = (state = Map({
   data: Map(),
@@ -22,34 +22,46 @@ const page = (state = Map({
   pageHistory: Map(),
 }), action) => {
   const currentKey = state.get('currentKey')
-  let currentPage = state.getIn(['pageHistory', currentKey])
-  if (currentPage === undefined) {
-    currentPage = Map()
+  let currentPageData = state.getIn(['pageHistory', currentKey])
+  if (currentPageData === undefined) {
+    currentPageData = Map()
   }
+  let currentPageState = state.getIn(['pageHistory', currentKey, 'state'])
+  if (currentPageState === undefined) {
+    currentPageState = Map()
+  }
+
   switch (action.type) {
     case types.RESET_PAGE:
-      return state.set('currentKey', action.key)
+      state = state.set('currentKey', action.pageKey)
+      if (action.defaultState && state.getIn(['pageHistory', action.pageKey, 'state']) === undefined) {
+        state = state.setIn(['pageHistory', action.pageKey, 'state'], fromJS(action.defaultState))
+      }
+      return state
+    case types.SET_PAGE_STATE:
+      return state.setIn(['pageHistory', currentKey, 'state'],
+        currentPageState.mergeDeep(action.pageState))
     case types.RECEIVE_EVENT_INFO:
       return state.setIn(['pageHistory', currentKey, 'event'],
-        updateFromSource(currentPage.get('event'), action))
+        updateFromSource(currentPageData.get('event'), action))
     case types.RECEIVE_YEAR_EVENTS:
       return state.setIn(['pageHistory', currentKey, 'events'],
-        updateSetFromSource(currentPage.get('events'), action))
+        updateSetFromSource(currentPageData.get('events'), action))
     case types.RECEIVE_EVENT_MATCHES:
       return state.setIn(['pageHistory', currentKey, 'matches'],
-        updateSetFromSource(currentPage.get('matches'), action))
+        updateSetFromSource(currentPageData.get('matches'), action))
     case types.RECEIVE_EVENT_TEAMS:
       return state.setIn(['pageHistory', currentKey, 'teams'],
-        updateSetFromSource(currentPage.get('teams'), action))
+        updateSetFromSource(currentPageData.get('teams'), action))
     case types.RECEIVE_TEAM_INFO:
       return state.setIn(['pageHistory', currentKey, 'team'],
-        updateFromSource(currentPage.get('team'), action))
+        updateFromSource(currentPageData.get('team'), action))
     case types.RECEIVE_TEAM_LIST_PAGE:
       return state.setIn(['pageHistory', currentKey, 'teams', action.pageNum],
-        updateSetFromSource(currentPage.getIn(['teams', action.pageNum]), action))
+        updateSetFromSource(currentPageData.getIn(['teams', action.pageNum]), action))
     case types.RECEIVE_TEAM_YEAR_EVENTS:
       return state.setIn(['pageHistory', currentKey, 'teamYearEvents'],
-        updateSetFromSource(currentPage.get('teamYearEvents'), action))
+        updateSetFromSource(currentPageData.get('teamYearEvents'), action))
     default:
       return state
   }

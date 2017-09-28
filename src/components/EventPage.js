@@ -31,9 +31,9 @@ const styles = theme => ({
 class EventPage extends Component {
   constructor(props) {
     super(props)
-    this.state = {
+    props.resetPage({
       tabIdx: 0,
-    }
+    })
   }
 
   componentDidMount() {
@@ -41,17 +41,17 @@ class EventPage extends Component {
   }
 
   refreshFunction = () => {
-    this.props.fetchEventInfo(this.props.match.params.eventKey)
-    this.props.fetchEventMatches(this.props.match.params.eventKey)
-    this.props.fetchEventTeams(this.props.match.params.eventKey)
+    this.props.fetchEventInfo(this.props.eventKey)
+    this.props.fetchEventMatches(this.props.eventKey)
+    this.props.fetchEventTeams(this.props.eventKey)
   }
 
   tabHandleChangeIndex = tabIdx => {
-    this.setState({tabIdx});
+    this.props.setPageState({tabIdx});
   }
 
   tabHandleChange = (event, tabIdx) => {
-    this.setState({tabIdx});
+    this.props.setPageState({tabIdx});
   }
 
   render() {
@@ -80,7 +80,7 @@ class EventPage extends Component {
                 <Grid item xs={12}>
                   <Paper>
                     <Tabs
-                      value={this.state.tabIdx}
+                      value={this.props.tabIdx}
                       onChange={this.tabHandleChange}
                       fullWidth
                     >
@@ -88,7 +88,7 @@ class EventPage extends Component {
                       <Tab label="Teams" />
                     </Tabs>
                   </Paper>
-                  <div className={classNames({[this.props.classes.hidden]: this.state.tabIdx !== 0})}>
+                  <div className={classNames({[this.props.classes.hidden]: this.props.tabIdx !== 0})}>
                     <Grid container spacing={24}>
                       <Grid item xs={6}>
                         <h3>Qualification Results</h3>
@@ -100,7 +100,7 @@ class EventPage extends Component {
                       </Grid>
                     </Grid>
                   </div>
-                  <div className={classNames({[this.props.classes.hidden]: this.state.tabIdx !== 1})}>
+                  <div className={classNames({[this.props.classes.hidden]: this.props.tabIdx !== 1})}>
                     TEAMS!
                   </div>
                 </Grid>
@@ -114,7 +114,7 @@ class EventPage extends Component {
             refreshFunction={this.refreshFunction}
             tabs={
               <Tabs
-                value={this.state.tabIdx}
+                value={this.props.tabIdx}
                 onChange={this.tabHandleChange}
                 indicatorColor="white"
                 scrollable
@@ -134,7 +134,7 @@ class EventPage extends Component {
                 bottom: 0,
                 left: 0,
               }}
-              index={this.state.tabIdx}
+              index={this.props.tabIdx}
               onChangeIndex={this.tabHandleChangeIndex}
             >
               <div>

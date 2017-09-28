@@ -1,6 +1,10 @@
 import { createSelector } from 'reselect'
 import { List } from 'immutable'
 
+export const getEventKey = (state, props) => {
+  return props.match.params.eventKey
+}
+
 const getMatches = (state, props) => {
   return state.getIn(['page', 'pageHistory', state.getIn(['page', 'currentKey']), 'matches', 'data'])
 }
