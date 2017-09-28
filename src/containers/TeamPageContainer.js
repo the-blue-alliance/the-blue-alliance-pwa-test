@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { resetPage, fetchTeamInfo, fetchTeamYearEvents } from '../actions'
+import { fetchTeamInfo, fetchTeamYearEvents } from '../actions'
 import TeamPage from '../components/TeamPage'
 
 
@@ -9,7 +9,6 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  resetPage: (key) => dispatch(resetPage(key)),
   fetchTeamInfo: (teamNumber) => dispatch(fetchTeamInfo(teamNumber)),
   fetchTeamYearEvents: (teamNumber, year) => dispatch(fetchTeamYearEvents(teamNumber, year)),
 });

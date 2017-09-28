@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 
@@ -26,7 +26,12 @@ const styles = theme => ({
   },
 })
 
-class TBAPage extends Component {
+class TBAPage extends PureComponent {
+  constructor(props) {
+    super(props)
+    this.props.resetPage()
+  }
+
   componentWillMount() {
     this.props.closeMobileDrawer()
   }

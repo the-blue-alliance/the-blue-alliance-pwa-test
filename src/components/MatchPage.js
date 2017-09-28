@@ -8,7 +8,6 @@ class MatchPage extends PureComponent {
     // this.state = {
     //   matchKey: props.match.params.matchKey,
     // }
-    this.props.resetPage(this.props.location.key)
   }
 
   componentDidMount() {

@@ -34,7 +34,6 @@ class EventPage extends Component {
     this.state = {
       tabIdx: 0,
     }
-    this.props.resetPage(this.props.location.key)
   }
 
   componentDidMount() {

@@ -11,7 +11,6 @@ class TeamPage extends PureComponent {
       teamNumber: props.match.params.teamNumber,
       year: props.match.params.year === undefined ? 2017 : props.match.params.year,
     }
-    this.props.resetPage(this.props.location.key)
   }
 
   componentDidMount() {

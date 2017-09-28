@@ -23,7 +23,6 @@ class TeamListPage extends Component {
     this.state = {
       filter: '',
     };
-    this.props.resetPage(this.props.location.key)
   }
 
   componentDidMount() {

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { resetPage, fetchEventInfo, fetchEventMatches, fetchEventTeams } from '../actions'
+import { fetchEventInfo, fetchEventMatches, fetchEventTeams } from '../actions'
 import { getEventMatches, getEventTeams } from '../selectors/EventPageSelectors'
 import EventPage from '../components/EventPage.js'
 
@@ -11,7 +11,6 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  resetPage: (key) => dispatch(resetPage(key)),
   fetchEventInfo: (eventKey) => dispatch(fetchEventInfo(eventKey)),
   fetchEventMatches: (eventKey) => dispatch(fetchEventMatches(eventKey)),
   fetchEventTeams: (eventKey) => dispatch(fetchEventTeams(eventKey)),
