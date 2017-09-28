@@ -11,21 +11,21 @@ import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger'
-import createHistory from 'history/createBrowserHistory';
-import { ConnectedRouter, routerMiddleware } from 'react-router-redux'
+import { createBrowserHistory } from 'history'
+import { ConnectedRouter, connectRouter, routerMiddleware } from 'connected-react-router/immutable'
 import reducer from './reducers'
 
 import TBAApp from './TBAApp'
 
 
-const history = createHistory();
+const history = createBrowserHistory()
 // const loggerMiddleware = createLogger({
 //   // Convert Immutable to normal JS object
 //   stateTransformer: state => state.toJS()
 // })
 const initialState = Map()
 const store = createStore(
-  reducer,
+  connectRouter(history)(reducer),
   initialState,
   applyMiddleware(thunk, routerMiddleware(history)),
 );
