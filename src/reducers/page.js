@@ -1,5 +1,5 @@
 import * as types from '../constants/ActionTypes';
-import { fromJS, Map, Set } from 'immutable';
+import { fromJS, OrderedMap, Map, Set } from 'immutable';
 
 const updateFromSource = (state = Map({
   data: Map(),
@@ -20,6 +20,7 @@ const updateSetFromSource = (state = Map({
 const page = (state = Map({
   currentKey: undefined,
   pageHistory: Map(),
+  historyOrder: OrderedMap(),  // Reverse ordered LRU keys
 }), action) => {
   const currentKey = state.get('currentKey')
   let currentPageData = state.getIn(['pageHistory', currentKey])
@@ -37,6 +38,7 @@ const page = (state = Map({
       if (action.defaultState && state.getIn(['pageHistory', action.pageKey, 'state']) === undefined) {
         state = state.setIn(['pageHistory', action.pageKey, 'state'], fromJS(action.defaultState))
       }
+      state = state.set('historyOrder', state.get('historyOrder').delete(action.pageKey)).setIn(['historyOrder', action.pageKey], action.pageKey)
       return state
     case types.SET_PAGE_STATE:
       return state.setIn(['pageHistory', currentKey, 'state'],

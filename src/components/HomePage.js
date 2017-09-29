@@ -4,6 +4,11 @@ import { Link } from 'react-router-dom';
 import TBAPageContainer from '../containers/TBAPageContainer'
 
 class Home extends PureComponent {
+  constructor(props) {
+    super(props)
+    props.resetPage()
+  }
+
   render() {
     console.log("Render Home");
     return (
