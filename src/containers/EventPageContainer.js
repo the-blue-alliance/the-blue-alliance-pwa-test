@@ -11,7 +11,7 @@ const mapStateToProps = (state, props) => ({
   // Params
   eventKey: getEventKey(state, props),
   // Data
-  event: state.getIn(['page', 'pageHistory', state.getIn(['page', 'currentKey']), 'event', 'data']),
+  event: state.getIn(['page', 'modelHistory', state.getIn(['page', 'currentKey']), 'event']),
   matches: getEventMatches(state, props),
   teams: getEventTeams(state, props),
 });

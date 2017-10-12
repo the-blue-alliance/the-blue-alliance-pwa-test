@@ -34,7 +34,7 @@ const store = createStore(
 let lastHash = null
 store.subscribe(() => {
   const state = store.getState()
-  const newHash = state.getIn(['page', 'pageHistory', state.getIn(['page', 'currentKey']), 'state', 'hash'])
+  const newHash = state.getIn(['page', 'stateHistory', state.getIn(['page', 'currentKey']), 'hash'])
   if (newHash !== undefined && newHash !== lastHash ) {
     window.history.replaceState(null, null, `#${newHash}`)
     lastHash = newHash

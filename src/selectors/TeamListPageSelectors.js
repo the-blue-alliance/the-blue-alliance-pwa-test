@@ -3,7 +3,7 @@ import memoize from 'lodash.memoize'
 import { List } from 'immutable'
 
 const getTeamsByPage = (state, props) => {
-  return state.getIn(['page', 'pageHistory', state.getIn(['page', 'currentKey']), 'teams'])
+  return state.getIn(['page', 'modelHistory', state.getIn(['page', 'currentKey']), 'teams'])
 }
 
 const sortTeams = memoize((pageTeams) => {
@@ -24,7 +24,7 @@ export const getAllTeams = createSelector(
     let allTeams = List()
     if (teamsByPage) {
       for (let pageNum=0; pageNum<14; pageNum++) {
-        let pageTeams = teamsByPage.getIn([pageNum, 'data'])
+        let pageTeams = teamsByPage.get(pageNum)
         if (pageTeams) {
           allTeams = allTeams.concat(sortTeams(pageTeams, pageNum))
         }

@@ -1,4 +1,4 @@
-import { List, fromJS } from 'immutable';
+import { Set, fromJS } from 'immutable';
 import * as types from '../constants/ActionTypes'
 import * as sources from '../constants/DataSources'
 import db, { addEvent, addEvents, addEventTeams, addMatches, addTeam, addTeams, addTeamEvents } from '../database/db'
@@ -46,7 +46,7 @@ export function setPageState(pageState) {
   return (dispatch, getState) => {
     dispatch({
       type: types.SET_PAGE_STATE,
-      // pageKey: getState().getIn(['router', 'location', 'key']),
+      pageKey: getState().getIn(['router', 'location', 'key']),
       pageState,
     })
   }
@@ -95,14 +95,14 @@ export function fetchEventInfo(eventKey) {
 export const receiveEventMatches = (eventKey, matches) => ({
   type: types.RECEIVE_EVENT_MATCHES,
   eventKey,
-  data: List(matches.map(match => new Match(fromJS(match)))),
+  data: Set(matches.map(match => new Match(fromJS(match)))),
 })
 
 export function fetchEventMatches(eventKey) {
   return (dispatch, getState) => {
     let dataSource = sources.DEFAULT
     // Update from IndexedDB
-    db.matches.where('event_key').equals(eventKey).toArray(matches => {
+    db.matches.where('event_key').equals(eventKey).toArray().then(matches => {
       if (dataSource < sources.IDB) {
         dataSource = sources.IDB
         dispatch(receiveEventMatches(eventKey, matches))
@@ -134,14 +134,14 @@ export function fetchEventMatches(eventKey) {
 export const receiveEventTeams = (eventKey, teams) => ({
   type: types.RECEIVE_EVENT_TEAMS,
   eventKey,
-  data: List(fromJS(teams)),  // TODO: create Team object
+  data: Set(fromJS(teams)),  // TODO: create Team object
 })
 
 export function fetchEventTeams(eventKey) {
   return (dispatch, getState) => {
     let dataSource = sources.DEFAULT
     // Update from IndexedDB
-    db.eventTeams.where('eventKey').equals(eventKey).toArray(eventTeams => {
+    db.eventTeams.where('eventKey').equals(eventKey).toArray().then(eventTeams => {
       Promise.all(
         eventTeams.map(eventTeam => db.teams.get(eventTeam.teamKey))
       ).then(teams => {
@@ -178,14 +178,14 @@ export function fetchEventTeams(eventKey) {
 export const receiveYearEvents = (year, events) => ({
   type: types.RECEIVE_YEAR_EVENTS,
   year,
-  data: List(fromJS(events)),  // TODO: create Event object
+  data: Set(fromJS(events)),  // TODO: create Event object
 })
 
 export function fetchYearEvents(year) {
   return (dispatch, getState) => {
     let dataSource = sources.DEFAULT
     // Update from IndexedDB
-    db.events.where('year').equals(year).toArray(events => {
+    db.events.where('year').equals(year).toArray().then(events => {
       if (dataSource < sources.IDB) {
         dataSource = sources.IDB
         dispatch(receiveYearEvents(year, events))
@@ -259,7 +259,7 @@ export const receiveTeamYearEvents = (teamKey, year, events) => ({
   type: types.RECEIVE_TEAM_YEAR_EVENTS,
   teamKey,
   year,
-  data: List(fromJS(events)),  // TODO: create Event object
+  data: Set(fromJS(events)),  // TODO: create Event object
 })
 
 export function fetchTeamYearEvents(teamNumber, year) {
@@ -267,7 +267,7 @@ export function fetchTeamYearEvents(teamNumber, year) {
     let dataSource = sources.DEFAULT
     const teamKey = `frc${teamNumber}`
     // Update from IndexedDB
-    db.eventTeams.where('teamKey_year').equals(`${teamKey}_${year}`).toArray(eventTeams => {
+    db.eventTeams.where('teamKey_year').equals(`${teamKey}_${year}`).toArray().then(eventTeams => {
       Promise.all(
         eventTeams.map(eventTeam => db.events.get(eventTeam.eventKey))
       ).then(events => {
@@ -304,7 +304,7 @@ export function fetchTeamYearEvents(teamNumber, year) {
 export const receiveTeamListPage = (pageNum, teams) => ({
   type: types.RECEIVE_TEAM_LIST_PAGE,
   pageNum,
-  data: List(fromJS(teams)),  // TODO: create Team object
+  data: Set(fromJS(teams)),  // TODO: create Team object
 })
 
 export function fetchTeamListHelper(pageNum) {
@@ -313,7 +313,7 @@ export function fetchTeamListHelper(pageNum) {
 
     // Load partial first
     if (pageNum === 0) {
-      db.teams.where('team_number').between(0, 20).toArray(teams => {
+      db.teams.where('team_number').between(0, 20).toArray().then(teams => {
         if (dataSource < sources.IDB_FAST) {
           dataSource = sources.IDB_FAST
           dispatch(receiveTeamListPage(0, teams))
@@ -322,7 +322,7 @@ export function fetchTeamListHelper(pageNum) {
     }
 
     // Update from IndexedDB
-    db.teams.where('team_number').between(pageNum * 500, pageNum * 500 + 500).toArray(teams => {
+    db.teams.where('team_number').between(pageNum * 500, pageNum * 500 + 500).toArray().then(teams => {
       if (dataSource < sources.IDB) {
         dataSource = sources.IDB
         dispatch(receiveTeamListPage(pageNum, teams))

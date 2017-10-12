@@ -22,6 +22,7 @@ export default class Match extends Record({
   match_number: undefined,
   alliances: undefined,
   winning_alliance: undefined,
+  score_breakdown: undefined,
 }) {
   getDisplayName() {
     if (this.comp_level === 'qm' || this.comp_level === 'f') {

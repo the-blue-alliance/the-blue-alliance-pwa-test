@@ -5,14 +5,14 @@ const getCurrentPageKey = (state, props) => {
   return state.getIn(['page', 'currentKey'])
 }
 
-const getPageHistory = (state, props) => {
-  return state.getIn(['page', 'pageHistory'])
+const getStateHistory = (state, props) => {
+  return state.getIn(['page', 'stateHistory'])
 }
 
 export const getCurrentPageState = createSelector(
-  [getCurrentPageKey, getPageHistory],
-  (pageKey, pageHistory) => {
-    const pageState = pageHistory.getIn([pageKey, 'state'])
+  [getCurrentPageKey, getStateHistory],
+  (pageKey, stateHistory) => {
+    const pageState = stateHistory.get(pageKey)
     return pageState === undefined ? Map() : pageState
   }
 )

@@ -10,8 +10,8 @@ const mapStateToProps = (state, props) => ({
   teamNumber: getTeamNumber(state, props),
   year: getYear(state, props),
   // States
-  team: state.getIn(['page', 'pageHistory', state.getIn(['page', 'currentKey']), 'team', 'data']),
-  teamYearEvents: state.getIn(['page', 'pageHistory', state.getIn(['page', 'currentKey']), 'teamYearEvents', 'data']),
+  team: state.getIn(['page', 'modelHistory', state.getIn(['page', 'currentKey']), 'team']),
+  teamYearEvents: state.getIn(['page', 'modelHistory', state.getIn(['page', 'currentKey']), 'teamYearEvents']),
 });
 
 const mapDispatchToProps = (dispatch) => ({

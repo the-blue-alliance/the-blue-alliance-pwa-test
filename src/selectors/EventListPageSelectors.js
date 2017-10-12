@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
 
 const getEvents = (state, props) =>
-  state.getIn(['page', 'pageHistory', state.getIn(['page', 'currentKey']), 'events', 'data'])
+  state.getIn(['page', 'modelHistory', state.getIn(['page', 'currentKey']), 'events'])
 
 export const getSortedEvents = createSelector(
   [getEvents],

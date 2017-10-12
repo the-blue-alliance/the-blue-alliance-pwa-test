@@ -6,7 +6,7 @@ export const getEventKey = (state, props) => {
 }
 
 const getMatches = (state, props) => {
-  return state.getIn(['page', 'pageHistory', state.getIn(['page', 'currentKey']), 'matches', 'data'])
+  return state.getIn(['page', 'modelHistory', state.getIn(['page', 'currentKey']), 'matches'])
 }
 
 export const getEventMatches = createSelector(
@@ -30,7 +30,7 @@ export const getEventMatches = createSelector(
 )
 
 const getTeams = (state, props) => {
-  return state.getIn(['page', 'pageHistory', state.getIn(['page', 'currentKey']), 'teams', 'data'])
+  return state.getIn(['page', 'modelHistory', state.getIn(['page', 'currentKey']), 'teams'])
 }
 
 export const getEventTeams = createSelector(
