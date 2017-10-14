@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 import { Link } from 'react-router-dom';
+import { CircularProgress } from 'material-ui/Progress';
 
 const styles = theme => ({
   table: {
@@ -51,7 +52,13 @@ const styles = theme => ({
 
 class MatchTable extends PureComponent {
   render() {
-    console.log('Render MatchTable');
+    console.log('Render MatchTable')
+
+    if (this.props.matches === undefined) {
+      return <CircularProgress color="accent" size={100} />
+    } else if (this.props.matches.size === 0) {
+      return <div>NO MATCHES</div>
+    }
 
     return (
       <table className={this.props.classes.table} border='1'>

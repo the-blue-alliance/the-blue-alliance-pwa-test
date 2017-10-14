@@ -27,7 +27,7 @@ const initialState = Map()
 const store = createStore(
   connectRouter(history)(reducer),
   initialState,
-  applyMiddleware(thunk, loggerMiddleware, routerMiddleware(history)),
+  applyMiddleware(thunk, routerMiddleware(history)),
 );
 
 // Subscribe to the store to keep the url hash in sync

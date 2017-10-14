@@ -25,7 +25,7 @@ export const getEventMatches = createSelector(
         return 0
       }).toList()
     }
-    return List()
+    return undefined
   }
 )
 
