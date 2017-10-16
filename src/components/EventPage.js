@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import SwipeableViews from 'react-swipeable-views';
 import { withStyles } from 'material-ui/styles';
@@ -28,7 +28,7 @@ const styles = theme => ({
   }
 })
 
-class EventPage extends Component {
+class EventPage extends PureComponent {
   constructor(props) {
     super(props)
     props.resetPage({

@@ -1,19 +1,36 @@
 import { createSelector } from 'reselect'
 import { List } from 'immutable'
+import Match from '../database/Match'
 
 export const getEventKey = (state, props) => {
   return props.match.params.eventKey
 }
 
-const getMatches = (state, props) => {
-  return state.getIn(['page', 'modelHistory', state.getIn(['page', 'currentKey']), 'matches'])
+
+export const getEvent = (state, props) => {
+  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
+    const event = state.getIn(['page', 'modelHistory', key, 'events', 'byKey', getEventKey(state, props)])
+    if (event !== undefined) {
+      return event
+    }
+  }
 }
 
-export const getEventMatches = createSelector(
-  [getMatches],
+const getEventMatches = (state, props) => {
+  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
+    const matches = state.getIn(['page', 'modelHistory', key, 'matches', 'collections', 'byEvent', getEventKey(state, props)])
+    if (matches !== undefined) {
+      return matches
+    }
+  }
+}
+
+export const getSortedEventMatches = createSelector(
+  [getEventMatches],
   (matches) => {
     if (matches) {
-      return matches.sort((a, b) => {
+      matches = matches.map(m => new Match(m))
+      return matches.toList().sort((a, b) => {
         const orderA = a.getPlayOrder()
         const orderB = b.getPlayOrder()
         if (orderA < orderB) {
@@ -29,12 +46,17 @@ export const getEventMatches = createSelector(
   }
 )
 
-const getTeams = (state, props) => {
-  return state.getIn(['page', 'modelHistory', state.getIn(['page', 'currentKey']), 'teams'])
+const getEventTeams = (state, props) => {
+  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
+    const teams = state.getIn(['page', 'modelHistory', key, 'teams', 'collections', 'byEvent', getEventKey(state, props)])
+    if (teams !== undefined) {
+      return teams
+    }
+  }
 }
 
-export const getEventTeams = createSelector(
-  [getTeams],
+export const getSortedEventTeams = createSelector(
+  [getEventTeams],
   (teams) => {
     if (teams) {
       return teams.sort((a, b) => {

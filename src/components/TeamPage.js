@@ -39,7 +39,7 @@ class TeamPage extends PureComponent {
       }
     }
     if (teamYearEvents) {
-      eventList = teamYearEvents.map(function(event){
+      eventList = teamYearEvents.valueSeq().map(function(event){
         return <li key={event.get('key')}><Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link></li>;
       })
     }

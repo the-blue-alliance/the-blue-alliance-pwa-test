@@ -1,7 +1,14 @@
 import { createSelector } from 'reselect'
+import { getYear } from '../selectors/CommonPageSelectors'
 
-const getEvents = (state, props) =>
-  state.getIn(['page', 'modelHistory', state.getIn(['page', 'currentKey']), 'events'])
+const getEvents = (state, props) => {
+  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
+    const events = state.getIn(['page', 'modelHistory', key, 'events', 'collections', 'byYear', getYear(state, props)])
+    if (events !== undefined) {
+      return events
+    }
+  }
+}
 
 export const getSortedEvents = createSelector(
   [getEvents],

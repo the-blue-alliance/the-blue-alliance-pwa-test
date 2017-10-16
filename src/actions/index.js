@@ -1,8 +1,7 @@
-import { Set, fromJS } from 'immutable';
+import { fromJS } from 'immutable';
 import * as types from '../constants/ActionTypes'
 import * as sources from '../constants/DataSources'
 import db, { addEvent, addEvents, addEventTeams, addMatches, addTeam, addTeams, addTeamEvents } from '../database/db'
-import Match from '../database/Match'
 
 // TODO: This can use a lot of refactoring to make things DRY. 2017-09-27 @fangeugene
 
@@ -95,7 +94,7 @@ export function fetchEventInfo(eventKey) {
 export const receiveEventMatches = (eventKey, matches) => ({
   type: types.RECEIVE_EVENT_MATCHES,
   eventKey,
-  data: Set(matches.map(match => new Match(fromJS(match)))),
+  data: matches,
 })
 
 export function fetchEventMatches(eventKey) {
@@ -134,7 +133,7 @@ export function fetchEventMatches(eventKey) {
 export const receiveEventTeams = (eventKey, teams) => ({
   type: types.RECEIVE_EVENT_TEAMS,
   eventKey,
-  data: Set(fromJS(teams)),  // TODO: create Team object
+  data: teams,  // TODO: create Team object
 })
 
 export function fetchEventTeams(eventKey) {
@@ -178,7 +177,7 @@ export function fetchEventTeams(eventKey) {
 export const receiveYearEvents = (year, events) => ({
   type: types.RECEIVE_YEAR_EVENTS,
   year,
-  data: Set(fromJS(events)),  // TODO: create Event object
+  data: events,  // TODO: create Event object
 })
 
 export function fetchYearEvents(year) {
@@ -259,7 +258,7 @@ export const receiveTeamYearEvents = (teamKey, year, events) => ({
   type: types.RECEIVE_TEAM_YEAR_EVENTS,
   teamKey,
   year,
-  data: Set(fromJS(events)),  // TODO: create Event object
+  data: events,  // TODO: create Event object
 })
 
 export function fetchTeamYearEvents(teamNumber, year) {
@@ -304,7 +303,7 @@ export function fetchTeamYearEvents(teamNumber, year) {
 export const receiveTeamListPage = (pageNum, teams) => ({
   type: types.RECEIVE_TEAM_LIST_PAGE,
   pageNum,
-  data: Set(fromJS(teams)),  // TODO: create Team object
+  data: teams,  // TODO: create Team object
 })
 
 export function fetchTeamListHelper(pageNum) {

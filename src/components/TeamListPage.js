@@ -19,10 +19,10 @@ const styles = {
 
 class TeamListPage extends Component {
   constructor(props) {
-    super(props);
-    this.state = {
+    super(props)
+    props.resetPage({
       filter: '',
-    };
+    })
   }
 
   componentDidMount() {
@@ -34,13 +34,14 @@ class TeamListPage extends Component {
   }
 
   handleTextFieldChange = (e) => {
-    this.setState({
+    this.props.setPageState({
       filter: e.target.value.toLowerCase()
     })
   }
 
   render() {
     console.log("Render TeamListPage")
+    console.log(this.props.pageState.toJS())
 
     return (
       <TBAPageContainer
@@ -53,11 +54,12 @@ class TeamListPage extends Component {
             fullWidth
             margin="normal"
             onChange={this.handleTextFieldChange}
+            defaultValue={this.props.pageState.get('filter')}
           />
           <div className={this.props.classes.teamsList}>
             <TeamsList
               teams={this.props.allTeams}
-              filter={this.state.filter}
+              filter={this.props.pageState.get('filter')}
             />
           </div>
         </div>

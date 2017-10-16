@@ -36,20 +36,20 @@ const models = (state = Map({
   }),
 }), action) => {
   switch (action.type) {
-    case types.RECEIVE_EVENT_INFO:
-      const ebkKey = ['events', 'byKey', action.eventKey]
-      return state
-        .setIn(ebkKey, updateByKey(state.getIn(ebkKey), action))
-    case types.RECEIVE_EVENT_TEAMS:
-      const tcbeKey = ['teams', 'collections', 'byEvent', action.eventKey]
-      return state
-        .setIn(tcbeKey, updateCollection(state.getIn(tcbeKey), action))
-        .setIn(tbk, updateByKeyFromCollection(state.getIn(tbk), action))
-    case types.RECEIVE_EVENT_MATCHES:
-      const mcbeKey = ['matches', 'collections', 'byEvent', action.eventKey]
-      return state
-        .setIn(mcbeKey, updateCollection(state.getIn(mcbeKey), action))
-        .setIn(mbk, updateByKeyFromCollection(state.getIn(mbk), action))
+    // case types.RECEIVE_EVENT_INFO:
+    //   const ebkKey = ['events', 'byKey', action.eventKey]
+    //   return state
+    //     .setIn(ebkKey, updateByKey(state.getIn(ebkKey), action))
+    // case types.RECEIVE_EVENT_TEAMS:
+    //   const tcbeKey = ['teams', 'collections', 'byEvent', action.eventKey]
+    //   return state
+    //     .setIn(tcbeKey, updateCollection(state.getIn(tcbeKey), action))
+    //     .setIn(tbk, updateByKeyFromCollection(state.getIn(tbk), action))
+    // case types.RECEIVE_EVENT_MATCHES:
+    //   const mcbeKey = ['matches', 'collections', 'byEvent', action.eventKey]
+    //   return state
+    //     .setIn(mcbeKey, updateCollection(state.getIn(mcbeKey), action))
+    //     .setIn(mbk, updateByKeyFromCollection(state.getIn(mbk), action))
     case types.RECEIVE_TEAM_INFO:
       const tbkKey = ['teams', 'byKey', action.teamKey]
       return state
@@ -59,16 +59,16 @@ const models = (state = Map({
       return state
         .setIn(ecbtyKeyYear, updateCollection(state.getIn(ecbtyKeyYear), action))
         .setIn(ebk, updateByKeyFromCollection(state.getIn(ebk), action))
-    case types.RECEIVE_TEAM_LIST_PAGE:
-      const tcbpNum = ['teams', 'collections', 'byPage', action.pageNum]
-      return state
-        .setIn(tcbpNum, updateCollection(state.getIn(tcbpNum), action))
-        .setIn(tbk, updateByKeyFromCollection(state.getIn(tbk), action))
-    case types.RECEIVE_YEAR_EVENTS:
-      const ecbyYear = ['events', 'collections', 'byYear', action.year]
-      return state
-        .setIn(ecbyYear, updateCollection(state.getIn(ecbyYear), action))
-        .setIn(ebk, updateByKeyFromCollection(state.getIn(ebk), action))
+    // case types.RECEIVE_TEAM_LIST_PAGE:
+    //   const tcbpNum = ['teams', 'collections', 'byPage', action.pageNum]
+    //   return state
+    //     .setIn(tcbpNum, updateCollection(state.getIn(tcbpNum), action))
+    //     .setIn(tbk, updateByKeyFromCollection(state.getIn(tbk), action))
+    // case types.RECEIVE_YEAR_EVENTS:
+    //   const ecbyYear = ['events', 'collections', 'byYear', action.year]
+    //   return state
+    //     .setIn(ecbyYear, updateCollection(state.getIn(ecbyYear), action))
+    //     .setIn(ebk, updateByKeyFromCollection(state.getIn(ebk), action))
     default:
       return state
   }

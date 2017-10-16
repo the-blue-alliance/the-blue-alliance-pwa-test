@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { resetPage, setPageState, fetchEventInfo, fetchEventMatches, fetchEventTeams } from '../actions'
 import { getCurrentPageState } from '../selectors/CommonPageSelectors'
-import { getEventKey, getEventMatches, getEventTeams } from '../selectors/EventPageSelectors'
+import { getEventKey, getEvent, getSortedEventMatches, getSortedEventTeams } from '../selectors/EventPageSelectors'
 import EventPage from '../components/EventPage'
 
 
@@ -11,9 +11,9 @@ const mapStateToProps = (state, props) => ({
   // Params
   eventKey: getEventKey(state, props),
   // Data
-  event: state.getIn(['page', 'modelHistory', state.getIn(['page', 'currentKey']), 'event']),
-  matches: getEventMatches(state, props),
-  teams: getEventTeams(state, props),
+  event: getEvent(state, props),
+  matches: getSortedEventMatches(state, props),
+  teams: getSortedEventTeams(state, props),
 });
 
 const mapDispatchToProps = (dispatch) => ({

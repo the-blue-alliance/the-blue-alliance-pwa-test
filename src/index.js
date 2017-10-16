@@ -19,10 +19,10 @@ import TBAApp from './TBAApp'
 
 
 const history = createBrowserHistory()
-const loggerMiddleware = createLogger({
-  // Convert Immutable to normal JS object
-  stateTransformer: state => state.toJS()
-})
+// const loggerMiddleware = createLogger({
+//   // Convert Immutable to normal JS object
+//   stateTransformer: state => state.toJS()
+// })
 const initialState = Map()
 const store = createStore(
   connectRouter(history)(reducer),
