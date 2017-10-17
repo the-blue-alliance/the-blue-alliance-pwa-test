@@ -32,7 +32,12 @@ export default class Match extends Record({
     }
   }
 
+  getNaturalOrder() {
+    return PLAY_ORDER[this.comp_level]*100000 + this.set_number*100 + this.match_number
+  }
+
   getPlayOrder() {
     return PLAY_ORDER[this.comp_level]*100000 + this.match_number*100 + this.set_number
   }
+
 }

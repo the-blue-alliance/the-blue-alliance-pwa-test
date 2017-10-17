@@ -31,8 +31,8 @@ export const getSortedEventMatches = createSelector(
     if (matches) {
       matches = matches.map(m => new Match(m))
       return matches.toList().sort((a, b) => {
-        const orderA = a.getPlayOrder()
-        const orderB = b.getPlayOrder()
+        const orderA = a.getNaturalOrder()
+        const orderB = b.getNaturalOrder()
         if (orderA < orderB) {
           return -1
         }

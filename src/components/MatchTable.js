@@ -51,6 +51,52 @@ const styles = theme => ({
 });
 
 class MatchTable extends PureComponent {
+  renderRow(match) {
+    const redScore = match.alliances.getIn(['red', 'score'])
+    const blueScore = match.alliances.getIn(['blue', 'score'])
+    const redWin = match.winning_alliance === 'red'
+    const blueWin = match.winning_alliance === 'blue'
+    return (
+      <tr key={match.key} className={this.props.classes.tr}>
+        <td className={this.props.classes.td}>
+          <Link to={{pathname: `/match/${match.key}`, state: {modal: true}}}>{match.getDisplayName()}</Link>
+        </td>
+        {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
+          const teamNum = teamKey.substr(3)
+          return (
+            <td
+              key={teamKey}
+              className={classNames({
+                  [this.props.classes.td]: true,
+                  [this.props.classes.red]: true,
+                  [this.props.classes.winner]: redWin
+              })}
+            >
+              <Link to={`/team/${teamNum}`}>{teamNum}</Link>
+            </td>
+          )
+        })}
+        {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
+          const teamNum = teamKey.substr(3)
+          return (
+            <td
+              key={teamKey}
+              className={classNames({
+                  [this.props.classes.td]: true,
+                  [this.props.classes.blue]: true,
+                  [this.props.classes.winner]: blueWin
+              })}
+            >
+              <Link to={`/team/${teamNum}`}>{teamNum}</Link>
+            </td>
+          )
+        })}
+        <td className={classNames({[this.props.classes.td]: true, [this.props.classes.redScore]: true, [this.props.classes.winner]: redWin})}>{redScore}</td>
+        <td className={classNames({[this.props.classes.td]: true, [this.props.classes.blueScore]: true, [this.props.classes.winner]: blueWin})}>{blueScore}</td>
+      </tr>
+    )
+  }
+
   render() {
     console.log('Render MatchTable')
 
@@ -59,6 +105,13 @@ class MatchTable extends PureComponent {
     } else if (this.props.matches.size === 0) {
       return <div>NO MATCHES</div>
     }
+
+    const filteredMatches = this.props.matches.filter(match => this.props.compLevels.indexOf(match.get('comp_level')) !== -1)
+    const qmMatches = filteredMatches.filter(match => match.get('comp_level') == 'qm')
+    const efMatches = filteredMatches.filter(match => match.get('comp_level') == 'ef')
+    const qfMatches = filteredMatches.filter(match => match.get('comp_level') == 'qf')
+    const sfMatches = filteredMatches.filter(match => match.get('comp_level') == 'sf')
+    const fMatches = filteredMatches.filter(match => match.get('comp_level') == 'f')
 
     return (
       <table className={this.props.classes.table} border='1'>
@@ -71,51 +124,36 @@ class MatchTable extends PureComponent {
           </tr>
         </thead>
         <tbody>
-          {this.props.matches.map(match => {
-            const redScore = match.alliances.getIn(['red', 'score'])
-            const blueScore = match.alliances.getIn(['blue', 'score'])
-            const redWin = match.winning_alliance === 'red'
-            const blueWin = match.winning_alliance === 'blue'
-            return (
-              <tr key={match.key} className={this.props.classes.tr}>
-                <td className={this.props.classes.td}>
-                  <Link to={{pathname: `/match/${match.key}`, state: {modal: true}}}>{match.getDisplayName()}</Link>
-                </td>
-                {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
-                  const teamNum = teamKey.substr(3)
-                  return (
-                    <td
-                      key={teamKey}
-                      className={classNames({
-                          [this.props.classes.td]: true,
-                          [this.props.classes.red]: true,
-                          [this.props.classes.winner]: redWin
-                      })}
-                    >
-                      <Link to={`/team/${teamNum}`}>{teamNum}</Link>
-                    </td>
-                  )
-                })}
-                {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
-                  const teamNum = teamKey.substr(3)
-                  return (
-                    <td
-                      key={teamKey}
-                      className={classNames({
-                          [this.props.classes.td]: true,
-                          [this.props.classes.blue]: true,
-                          [this.props.classes.winner]: blueWin
-                      })}
-                    >
-                      <Link to={`/team/${teamNum}`}>{teamNum}</Link>
-                    </td>
-                  )
-                })}
-                <td className={classNames({[this.props.classes.td]: true, [this.props.classes.redScore]: true, [this.props.classes.winner]: redWin})}>{redScore}</td>
-                <td className={classNames({[this.props.classes.td]: true, [this.props.classes.blueScore]: true, [this.props.classes.winner]: blueWin})}>{blueScore}</td>
-              </tr>
-            )
-          })}
+          {qmMatches.size > 0 &&
+            <tr className={classNames({[this.props.classes.tr]: true, [this.props.classes.key]: true})}>
+              <th className={this.props.classes.th} colSpan='9'>Qualifications</th>
+            </tr>
+          }
+          {qmMatches.size > 0 && qmMatches.map(match => this.renderRow(match))}
+          {efMatches.size > 0 &&
+            <tr className={classNames({[this.props.classes.tr]: true, [this.props.classes.key]: true})}>
+              <th className={this.props.classes.th} colSpan='9'>Octo-Finals</th>
+            </tr>
+          }
+          {efMatches.size > 0 && efMatches.map(match => this.renderRow(match))}
+          {qfMatches.size > 0 &&
+            <tr className={classNames({[this.props.classes.tr]: true, [this.props.classes.key]: true})}>
+              <th className={this.props.classes.th} colSpan='9'>Quarterfinals</th>
+            </tr>
+          }
+          {qfMatches.size > 0 && qfMatches.map(match => this.renderRow(match))}
+          {sfMatches.size > 0 &&
+            <tr className={classNames({[this.props.classes.tr]: true, [this.props.classes.key]: true})}>
+              <th className={this.props.classes.th} colSpan='9'>Semifinals</th>
+            </tr>
+          }
+          {sfMatches.size > 0 && sfMatches.map(match => this.renderRow(match))}
+          {fMatches.size > 0 &&
+            <tr className={classNames({[this.props.classes.tr]: true, [this.props.classes.key]: true})}>
+              <th className={this.props.classes.th} colSpan='9'>Finals</th>
+            </tr>
+          }
+          {fMatches.size > 0 && fMatches.map(match => this.renderRow(match))}
         </tbody>
       </table>
     )
