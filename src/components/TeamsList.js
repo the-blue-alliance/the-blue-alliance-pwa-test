@@ -13,7 +13,7 @@ class TeamsList extends PureComponent {
     const team = this.filteredTeams.get(index).toJS()
     return (
       <div key={team.key} style={style}>
-        <ListItem divider component={Link} to={`/team/${team.team_number}`}>
+        <ListItem button divider component={Link} to={`/team/${team.team_number}`}>
           <ListItemText primary={`${team.team_number} | ${team.nickname}`} secondary={team.country} />
         </ListItem>
       </div>

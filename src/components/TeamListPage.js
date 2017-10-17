@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
 
@@ -17,7 +17,7 @@ const styles = {
   }
 }
 
-class TeamListPage extends Component {
+class TeamListPage extends PureComponent {
   constructor(props) {
     super(props)
     props.resetPage({
@@ -41,10 +41,10 @@ class TeamListPage extends Component {
 
   render() {
     console.log("Render TeamListPage")
-    console.log(this.props.pageState.toJS())
 
     return (
       <TBAPageContainer
+        documentTitle='Teams'
         title='Teams'
         refreshFunction={this.refreshFunction}
       >

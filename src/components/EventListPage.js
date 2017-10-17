@@ -164,7 +164,7 @@ class EventListPage extends PureComponent {
         }
       })
 
-      if (this.props.pageState.get('filters').size > 0) {
+      if (this.props.pageState.get('filters') && this.props.pageState.get('filters').size > 0) {
         events = events.filter(event => this.props.pageState.get('filters').indexOf(event.getIn(['district', 'abbreviation'])) !== -1)
       }
 
@@ -224,7 +224,7 @@ class EventListPage extends PureComponent {
           onRequestClose={this.eventFilterHandleRequestClose}
           eventFilters={filters}
           handleToggle={this.handleToggle}
-          activeFilters={this.props.pageState.get('filters')}
+          activeFilters={this.props.pageState.get('filters') ? this.props.pageState.get('filters') : []}
         />
         <YearPickerDialog
           selectedValue={this.props.pageState.yearPickerValue}

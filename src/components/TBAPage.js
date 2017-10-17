@@ -27,10 +27,6 @@ const styles = theme => ({
 })
 
 class TBAPage extends PureComponent {
-  constructor(props) {
-    super(props)
-  }
-
   getDocumentTitle = () => {
     if (this.props.documentTitle) {
       return `${this.props.documentTitle} - The Blue Alliance`

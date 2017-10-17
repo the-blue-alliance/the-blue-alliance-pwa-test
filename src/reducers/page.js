@@ -72,7 +72,6 @@ const page = (state = Map({
     currentPageModels = Map()
   }
 
-  let subPath
   switch (action.type) {
     case types.RESET_PAGE:
       state = state.set('currentKey', action.pageKey)

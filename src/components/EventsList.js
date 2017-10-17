@@ -31,7 +31,7 @@ class EventsList extends PureComponent {
       const event = item.value.toJS()
       return (
         <div key={index} style={style}>
-          <ListItem divider component={Link} to={`/event/${event.key}`}>
+          <ListItem button divider component={Link} to={`/event/${event.key}`}>
             <ListItemText primary={event.short_name} secondary={`${event.city}, ${event.state_prov}, ${event.country} | ${event.start_date} - ${event.end_date}`} />
           </ListItem>
         </div>

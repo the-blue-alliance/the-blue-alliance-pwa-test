@@ -14,7 +14,7 @@ const updateLoadingCount = (state = 0, action) => {
 
 const appNav = (state = Map({
   loadingCount: 0,
-  offlineOnly: true,
+  offlineOnly: false,
   mobileDrawerOpen: false,
 }), action) => {
   switch (action.type) {

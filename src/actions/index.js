@@ -1,4 +1,3 @@
-import { fromJS } from 'immutable';
 import * as types from '../constants/ActionTypes'
 import * as sources from '../constants/DataSources'
 import db, { addEvent, addEvents, addEventTeams, addMatches, addTeam, addTeams, addTeamEvents } from '../database/db'

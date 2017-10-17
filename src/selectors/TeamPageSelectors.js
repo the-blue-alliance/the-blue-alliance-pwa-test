@@ -1,7 +1,5 @@
-import shallowEqual from 'fbjs/lib/shallowEqual';
-
 export const getTeamNumber = (state, props) => {
-  return parseInt(props.match.params.teamNumber)
+  return parseInt(props.match.params.teamNumber, 10)
 }
 
 export const getTeam = (state, props) => {

@@ -13,7 +13,7 @@ class MatchList extends PureComponent {
     const match = this.matches.get(index)
     return (
       <div key={match.key} style={style}>
-        <ListItem divider component={Link} to={{pathname: `/match/${match.key}`, state: {modal: true}}}>
+        <ListItem button divider component={Link} to={{pathname: `/match/${match.key}`, state: {modal: true}}}>
           <ListItemText primary={`${match.getDisplayName()}`} />
         </ListItem>
       </div>

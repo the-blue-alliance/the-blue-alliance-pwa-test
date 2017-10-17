@@ -18,6 +18,6 @@ export const getCurrentPageState = createSelector(
 )
 
 export const getYear = (state, props) => {
-  const year = parseInt(props.match.params.year)
+  const year = parseInt(props.match.params.year, 10)
   return year ? year : 2017
 }
