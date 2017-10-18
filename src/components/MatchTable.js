@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 import { Link } from 'react-router-dom';
 import { CircularProgress } from 'material-ui/Progress';
+import Tooltip from 'material-ui/Tooltip';
 
 const styles = theme => ({
   table: {
@@ -29,6 +30,7 @@ const styles = theme => ({
     padding: '5px',
   },
   td: {
+    position: 'relative',
     textAlign: 'center',
     verticalAlign: 'middle !important',
     padding: '5px',
@@ -48,6 +50,20 @@ const styles = theme => ({
   winner: {
     fontWeight: 'bold',
   },
+  rpDotA: {
+    position: 'absolute',
+    top: '3px',
+    left: '3px',
+    height: '4px',
+    width: '4px',
+  },
+  rpDotB: {
+    position: 'absolute',
+    top: '3px',
+    left: '10px',
+    height: '4px',
+    width: '4px',
+  },
 });
 
 class MatchTable extends PureComponent {
@@ -56,6 +72,8 @@ class MatchTable extends PureComponent {
     const blueScore = match.alliances.getIn(['blue', 'score'])
     const redWin = match.winning_alliance === 'red'
     const blueWin = match.winning_alliance === 'blue'
+    const rpEarnedTextA = match.rpEarnedTextA()
+    const rpEarnedTextB = match.rpEarnedTextB()
     return (
       <tr key={match.key} className={this.props.classes.tr}>
         <td className={this.props.classes.td}>
@@ -91,8 +109,32 @@ class MatchTable extends PureComponent {
             </td>
           )
         })}
-        <td className={classNames({[this.props.classes.td]: true, [this.props.classes.redScore]: true, [this.props.classes.winner]: redWin})}>{redScore}</td>
-        <td className={classNames({[this.props.classes.td]: true, [this.props.classes.blueScore]: true, [this.props.classes.winner]: blueWin})}>{blueScore}</td>
+        <td className={classNames({[this.props.classes.td]: true, [this.props.classes.redScore]: true, [this.props.classes.winner]: redWin})}>
+          {match.rpEarnedA('red') && <Tooltip title={rpEarnedTextA} placement="top">
+            <svg className={this.props.classes.rpDotA}>
+              <circle cx="2" cy="2" r="2"/>
+            </svg>
+          </Tooltip>}
+          {match.rpEarnedB('red') &&  <Tooltip title={rpEarnedTextB} placement="top">
+            <svg className={this.props.classes.rpDotB}>
+              <circle cx="2" cy="2" r="2"/>
+            </svg>
+          </Tooltip>}
+          {redScore}
+        </td>
+        <td className={classNames({[this.props.classes.td]: true, [this.props.classes.blueScore]: true, [this.props.classes.winner]: blueWin})}>
+          {match.rpEarnedA('red') &&  <Tooltip title={rpEarnedTextA} placement="top">
+            <svg className={this.props.classes.rpDotA}>
+              <circle cx="2" cy="2" r="2"/>
+            </svg>
+          </Tooltip>}
+         {match.rpEarnedB('red') &&  <Tooltip title={rpEarnedTextB} placement="top">
+            <svg className={this.props.classes.rpDotB}>
+              <circle cx="2" cy="2" r="2"/>
+            </svg>
+          </Tooltip>}
+          {blueScore}
+        </td>
       </tr>
     )
   }

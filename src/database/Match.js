@@ -40,4 +40,36 @@ export default class Match extends Record({
     return PLAY_ORDER[this.comp_level]*100000 + this.match_number*100 + this.set_number
   }
 
+  getYear() {
+    return parseInt(this.key.substr(0, 4), 10)
+  }
+
+  rpEarnedA(color) {
+    const breakdown = this.getIn(['score_breakdown', color])
+    if (this.getYear() == 2017 && (breakdown.get('kPaRankingPointAchieved') || breakdown.get('kPaBonusPoints'))) {
+      return true
+    }
+    return false
+  }
+
+  rpEarnedB(color) {
+    const breakdown = this.getIn(['score_breakdown', color])
+    if (this.getYear() == 2017 && (breakdown.get('rotorRankingPointAchieved') || breakdown.get('rotorBonusPoints'))) {
+      return true
+    }
+    return false
+  }
+
+  rpEarnedTextA() {
+    if (this.getYear() == 2017) {
+      return 'Pressure Reached'
+    }
+  }
+
+  rpEarnedTextB() {
+    if (this.getYear() == 2017) {
+      return 'All Rotors Engaged'
+    }
+  }
+
 }
