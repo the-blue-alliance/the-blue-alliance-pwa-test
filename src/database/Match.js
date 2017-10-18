@@ -17,6 +17,7 @@ const PLAY_ORDER = {
 
 export default class Match extends Record({
   key: undefined,
+  event_key: undefined,
   comp_level: undefined,
   set_number: undefined,
   match_number: undefined,

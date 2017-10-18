@@ -100,7 +100,7 @@ class MatchTable extends PureComponent {
                   [this.props.classes.winner]: redWin
               })}
             >
-              <Link to={`/team/${teamNum}`}>{teamNum}</Link>
+              <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key, state: {modal: true}}}>{teamNum}</Link>
             </td>
           )
         })}
@@ -115,7 +115,7 @@ class MatchTable extends PureComponent {
                   [this.props.classes.winner]: blueWin
               })}
             >
-              <Link to={`/team/${teamNum}`}>{teamNum}</Link>
+              <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key, state: {modal: true}}}>{teamNum}</Link>
             </td>
           )
         })}
