@@ -47,7 +47,7 @@ export default class Match extends Record({
 
   rpEarnedA(color) {
     const breakdown = this.getIn(['score_breakdown', color])
-    if (this.getYear() == 2017 && (breakdown.get('kPaRankingPointAchieved') || breakdown.get('kPaBonusPoints'))) {
+    if (this.getYear() === 2017 && (breakdown.get('kPaRankingPointAchieved') || breakdown.get('kPaBonusPoints'))) {
       return true
     }
     return false
@@ -55,20 +55,20 @@ export default class Match extends Record({
 
   rpEarnedB(color) {
     const breakdown = this.getIn(['score_breakdown', color])
-    if (this.getYear() == 2017 && (breakdown.get('rotorRankingPointAchieved') || breakdown.get('rotorBonusPoints'))) {
+    if (this.getYear() === 2017 && (breakdown.get('rotorRankingPointAchieved') || breakdown.get('rotorBonusPoints'))) {
       return true
     }
     return false
   }
 
   rpEarnedTextA() {
-    if (this.getYear() == 2017) {
+    if (this.getYear() === 2017) {
       return 'Pressure Reached'
     }
   }
 
   rpEarnedTextB() {
-    if (this.getYear() == 2017) {
+    if (this.getYear() === 2017) {
       return 'All Rotors Engaged'
     }
   }
