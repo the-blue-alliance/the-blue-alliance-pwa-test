@@ -53,17 +53,19 @@ const styles = theme => ({
   },
   rpDotA: {
     position: 'absolute',
-    top: '3px',
-    left: '3px',
+    top: '2px',
+    left: '2px',
     height: '4px',
     width: '4px',
+    padding: '1px',
   },
   rpDotB: {
     position: 'absolute',
-    top: '3px',
-    left: '10px',
+    top: '2px',
+    left: '9px',
     height: '4px',
     width: '4px',
+    padding: '1px',
   },
   playIcon: {
     width: 16,
