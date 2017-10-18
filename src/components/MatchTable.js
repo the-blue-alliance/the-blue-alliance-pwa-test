@@ -131,12 +131,12 @@ class MatchTable extends PureComponent {
           {redScore}
         </td>
         <td className={classNames({[this.props.classes.td]: true, [this.props.classes.blueScore]: true, [this.props.classes.winner]: blueWin})}>
-          {match.rpEarnedA('red') &&  <Tooltip title={rpEarnedTextA} placement="top">
+          {match.rpEarnedA('blue') &&  <Tooltip title={rpEarnedTextA} placement="top">
             <svg className={this.props.classes.rpDotA}>
               <circle cx="2" cy="2" r="2"/>
             </svg>
           </Tooltip>}
-         {match.rpEarnedB('red') &&  <Tooltip title={rpEarnedTextB} placement="top">
+         {match.rpEarnedB('blue') &&  <Tooltip title={rpEarnedTextB} placement="top">
             <svg className={this.props.classes.rpDotB}>
               <circle cx="2" cy="2" r="2"/>
             </svg>
