@@ -15,27 +15,34 @@ const styles = {
   },
 }
 
+class EventListItem extends PureComponent {
+  render() {
+    return (
+      <LinkContainer to={`/event/${this.props.event.get('key')}`}>
+        <ListItem button divider disableRipple>
+          <ListItemText primary={this.props.event.get('short_name')} secondary={`${this.props.event.get('city')}, ${this.props.event.get('state_prov')}, ${this.props.event.get('country')} | ${this.props.event.get('start_date')} - ${this.props.event.get('end_date')}`} />
+        </ListItem>
+      </LinkContainer>
+    )
+  }
+}
+
 class EventsList extends PureComponent {
   rowRenderer = ({index, isScrolling, isVisible, key, parent, style}) => {
     const classes = this.props.classes
     const item = this.listItems[index]
     if (item.type === 'label') {
       return (
-        <div key={index} style={style}>
+        <div key={key} style={style}>
           <ListSubheader className={classes.subHeader}>
             <ListItemText primary={item.value} classes={{text: classes.subHeaderText}}/>
           </ListSubheader>
         </div>
       )
     } else {
-      const event = item.value.toJS()
       return (
-        <div key={index} style={style}>
-          <LinkContainer to={`/event/${event.key}`}>
-            <ListItem button divider>
-              <ListItemText primary={event.short_name} secondary={`${event.city}, ${event.state_prov}, ${event.country} | ${event.start_date} - ${event.end_date}`} />
-            </ListItem>
-          </LinkContainer>
+        <div key={key} style={style}>
+          <EventListItem event={item.value}/>
         </div>
       )
     }

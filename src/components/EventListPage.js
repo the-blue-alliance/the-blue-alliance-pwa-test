@@ -28,6 +28,13 @@ SEASON_TYPES.add(1)
 SEASON_TYPES.add(2)
 SEASON_TYPES.add(5)
 
+class EventListTab extends PureComponent {
+  render() {
+    const {tabIdx, tabName, ...otherProps} = this.props
+    return <Tab key={tabIdx} label={tabName} {...otherProps} />
+  }
+}
+
 class EventListPage extends PureComponent {
   constructor(props) {
     super(props)
@@ -131,7 +138,7 @@ class EventListPage extends PureComponent {
 
       if (tabName !== lastTabName) {
         tabIdx++
-        this.tabs.push(<Tab key={tabIdx} label={tabName} />)
+        this.tabs.push(<EventListTab key={tabIdx} label={tabName} />)
         lastTabName = tabName
       }
 

@@ -14,7 +14,7 @@ class MatchList extends PureComponent {
     return (
       <div key={match.key} style={style}>
         <LinkContainer to={{pathname: `/match/${match.key}`, state: {modal: true}}}>
-          <ListItem button divider>
+          <ListItem button divider disableRipple>
             <ListItemText primary={`${match.getDisplayName()}`} secondary="TODO" />
           </ListItem>
         </LinkContainer>

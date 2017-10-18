@@ -14,7 +14,7 @@ class TeamsList extends PureComponent {
     return (
       <div key={team.key} style={style}>
         <LinkContainer to={`/team/${team.team_number}`}>
-          <ListItem button divider>
+          <ListItem button divider disableRipple>
             <ListItemText primary={`${team.team_number} | ${team.nickname}`} secondary={team.country} />
           </ListItem>
         </LinkContainer>

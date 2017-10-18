@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import List, { ListItem, ListItemText } from 'material-ui/List';
@@ -17,7 +17,7 @@ const styles = {
   },
 };
 
-class EventFilterDialog extends Component {
+class EventFilterDialog extends PureComponent {
   state = {
     checked: [],
   };
