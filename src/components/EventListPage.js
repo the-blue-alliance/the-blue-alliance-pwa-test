@@ -183,7 +183,7 @@ class EventListPage extends PureComponent {
         title='Events'
         refreshFunction={this.refreshFunction}
         filterFunction={this.filterFunction}
-        tabs={
+        tabs={this.tabs.length !== 0 &&
           <Tabs
             value={this.props.pageState.get('tabIdx')}
             onChange={this.tabHandleChange}
