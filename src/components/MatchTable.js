@@ -156,12 +156,11 @@ class MatchTable extends PureComponent {
       return <div>NO MATCHES</div>
     }
 
-    const filteredMatches = this.props.matches.filter(match => this.props.compLevels.indexOf(match.get('comp_level')) !== -1)
-    const qmMatches = filteredMatches.filter(match => match.get('comp_level') == 'qm')
-    const efMatches = filteredMatches.filter(match => match.get('comp_level') == 'ef')
-    const qfMatches = filteredMatches.filter(match => match.get('comp_level') == 'qf')
-    const sfMatches = filteredMatches.filter(match => match.get('comp_level') == 'sf')
-    const fMatches = filteredMatches.filter(match => match.get('comp_level') == 'f')
+    const qmMatches = this.props.matches.filter(match => match.get('comp_level') == 'qm')
+    const efMatches = this.props.matches.filter(match => match.get('comp_level') == 'ef')
+    const qfMatches = this.props.matches.filter(match => match.get('comp_level') == 'qf')
+    const sfMatches = this.props.matches.filter(match => match.get('comp_level') == 'sf')
+    const fMatches = this.props.matches.filter(match => match.get('comp_level') == 'f')
 
     return (
       <table className={this.props.classes.table} border='1'>

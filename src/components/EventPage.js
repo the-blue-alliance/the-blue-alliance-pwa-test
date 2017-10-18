@@ -93,11 +93,11 @@ class EventPage extends PureComponent {
                     <Grid container spacing={24}>
                       <Grid item xs={6}>
                         <h3>Qualification Results</h3>
-                        <MatchTable matches={matches} compLevels={['qm']} />
+                        <MatchTable matches={this.props.qualMatches} />
                       </Grid>
                       <Grid item xs={6}>
                         <h3>Playoff Results</h3>
-                        <MatchTable matches={matches} compLevels={['ef', 'qf', 'sf', 'f']} />
+                        <MatchTable matches={this.props.playoffMatches} />
                       </Grid>
                     </Grid>
                   </div>
