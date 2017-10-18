@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
+import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
 import { AutoSizer, List } from 'react-virtualized';
 import { withStyles } from 'material-ui/styles';
 import { ListItem, ListItemText } from 'material-ui/List';
@@ -13,9 +13,11 @@ class TeamsList extends PureComponent {
     const team = this.filteredTeams.get(index).toJS()
     return (
       <div key={team.key} style={style}>
-        <ListItem button divider component={Link} to={`/team/${team.team_number}`}>
-          <ListItemText primary={`${team.team_number} | ${team.nickname}`} secondary={team.country} />
-        </ListItem>
+        <LinkContainer to={`/team/${team.team_number}`}>
+          <ListItem button divider>
+            <ListItemText primary={`${team.team_number} | ${team.nickname}`} secondary={team.country} />
+          </ListItem>
+        </LinkContainer>
       </div>
     )
   }

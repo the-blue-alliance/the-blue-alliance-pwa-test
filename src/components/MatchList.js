@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
+import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
 import { AutoSizer, List } from 'react-virtualized';
 import { withStyles } from 'material-ui/styles';
 import { ListItem, ListItemText } from 'material-ui/List';
@@ -13,9 +13,11 @@ class MatchList extends PureComponent {
     const match = this.matches.get(index)
     return (
       <div key={match.key} style={style}>
-        <ListItem button divider component={Link} to={{pathname: `/match/${match.key}`, state: {modal: true}}}>
-          <ListItemText primary={`${match.getDisplayName()}`} />
-        </ListItem>
+        <LinkContainer to={{pathname: `/match/${match.key}`, state: {modal: true}}}>
+          <ListItem button divider>
+            <ListItemText primary={`${match.getDisplayName()}`} secondary="TODO" />
+          </ListItem>
+        </LinkContainer>
       </div>
     )
   }

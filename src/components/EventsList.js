@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
+import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
 import { AutoSizer, List } from 'react-virtualized';
 import { withStyles } from 'material-ui/styles';
 import indigo from 'material-ui/colors/indigo';
@@ -31,9 +31,11 @@ class EventsList extends PureComponent {
       const event = item.value.toJS()
       return (
         <div key={index} style={style}>
-          <ListItem button divider component={Link} to={`/event/${event.key}`}>
-            <ListItemText primary={event.short_name} secondary={`${event.city}, ${event.state_prov}, ${event.country} | ${event.start_date} - ${event.end_date}`} />
-          </ListItem>
+          <LinkContainer to={`/event/${event.key}`}>
+            <ListItem button divider>
+              <ListItemText primary={event.short_name} secondary={`${event.city}, ${event.state_prov}, ${event.country} | ${event.start_date} - ${event.end_date}`} />
+            </ListItem>
+          </LinkContainer>
         </div>
       )
     }
