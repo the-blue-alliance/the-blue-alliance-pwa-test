@@ -11,7 +11,7 @@ import MatchPageContainer from './containers/MatchPageContainer'
 import TeamListPageContainer from './containers/TeamListPageContainer'
 import TeamPageContainer from './containers/TeamPageContainer'
 
-import MatchDialog from './components/MatchDialog'
+import MatchDialogContainer from './containers/MatchDialogContainer'
 import TeamAtEventDialog from './components/TeamAtEventDialog'
 
 
@@ -46,7 +46,7 @@ class ModalSwitch extends React.Component {
           <Route path='/teams' component={TeamListPageContainer} />
           <Route path='/team/:teamNumber/:year?' component={TeamPageContainer} />
         </Switch>
-        {isModal ? <Route path='/match/:matchKey' component={MatchDialog} /> : null}
+        {isModal ? <Route path='/match/:matchKey' component={MatchDialogContainer} /> : null}
         {isModal ? <Route path='/team/:teamNumber/:year?' component={TeamAtEventDialog} /> : null}
       </div>
     )

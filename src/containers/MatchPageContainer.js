@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import MatchPage from '../components/MatchPage.js'
+import MatchPage from '../components/MatchPage'
 
 
 const mapStateToProps = (state, props) => ({
