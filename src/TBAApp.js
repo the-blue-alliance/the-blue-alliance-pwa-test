@@ -56,7 +56,7 @@ class ModalSwitch extends React.Component {
 const styles = theme => ({
 })
 
-class App extends Component {
+class TBAApp extends Component {
   render() {
     return (
       <div>
@@ -67,4 +67,4 @@ class App extends Component {
   }
 }
 
-export default withStyles(styles)(App);
+export default withStyles(styles)(TBAApp);

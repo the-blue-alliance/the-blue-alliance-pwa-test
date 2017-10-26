@@ -1,6 +1,7 @@
 import * as types from '../constants/ActionTypes'
 import * as sources from '../constants/DataSources'
 import db, { addEvent, addEvents, addEventTeams, addMatches, addTeam, addTeams, addTeamEvents } from '../database/db'
+import fetch from 'isomorphic-fetch'
 
 // TODO: This can use a lot of refactoring to make things DRY. 2017-09-27 @fangeugene
 
