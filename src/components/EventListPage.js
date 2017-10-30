@@ -2,13 +2,29 @@ import React, { PureComponent } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import { withStyles } from 'material-ui/styles';
 import Tabs, { Tab } from 'material-ui/Tabs';
+import Hidden from 'material-ui/Hidden';
+import Grid from 'material-ui/Grid';
 
 import TBAPageContainer from '../containers/TBAPageContainer'
 import EventsList from './EventsList'
+import EventsList2 from './EventsList2'
 import EventFilterDialog from './EventFilterDialog'
 import YearPickerDialog from './YearPickerDialog'
 
 const styles = {
+  container: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    overflowY: 'auto',
+  },
+  root: {
+    maxWidth: 1200,
+    margin: '0 auto',
+    padding: '0 48px',
+  },
   slideContainer: {
     position: 'absolute',
     top: 0,
@@ -186,46 +202,78 @@ class EventListPage extends PureComponent {
     }
 
     return (
-      <TBAPageContainer
-        title='Events'
-        refreshFunction={this.refreshFunction}
-        filterFunction={this.filterFunction}
-        tabs={this.tabs.length !== 0 &&
-          <Tabs
-            value={this.props.pageState.get('tabIdx')}
-            onChange={this.tabHandleChange}
-            indicatorColor="white"
-            scrollable
-            scrollButtons="auto"
+      <div>
+        <Hidden smDown>
+          <TBAPageContainer
+            documentTitle="Events"
+            refreshFunction={this.refreshFunction}
+            filterFunction={this.filterFunction}
           >
-            {this.tabs}
-          </Tabs>
-        }
-      >
-      {/*<AppNavContainer
-        title={'Events'}
-        // title={
-        //   <Button
-        //     color="contrast"
-        //     onClick={() => this.props.setPageState({ yearPickerOpen: true })}
-        //   >
-        //     2017 Events
-        //   </Button>
-        // }
-        refreshFunction={this.refreshFunction}
-        filterFunction={this.filterFunction}
-        tabs={
-          <Tabs
-            value={this.props.pageState.get('tabIdx')}
-            onChange={this.tabHandleChange}
-            indicatorColor="white"
-            scrollable
-            scrollButtons="auto"
+            <div className={this.props.classes.container} ref="container">
+              <div className={this.props.classes.root}>
+                <Grid container spacing={24}>
+                  <Grid item xs={2}>
+                    <p>Navigation stuff</p>
+                  </Grid>
+                  <Grid item xs={10}>
+                    <h1>Events</h1>
+                    {events && <EventsList2 events={events} el={this.refs.container}/>}
+                  </Grid>
+                </Grid>
+            </div>
+            </div>
+          </TBAPageContainer>
+        </Hidden>
+        <Hidden mdUp>
+          <TBAPageContainer
+            title='Events'
+            refreshFunction={this.refreshFunction}
+            filterFunction={this.filterFunction}
+            tabs={this.tabs.length !== 0 &&
+              <Tabs
+                value={this.props.pageState.get('tabIdx')}
+                onChange={this.tabHandleChange}
+                indicatorColor="white"
+                scrollable
+                scrollButtons="auto"
+              >
+                {this.tabs}
+              </Tabs>
+            }
           >
-            {this.tabs}
-          </Tabs>
-        }
-      >*/}
+          {/*<AppNavContainer
+            title={'Events'}
+            // title={
+            //   <Button
+            //     color="contrast"
+            //     onClick={() => this.props.setPageState({ yearPickerOpen: true })}
+            //   >
+            //     2017 Events
+            //   </Button>
+            // }
+            refreshFunction={this.refreshFunction}
+            filterFunction={this.filterFunction}
+            tabs={
+              <Tabs
+                value={this.props.pageState.get('tabIdx')}
+                onChange={this.tabHandleChange}
+                indicatorColor="white"
+                scrollable
+                scrollButtons="auto"
+              >
+                {this.tabs}
+              </Tabs>
+            }
+          >*/}
+            <SwipeableViews
+              containerStyle={styles.slideContainer}
+              index={this.props.pageState.get('tabIdx')}
+              onChangeIndex={this.tabHandleChangeIndex}
+            >
+              {this.tabContentList}
+            </SwipeableViews>
+          </TBAPageContainer>
+        </Hidden>
         <EventFilterDialog
           open={this.props.pageState.get('eventFilterOpen')}
           onRequestClose={this.eventFilterHandleRequestClose}
@@ -238,14 +286,7 @@ class EventListPage extends PureComponent {
           open={this.props.pageState.yearPickerOpen}
           onRequestClose={this.yearPickerHandleRequestClose}
         />
-        <SwipeableViews
-          containerStyle={styles.slideContainer}
-          index={this.props.pageState.get('tabIdx')}
-          onChangeIndex={this.tabHandleChangeIndex}
-        >
-          {this.tabContentList}
-        </SwipeableViews>
-      </TBAPageContainer>
+      </div>
     )
   }
 }
