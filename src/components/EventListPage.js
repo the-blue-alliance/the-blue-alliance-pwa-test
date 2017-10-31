@@ -12,14 +12,6 @@ import EventFilterDialog from './EventFilterDialog'
 import YearPickerDialog from './YearPickerDialog'
 
 const styles = {
-  container: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    overflowY: 'auto',
-  },
   root: {
     maxWidth: 1200,
     margin: '0 auto',
@@ -208,19 +200,18 @@ class EventListPage extends PureComponent {
             documentTitle="Events"
             refreshFunction={this.refreshFunction}
             filterFunction={this.filterFunction}
+            contentRef={el => this.contentRef = el}
           >
-            <div className={this.props.classes.container} ref="container">
-              <div className={this.props.classes.root}>
-                <Grid container spacing={24}>
-                  <Grid item xs={2}>
-                    <p>Navigation stuff</p>
-                  </Grid>
-                  <Grid item xs={10}>
-                    <h1>Events</h1>
-                    {events && <EventsList2 events={events} el={this.refs.container}/>}
-                  </Grid>
+            <div className={this.props.classes.root}>
+              <Grid container spacing={24}>
+                <Grid item xs={2}>
+                  <p>Navigation stuff</p>
                 </Grid>
-            </div>
+                <Grid item xs={10}>
+                  <h1>Events</h1>
+                  {events && <EventsList2 events={events} scrollElement={this.contentRef}/>}
+                </Grid>
+              </Grid>
             </div>
           </TBAPageContainer>
         </Hidden>

@@ -56,6 +56,7 @@ class TBAPage extends PureComponent {
           tabs={this.props.tabs}
         />
         <div
+          ref={this.props.contentRef}
           className={classNames({
             [this.props.classes.content]: true,
             [this.props.classes.tabbedContent]: this.props.tabs,

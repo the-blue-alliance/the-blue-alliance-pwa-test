@@ -202,7 +202,7 @@ class EventsList2 extends PureComponent {
     }
 
     return (
-      <WindowScroller scrollElement={this.props.el}>
+      <WindowScroller scrollElement={this.props.scrollElement}>
       {({ height, isScrolling, onChildScroll, scrollTop }) => (
         <AutoSizer disableHeight>
           {({ width }) => (
