@@ -24,6 +24,9 @@ const styles = {
     bottom: 0,
     left: 0,
   },
+  sideNav: {
+    position: 'fixed',
+  },
 }
 
 let CMP_TYPES = new Set()
@@ -205,7 +208,9 @@ class EventListPage extends PureComponent {
             <div className={this.props.classes.root}>
               <Grid container spacing={24}>
                 <Grid item xs={2}>
-                  <p>Navigation stuff</p>
+                  <div className={this.props.classes.sideNav}>
+                    <p>Navigation stuff</p>
+                  </div>
                 </Grid>
                 <Grid item xs={10}>
                   <h1>Events</h1>
