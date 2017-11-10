@@ -75,8 +75,14 @@ const styles = theme => ({
 
 class MatchTable extends PureComponent {
   renderRow(match) {
-    const redScore = match.alliances.getIn(['red', 'score'])
-    const blueScore = match.alliances.getIn(['blue', 'score'])
+    let redScore = match.alliances.getIn(['red', 'score'])
+    let blueScore = match.alliances.getIn(['blue', 'score'])
+    if (redScore === -1) {
+      redScore = '?'
+    }
+    if (blueScore === -1) {
+      blueScore = '?'
+    }
     const redWin = match.winning_alliance === 'red'
     const blueWin = match.winning_alliance === 'blue'
     const rpEarnedTextA = match.rpEarnedTextA()
