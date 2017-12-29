@@ -15,7 +15,7 @@ class TBANavDrawer extends PureComponent {
       <div className={this.props.classes.drawer}>
         <Drawer
           open={this.props.mobileDrawerOpen}
-          onRequestClose={this.props.closeMobileDrawer}
+          onClose={this.props.closeMobileDrawer}
         >
           <TBANavDrawerContentContainer />
         </Drawer>
