@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
-import { AutoSizer, WindowScroller, List } from 'react-virtualized';
 import { withStyles } from 'material-ui/styles';
 import indigo from 'material-ui/colors/indigo';
 import { ListItem, ListItemText, ListSubheader } from 'material-ui/List';
+import RestorableWindowScroller from './RestorableWindowScroller'
 
 
 const styles = {
@@ -202,26 +202,14 @@ class EventsList2 extends PureComponent {
     }
 
     return (
-      <WindowScroller scrollElement={this.props.scrollElement}>
-      {({ height, isScrolling, onChildScroll, scrollTop }) => (
-        <AutoSizer disableHeight>
-          {({ width }) => (
-            <List
-              autoHeight
-              width={width}
-              height={height}
-              isScrolling={isScrolling}
-              onScroll={onChildScroll}
-              rowCount={this.listItems.length}
-              rowHeight={({ index }) => labelIdxs.has(index) ? 24 : 69}
-              rowRenderer={this.rowRenderer}
-              scrollTop={scrollTop}
-            />
-          )}
-        </AutoSizer>
-      )}
-      </WindowScroller>
-    );
+      <RestorableWindowScroller
+        scrollElement={this.props.scrollElement}
+        rowCount={this.listItems.length}
+        rowHeight={({ index }) => labelIdxs.has(index) ? 24 : 69}
+        rowRenderer={this.rowRenderer}
+        scrollTopCallback={this.props.scrollTopCallback}
+      />
+    )
   }
 }
 
