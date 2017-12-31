@@ -16,7 +16,7 @@ const styles = theme => ({
     left: 0,
     overflowX: 'hidden',
     // padding: theme.spacing.unit,
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       top: 64,
       left: 180,
       // padding: theme.spacing.unit * 3,
@@ -24,7 +24,7 @@ const styles = theme => ({
   },
   tabbedContent: {
     top: 56 + 48,
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       top: 64 + 48,
     },
   },
