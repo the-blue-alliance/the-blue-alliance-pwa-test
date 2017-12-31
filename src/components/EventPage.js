@@ -34,10 +34,18 @@ class EventPage extends PureComponent {
     props.resetPage({
       tabIdx: 0,
     })
+    this.state = {
+      isFirstRender: true,
+    }
   }
 
   componentDidMount() {
     this.refreshFunction()
+  }
+
+  componentDidUpdate() {
+    // Rerender without cascading
+    setTimeout(() => this.setState({ isFirstRender: false }), 0)
   }
 
   refreshFunction = () => {
@@ -72,6 +80,7 @@ class EventPage extends PureComponent {
           <TBAPageContainer
             documentTitle={name}
             refreshFunction={this.refreshFunction}
+            isFirstRender={this.state.isFirstRender}
           >
             <div className={this.props.classes.root}>
               <Grid container spacing={24}>
