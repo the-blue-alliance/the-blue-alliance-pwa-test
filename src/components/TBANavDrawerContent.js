@@ -10,19 +10,11 @@ import PeopleIcon from 'material-ui-icons/People';
 import List, { ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
 import Switch from 'material-ui/Switch';
 import Divider from 'material-ui/Divider';
-import TBAlogo from '../icons/tba_icon_blue.svg';
 
 const styles = theme => ({
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '0 8px',
-    height: '100px',
-  },
-  logo: {
-    height: '50%',
-    margin: '0 10px',
-  },
+  root:  {
+    marginTop: 64,
+  }
 })
 
 class TBANavDrawerContent extends PureComponent {
@@ -30,14 +22,7 @@ class TBANavDrawerContent extends PureComponent {
     console.log("Render TBANavDrawerContent")
 
     return (
-      <div>
-        <div className={this.props.classes.drawerHeader}>
-          <img src={TBAlogo} className={this.props.classes.logo} alt="logo" />
-          <Typography type="title" color="inherit">
-            The Blue Alliance
-          </Typography>
-        </div>
-        <Divider />
+      <div className={this.props.classes.root} >
         <List>
           <LinkContainer to="/">
             <ListItem button>

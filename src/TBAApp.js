@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { withStyles } from 'material-ui/styles';
+import Hidden from 'material-ui/Hidden';
 
 import TBANavDrawerContainer from './containers/TBANavDrawerContainer'
 
@@ -60,7 +61,9 @@ class TBAApp extends Component {
   render() {
     return (
       <div>
-        <TBANavDrawerContainer />
+        <Hidden smDown>
+          <TBANavDrawerContainer />
+        </Hidden>
         <Route component={ModalSwitch} />
       </div>
     )

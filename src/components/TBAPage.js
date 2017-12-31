@@ -18,6 +18,7 @@ const styles = theme => ({
     // padding: theme.spacing.unit,
     [theme.breakpoints.up('sm')]: {
       top: 64,
+      left: 180,
       // padding: theme.spacing.unit * 3,
     },
   },

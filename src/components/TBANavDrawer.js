@@ -1,10 +1,14 @@
-import React, { PureComponent } from 'react';
-import { withStyles } from 'material-ui/styles';
-import Drawer from 'material-ui/Drawer';
+import React, { PureComponent } from 'react'
+import { withStyles } from 'material-ui/styles'
+import Drawer from 'material-ui/Drawer'
 
 import TBANavDrawerContentContainer from '../containers/TBANavDrawerContentContainer'
 
 const styles = theme => ({
+  root:  {
+    zIndex: 1,
+    position: 'absolute',
+  }
 })
 
 class TBANavDrawer extends PureComponent {
@@ -12,15 +16,15 @@ class TBANavDrawer extends PureComponent {
     console.log("Render TBANavDrawer")
 
     return (
-      <div className={this.props.classes.drawer}>
-        <Drawer
-          open={this.props.mobileDrawerOpen}
-          onClose={this.props.closeMobileDrawer}
-        >
-          <TBANavDrawerContentContainer />
-        </Drawer>
-      </div>
-    );
+      <Drawer
+        className={this.props.classes.root}
+        type="permanent"
+        open={this.props.mobileDrawerOpen}
+        onClose={this.props.closeMobileDrawer}
+      >
+        <TBANavDrawerContentContainer />
+      </Drawer>
+    )
   }
 }
 

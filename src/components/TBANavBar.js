@@ -22,11 +22,6 @@ class TBAToolbar extends PureComponent {
   render() {
     return (
       <Toolbar>
-        <Hidden smDown>
-          <IconButton color="contrast" aria-label="Menu" onClick={this.props.toggleMobileDrawer}>
-            <MenuIcon />
-          </IconButton>
-        </Hidden>
         <Typography type="title" color="inherit" className={this.props.classes.appBarTitle}>
           {this.props.title ? this.props.title : 'The Blue Alliance'}
         </Typography>
