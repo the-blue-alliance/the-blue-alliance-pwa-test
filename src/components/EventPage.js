@@ -11,6 +11,7 @@ import EventIcon from 'material-ui-icons/Event';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 
+import ResponsiveLayout from './ResponsiveLayout'
 import MatchTable from './MatchTable'
 import MatchList from './MatchList'
 import TeamsList from './TeamsList'
@@ -18,11 +19,6 @@ import TeamsList from './TeamsList'
 import TBAPageContainer from '../containers/TBAPageContainer'
 
 const styles = theme => ({
-  root: {
-    maxWidth: 1200,
-    margin: '0 auto',
-    padding: '0 48px',
-  },
   hidden: {
     display: 'none',
   }
@@ -82,7 +78,7 @@ class EventPage extends PureComponent {
             refreshFunction={this.refreshFunction}
             isFirstRender={this.state.isFirstRender}
           >
-            <div className={this.props.classes.root}>
+            <ResponsiveLayout>
               <Grid container spacing={24}>
                 <Grid item xs={12}>
                   <h1>{name}</h1>
@@ -115,7 +111,7 @@ class EventPage extends PureComponent {
                   </div>
                 </Grid>
               </Grid>
-            </div>
+            </ResponsiveLayout>
           </TBAPageContainer>
         </Hidden>
         <Hidden mdUp>

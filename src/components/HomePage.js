@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import TBAPageContainer from '../containers/TBAPageContainer'
+import ResponsiveLayout from './ResponsiveLayout'
 
 class Home extends PureComponent {
   constructor(props) {
@@ -13,8 +14,10 @@ class Home extends PureComponent {
     console.log("Render Home");
     return (
       <TBAPageContainer>
-        <h1>Home {this.props.test}</h1>
-        <Link to="/team/254">254</Link>
+        <ResponsiveLayout>
+          <h1>Home</h1>
+          <Link to="/team/254">254</Link>
+        </ResponsiveLayout>
       </TBAPageContainer>
     )
   }

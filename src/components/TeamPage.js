@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { CircularProgress } from 'material-ui/Progress';
 
 import TBAPageContainer from '../containers/TBAPageContainer'
+import ResponsiveLayout from './ResponsiveLayout'
 
 class TeamPage extends PureComponent {
   constructor(props) {
@@ -50,9 +51,11 @@ class TeamPage extends PureComponent {
         title={`Team ${teamNumber} (${year})`}
         refreshFunction={this.refreshFunction}
       >
-        <h1>Team {teamNumber}{nickname && ` - ${nickname}`}</h1>
-        {name && <p>aka {name}</p>}
-        {eventList && <ul>{eventList}</ul>}
+        <ResponsiveLayout>
+          <h1>Team {teamNumber}{nickname && ` - ${nickname}`}</h1>
+          {name && <p>aka {name}</p>}
+          {eventList && <ul>{eventList}</ul>}
+        </ResponsiveLayout>
       </TBAPageContainer>
     )
   }

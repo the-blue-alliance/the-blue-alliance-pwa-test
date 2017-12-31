@@ -6,17 +6,13 @@ import Hidden from 'material-ui/Hidden';
 import Grid from 'material-ui/Grid';
 
 import TBAPageContainer from '../containers/TBAPageContainer'
+import ResponsiveLayout from './ResponsiveLayout'
 import EventsList from './EventsList'
 import EventsList2 from './EventsList2'
 import EventFilterDialog from './EventFilterDialog'
 import YearPickerDialog from './YearPickerDialog'
 
 const styles = {
-  root: {
-    maxWidth: 1200,
-    margin: '0 auto',
-    padding: '0 48px',
-  },
   slideContainer: {
     position: 'absolute',
     top: 0,
@@ -206,7 +202,7 @@ class EventListPage extends PureComponent {
             contentRef={el => this.contentRef = el}
             isFirstRender={this.state.isFirstRender}
           >
-            <div className={this.props.classes.root}>
+            <ResponsiveLayout>
               <Grid container spacing={24}>
                 <Grid item xs={2}>
                   <div className={this.props.classes.sideNav}>
@@ -218,7 +214,7 @@ class EventListPage extends PureComponent {
                   {events && <EventsList2 events={events} scrollElement={this.contentRef}/>}
                 </Grid>
               </Grid>
-            </div>
+            </ResponsiveLayout>
           </TBAPageContainer>
         </Hidden>
         <Hidden mdUp>
