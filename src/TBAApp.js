@@ -4,6 +4,7 @@ import { withStyles } from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
 
 import TBANavDrawerContainer from './containers/TBANavDrawerContainer'
+import TBABottomNav from './components/TBABottomNav'
 
 import HomePageContainer from './containers/HomePageContainer'
 import EventListPageContainer from './containers/EventListPageContainer'
@@ -63,6 +64,9 @@ class TBAApp extends Component {
       <div>
         <Hidden smDown>
           <TBANavDrawerContainer />
+        </Hidden>
+        <Hidden mdUp>
+          <TBABottomNav />
         </Hidden>
         <Route component={ModalSwitch} />
       </div>
