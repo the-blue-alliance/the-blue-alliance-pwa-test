@@ -3,6 +3,7 @@ import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 
 import TBANavBarContainer from '../containers/TBANavBarContainer'
+import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 
 const styles = theme => ({
   content: {
@@ -55,15 +56,17 @@ class TBAPage extends PureComponent {
           filterFunction={this.props.filterFunction}
           tabs={this.props.tabs}
         />
-        <div
-          ref={this.props.contentRef}
+        <ScrollRestoreContainer
+          scrollTopId={'pageScrollTop'}
+          contentRef={this.props.contentRef}
           className={classNames({
             [this.props.classes.content]: true,
             [this.props.classes.tabbedContent]: this.props.tabs,
           })}
+          isFirstRender={this.props.isFirstRender}
         >
           {this.props.children}
-        </div>
+        </ScrollRestoreContainer>
       </div>
     )
   }

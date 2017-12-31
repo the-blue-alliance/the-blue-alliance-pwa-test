@@ -78,9 +78,6 @@ class EventListPage extends PureComponent {
   }
 
   componentDidUpdate() {
-    if (this.state.isFirstRender) {
-      this.contentRef.scrollTop = this.props.pageState.get('scrollTop')
-    }
     // Rerender without cascading
     setTimeout(() => this.setState({ isFirstRender: false }), 0)
   }
@@ -103,12 +100,6 @@ class EventListPage extends PureComponent {
 
   eventFilterHandleRequestClose = () => {
     this.props.setPageState({ eventFilterOpen: false })
-  }
-
-  scrollTopCallback = (scrollTop) => {
-    if (!this.state.isFirstRender){
-      this.props.setPageState({ scrollTop: scrollTop })
-    }
   }
 
   // yearPickerHandleRequestClose = value => {
@@ -213,6 +204,7 @@ class EventListPage extends PureComponent {
             refreshFunction={this.refreshFunction}
             filterFunction={this.filterFunction}
             contentRef={el => this.contentRef = el}
+            isFirstRender={this.state.isFirstRender}
           >
             <div className={this.props.classes.root}>
               <Grid container spacing={24}>
@@ -223,7 +215,7 @@ class EventListPage extends PureComponent {
                 </Grid>
                 <Grid item xs={10}>
                   <h1>Events</h1>
-                  {events && <EventsList2 events={events} scrollElement={this.contentRef} scrollTopCallback={this.scrollTopCallback}/>}
+                  {events && <EventsList2 events={events} scrollElement={this.contentRef}/>}
                 </Grid>
               </Grid>
             </div>

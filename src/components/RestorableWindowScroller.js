@@ -30,10 +30,7 @@ class RestorableWindowScoller extends PureComponent {
               width={width}
               height={height}
               isScrolling={isScrolling}
-              onScroll={(e) => {
-                onChildScroll(e)
-                this.props.scrollTopCallback(e.scrollTop)
-              }}
+              onScroll={onChildScroll}
               rowCount={this.props.rowCount}
               rowHeight={this.props.rowHeight}
               estimatedRowSize={this.estimatedRowSize}
