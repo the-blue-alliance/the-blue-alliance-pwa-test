@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
+import Hidden from 'material-ui/Hidden';
 
 import TBANavBarContainer from '../containers/TBANavBarContainer'
+import TBABottomNav from './TBABottomNav'
 import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 
 const styles = theme => ({
@@ -10,7 +12,7 @@ const styles = theme => ({
     position: 'absolute',
     top: 56,
     right: 0,
-    bottom: 0,
+    bottom: 56,
     left: 0,
     overflowX: 'hidden',
     // padding: theme.spacing.unit,
@@ -56,6 +58,9 @@ class TBAPage extends PureComponent {
           filterFunction={this.props.filterFunction}
           tabs={this.props.tabs}
         />
+        <Hidden mdUp>
+          <TBABottomNav />
+        </Hidden>
         <ScrollRestoreContainer
           scrollTopId={'pageScrollTop'}
           contentRef={this.props.contentRef}

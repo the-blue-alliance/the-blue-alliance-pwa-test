@@ -10,6 +10,7 @@ import SearchIcon from 'material-ui-icons/Search';
 import FilterListIcon from 'material-ui-icons/FilterList';
 import RefreshIcon from 'material-ui-icons/Refresh';
 import { CircularProgress } from 'material-ui/Progress';
+import Hidden from 'material-ui/Hidden';
 
 const styles = theme => ({
   appBarTitle: {
@@ -21,9 +22,11 @@ class TBAToolbar extends PureComponent {
   render() {
     return (
       <Toolbar>
-        <IconButton color="contrast" aria-label="Menu" onClick={this.props.toggleMobileDrawer}>
-          <MenuIcon />
-        </IconButton>
+        <Hidden smDown>
+          <IconButton color="contrast" aria-label="Menu" onClick={this.props.toggleMobileDrawer}>
+            <MenuIcon />
+          </IconButton>
+        </Hidden>
         <Typography type="title" color="inherit" className={this.props.classes.appBarTitle}>
           {this.props.title ? this.props.title : 'The Blue Alliance'}
         </Typography>
