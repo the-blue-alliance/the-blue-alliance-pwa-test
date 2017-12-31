@@ -4,18 +4,19 @@ import { AutoSizer, List } from 'react-virtualized';
 import { withStyles } from 'material-ui/styles';
 import { ListItem, ListItemText } from 'material-ui/List';
 import { CircularProgress } from 'material-ui/Progress';
+import RestorableWindowScroller from './RestorableWindowScroller'
 
 const styles = {
 }
 
 class TeamsList extends PureComponent {
   rowRenderer = ({index, isScrolling, isVisible, key, parent, style}) => {
-    const team = this.filteredTeams.get(index).toJS()
+    const team = this.filteredTeams.get(index)
     return (
-      <div key={team.key} style={style}>
-        <LinkContainer to={`/team/${team.team_number}`}>
+      <div key={team.get('key')} style={style}>
+        <LinkContainer to={`/team/${team.get('team_number')}`}>
           <ListItem button divider disableRipple>
-            <ListItemText primary={`${team.team_number} | ${team.nickname}`} secondary={team.country} />
+            <ListItemText primary={`${team.get('team_number')} | ${team.get('nickname')}`} secondary={team.getCityStateCountry()} />
           </ListItem>
         </LinkContainer>
       </div>
@@ -26,25 +27,33 @@ class TeamsList extends PureComponent {
     console.log("Render TeamsList");
     if (this.props.filter) {
       this.filteredTeams = this.props.teams.filter(team =>
-        team.get('nickname') && team.get('nickname').toLowerCase().includes(this.props.filter))
+        team.get('nickname') && team.get('nickname').toLowerCase().includes(this.props.filter.toLowerCase()))
     } else {
       this.filteredTeams = this.props.teams
     }
 
-    if (this.props.teams !== undefined) {
+    if (this.props.teams !== undefined && this.props.scrollElement !== undefined) {
       return (
-        <AutoSizer>
-          {({ height, width }) => (
-            <List
-              width={width}
-              height={height}
-              rowCount={this.filteredTeams.size}
-              rowHeight={69}
-              rowRenderer={this.rowRenderer}
-            />
-          )}
-        </AutoSizer>
+        <RestorableWindowScroller
+          scrollElement={this.props.scrollElement}
+          rowCount={this.filteredTeams.size}
+          rowHeight={69}
+          rowRenderer={this.rowRenderer}
+        />
       )
+      // return (
+      //   <AutoSizer>
+      //     {({ height, width }) => (
+      //       <List
+      //         width={width}
+      //         height={height}
+      //         rowCount={this.filteredTeams.size}
+      //         rowHeight={69}
+      //         rowRenderer={this.rowRenderer}
+      //       />
+      //     )}
+      //   </AutoSizer>
+      // )
     } else {
       return <CircularProgress color="accent" size={100} />
     }

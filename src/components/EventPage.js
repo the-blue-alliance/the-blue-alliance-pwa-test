@@ -31,7 +31,7 @@ class EventPage extends PureComponent {
       tabIdx: 0,
     })
     this.state = {
-      isFirstRender: true,
+      restoreScroll: true,
     }
   }
 
@@ -41,7 +41,7 @@ class EventPage extends PureComponent {
 
   componentDidUpdate() {
     // Rerender without cascading
-    setTimeout(() => this.setState({ isFirstRender: false }), 0)
+    setTimeout(() => this.setState({ restoreScroll: false }), 0)
   }
 
   refreshFunction = () => {
@@ -76,7 +76,7 @@ class EventPage extends PureComponent {
           <TBAPageContainer
             documentTitle={name}
             refreshFunction={this.refreshFunction}
-            isFirstRender={this.state.isFirstRender}
+            restoreScroll={this.state.restoreScroll}
           >
             <ResponsiveLayout>
               <Grid container spacing={24}>

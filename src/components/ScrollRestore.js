@@ -5,13 +5,13 @@ const styles = {}
 
 class ScrollRestore extends PureComponent {
   scrollHandler = () => {
-    if (!this.props.isFirstRender){
+    if (!this.props.restoreScroll){
       this.props.setPageState({ [this.props.scrollTopId]: this.ref.scrollTop })
     }
   }
 
   componentDidUpdate() {
-    if (this.props.isFirstRender) {
+    if (this.props.restoreScroll) {
       this.ref.scrollTop = this.props.pageState.get(this.props.scrollTopId)
     }
   }

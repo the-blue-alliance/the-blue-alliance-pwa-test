@@ -1,5 +1,6 @@
 import memoize from 'lodash.memoize'
 import { List } from 'immutable'
+import Team from '../database/Team'
 
 const getTeamsByPage = (state, pageNum) => {
   for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
@@ -19,7 +20,7 @@ const sortTeams = memoize((pageTeams) => {
       return 1
     }
     return 0
-  })
+  }).map(t => new Team(t))
 })
 
 export const getSortedTeams = (state, props) => { // TODO: should be memoized

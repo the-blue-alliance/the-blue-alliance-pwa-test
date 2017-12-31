@@ -200,7 +200,7 @@ class EventListPage extends PureComponent {
             refreshFunction={this.refreshFunction}
             filterFunction={this.filterFunction}
             contentRef={el => this.contentRef = el}
-            isFirstRender={this.state.isFirstRender}
+            restoreScroll={this.state.isFirstRender}
           >
             <ResponsiveLayout>
               <Grid container spacing={24}>

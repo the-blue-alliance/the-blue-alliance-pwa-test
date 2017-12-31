@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react';
 import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
+import Hidden from 'material-ui/Hidden';
+import Grid from 'material-ui/Grid';
 
 import TBAPageContainer from '../containers/TBAPageContainer'
+import ResponsiveLayout from './ResponsiveLayout'
 import TeamsList from './TeamsList'
 
 const styles = {
@@ -23,10 +26,18 @@ class TeamListPage extends PureComponent {
     props.resetPage({
       filter: '',
     })
+    this.state = {
+      restoreScroll: true,
+    }
   }
 
   componentDidMount() {
     this.refreshFunction()
+  }
+
+  componentDidUpdate() {
+    // Rerender without cascading
+    setTimeout(() => this.setState({ restoreScroll: false }), 0)
   }
 
   refreshFunction = () => {
@@ -35,7 +46,7 @@ class TeamListPage extends PureComponent {
 
   handleTextFieldChange = (e) => {
     this.props.setPageState({
-      filter: e.target.value.toLowerCase()
+      filter: e.target.value
     })
   }
 
@@ -43,27 +54,65 @@ class TeamListPage extends PureComponent {
     console.log("Render TeamListPage")
 
     return (
-      <TBAPageContainer
-        documentTitle='Teams'
-        title='Teams'
-        refreshFunction={this.refreshFunction}
-      >
-        <div className={this.props.classes.container}>
-          <TextField
-            label="Filter teams by number, name, or location"
-            fullWidth
-            margin="normal"
-            onChange={this.handleTextFieldChange}
-            defaultValue={this.props.pageState.get('filter')}
-          />
-          <div className={this.props.classes.teamsList}>
-            <TeamsList
-              teams={this.props.allTeams}
-              filter={this.props.pageState.get('filter')}
-            />
-          </div>
-        </div>
-      </TBAPageContainer>
+      <div>
+        <Hidden smDown>
+          <TBAPageContainer
+            documentTitle='Teams'
+            refreshFunction={this.refreshFunction}
+            contentRef={el => this.contentRef = el}
+            restoreScroll={this.state.restoreScroll}
+          >
+            <ResponsiveLayout>
+              <Grid container spacing={24}>
+                <Grid item xs={2}>
+                  <h1>Teams</h1>
+                </Grid>
+                <Grid item xs={10}>
+                  <TextField
+                    label="Filter teams by number, name, or location"
+                    fullWidth
+                    margin="normal"
+                    onChange={this.handleTextFieldChange}
+                    defaultValue={this.props.pageState.get('filter')}
+                  />
+                </Grid>
+              </Grid>
+              <Grid container spacing={24}>
+                <Grid item xs={12}>
+                  <TeamsList
+                    scrollElement={this.contentRef}
+                    teams={this.props.allTeams}
+                    filter={this.props.pageState.get('filter')}
+                  />
+                </Grid>
+              </Grid>
+            </ResponsiveLayout>
+          </TBAPageContainer>
+        </Hidden>
+        {/*<Hidden mdUp>
+          <TBAPageContainer
+            documentTitle='Teams'
+            title='Teams'
+            refreshFunction={this.refreshFunction}
+          >
+            <div className={this.props.classes.container}>
+              <TextField
+                label="Filter teams by number, name, or location"
+                fullWidth
+                margin="normal"
+                onChange={this.handleTextFieldChange}
+                defaultValue={this.props.pageState.get('filter')}
+              />
+              <div className={this.props.classes.teamsList}>
+                <TeamsList
+                  teams={this.props.allTeams}
+                  filter={this.props.pageState.get('filter')}
+                />
+              </div>
+            </div>
+          </TBAPageContainer>
+        </Hidden>*/}
+      </div>
     )
   }
 }

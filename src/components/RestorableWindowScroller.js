@@ -9,11 +9,15 @@ const styles = {
 
 class RestorableWindowScoller extends PureComponent {
   componentDidMount() {
-    this.list.measureAllRows()
+    if (this.props.rowCount > 0) {
+      this.list.measureAllRows()
+    }
   }
 
   componentDidUpdate() {
-    this.list.measureAllRows()
+    if (this.props.rowCount > 0) {
+      this.list.measureAllRows()
+    }
   }
 
   render() {

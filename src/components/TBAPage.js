@@ -37,11 +37,11 @@ class TBAPage extends PureComponent {
   }
 
   componentWillMount() {
-    // document.title = this.getDocumentTitle()
+    document.title = this.getDocumentTitle()
   }
 
   componentWillUpdate() {
-    // document.title = this.getDocumentTitle()
+    document.title = this.getDocumentTitle()
   }
 
   render() {
@@ -62,7 +62,7 @@ class TBAPage extends PureComponent {
             [this.props.classes.content]: true,
             [this.props.classes.tabbedContent]: this.props.tabs,
           })}
-          isFirstRender={this.props.isFirstRender}
+          restoreScroll={this.props.restoreScroll}
         >
           {this.props.children}
         </ScrollRestoreContainer>

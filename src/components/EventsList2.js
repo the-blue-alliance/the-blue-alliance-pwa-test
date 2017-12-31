@@ -207,7 +207,6 @@ class EventsList2 extends PureComponent {
         rowCount={this.listItems.length}
         rowHeight={({ index }) => labelIdxs.has(index) ? 24 : 69}
         rowRenderer={this.rowRenderer}
-        scrollTopCallback={this.props.scrollTopCallback}
       />
     )
   }
