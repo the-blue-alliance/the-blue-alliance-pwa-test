@@ -39,7 +39,6 @@ class TBAPage extends PureComponent {
   }
 
   componentWillMount() {
-    this.props.closeMobileDrawer()
     // document.title = this.getDocumentTitle()
   }
 

@@ -21,14 +21,6 @@ export const toggleOffline = () => ({
   type: types.TOGGLE_OFFLINE,
 })
 
-export const toggleMobileDrawer = () => ({
-  type: types.TOGGLE_MOBILE_DRAWER,
-})
-
-export const closeMobileDrawer = () => ({
-  type: types.CLOSE_MOBILE_DRAWER,
-})
-
 // Resetting Page
 export function resetPage(defaultState) {
   return (dispatch, getState) => {

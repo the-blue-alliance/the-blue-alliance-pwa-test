@@ -1,5 +1,4 @@
 import { connect } from 'react-redux'
-import { toggleMobileDrawer } from '../actions'
 import TBANavBar from '../components/TBANavBar'
 
 
@@ -8,7 +7,6 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  toggleMobileDrawer: () => dispatch(toggleMobileDrawer()),
 });
 
 const TBANavBarContainer = connect(
