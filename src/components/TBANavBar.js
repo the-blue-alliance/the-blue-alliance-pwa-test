@@ -5,12 +5,10 @@ import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
-import MenuIcon from 'material-ui-icons/Menu';
 import SearchIcon from 'material-ui-icons/Search';
 import FilterListIcon from 'material-ui-icons/FilterList';
 import RefreshIcon from 'material-ui-icons/Refresh';
 import { CircularProgress } from 'material-ui/Progress';
-import Hidden from 'material-ui/Hidden';
 
 const styles = theme => ({
   appBarTitle: {

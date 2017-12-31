@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
 import { withStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
 import HomeIcon from 'material-ui-icons/Home';
 import StarIcon from 'material-ui-icons/Star';
 import VideocamIcon from 'material-ui-icons/Videocam';

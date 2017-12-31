@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
-import Hidden from 'material-ui/Hidden';
 
 import TBANavBarContainer from '../containers/TBANavBarContainer'
 import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
