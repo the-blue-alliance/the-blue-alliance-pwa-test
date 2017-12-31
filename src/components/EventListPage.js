@@ -267,6 +267,7 @@ class EventListPage extends PureComponent {
             </SwipeableViews>
           </TBAPageContainer>
         </Hidden>
+        {/*
         <EventFilterDialog
           open={this.props.pageState.get('eventFilterOpen')}
           onRequestClose={this.eventFilterHandleRequestClose}
@@ -278,7 +279,7 @@ class EventListPage extends PureComponent {
           selectedValue={this.props.pageState.yearPickerValue}
           open={this.props.pageState.yearPickerOpen}
           onRequestClose={this.yearPickerHandleRequestClose}
-        />
+        />*/}
       </div>
     )
   }

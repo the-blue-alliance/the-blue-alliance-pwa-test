@@ -21,8 +21,12 @@ class RestorableWindowScoller extends PureComponent {
 
     return (
       <WindowScroller scrollElement={this.props.scrollElement}>
-      {({ height, isScrolling, onChildScroll, scrollTop }) => (
-        <AutoSizer disableHeight>
+      {({ height, isScrolling, onChildScroll, scrollTop }) => {
+        // 2017-12-31 react-virtualized 9.15.0 sometimes has height undefined
+        if (height === undefined) {
+          height = 0
+        }
+        return (<AutoSizer disableHeight>
           {({ width }) => (
             <List
               ref={(r) => this.list = r}
@@ -38,8 +42,8 @@ class RestorableWindowScoller extends PureComponent {
               scrollTop={scrollTop}
             />
           )}
-        </AutoSizer>
-      )}
+        </AutoSizer>)
+      }}
       </WindowScroller>
     );
   }
