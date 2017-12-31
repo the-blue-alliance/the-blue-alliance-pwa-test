@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { withStyles } from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
 
-import TBANavDrawerContainer from './containers/TBANavDrawerContainer'
+import TBASideNavContainer from './containers/TBASideNavContainer'
 import TBABottomNav from './components/TBABottomNav'
 
 import HomePageContainer from './containers/HomePageContainer'
@@ -63,7 +63,7 @@ class TBAApp extends Component {
     return (
       <div>
         <Hidden smDown>
-          <TBANavDrawerContainer />
+          <TBASideNavContainer />
         </Hidden>
         <Hidden mdUp>
           <TBABottomNav />

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import TBANavBar from '../components/TBANavBar'
+import TBAAppBar from '../components/TBAAppBar'
 
 
 const mapStateToProps = (state, props) => ({
@@ -9,9 +9,9 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = (dispatch) => ({
 });
 
-const TBANavBarContainer = connect(
+const TBAAppBarContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TBANavBar);
+)(TBAAppBar);
 
-export default TBANavBarContainer;
+export default TBAAppBarContainer;

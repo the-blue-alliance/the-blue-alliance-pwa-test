@@ -16,9 +16,9 @@ const styles = theme => ({
   }
 })
 
-class TBANavDrawerContent extends PureComponent {
+class TBASideNavContent extends PureComponent {
   render() {
-    console.log("Render TBANavDrawerContent")
+    console.log("Render TBASideNavContent")
 
     return (
       <div className={this.props.classes.root} >
@@ -81,4 +81,4 @@ class TBANavDrawerContent extends PureComponent {
   }
 }
 
-export default withStyles(styles)(TBANavDrawerContent);
+export default withStyles(styles)(TBASideNavContent);

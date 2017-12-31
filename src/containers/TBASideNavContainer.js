@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import TBANavDrawer from '../components/TBANavDrawer'
+import TBASideNav from '../components/TBASideNav'
 
 
 const mapStateToProps = (state, props) => ({
@@ -8,9 +8,9 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = (dispatch) => ({
 });
 
-const TBANavDrawerContainer = connect(
+const TBASideNavContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TBANavDrawer);
+)(TBASideNav);
 
-export default TBANavDrawerContainer;
+export default TBASideNavContainer;

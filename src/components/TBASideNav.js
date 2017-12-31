@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { withStyles } from 'material-ui/styles'
 import Drawer from 'material-ui/Drawer'
 
-import TBANavDrawerContentContainer from '../containers/TBANavDrawerContentContainer'
+import TBASideNavContentContainer from '../containers/TBASideNavContentContainer'
 
 const styles = theme => ({
   root:  {
@@ -11,19 +11,19 @@ const styles = theme => ({
   }
 })
 
-class TBANavDrawer extends PureComponent {
+class TBASideNav extends PureComponent {
   render() {
-    console.log("Render TBANavDrawer")
+    console.log("Render TBASideNav")
 
     return (
       <Drawer
         type="permanent"
         className={this.props.classes.root}
       >
-        <TBANavDrawerContentContainer />
+        <TBASideNavContentContainer />
       </Drawer>
     )
   }
 }
 
-export default withStyles(styles)(TBANavDrawer);
+export default withStyles(styles)(TBASideNav);

@@ -42,9 +42,9 @@ class TBAToolbar extends PureComponent {
   }
 }
 
-class TBANavBar extends PureComponent {
+class TBAAppBar extends PureComponent {
   render() {
-    console.log("Render TBANavBar")
+    console.log("Render TBAAppBar")
     const {tabs, ...otherProps} = this.props
     return (
       <AppBar>
@@ -55,8 +55,8 @@ class TBANavBar extends PureComponent {
   }
 }
 
-TBANavBar.propTypes = {
+TBAAppBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(TBANavBar);
+export default withStyles(styles)(TBAAppBar);

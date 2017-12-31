@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 
-import TBANavBarContainer from '../containers/TBANavBarContainer'
+import TBAAppBarContainer from '../containers/TBAAppBarContainer'
 import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 
 const styles = theme => ({
@@ -51,7 +51,7 @@ class TBAPage extends PureComponent {
 
     return (
       <div>
-        <TBANavBarContainer
+        <TBAAppBarContainer
           title={this.props.title}
           refreshFunction={this.props.refreshFunction}
           filterFunction={this.props.filterFunction}
