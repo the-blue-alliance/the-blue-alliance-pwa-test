@@ -9,6 +9,19 @@ export default class Team extends Record({
   country: undefined,
 }) {
   getCityStateCountry() {
-    return `${this.city}, ${this.state_prov}, ${this.country}`
+    let s = ''
+    if (this.city) {
+        s += `${this.city}`
+    }
+    if (this.state_prov) {
+        s += `, ${this.state_prov}`
+    }
+    if (this.country) {
+        s += `, ${this.country}`
+    }
+    if (s == '') {
+        return null
+    }
+    return s
   }
 }

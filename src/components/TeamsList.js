@@ -12,11 +12,12 @@ const styles = {
 class TeamsList extends PureComponent {
   rowRenderer = ({index, isScrolling, isVisible, key, parent, style}) => {
     const team = this.filteredTeams.get(index)
+    const cityStateCountry = team.getCityStateCountry()
     return (
       <div key={team.get('key')} style={style}>
         <LinkContainer to={`/team/${team.get('team_number')}`}>
           <ListItem button divider disableRipple>
-            <ListItemText primary={`${team.get('team_number')} | ${team.get('nickname')}`} secondary={team.getCityStateCountry()} />
+            <ListItemText primary={`${team.get('team_number')} | ${team.get('nickname')}`} secondary={cityStateCountry ? cityStateCountry : '--'} />
           </ListItem>
         </LinkContainer>
       </div>
@@ -26,20 +27,27 @@ class TeamsList extends PureComponent {
   render() {
     console.log("Render TeamsList");
     if (this.props.filter) {
-      this.filteredTeams = this.props.teams.filter(team =>
-        team.get('nickname') && team.get('nickname').toLowerCase().includes(this.props.filter.toLowerCase()))
+      this.filteredTeams = this.props.teams.filter(team => (
+        (String(team.get('team_number')).includes(this.props.filter.toLowerCase())) ||
+        (team.get('nickname') && team.get('nickname').toLowerCase().includes(this.props.filter.toLowerCase())) ||
+        (team.getCityStateCountry() && team.getCityStateCountry().toLowerCase().includes(this.props.filter.toLowerCase()))
+      ))
     } else {
       this.filteredTeams = this.props.teams
     }
 
     if (this.props.teams !== undefined && this.props.scrollElement !== undefined) {
+      const numResults = this.filteredTeams.size
       return (
-        <RestorableWindowScroller
-          scrollElement={this.props.scrollElement}
-          rowCount={this.filteredTeams.size}
-          rowHeight={69}
-          rowRenderer={this.rowRenderer}
-        />
+        <div>
+          <div>{`${numResults} result${numResults === 1 ? '' : 's'}`}</div>
+          <RestorableWindowScroller
+            scrollElement={this.props.scrollElement}
+            rowCount={numResults}
+            rowHeight={69}
+            rowRenderer={this.rowRenderer}
+          />
+        </div>
       )
       // return (
       //   <AutoSizer>
