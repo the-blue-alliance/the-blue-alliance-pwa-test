@@ -19,7 +19,7 @@ export default class Team extends Record({
     if (this.country) {
         s += `, ${this.country}`
     }
-    if (s == '') {
+    if (s === '') {
         return null
     }
     return s

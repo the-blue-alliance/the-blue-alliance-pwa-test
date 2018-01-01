@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect'
-import { List } from 'immutable'
 import Team from '../database/Team'
 
 const getAllTeams = (state) => {

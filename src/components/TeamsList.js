@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
-import { AutoSizer, List } from 'react-virtualized';
 import { withStyles } from 'material-ui/styles';
 import { ListItem, ListItemText } from 'material-ui/List';
 import { CircularProgress } from 'material-ui/Progress';
