@@ -36,13 +36,11 @@ class TeamsList extends PureComponent {
     }
 
     if (this.props.teams !== undefined && this.props.scrollElement !== undefined) {
-      const numResults = this.filteredTeams.size
       return (
         <div>
-          <div>{`${numResults} result${numResults === 1 ? '' : 's'}`}</div>
           <RestorableWindowScroller
             scrollElement={this.props.scrollElement}
-            rowCount={numResults}
+            rowCount={this.filteredTeams.size}
             rowHeight={69}
             rowRenderer={this.rowRenderer}
           />
