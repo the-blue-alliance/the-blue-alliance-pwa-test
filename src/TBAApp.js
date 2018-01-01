@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import ReactGA from 'react-ga';
 import { withStyles } from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
 
@@ -16,6 +17,36 @@ import TeamPageContainer from './containers/TeamPageContainer'
 import MatchDialogContainer from './containers/MatchDialogContainer'
 import TeamAtEventDialog from './components/TeamAtEventDialog'
 
+// For Google Analytics tracking
+ReactGA.initialize('UA-XXXXXXXX') // TODO: Change to real tracking number
+class Analytics extends Component {
+  // Modified from https://github.com/react-ga/react-ga/issues/122#issuecomment-320436578
+  constructor(props) {
+    super(props)
+
+    // Initial page load - only fired once
+    this.sendPageChange(this.getPage(props.location))
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // When props change, check if the URL has changed or not
+    if (this.getPage(this.props.location) !== this.getPage(nextProps.location)) {
+      this.sendPageChange(this.getPage(nextProps.location))
+    }
+  }
+
+  getPage(location) {
+    return location.pathname + location.search + location.hash
+  }
+
+  sendPageChange(page) {
+    ReactGA.pageview(page)
+  }
+
+  render() {
+    return null
+  }
+}
 
 class ModalSwitch extends React.Component {
   previousLocation = this.props.location
@@ -69,6 +100,7 @@ class TBAApp extends Component {
           <TBABottomNav />
         </Hidden>
         <Route component={ModalSwitch} />
+        <Route path="/" component={Analytics}/>
       </div>
     )
   }
