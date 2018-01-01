@@ -49,19 +49,6 @@ class TeamsList extends PureComponent {
           />
         </div>
       )
-      // return (
-      //   <AutoSizer>
-      //     {({ height, width }) => (
-      //       <List
-      //         width={width}
-      //         height={height}
-      //         rowCount={this.filteredTeams.size}
-      //         rowHeight={69}
-      //         rowRenderer={this.rowRenderer}
-      //       />
-      //     )}
-      //   </AutoSizer>
-      // )
     } else {
       return <CircularProgress color="accent" size={100} />
     }

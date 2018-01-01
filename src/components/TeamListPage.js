@@ -13,11 +13,15 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
+    width: '100%',
+    overflowY: 'hidden',
   },
-  teamsList: {
-    flexGrow: 1,
+  scrollContainer: {
+    display: 'flex',
+    flexDirection: 'column',
     height: '100%',
-  }
+    overflowY: 'scroll',
+  },
 }
 
 class TeamListPage extends PureComponent {
@@ -89,7 +93,7 @@ class TeamListPage extends PureComponent {
             </ResponsiveLayout>
           </TBAPageContainer>
         </Hidden>
-        {/*<Hidden mdUp>
+        <Hidden mdUp>
           <TBAPageContainer
             documentTitle='Teams'
             title='Teams'
@@ -103,15 +107,16 @@ class TeamListPage extends PureComponent {
                 onChange={this.handleTextFieldChange}
                 defaultValue={this.props.pageState.get('filter')}
               />
-              <div className={this.props.classes.teamsList}>
+              <div ref={el => this.contentRef = el} className={this.props.classes.scrollContainer}>
                 <TeamsList
+                  scrollElement={this.contentRef}
                   teams={this.props.allTeams}
                   filter={this.props.pageState.get('filter')}
                 />
               </div>
             </div>
           </TBAPageContainer>
-        </Hidden>*/}
+        </Hidden>
       </div>
     )
   }
