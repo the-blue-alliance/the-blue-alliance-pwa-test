@@ -21,10 +21,18 @@ class TeamPage extends PureComponent {
     props.resetPage()
     // props.setPageState({
     // })
+    this.state = {
+      isFirstRender: true,
+    }
   }
 
   componentDidMount() {
     this.refreshFunction()
+  }
+
+  componentDidUpdate() {
+    // Rerender without cascading
+    setTimeout(() => this.setState({ isFirstRender: false }), 0)
   }
 
   refreshFunction = () => {
@@ -59,6 +67,7 @@ class TeamPage extends PureComponent {
       <TBAPageContainer
         documentTitle={`Team ${teamNumber} (${year})`}
         refreshFunction={this.refreshFunction}
+        restoreScroll={this.state.isFirstRender}
       >
         <ResponsiveLayout>
           <Grid container spacing={24}>
