@@ -4,6 +4,8 @@ export const DECREMENT_LOADING_COUNT = 'DECREMENT_LOADING_COUNT'
 
 export const TOGGLE_OFFLINE = 'TOGGLE_OFFLINE'
 
+export const SET_BOTTOM_NAV_VALUE = 'SET_BOTTOM_NAV_VALUE'
+
 // Resetting Page
 export const RESET_PAGE = 'RESET_PAGE'
 

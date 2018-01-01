@@ -5,7 +5,7 @@ import { withStyles } from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
 
 import TBASideNavContainer from './containers/TBASideNavContainer'
-import TBABottomNav from './components/TBABottomNav'
+import TBABottomNavContainer from './containers/TBABottomNavContainer'
 
 import HomePageContainer from './containers/HomePageContainer'
 import EventListPageContainer from './containers/EventListPageContainer'
@@ -94,10 +94,10 @@ class TBAApp extends Component {
     return (
       <div>
         <Hidden smDown>
-          <TBASideNavContainer />
+          <Route path="/" component={TBASideNavContainer} />
         </Hidden>
         <Hidden mdUp>
-          <TBABottomNav />
+          <Route path="/" component={TBABottomNavContainer} />
         </Hidden>
         <Route component={ModalSwitch} />
         <Route path="/" component={Analytics}/>

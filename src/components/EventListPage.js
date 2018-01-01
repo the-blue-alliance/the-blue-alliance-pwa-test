@@ -45,6 +45,7 @@ class EventListTab extends PureComponent {
 class EventListPage extends PureComponent {
   constructor(props) {
     super(props)
+    props.setBottomNav('events')
     props.resetPage({
       tabIdx: 0,
       eventFilterOpen: false,

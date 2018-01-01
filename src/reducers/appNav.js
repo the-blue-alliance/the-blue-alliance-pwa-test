@@ -15,6 +15,7 @@ const updateLoadingCount = (state = 0, action) => {
 const appNav = (state = Map({
   loadingCount: 0,
   offlineOnly: false,
+  bottomNavValue: 'home',
 }), action) => {
   switch (action.type) {
     case types.INCREMENT_LOADING_COUNT:
@@ -24,6 +25,9 @@ const appNav = (state = Map({
     case types.TOGGLE_OFFLINE:
       return state
         .set('offlineOnly', !state.get('offlineOnly'))
+    case types.SET_BOTTOM_NAV_VALUE:
+      return state
+        .set('bottomNavValue', action.value)
     default:
       return state
   }

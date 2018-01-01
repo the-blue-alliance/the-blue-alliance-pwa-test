@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { resetPage, setPageState, fetchTeamInfo, fetchTeamYearEvents } from '../actions'
+import { resetPage, setPageState, setBottomNav, fetchTeamInfo, fetchTeamYearEvents } from '../actions'
 import { getYear } from '../selectors/CommonPageSelectors'
 import { getTeamNumber, getTeam, getTeamYearEvents } from '../selectors/TeamPageSelectors'
 import TeamPage from '../components/TeamPage'
@@ -17,6 +17,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = (dispatch) => ({
   resetPage: () => dispatch(resetPage()),
   setPageState: (pageState) => dispatch(setPageState(pageState)),
+  setBottomNav: (value) => dispatch(setBottomNav(value)),
   fetchTeamInfo: (teamNumber) => dispatch(fetchTeamInfo(teamNumber)),
   fetchTeamYearEvents: (teamNumber, year) => dispatch(fetchTeamYearEvents(teamNumber, year)),
 });

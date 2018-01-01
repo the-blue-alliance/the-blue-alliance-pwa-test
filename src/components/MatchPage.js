@@ -5,6 +5,7 @@ import TBAPageContainer from '../containers/TBAPageContainer'
 class MatchPage extends PureComponent {
   constructor(props) {
     super(props)
+    props.setBottomNav('matches')
     // this.state = {
     //   matchKey: props.match.params.matchKey,
     // }

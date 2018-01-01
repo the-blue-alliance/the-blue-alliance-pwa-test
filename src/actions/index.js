@@ -21,6 +21,11 @@ export const toggleOffline = () => ({
   type: types.TOGGLE_OFFLINE,
 })
 
+export const setBottomNav = (value) => ({
+  type: types.SET_BOTTOM_NAV_VALUE,
+  value,
+})
+
 // Resetting Page
 export function resetPage(defaultState) {
   return (dispatch, getState) => {

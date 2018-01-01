@@ -18,6 +18,7 @@ const styles = {
 class TeamPage extends PureComponent {
   constructor(props) {
     super(props)
+    props.setBottomNav('teams')
     props.resetPage()
     // props.setPageState({
     // })
