@@ -204,13 +204,13 @@ class EventListPage extends PureComponent {
           >
             <ResponsiveLayout>
               <Grid container spacing={24}>
-                <Grid item xs={2}>
+                <Grid item xs={3} lg={2}>
                   <div className={this.props.classes.sideNav}>
+                    <h1>{`${2017} Events`}</h1>
                     <p>Navigation stuff</p>
                   </div>
                 </Grid>
-                <Grid item xs={10}>
-                  <h1>Events</h1>
+                <Grid item xs={9} lg={10}>
                   {events && <EventsList2 events={events} scrollElement={this.contentRef}/>}
                 </Grid>
               </Grid>

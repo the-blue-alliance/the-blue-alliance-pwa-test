@@ -9,6 +9,9 @@ import ResponsiveLayout from './ResponsiveLayout'
 import TeamsList from './TeamsList'
 
 const styles = {
+  sideNav: {
+    position: 'fixed',
+  },
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -68,21 +71,23 @@ class TeamListPage extends PureComponent {
           >
             <ResponsiveLayout>
               <Grid container spacing={24}>
-                <Grid item xs={2}>
-                  <h1>Teams</h1>
+                <Grid item xs={3} lg={2}>
+                  <div className={this.props.classes.sideNav}>
+                    <h1>Teams</h1>
+                    <TextField
+                      label="Filter by number, name, or location"
+                      fullWidth
+                      multiline
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      margin="normal"
+                      onChange={this.handleTextFieldChange}
+                      defaultValue={this.props.pageState.get('filter')}
+                    />
+                  </div>
                 </Grid>
-                <Grid item xs={10}>
-                  <TextField
-                    label="Filter teams by number, name, or location"
-                    fullWidth
-                    margin="normal"
-                    onChange={this.handleTextFieldChange}
-                    defaultValue={this.props.pageState.get('filter')}
-                  />
-                </Grid>
-              </Grid>
-              <Grid container spacing={24}>
-                <Grid item xs={12}>
+                <Grid item xs={9} lg={10}>
                   <TeamsList
                     scrollElement={this.contentRef}
                     teams={this.props.allTeams}
@@ -101,7 +106,7 @@ class TeamListPage extends PureComponent {
           >
             <div className={this.props.classes.container}>
               <TextField
-                label="Filter teams by number, name, or location"
+                label="Filter by number, name, or location"
                 fullWidth
                 margin="normal"
                 onChange={this.handleTextFieldChange}
