@@ -1,35 +1,33 @@
-import memoize from 'lodash.memoize'
+import { createSelector } from 'reselect'
 import { List } from 'immutable'
 import Team from '../database/Team'
 
-const getTeamsByPage = (state, pageNum) => {
+const getAllTeams = (state) => {
   for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
-    const teams = state.getIn(['page', 'modelHistory', key, 'teams', 'collections', 'byPage', pageNum])
+    const teams = state.getIn(['page', 'modelHistory', key, 'teams', 'collections', 'all'])
     if (teams !== undefined) {
       return teams
     }
   }
 }
 
-const sortTeams = memoize((pageTeams) => {
-  return pageTeams.sort((a, b) => {
-    if (a.get('team_number') < b.get('team_number')) {
-      return -1
+export const getSortedTeams = createSelector(
+  [getAllTeams],
+  (teams) => {
+    if (teams) {
+      teams = teams.map(m => new Team(m))
+      return teams.toList().sort((a, b) => {
+        const orderA = a.get('team_number')
+        const orderB = b.get('team_number')
+        if (orderA < orderB) {
+          return -1
+        }
+        if (orderA > orderB) {
+          return 1
+        }
+        return 0
+      }).toList()
     }
-    if (a.get('team_number') > b.get('team_number')) {
-      return 1
-    }
-    return 0
-  }).map(t => new Team(t))
-})
-
-export const getSortedTeams = (state, props) => { // TODO: should be memoized
-  let allTeams = List()
-  for (let pageNum=0; pageNum<14; pageNum++) {
-    let pageTeams = getTeamsByPage(state, pageNum)
-    if (pageTeams) {
-      allTeams = allTeams.concat(sortTeams(pageTeams, pageNum))
-    }
+    return undefined
   }
-  return allTeams
-}
+)

@@ -5,11 +5,13 @@ const mergeDeep = (state = Map(), data) => {
   return state.mergeDeep(data)
 }
 
-const updateCollection = (state = Map(), data) => {
+const updateCollection = (state = Map(), data, mergeByKey) => {
   const oldKeys = Set(state.keys())
   const newKeys = Set(data.keys())
-  const toRemove = oldKeys.subtract(newKeys)
-  toRemove.forEach(key => state = state.remove(key))
+  if (!mergeByKey) {
+    const toRemove = oldKeys.subtract(newKeys)
+    toRemove.forEach(key => state = state.remove(key))
+  }
   newKeys.forEach(key => state = state.set(key, mergeDeep(state.get(key), data.get(key))))
   return state
 }
@@ -36,7 +38,7 @@ const updateSingle = (state, subPath, data) => {
   )
 }
 
-const updateMulti = (state, subPath, data) => {
+const updateMulti = (state, subPath, data, mergeByKey=false) => {
   // Merge data -> history -> current
   const key = findLastKey(state, subPath)
   let newCollection = Map()
@@ -49,7 +51,7 @@ const updateMulti = (state, subPath, data) => {
   const byKeySubpath = prePath.concat([subPath[0]]).concat(['byKey'])
   return state.setIn(
     prePath.concat(subPath),
-    updateCollection(lastCollection, newCollection)
+    updateCollection(lastCollection, newCollection, mergeByKey)
   ).setIn(
     byKeySubpath,
     mergeDeep(state.getIn(byKeySubpath), newCollection)
@@ -116,8 +118,9 @@ const page = (state = Map({
     case types.RECEIVE_TEAM_LIST_PAGE:
       return updateMulti(
         state,
-        ['teams', 'collections', 'byPage', action.pageNum],
-        action.data)
+        ['teams', 'collections', 'all'],
+        action.data,
+        true)
     default:
       return state
   }

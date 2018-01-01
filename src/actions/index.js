@@ -292,9 +292,8 @@ export function fetchTeamYearEvents(teamNumber, year) {
 }
 
 // Team List Page
-export const receiveTeamListPage = (pageNum, teams) => ({
+export const receiveTeamListPage = (teams) => ({
   type: types.RECEIVE_TEAM_LIST_PAGE,
-  pageNum,
   data: teams,  // TODO: create Team object
 })
 
@@ -307,7 +306,7 @@ export function fetchTeamListHelper(pageNum) {
       db.teams.where('team_number').between(0, 20).toArray().then(teams => {
         if (dataSource < sources.IDB_FAST) {
           dataSource = sources.IDB_FAST
-          dispatch(receiveTeamListPage(0, teams))
+          dispatch(receiveTeamListPage(teams))
         }
       })
     }
@@ -316,7 +315,7 @@ export function fetchTeamListHelper(pageNum) {
     db.teams.where('team_number').between(pageNum * 500, pageNum * 500 + 500).toArray().then(teams => {
       if (dataSource < sources.IDB) {
         dataSource = sources.IDB
-        dispatch(receiveTeamListPage(pageNum, teams))
+        dispatch(receiveTeamListPage(teams))
       }
     })
 
@@ -332,7 +331,7 @@ export function fetchTeamListHelper(pageNum) {
         if (dataSource < sources.API) {
           dataSource = sources.API
           if (teams) {
-            dispatch(receiveTeamListPage(pageNum, teams))
+            dispatch(receiveTeamListPage(teams))
             addTeams(teams)
           }
         }
