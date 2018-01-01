@@ -7,7 +7,7 @@ const styles = {
 }
 
 
-class RestorableWindowScoller extends PureComponent {
+class WindowScrollerList extends PureComponent {
   componentDidMount() {
     if (this.props.rowCount > 0) {
       this.list.measureAllRows()
@@ -21,7 +21,7 @@ class RestorableWindowScoller extends PureComponent {
   }
 
   render() {
-    console.log("Render RestorableWindowScoller")
+    console.log("Render WindowScrollerList")
 
     return (
       <WindowScroller scrollElement={this.props.scrollElement}>
@@ -53,4 +53,4 @@ class RestorableWindowScoller extends PureComponent {
   }
 }
 
-export default withStyles(styles)(RestorableWindowScoller);
+export default withStyles(styles)(WindowScrollerList);

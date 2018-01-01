@@ -3,7 +3,7 @@ import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
 import { withStyles } from 'material-ui/styles';
 import indigo from 'material-ui/colors/indigo';
 import { ListItem, ListItemText, ListSubheader } from 'material-ui/List';
-import RestorableWindowScroller from './RestorableWindowScroller'
+import WindowScrollerList from './WindowScrollerList'
 
 
 const styles = {
@@ -202,7 +202,7 @@ class EventsList2 extends PureComponent {
     }
 
     return (
-      <RestorableWindowScroller
+      <WindowScrollerList
         scrollElement={this.props.scrollElement}
         rowCount={this.listItems.length}
         rowHeight={({ index }) => labelIdxs.has(index) ? 24 : 69}

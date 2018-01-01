@@ -3,7 +3,7 @@ import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
 import { withStyles } from 'material-ui/styles';
 import { ListItem, ListItemText } from 'material-ui/List';
 import { CircularProgress } from 'material-ui/Progress';
-import RestorableWindowScroller from './RestorableWindowScroller'
+import WindowScrollerList from './WindowScrollerList'
 
 const styles = {
 }
@@ -37,7 +37,7 @@ class TeamsList extends PureComponent {
 
     if (this.props.teams !== undefined) {
       return (
-        <RestorableWindowScroller
+        <WindowScrollerList
           scrollElement={this.props.scrollElement}
           rowCount={this.filteredTeams.size}
           rowHeight={69}
