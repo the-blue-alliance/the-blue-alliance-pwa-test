@@ -76,6 +76,7 @@ class EventPage extends PureComponent {
           <TBAPageContainer
             documentTitle={name}
             refreshFunction={this.refreshFunction}
+            contentRef={el => this.contentRef = el}
             restoreScroll={this.state.restoreScroll}
           >
             <ResponsiveLayout>
@@ -106,9 +107,10 @@ class EventPage extends PureComponent {
                       </Grid>
                     </Grid>
                   </div>
-                  <div className={classNames({[this.props.classes.hidden]: this.props.tabIdx !== 1})}>
-                    TEAMS!
-                  </div>
+                  {this.props.tabIdx === 1 &&
+                  <div>
+                    <TeamsList scrollElement={this.contentRef} teams={teams} />
+                  </div>}
                 </Grid>
               </Grid>
             </ResponsiveLayout>

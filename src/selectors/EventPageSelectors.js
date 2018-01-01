@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect'
 import { List } from 'immutable'
 import Match from '../database/Match'
+import Team from '../database/Team'
 
 export const getEventKey = (state, props) => {
   return props.match.params.eventKey
@@ -101,6 +102,7 @@ export const getSortedEventTeams = createSelector(
   [getEventTeams],
   (teams) => {
     if (teams) {
+      teams = teams.map(m => new Team(m))
       return teams.sort((a, b) => {
         if (a.get('team_number') < b.get('team_number')) {
           return -1

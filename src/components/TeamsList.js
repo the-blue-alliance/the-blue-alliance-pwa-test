@@ -35,16 +35,14 @@ class TeamsList extends PureComponent {
       this.filteredTeams = this.props.teams
     }
 
-    if (this.props.teams !== undefined && this.props.scrollElement !== undefined) {
+    if (this.props.teams !== undefined) {
       return (
-        <div>
-          <RestorableWindowScroller
-            scrollElement={this.props.scrollElement}
-            rowCount={this.filteredTeams.size}
-            rowHeight={69}
-            rowRenderer={this.rowRenderer}
-          />
-        </div>
+        <RestorableWindowScroller
+          scrollElement={this.props.scrollElement}
+          rowCount={this.filteredTeams.size}
+          rowHeight={69}
+          rowRenderer={this.rowRenderer}
+        />
       )
     } else {
       return <CircularProgress color="accent" size={100} />
