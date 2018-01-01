@@ -21,7 +21,13 @@ import TBAPageContainer from '../containers/TBAPageContainer'
 const styles = theme => ({
   hidden: {
     display: 'none',
-  }
+  },
+  scrollContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    overflowY: 'scroll',
+  },
 })
 
 class EventPage extends PureComponent {
@@ -166,7 +172,9 @@ class EventPage extends PureComponent {
                 </List>
               </div>
               <MatchList matches={matches} />
-              <TeamsList teams={teams} />
+              <div ref={el => this.contentRef = el} className={this.props.classes.scrollContainer}>
+                <TeamsList scrollElement={this.contentRef} teams={teams} />
+              </div>
             </SwipeableViews>
           </TBAPageContainer>
         </Hidden>
