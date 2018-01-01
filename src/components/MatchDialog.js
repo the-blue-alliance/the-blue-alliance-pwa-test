@@ -5,7 +5,7 @@ import MatchBreakdownTable from './MatchBreakdownTable'
 import MatchVideos from './MatchVideos'
 
 class MatchDialog extends PureComponent {
-  handleRequestClose = (e) => {
+  handleClose = (e) => {
     e.stopPropagation()
     this.props.history.goBack()
   }
@@ -15,7 +15,7 @@ class MatchDialog extends PureComponent {
     return (
       <Dialog
         open={true}
-        onRequestClose={this.handleRequestClose}
+        onClose={this.handleClose}
         maxWidth='md'
         fullWidth
       >

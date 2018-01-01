@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import Dialog, { DialogTitle } from 'material-ui/Dialog';
 
 class TeamAtEventDialog extends PureComponent {
-  handleRequestClose = (e) => {
+  handleClose = (e) => {
     e.stopPropagation()
     this.props.history.goBack()
   }
@@ -13,7 +13,7 @@ class TeamAtEventDialog extends PureComponent {
     return (
       <Dialog
         open={true}
-        onRequestClose={this.handleRequestClose}
+        onClose={this.handleClose}
       >
         <DialogTitle>Team@Event {this.props.match.params.teamNumber}@{this.props.location.hash}</DialogTitle>
         <div>
