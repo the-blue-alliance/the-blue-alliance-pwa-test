@@ -55,8 +55,19 @@ class Analytics extends Component {
   }
 }
 
+const ModalRoute = ({ component, ...rest }) => {
+  return (
+    <Route {...rest} render={routeProps => {
+      let props = Object.assign(routeProps, rest)
+      props.handleClose = () => props.history.go(-props.modalDepth)
+      return React.createElement(component, props)
+    }}/>
+  )
+}
+
 class ModalSwitch extends React.Component {
   previousLocation = this.props.location
+  modalKeyDepths = {}
 
   componentWillUpdate(nextProps) {
     const { location } = this.props
@@ -65,6 +76,14 @@ class ModalSwitch extends React.Component {
       (!location.state || !location.state.modal)
     ) {
       this.previousLocation = this.props.location
+    }
+
+    if (location.state && location.state.modal) {
+      if (nextProps.history.action === 'PUSH') {
+        this.modalKeyDepths[nextProps.location.key] = this.modalKeyDepths[location.key] + 1
+      }
+    } else {
+      this.modalKeyDepths = {[nextProps.location.key]: 1}
     }
   }
 
@@ -75,6 +94,7 @@ class ModalSwitch extends React.Component {
       location.state.modal &&
       this.previousLocation !== location // not initial render
     )
+    const modalDepth = this.modalKeyDepths[location.key]
 
     return (
       <div>
@@ -86,8 +106,8 @@ class ModalSwitch extends React.Component {
           <Route path='/teams' component={TeamListPageContainer} />
           <Route path='/team/:teamNumber/:year?' component={TeamPageContainer} />
         </Switch>
-        {isModal ? <Route path='/match/:matchKey' component={MatchDialogContainer} /> : null}
-        {isModal ? <Route path='/team/:teamNumber/:year?' component={TeamAtEventDialog} /> : null}
+        {isModal ? <ModalRoute path='/match/:matchKey' component={MatchDialogContainer} modalDepth={modalDepth} /> : null}
+        {isModal ? <ModalRoute path='/team/:teamNumber/:year?' component={TeamAtEventDialog}  modalDepth={modalDepth} /> : null}
       </div>
     )
   }

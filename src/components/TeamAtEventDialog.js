@@ -4,7 +4,7 @@ import Dialog, { DialogTitle } from 'material-ui/Dialog';
 class TeamAtEventDialog extends PureComponent {
   handleClose = (e) => {
     e.stopPropagation()
-    this.props.history.goBack()
+    this.props.handleClose()
   }
 
   render() {

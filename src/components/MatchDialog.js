@@ -7,11 +7,12 @@ import MatchVideos from './MatchVideos'
 class MatchDialog extends PureComponent {
   handleClose = (e) => {
     e.stopPropagation()
-    this.props.history.goBack()
+    this.props.handleClose()
   }
 
   render() {
     console.log("Render Match Dialog")
+
     return (
       <Dialog
         open={true}
