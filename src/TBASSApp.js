@@ -19,8 +19,8 @@ class TBASSApp extends Component {
     return (
       <Provider store={store}>
         <StaticRouter
-          location={'/'}
-          context={{}}
+          location={this.props.url}
+          context={this.props.context}
         >
           <TBAApp />
         </StaticRouter>
