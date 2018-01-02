@@ -19,6 +19,11 @@ import TeamAtEventDialog from './components/TeamAtEventDialog'
 
 // For Google Analytics tracking
 ReactGA.initialize('UA-XXXXXXXX') // TODO: Change to real tracking number
+var canUseDOM = !!(
+      typeof window !== 'undefined' &&
+      window.document &&
+      window.document.createElement
+)
 class Analytics extends Component {
   // Modified from https://github.com/react-ga/react-ga/issues/122#issuecomment-320436578
   constructor(props) {
@@ -40,7 +45,9 @@ class Analytics extends Component {
   }
 
   sendPageChange(page) {
-    ReactGA.pageview(page)
+    if (canUseDOM) {
+      ReactGA.pageview(page)
+    }
   }
 
   render() {
@@ -93,10 +100,10 @@ class TBAApp extends Component {
   render() {
     return (
       <div>
-        <Hidden smDown>
+        <Hidden smDown implementation="css">
           <Route path="/" component={TBASideNavContainer} />
         </Hidden>
-        <Hidden mdUp>
+        <Hidden mdUp implementation="css">
           <Route path="/" component={TBABottomNavContainer} />
         </Hidden>
         <Route component={ModalSwitch} />

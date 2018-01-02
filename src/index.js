@@ -48,7 +48,7 @@ const theme = createMuiTheme({
   },
 });
 
-ReactDOM.render(
+ReactDOM.hydrate(
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <MuiThemeProvider theme={theme}>

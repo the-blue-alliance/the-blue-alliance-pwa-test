@@ -37,11 +37,11 @@ class TBAPage extends PureComponent {
   }
 
   componentWillMount() {
-    document.title = this.getDocumentTitle()
+    // document.title = this.getDocumentTitle()
   }
 
   componentWillUpdate() {
-    document.title = this.getDocumentTitle()
+    // document.title = this.getDocumentTitle()
   }
 
   render() {

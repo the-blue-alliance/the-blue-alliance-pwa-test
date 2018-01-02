@@ -9,7 +9,7 @@ import SearchIcon from 'material-ui-icons/Search';
 import FilterListIcon from 'material-ui-icons/FilterList';
 import RefreshIcon from 'material-ui-icons/Refresh';
 import { CircularProgress } from 'material-ui/Progress';
-import TBALamp from '../icons/tba_lamp.svg';
+import TBALamp from '../icons/tba_lamp';
 
 const styles = theme => ({
   appBarTitle: {
@@ -25,7 +25,7 @@ class TBAToolbar extends PureComponent {
   render() {
     return (
       <Toolbar>
-        {!this.props.title && <img src={TBALamp} className={this.props.classes.logo} alt="logo" />}
+        {!this.props.title && <TBALamp className={this.props.classes.logo} />}
         <Typography type="title" color="inherit" className={this.props.classes.appBarTitle}>
           {this.props.title ? this.props.title : 'The Blue Alliance'}
         </Typography>
