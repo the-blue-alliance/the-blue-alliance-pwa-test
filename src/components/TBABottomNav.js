@@ -1,4 +1,5 @@
 import React from 'react'
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
 import BottomNavigation, { BottomNavigationButton } from 'material-ui/BottomNavigation'
@@ -8,7 +9,7 @@ import EventIcon from 'material-ui-icons/Event'
 import PeopleIcon from 'material-ui-icons/People'
 import MoreHorizIcon from 'material-ui-icons/MoreHoriz'
 
-import TBANavMoreDialog from './TBANavMoreDialog'
+import TBANavMoreMenu from './TBANavMoreMenu'
 
 const styles = {
   root: {
@@ -21,7 +22,8 @@ const styles = {
 
 class TBABottomNav extends React.PureComponent {
   state = {
-    moreDialogOpen: false,
+    moreMenuOpen: false,
+    anchorEl: null,
   }
 
   handleNavChange = (event, value) => {
@@ -34,12 +36,12 @@ class TBABottomNav extends React.PureComponent {
     }
   }
 
-  handleOpen = () => {
-    this.setState({ moreDialogOpen: true })
+  handleOpen = event => {
+    this.setState({ moreMenuOpen: true, anchorEl: findDOMNode(this.moreRef) })
   }
 
   handleClose = () => {
-    this.setState({ moreDialogOpen: false })
+    this.setState({ moreMenuOpen: false })
   }
 
   render() {
@@ -57,9 +59,10 @@ class TBABottomNav extends React.PureComponent {
           <BottomNavigationButton label="Home" value="home" icon={<HomeIcon />} />
           <BottomNavigationButton label="Events" value="events" icon={<EventIcon />} />
           <BottomNavigationButton label="Teams" value="teams" icon={<PeopleIcon />} />
-          <BottomNavigationButton label="More" value="more" icon={<MoreHorizIcon />} onClick={this.handleOpen} />
+          <BottomNavigationButton label="More" value="more" icon={<MoreHorizIcon />}
+            onClick={this.handleOpen} ref={el => this.moreRef = el} />
         </BottomNavigation>
-        <TBANavMoreDialog open={this.state.moreDialogOpen} handleClose={this.handleClose} />
+        <TBANavMoreMenu open={this.state.moreMenuOpen} handleClose={this.handleClose} anchorEl={this.state.anchorEl} />
       </Paper>
     )
   }
