@@ -27,7 +27,7 @@ class TBABottomNav extends React.PureComponent {
   }
 
   handleNavChange = (event, value) => {
-    if (value !== 'more' && value !== this.props.bottomNavValue) {
+    if (value !== 'more') {
       if (value === 'home') {
         this.props.history.push('/')
       } else {
