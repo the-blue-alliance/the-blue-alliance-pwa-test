@@ -5,6 +5,7 @@ import Grid from 'material-ui/Grid';
 import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import { CircularProgress } from 'material-ui/Progress';
+import Hidden from 'material-ui/Hidden';
 
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ResponsiveLayout from './ResponsiveLayout'
@@ -65,34 +66,49 @@ class TeamPage extends PureComponent {
     }
 
     return (
-      <TBAPageContainer
-        documentTitle={`Team ${teamNumber} (${year})`}
-        refreshFunction={this.refreshFunction}
-        restoreScroll={this.state.isFirstRender}
-      >
-        <ResponsiveLayout>
-          <Grid container spacing={24}>
-            <Grid item xs={3} lg={2}>
-              <div className={this.props.classes.sideNav}>
-                <Select
-                  value={2018}
-                  // onChange={this.handleChange}
-                  // input={<Input name="age" id="age-simple" />}
-                >
-                  <MenuItem value={2018}>2018 Season</MenuItem>
-                  <MenuItem value={2017}>2017 Season</MenuItem>
-                  <MenuItem value={2016}>2016 Season</MenuItem>
-                </Select>
-              </div>
-            </Grid>
-            <Grid item xs={9} lg={10}>
-              <h1>Team {teamNumber}{nickname && ` - ${nickname}`}</h1>
-              {name && <p>aka {name}</p>}
-              {eventList && <ul>{eventList}</ul>}
-            </Grid>
-          </Grid>
-        </ResponsiveLayout>
-      </TBAPageContainer>
+      <div>
+        <Hidden smDown>
+          <TBAPageContainer
+            documentTitle={`Team ${teamNumber} (${year})`}
+            refreshFunction={this.refreshFunction}
+            restoreScroll={this.state.isFirstRender}
+          >
+            <ResponsiveLayout>
+              <Grid container spacing={24}>
+                <Grid item xs={3} lg={2}>
+                  <div className={this.props.classes.sideNav}>
+                    <Select
+                      value={2018}
+                      // onChange={this.handleChange}
+                      // input={<Input name="age" id="age-simple" />}
+                    >
+                      <MenuItem value={2018}>2018 Season</MenuItem>
+                      <MenuItem value={2017}>2017 Season</MenuItem>
+                      <MenuItem value={2016}>2016 Season</MenuItem>
+                    </Select>
+                  </div>
+                </Grid>
+                <Grid item xs={9} lg={10}>
+                  <h1>Team {teamNumber}{nickname && ` - ${nickname}`}</h1>
+                  {name && <p>aka {name}</p>}
+                  {eventList && <ul>{eventList}</ul>}
+                </Grid>
+              </Grid>
+            </ResponsiveLayout>
+          </TBAPageContainer>
+        </Hidden>
+        <Hidden mdUp>
+          <TBAPageContainer
+            documentTitle={`Team ${teamNumber} (${year})`}
+            title={`Team ${teamNumber} (${year})`}
+            refreshFunction={this.refreshFunction}
+          >
+            <h1>Team {teamNumber}{nickname && ` - ${nickname}`}</h1>
+            {name && <p>aka {name}</p>}
+            {eventList && <ul>{eventList}</ul>}
+          </TBAPageContainer>
+        </Hidden>
+      </div>
     )
   }
 }
