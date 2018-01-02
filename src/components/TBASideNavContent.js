@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
+import { Link } from 'react-router-dom'
 import { withStyles } from 'material-ui/styles';
 import HomeIcon from 'material-ui-icons/Home';
 import StarIcon from 'material-ui-icons/Star';
@@ -23,46 +23,36 @@ class TBASideNavContent extends PureComponent {
     return (
       <div className={this.props.classes.root} >
         <List>
-          <LinkContainer to="/">
-            <ListItem button>
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
-            </ListItem>
-          </LinkContainer>
-          <LinkContainer to="/">
-            <ListItem button>
-              <ListItemIcon>
-                <StarIcon />
-              </ListItemIcon>
-              <ListItemText primary="myTBA" />
-            </ListItem>
-          </LinkContainer>
-          <LinkContainer to="/">
-            <ListItem button>
-              <ListItemIcon>
-                <VideocamIcon />
-              </ListItemIcon>
-              <ListItemText primary="GameDay" />
-            </ListItem>
-          </LinkContainer>
-          <LinkContainer to="/events">
-            <ListItem button>
-              <ListItemIcon>
-                <EventIcon />
-              </ListItemIcon>
-              <ListItemText primary="Events" />
-            </ListItem>
-          </LinkContainer>
-          <LinkContainer to="/teams">
-            <ListItem button>
-              <ListItemIcon>
-                <PeopleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Teams" />
-            </ListItem>
-          </LinkContainer>
+          <ListItem button component={Link} to="/">
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
+          <ListItem button component={Link} to="/mytba">
+            <ListItemIcon>
+              <StarIcon />
+            </ListItemIcon>
+            <ListItemText primary="myTBA" />
+          </ListItem>
+          <ListItem button component={Link} to="/gameday">
+            <ListItemIcon>
+              <VideocamIcon />
+            </ListItemIcon>
+            <ListItemText primary="GameDay" />
+          </ListItem>
+          <ListItem button component={Link} to="/events">
+            <ListItemIcon>
+              <EventIcon />
+            </ListItemIcon>
+            <ListItemText primary="Events" />
+          </ListItem>
+          <ListItem button component={Link} to="/teams">
+            <ListItemIcon>
+              <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Teams" />
+          </ListItem>
         </List>
         <Divider />
         <List>
