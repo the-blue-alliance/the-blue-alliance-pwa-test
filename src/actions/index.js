@@ -75,12 +75,10 @@ export function fetchEventInfo(eventKey) {
         response => response.json(),
         error => console.log('An error occured.', error)
       ).then(event => {
-        if (dataSource < sources.API) {
+        if (dataSource < sources.API && event !== undefined) {
           dataSource = sources.API
-          if (event) {
-            dispatch(receiveEventInfo(eventKey, event))
-            addEvent(event)
-          }
+          dispatch(receiveEventInfo(eventKey, event))
+          addEvent(event)
         }
         dispatch(decrementLoadingCount())
       })
@@ -114,12 +112,10 @@ export function fetchEventMatches(eventKey) {
         response => response.json(),
         error => console.log('An error occured.', error)
       ).then(matches => {
-        if (dataSource < sources.API) {
+        if (dataSource < sources.API && matches !== undefined) {
           dataSource = sources.API
-          if (matches) {
-            dispatch(receiveEventMatches(eventKey, matches))
-            addMatches(matches)
-          }
+          dispatch(receiveEventMatches(eventKey, matches))
+          addMatches(matches)
         }
         dispatch(decrementLoadingCount())
       })
@@ -157,12 +153,10 @@ export function fetchEventTeams(eventKey) {
         response => response.json(),
         error => console.log('An error occured.', error)
       ).then(teams => {
-        if (dataSource < sources.API) {
+        if (dataSource < sources.API && teams !== undefined) {
           dataSource = sources.API
-          if (teams) {
-            dispatch(receiveEventTeams(eventKey, teams))
-            addEventTeams(eventKey, teams)
-          }
+          dispatch(receiveEventTeams(eventKey, teams))
+          addEventTeams(eventKey, teams)
         }
         dispatch(decrementLoadingCount())
       })
@@ -197,12 +191,10 @@ export function fetchYearEvents(year) {
         response => response.json(),
         error => console.log('An error occured.', error)
       ).then(events => {
-        if (dataSource < sources.API) {
+        if (dataSource < sources.API && events !== undefined) {
           dataSource = sources.API
-          if (events) {
-            dispatch(receiveYearEvents(year, events))
-            addEvents(events)
-          }
+          dispatch(receiveYearEvents(year, events))
+          addEvents(events)
         }
         dispatch(decrementLoadingCount())
       })
@@ -238,12 +230,10 @@ export function fetchTeamInfo(teamNumber) {
         response => response.json(),
         error => console.log('An error occured.', error)
       ).then(team => {
-        if (dataSource < sources.API) {
+        if (dataSource < sources.API && team !== undefined) {
           dataSource = sources.API
-          if (team) {
-            dispatch(receiveTeamInfo(teamKey, team))
-            addTeam(team)
-          }
+          dispatch(receiveTeamInfo(teamKey, team))
+          addTeam(team)
         }
         dispatch(decrementLoadingCount())
       })
@@ -283,12 +273,10 @@ export function fetchTeamYearEvents(teamNumber, year) {
         response => response.json(),
         error => console.log('An error occured.', error)
       ).then(events => {
-        if (dataSource < sources.API) {
+        if (dataSource < sources.API && events !== undefined) {
           dataSource = sources.API
-          if (events) {
-            dispatch(receiveTeamYearEvents(teamKey, year, events))
-            addTeamEvents(teamKey, events)
-          }
+          dispatch(receiveTeamYearEvents(teamKey, year, events))
+          addTeamEvents(teamKey, events)
         }
         dispatch(decrementLoadingCount())
       })
@@ -333,12 +321,10 @@ export function fetchTeamListHelper(pageNum) {
         response => response.json(),
         error => console.log('An error occured.', error)
       ).then(teams => {
-        if (dataSource < sources.API) {
+        if (dataSource < sources.API && teams !== undefined) {
           dataSource = sources.API
-          if (teams) {
-            dispatch(receiveTeamListPage(teams))
-            addTeams(teams)
-          }
+          dispatch(receiveTeamListPage(teams))
+          addTeams(teams)
         }
         dispatch(decrementLoadingCount())
       })
