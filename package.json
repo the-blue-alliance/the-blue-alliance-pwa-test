@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
-    "connected-react-router": "^4.2.3",
+    "connected-react-router": "^4.3.0",
     "dexie": "^2.0.0",
     "fitvids": "^2.0.0",
     "immutable": "^3.8.1",
