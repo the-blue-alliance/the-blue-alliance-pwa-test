@@ -16,6 +16,7 @@ const appNav = (state = Map({
   loadingCount: 0,
   offlineOnly: false,
   bottomNavValue: 'home',
+  snackbar: null,
 }), action) => {
   switch (action.type) {
     case types.INCREMENT_LOADING_COUNT:
@@ -28,6 +29,12 @@ const appNav = (state = Map({
     case types.SET_BOTTOM_NAV_VALUE:
       return state
         .set('bottomNavValue', action.value)
+    case types.OPEN_SNACKBAR:
+      return state
+        .set('snackbar', action.value)
+    case types.CLOSE_SNACKBAR:
+      return state
+        .set('snackbar', null)
     default:
       return state
   }

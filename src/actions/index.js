@@ -48,6 +48,16 @@ export function setPageState(pageState) {
   }
 }
 
+// Snackbars
+export const openSnackbar = (value) => ({
+  type: types.OPEN_SNACKBAR,
+  value,
+})
+
+export const closeSnackbar = () => ({
+  type: types.CLOSE_SNACKBAR,
+})
+
 // Event Page
 export const receiveEventInfo = (eventKey, data) => ({
   type: types.RECEIVE_EVENT_INFO,

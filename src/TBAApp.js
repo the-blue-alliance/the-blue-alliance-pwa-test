@@ -7,6 +7,7 @@ import Hidden from 'material-ui/Hidden';
 
 import TBASideNavContainer from './containers/TBASideNavContainer'
 import TBABottomNavContainer from './containers/TBABottomNavContainer'
+import TBASnackbarsContainer from './containers/TBASnackbarsContainer'
 
 import HomePageContainer from './containers/HomePageContainer'
 import EventListPageContainer from './containers/EventListPageContainer'
@@ -17,6 +18,7 @@ import TeamPageContainer from './containers/TeamPageContainer'
 
 import MatchDialogContainer from './containers/MatchDialogContainer'
 import TeamAtEventDialog from './components/TeamAtEventDialog'
+
 
 // For Google Analytics tracking
 ReactGA.initialize('UA-XXXXXXXX') // TODO: Change to real tracking number
@@ -122,6 +124,7 @@ class TBAApp extends Component {
     return (
       <div>
         <Reboot />
+        <TBASnackbarsContainer />
         <Hidden smDown implementation="css">
           <Route path="/" component={TBASideNavContainer} />
         </Hidden>

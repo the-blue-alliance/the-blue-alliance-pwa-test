@@ -12,6 +12,10 @@ export const RESET_PAGE = 'RESET_PAGE'
 // Set page state
 export const SET_PAGE_STATE = 'SET_PAGE_STATE'
 
+// Snackbars
+export const OPEN_SNACKBAR = 'OPEN_SNACKBAR'
+export const CLOSE_SNACKBAR = 'CLOSE_SNACKBAR'
+
 // Event Page
 export const RECEIVE_EVENT_INFO = 'RECEIVE_EVENT_INFO'
 export const RECEIVE_EVENT_MATCHES = 'RECEIVE_EVENT_MATCHES'

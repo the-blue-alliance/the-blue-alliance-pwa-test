@@ -58,4 +58,4 @@ ReactDOM.hydrate(
   </Provider>,
   document.getElementById('root'));
 
-registerServiceWorker();
+registerServiceWorker(store);
