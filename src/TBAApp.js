@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import ReactGA from 'react-ga';
+import Reboot from 'material-ui/Reboot';
 import { withStyles } from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
 
@@ -120,6 +121,7 @@ class TBAApp extends Component {
   render() {
     return (
       <div>
+        <Reboot />
         <Hidden smDown implementation="css">
           <Route path="/" component={TBASideNavContainer} />
         </Hidden>
