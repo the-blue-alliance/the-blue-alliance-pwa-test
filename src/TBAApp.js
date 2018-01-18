@@ -78,12 +78,12 @@ class ModalSwitch extends React.Component {
       this.previousLocation = this.props.location
     }
 
-    if (location.state && location.state.modal) {
-      if (nextProps.history.action === 'PUSH') {
+    if (nextProps.history.action === 'PUSH') {
+      if (location.state && location.state.modal) {
         this.modalKeyDepths[nextProps.location.key] = this.modalKeyDepths[location.key] + 1
+      } else {
+        this.modalKeyDepths[nextProps.location.key] = 1
       }
-    } else {
-      this.modalKeyDepths = {[nextProps.location.key]: 1}
     }
   }
 
