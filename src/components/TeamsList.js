@@ -26,10 +26,11 @@ class TeamsList extends PureComponent {
   render() {
     console.log("Render TeamsList");
     if (this.props.filter) {
+      const filterLowerCase = this.props.filter.toLowerCase()
       this.filteredTeams = this.props.teams.filter(team => (
-        (String(team.get('team_number')).includes(this.props.filter.toLowerCase())) ||
-        (team.get('nickname') && team.get('nickname').toLowerCase().includes(this.props.filter.toLowerCase())) ||
-        (team.getCityStateCountry() && team.getCityStateCountry().toLowerCase().includes(this.props.filter.toLowerCase()))
+        team.getTeamNumberString().includes(filterLowerCase) ||
+        (team.getNicknameLower() && team.getNicknameLower().includes(filterLowerCase)) ||
+        (team.getCityStateCountryLower() && team.getCityStateCountryLower().includes(filterLowerCase))
       ))
     } else {
       this.filteredTeams = this.props.teams

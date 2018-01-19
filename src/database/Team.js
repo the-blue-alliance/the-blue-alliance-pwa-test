@@ -9,19 +9,50 @@ export default class Team extends Record({
   country: undefined,
 }) {
   getCityStateCountry() {
-    let s = ''
-    if (this.city) {
-        s += `${this.city}`
+    if (this.cityStateCountry === undefined) {
+      this.cityStateCountry = ''
+      if (this.city) {
+          this.cityStateCountry += `${this.city}`
+      }
+      if (this.state_prov) {
+          this.cityStateCountry += `, ${this.state_prov}`
+      }
+      if (this.country) {
+          this.cityStateCountry += `, ${this.country}`
+      }
+      if (this.cityStateCountry === '') {
+          this.cityStateCountry = null
+      }
     }
-    if (this.state_prov) {
-        s += `, ${this.state_prov}`
+    return this.cityStateCountry
+  }
+
+  getCityStateCountryLower() {
+    if (this.cityStateCountryLower === undefined) {
+      if (this.getCityStateCountry()) {
+        this.cityStateCountryLower = this.getCityStateCountry().toLowerCase()
+      } else {
+        this.cityStateCountryLower = null
+      }
     }
-    if (this.country) {
-        s += `, ${this.country}`
+    return this.cityStateCountryLower
+  }
+
+  getNicknameLower() {
+    if (this.nicknameLower === undefined) {
+      if (this.nickname) {
+        this.nicknameLower = this.nickname.toLowerCase()
+      } else {
+        this.nicknameLower = null
+      }
     }
-    if (s === '') {
-        return null
+    return this.nicknameLower
+  }
+
+  getTeamNumberString() {
+    if (this.teamNumberString === undefined) {
+      this.teamNumberString = String(this.team_number)
     }
-    return s
+    return this.teamNumberString
   }
 }
