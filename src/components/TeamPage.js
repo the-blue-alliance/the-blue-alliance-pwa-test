@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { withStyles } from 'material-ui/styles';
 import { Link } from 'react-router-dom';
 import Grid from 'material-ui/Grid';
+import Paper from 'material-ui/Paper';
 import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import { CircularProgress } from 'material-ui/Progress';
@@ -9,12 +10,18 @@ import Hidden from 'material-ui/Hidden';
 
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ResponsiveLayout from './ResponsiveLayout'
+import MatchTable from './MatchTable'
 
-const styles = {
+const styles = theme => ({
   sideNav: {
     position: 'fixed',
   },
-}
+  eventCard: theme.mixins.gutters({
+    paddingTop: 16,
+    paddingBottom: 16,
+    marginTop: theme.spacing.unit * 3,
+  }),
+});
 
 class TeamPage extends PureComponent {
   constructor(props) {
@@ -40,15 +47,19 @@ class TeamPage extends PureComponent {
   refreshFunction = () => {
     this.props.fetchTeamInfo(this.props.teamNumber)
     this.props.fetchTeamYearEvents(this.props.teamNumber, this.props.year)
+    this.props.fetchTeamYearMatches(this.props.teamNumber, this.props.year)
   }
 
   render() {
     console.log("Render Team Page")
 
+    const { classes } = this.props
+
     const teamNumber = this.props.teamNumber
     const year = this.props.year
     const team = this.props.team
     const teamYearEvents = this.props.teamYearEvents
+    const matchesByEvent = this.props.matchesByEvent
 
     var name = null
     var nickname = null
@@ -61,7 +72,18 @@ class TeamPage extends PureComponent {
     }
     if (teamYearEvents) {
       eventList = teamYearEvents.valueSeq().map(function(event){
-        return <li key={event.get('key')}><Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link></li>
+        return (
+          <Paper key={event.get('key')} className={classes.eventCard} elevation={4}>
+          <Grid container spacing={24}>
+            <Grid item xs={4}>
+              <h3><Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link></h3>
+            </Grid>
+            <Grid item xs={8}>
+              <MatchTable matches={matchesByEvent.get(event.get('key'))} />
+            </Grid>
+          </Grid>
+          </Paper>
+        )
       })
     }
 
@@ -76,7 +98,7 @@ class TeamPage extends PureComponent {
             <ResponsiveLayout>
               <Grid container spacing={24}>
                 <Grid item xs={3} lg={2}>
-                  <div className={this.props.classes.sideNav}>
+                  <div className={classes.sideNav}>
                     <Select
                       value={2018}
                       // onChange={this.handleChange}
@@ -91,7 +113,7 @@ class TeamPage extends PureComponent {
                 <Grid item xs={9} lg={10}>
                   <h1>Team {teamNumber}{nickname && ` - ${nickname}`}</h1>
                   {name && <p>aka {name}</p>}
-                  {eventList && <ul>{eventList}</ul>}
+                  {eventList}
                 </Grid>
               </Grid>
             </ResponsiveLayout>

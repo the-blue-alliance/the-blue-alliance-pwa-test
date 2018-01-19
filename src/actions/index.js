@@ -294,6 +294,49 @@ export function fetchTeamYearEvents(teamNumber, year) {
   }
 }
 
+export const receiveTeamYearMatches = (teamKey, year, matches) => ({
+  type: types.RECEIVE_TEAM_YEAR_MATCHES,
+  teamKey,
+  year,
+  data: matches,
+})
+
+export function fetchTeamYearMatches(teamNumber, year) {
+  return (dispatch, getState) => {
+    let dataSource = sources.DEFAULT
+    const teamKey = `frc${teamNumber}`
+    // Update from IndexedDB
+    db.matchTeams.where('teamKey_year').equals(`${teamKey}_${year}`).toArray().then(matchTeams => {
+      Promise.all(
+        matchTeams.map(matchTeam => db.matches.get(matchTeam.matchKey))
+      ).then(matches => {
+        if (dataSource < sources.IDB) {
+          dataSource = sources.IDB
+          dispatch(receiveTeamYearMatches(teamKey, year, matches))
+        }
+      })
+    })
+
+    // Update from API
+    if (!getState().getIn(['appNav', 'offlineOnly'])) {
+      dispatch(incrementLoadingCount())
+      fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/matches/${year}`,
+        {headers: {'X-TBA-Auth-Key': TBA_KEY}
+      }).then(
+        response => response.json(),
+        error => console.log('An error occured.', error)
+      ).then(matches => {
+        if (dataSource < sources.API && matches !== undefined) {
+          dataSource = sources.API
+          dispatch(receiveTeamYearMatches(teamKey, year, matches))
+          addMatches(matches)
+        }
+        dispatch(decrementLoadingCount())
+      })
+    }
+  }
+}
+
 // Team List Page
 export const receiveTeamListPage = (teams) => ({
   type: types.RECEIVE_TEAM_LIST_PAGE,

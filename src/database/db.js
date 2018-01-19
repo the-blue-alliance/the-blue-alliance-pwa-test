@@ -4,11 +4,13 @@ var db = new Dexie('TBA-Models-v3');
 db.version(1).stores({
   events: '&key, year',
   eventTeams: '&key, eventKey, teamKey, teamKey_year',
-  // matchTeams: '&key, matchKey',
   teams: '&key, team_number',
 })
 db.version(2).stores({
   matches: '&key, event_key',
+})
+db.version(3).stores({
+  matchTeams: '&key, matchKey, teamKey, teamKey_year, teamKey_eventKey',
 })
 
 export default db;
@@ -32,7 +34,24 @@ export const addEventTeams = (eventKey, teams) => {
 
 export const addMatch = (match) => db.matches.put(match)
 
-export const addMatches = (matches) => db.matches.bulkPut(matches)
+export const addMatches = (matches) => {
+  db.matches.bulkPut(matches)
+  let matchTeams = []
+  matches.forEach(match => {
+    for (var color in match.alliances) {
+      match.alliances[color].team_keys.forEach(teamKey => {
+        matchTeams.push({
+          key: `${match.key}_${teamKey}`,
+          matchKey: match.key,
+          teamKey: teamKey,
+          teamKey_year: `${teamKey}_${parseInt(match.event_key.substring(0, 4), 10)}`,
+          teamKey_eventKey: `${teamKey}_${match.event_key}`,
+        })
+      })
+    }
+  })
+  db.matchTeams.bulkPut(matchTeams)
+}
 
 export const addTeam = (team) => db.teams.put(team)
 
