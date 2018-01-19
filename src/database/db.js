@@ -30,6 +30,8 @@ export const addEventTeams = (eventKey, teams) => {
   }))
 }
 
+export const addMatch = (match) => db.matches.put(match)
+
 export const addMatches = (matches) => db.matches.bulkPut(matches)
 
 export const addTeam = (team) => db.teams.put(team)

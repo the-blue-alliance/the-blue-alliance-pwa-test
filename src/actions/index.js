@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes'
 import * as sources from '../constants/DataSources'
-import db, { addEvent, addEvents, addEventTeams, addMatches, addTeam, addTeams, addTeamEvents } from '../database/db'
+import db, { addEvent, addEvents, addEventTeams, addMatch, addMatches, addTeam, addTeams, addTeamEvents } from '../database/db'
 import fetch from 'isomorphic-fetch'
 
 // TODO: This can use a lot of refactoring to make things DRY. 2017-09-27 @fangeugene
@@ -346,6 +346,44 @@ export function fetchTeamListAll() {
   return (dispatch) => {
     for (let pageNum=0; pageNum<14; pageNum++) {
       dispatch(fetchTeamListHelper(pageNum))
+    }
+  }
+}
+
+// Match Page
+export const receiveMatchInfo = (matchKey, data) => ({
+  type: types.RECEIVE_MATCH_INFO,
+  matchKey,
+  data,
+})
+
+export function fetchMatchInfo(matchKey) {
+  return (dispatch, getState) => {
+    let dataSource = sources.DEFAULT
+    // Update from IndexedDB
+    db.matches.get(matchKey).then(match => {
+      if (dataSource < sources.IDB) {
+        dataSource = sources.IDB
+        dispatch(receiveMatchInfo(matchKey, match))
+      }
+    })
+
+    // Update from API
+    if (!getState().getIn(['appNav', 'offlineOnly'])) {
+      dispatch(incrementLoadingCount())
+      fetch(`https://www.thebluealliance.com/api/v3/match/${matchKey}`,
+        {headers: {'X-TBA-Auth-Key': TBA_KEY}
+      }).then(
+        response => response.json(),
+        error => console.log('An error occured.', error)
+      ).then(match => {
+        if (dataSource < sources.API && match !== undefined) {
+          dataSource = sources.API
+          dispatch(receiveMatchInfo(matchKey, match))
+          addMatch(match)
+        }
+        dispatch(decrementLoadingCount())
+      })
     }
   }
 }

@@ -121,6 +121,11 @@ const page = (state = Map({
         ['teams', 'collections', 'all'],
         action.data,
         true)
+    case types.RECEIVE_MATCH_INFO:
+      return updateSingle(
+        state,
+        ['matches', 'byKey', action.matchKey],
+        action.data)
     default:
       return state
   }

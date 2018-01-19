@@ -1,14 +1,17 @@
 import React, { PureComponent } from 'react';
+import Grid from 'material-ui/Grid';
 
 import TBAPageContainer from '../containers/TBAPageContainer'
+import ResponsiveLayout from './ResponsiveLayout'
+
+import MatchBreakdownTable from './MatchBreakdownTable'
+import MatchVideos from './MatchVideos'
 
 class MatchPage extends PureComponent {
   constructor(props) {
     super(props)
     props.setBottomNav('matches')
-    // this.state = {
-    //   matchKey: props.match.params.matchKey,
-    // }
+    props.resetPage({})
   }
 
   componentDidMount() {
@@ -16,20 +19,28 @@ class MatchPage extends PureComponent {
   }
 
   refreshFunction = () => {
+    this.props.fetchMatchInfo(this.props.matchKey)
   }
 
   render() {
     console.log("Render Match Page")
 
-    // const matchKey = this.state.matchKey
-    // const match = this.state.match
-
     return (
       <TBAPageContainer
-        title={`Match ${this.props.match.params.matchKey}`}
-        // refreshFunction={this.refreshFunction}
+        title={`Match ${this.props.matchKey}`}
+        refreshFunction={this.refreshFunction}
       >
-        <h1>Match {this.props.match.params.matchKey}</h1>
+        <ResponsiveLayout>
+          <h1>Match {this.props.matchKey}</h1>
+          <Grid container spacing={24}>
+            <Grid item xs={6}>
+              <MatchBreakdownTable match={this.props.matchObj}/>
+            </Grid>
+            <Grid item xs={6}>
+              <MatchVideos match={this.props.matchObj}/>
+            </Grid>
+          </Grid>
+        </ResponsiveLayout>
       </TBAPageContainer>
     )
   }

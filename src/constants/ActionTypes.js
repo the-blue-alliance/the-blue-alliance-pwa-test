@@ -30,3 +30,7 @@ export const RECEIVE_TEAM_YEAR_EVENTS = 'RECEIVE_TEAM_YEAR_EVENTS'
 
 // Event List Page
 export const RECEIVE_TEAM_LIST_PAGE = 'RECEIVE_TEAM_LIST_PAGE'
+
+// Match Page
+export const RECEIVE_MATCH_INFO = 'RECEIVE_MATCH_INFO'
+
