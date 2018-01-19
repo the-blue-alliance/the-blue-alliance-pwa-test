@@ -4,7 +4,6 @@ body {
   font-family: "Roboto", sans-serif;
   overscroll-behavior: contain;
 }
-
 a {
   color: #3f51b5;
   text-decoration: none;
@@ -16,5 +15,5 @@ a:visited {
   color: #3f51b5;
 }
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 500;
+  font-weight: 400;
 }

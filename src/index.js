@@ -46,6 +46,11 @@ const theme = createMuiTheme({
     primary: indigo,
     secondary: amber,
   },
+  typography: {
+    title: {
+      fontWeight: 400,
+    },
+  },
 });
 
 ReactDOM.hydrate(
