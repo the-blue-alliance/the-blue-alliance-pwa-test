@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import Dialog, { DialogTitle } from 'material-ui/Dialog';
+import Dialog, { DialogContent, DialogTitle } from 'material-ui/Dialog';
+import MatchTable from './MatchTable'
 
 class TeamAtEventDialog extends PureComponent {
   handleClose = (e) => {
@@ -15,10 +16,10 @@ class TeamAtEventDialog extends PureComponent {
         open={true}
         onClose={this.handleClose}
       >
-        <DialogTitle>Team@Event {this.props.match.params.teamNumber}@{this.props.location.hash}</DialogTitle>
-        <div>
-          Details go here!
-        </div>
+        <DialogTitle>Team {this.props.team.get('team_number')} - {this.props.team.get('nickname')}</DialogTitle>
+        <DialogContent>
+          <MatchTable matches={this.props.matches} />
+        </DialogContent>
       </Dialog>
     )
   }

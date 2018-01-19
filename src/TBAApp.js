@@ -17,7 +17,7 @@ import TeamListPageContainer from './containers/TeamListPageContainer'
 import TeamPageContainer from './containers/TeamPageContainer'
 
 import MatchDialogContainer from './containers/MatchDialogContainer'
-import TeamAtEventDialog from './components/TeamAtEventDialog'
+import TeamAtEventDialogContainer from './containers/TeamAtEventDialogContainer'
 
 
 // For Google Analytics tracking
@@ -110,7 +110,7 @@ class ModalSwitch extends React.Component {
           <Route path='/team/:teamNumber/:year?' component={TeamPageContainer} />
         </Switch>
         {isModal ? <ModalRoute path='/match/:matchKey' component={MatchDialogContainer} modalDepth={modalDepth} /> : null}
-        {isModal ? <ModalRoute path='/team/:teamNumber/:year?' component={TeamAtEventDialog}  modalDepth={modalDepth} /> : null}
+        {isModal ? <ModalRoute path='/team/:teamNumber/:year?' component={TeamAtEventDialogContainer}  modalDepth={modalDepth} /> : null}
       </div>
     )
   }
