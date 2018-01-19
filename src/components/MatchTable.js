@@ -57,7 +57,6 @@ const styles = theme => ({
     left: '2px',
     height: '4px',
     width: '4px',
-    padding: '1px',
   },
   rpDotB: {
     position: 'absolute',
@@ -65,7 +64,6 @@ const styles = theme => ({
     left: '9px',
     height: '4px',
     width: '4px',
-    padding: '1px',
   },
   playIcon: {
     width: 16,
