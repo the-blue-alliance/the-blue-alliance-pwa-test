@@ -35,7 +35,7 @@ class EventsList extends PureComponent {
       return (
         <div key={key} style={style}>
           <ListSubheader className={classes.subHeader}>
-            <ListItemText primary={item.value} classes={{text: classes.subHeaderText}}/>
+            <ListItemText primary={item.value} classes={{primary: classes.subHeaderText}}/>
           </ListSubheader>
         </div>
       )
