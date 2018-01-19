@@ -2,7 +2,7 @@ import React from 'react'
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
-import BottomNavigation, { BottomNavigationButton } from 'material-ui/BottomNavigation'
+import BottomNavigation, { BottomNavigationAction } from 'material-ui/BottomNavigation'
 import Paper from 'material-ui/Paper';
 import HomeIcon from 'material-ui-icons/Home'
 import EventIcon from 'material-ui-icons/Event'
@@ -56,10 +56,10 @@ class TBABottomNav extends React.PureComponent {
           onChange={this.handleNavChange}
           showLabels
         >
-          <BottomNavigationButton label="Home" value="home" icon={<HomeIcon />} />
-          <BottomNavigationButton label="Events" value="events" icon={<EventIcon />} />
-          <BottomNavigationButton label="Teams" value="teams" icon={<PeopleIcon />} />
-          <BottomNavigationButton label="More" value="more" icon={<MoreHorizIcon />}
+          <BottomNavigationAction label="Home" value="home" icon={<HomeIcon />} />
+          <BottomNavigationAction label="Events" value="events" icon={<EventIcon />} />
+          <BottomNavigationAction label="Teams" value="teams" icon={<PeopleIcon />} />
+          <BottomNavigationAction label="More" value="more" icon={<MoreHorizIcon />}
             onClick={this.handleOpen} ref={el => this.moreRef = el} />
         </BottomNavigation>
         <TBANavMoreMenu open={this.state.moreMenuOpen} handleClose={this.handleClose} anchorEl={this.state.anchorEl} />
