@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import Grid from 'material-ui/Grid';
+import { Link } from 'react-router-dom';
 
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ResponsiveLayout from './ResponsiveLayout'
@@ -27,11 +28,13 @@ class MatchPage extends PureComponent {
 
     return (
       <TBAPageContainer
-        title={`Match ${this.props.matchKey}`}
         refreshFunction={this.refreshFunction}
       >
         <ResponsiveLayout>
-          <h1>Match {this.props.matchKey}</h1>
+          <h1>
+            {this.props.matchObj && this.props.matchObj.getDisplayName()}
+            <small>{this.props.matchObj && <Link to={{pathname: `/event/${this.props.matchObj.event_key}`}}>@ EVENT NAME</Link>}</small>
+          </h1>
           <Grid container spacing={24}>
             <Grid item xs={6}>
               <MatchBreakdownTable match={this.props.matchObj}/>
@@ -46,4 +49,4 @@ class MatchPage extends PureComponent {
   }
 }
 
-export default MatchPage;
+export default MatchPage

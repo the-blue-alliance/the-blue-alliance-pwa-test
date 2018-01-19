@@ -92,10 +92,10 @@ class ModalSwitch extends React.Component {
 
   render() {
     const { location } = this.props
-    const isModal = !!(
+    const isModal = (
       location.state &&
       location.state.modal &&
-      this.previousLocation !== location // not initial render
+      this.previousLocation.pathname !== location.pathname // not initial render
     )
     const modalDepth = this.modalKeyDepths[location.key]
 
