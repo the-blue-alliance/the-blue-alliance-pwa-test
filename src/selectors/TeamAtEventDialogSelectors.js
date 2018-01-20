@@ -37,12 +37,27 @@ const getEventMatches = (state, props) => {
   }
 }
 
+export const getTeamYearMatches = (state, props) => {
+  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
+    const teamYearMatches = state.getIn(['page', 'modelHistory', key, 'matches', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, parseInt(getEventKey(state, props).substring(0, 4), 10)])
+    if (teamYearMatches !== undefined) {
+      return teamYearMatches
+    }
+  }
+}
+
 export const getSortedMatches = createSelector(
-  [getTeamNumber, getEventMatches],
-  (teamNumber, matches) => {
+  [getTeamNumber, getEventKey, getEventMatches, getTeamYearMatches],
+  (teamNumber, eventKey, eventMatches, teamMatches) => {
+    let matches = eventMatches
+    if (!eventMatches) {
+      matches = teamMatches
+    }
+
     if (matches) {
       matches = matches.map(m => new Match(m)).filter(m => {
-        return m.alliances.getIn(['red', 'team_keys']).concat(m.alliances.getIn(['blue', 'team_keys'])).toSet().has(`frc${teamNumber}`)
+        return (m.alliances.getIn(['red', 'team_keys']).concat(m.alliances.getIn(['blue', 'team_keys'])).toSet().has(`frc${teamNumber}`) &&
+          m.event_key === eventKey)
       })
       return matches.toList().sort((a, b) => {
         const orderA = a.getNaturalOrder()

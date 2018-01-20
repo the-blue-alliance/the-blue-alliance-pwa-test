@@ -24,10 +24,24 @@ class TeamAtEventDialog extends PureComponent {
     this.props.handleClose()
   }
 
+  componentDidMount() {
+    this.refreshFunction()
+  }
+
+  refreshFunction = () => {
+    this.props.fetchEventMatches(this.props.eventKey)
+    this.props.fetchEventTeams(this.props.eventKey)
+  }
+
   render() {
     console.log("Render Team@Event Dialog")
 
-    const { classes } = this.props
+    const { classes, matches, team, teamNumber } = this.props
+
+    let title = `Team ${teamNumber}`
+    if (team) {
+      title = `Team ${team.get('team_number')} - ${team.get('nickname')}`
+    }
 
     return (
       <div>
@@ -36,7 +50,7 @@ class TeamAtEventDialog extends PureComponent {
             <ChevronLeftIcon />
           </IconButton>
           <Typography type="title" color="inherit" className={classes.flex}>
-            Team {this.props.team.get('team_number')} - {this.props.team.get('nickname')}
+            {title}
           </Typography>
           <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
             <CloseIcon />
@@ -48,7 +62,7 @@ class TeamAtEventDialog extends PureComponent {
             Status, Ranking, Awards, etc.
           </Grid>
           <Grid item xs={8}>
-            <MatchTable matches={this.props.matches} />
+            <MatchTable matches={matches} />
           </Grid>
         </Grid>
         </DialogContent>
