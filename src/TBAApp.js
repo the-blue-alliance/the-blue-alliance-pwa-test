@@ -86,7 +86,7 @@ class ModalSwitch extends React.Component {
     }
   }
 
-  handleClose = () => {
+  restoreBackState = () => {
     this.props.history.go(-this.modalKeyDepths[this.props.location.key])
   }
 
@@ -108,7 +108,7 @@ class ModalSwitch extends React.Component {
           <Route path='/teams' component={TeamListPageContainer} />
           <Route path='/team/:teamNumber/:year?' component={TeamPageContainer} />
         </Switch>
-        {isModal && <TBAModalDialog handleClose={this.handleClose} />}
+        {isModal && <TBAModalDialog restoreBackState={this.restoreBackState} />}
       </div>
     )
   }
