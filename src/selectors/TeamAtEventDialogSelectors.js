@@ -43,8 +43,7 @@ export const getSortedMatches = createSelector(
   (teamNumber, matches) => {
     if (matches) {
       matches = matches.map(m => new Match(m)).filter(m => {
-        console.log(m.alliances.getIn(['red', 'team_keys']).concat(m.alliances.getIn(['blue', 'team_keys'])).toSet().has(`frc${teamNumber}`))
-        return m.alliances.getIn(['red', 'team_keys']).concat(m.alliances.getIn(['blue', 'team_keys'])).has(`frc${teamNumber}`)
+        return m.alliances.getIn(['red', 'team_keys']).concat(m.alliances.getIn(['blue', 'team_keys'])).toSet().has(`frc${teamNumber}`)
       })
       return matches.toList().sort((a, b) => {
         const orderA = a.getNaturalOrder()
