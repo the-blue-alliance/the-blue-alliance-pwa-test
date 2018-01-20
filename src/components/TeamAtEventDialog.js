@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
-import Dialog, { DialogContent } from 'material-ui/Dialog';
+import { DialogContent } from 'material-ui/Dialog';
 import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
 import Typography from 'material-ui/Typography';
@@ -30,12 +30,7 @@ class TeamAtEventDialog extends PureComponent {
     const { classes } = this.props
 
     return (
-      <Dialog
-        open={true}
-        onClose={this.handleClose}
-        maxWidth='md'
-        fullWidth
-      >
+      <div>
         <Toolbar>
           <IconButton className={classes.button} aria-label="Back" onClick={() => window.history.back()}>
             <ChevronLeftIcon />
@@ -57,7 +52,7 @@ class TeamAtEventDialog extends PureComponent {
           </Grid>
         </Grid>
         </DialogContent>
-      </Dialog>
+      </div>
     )
   }
 }

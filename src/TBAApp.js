@@ -4,6 +4,7 @@ import ReactGA from 'react-ga';
 import Reboot from 'material-ui/Reboot';
 import { withStyles } from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
+import Dialog from 'material-ui/Dialog';
 
 import TBASideNavContainer from './containers/TBASideNavContainer'
 import TBABottomNavContainer from './containers/TBABottomNavContainer'
@@ -62,7 +63,6 @@ const ModalRoute = ({ component, ...rest }) => {
   return (
     <Route {...rest} render={routeProps => {
       let props = Object.assign(routeProps, rest)
-      props.handleClose = () => props.history.go(-props.modalDepth)
       return React.createElement(component, props)
     }}/>
   )
@@ -90,6 +90,10 @@ class ModalSwitch extends React.Component {
     }
   }
 
+  handleClose = () => {
+    this.props.history.go(-this.modalKeyDepths[this.props.location.key])
+  }
+
   render() {
     const { location } = this.props
     const isModal = (
@@ -97,7 +101,6 @@ class ModalSwitch extends React.Component {
       location.state.modal &&
       this.previousLocation.pathname !== location.pathname // not initial render
     )
-    const modalDepth = this.modalKeyDepths[location.key]
 
     return (
       <div>
@@ -109,8 +112,19 @@ class ModalSwitch extends React.Component {
           <Route path='/teams' component={TeamListPageContainer} />
           <Route path='/team/:teamNumber/:year?' component={TeamPageContainer} />
         </Switch>
-        {isModal ? <ModalRoute path='/match/:matchKey' component={MatchDialogContainer} modalDepth={modalDepth} /> : null}
-        {isModal ? <ModalRoute path='/team/:teamNumber/:year?' component={TeamAtEventDialogContainer}  modalDepth={modalDepth} /> : null}
+        {isModal ?
+          <Dialog
+            open={true}
+            onClose={this.handleClose}
+            maxWidth='md'
+            fullWidth
+          >
+            <ModalRoute path='/match/:matchKey' component={MatchDialogContainer} handleClose={this.handleClose} />
+            <ModalRoute path='/team/:teamNumber/:year?' component={TeamAtEventDialogContainer} handleClose={this.handleClose} />
+          </Dialog>
+          :
+          null
+        }
       </div>
     )
   }
