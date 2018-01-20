@@ -20,11 +20,20 @@ class MatchPage extends PureComponent {
   }
 
   refreshFunction = () => {
+    this.props.fetchEventInfo(this.props.eventKey)
     this.props.fetchMatchInfo(this.props.matchKey)
   }
 
   render() {
     console.log("Render Match Page")
+
+    let eventName
+    if (this.props.matchObj) {
+      eventName = this.props.matchObj.event_key
+    }
+    if (this.props.event) {
+      eventName = this.props.event.get('name')
+    }
 
     return (
       <TBAPageContainer
@@ -33,7 +42,7 @@ class MatchPage extends PureComponent {
         <ResponsiveLayout>
           <h1>
             {this.props.matchObj && this.props.matchObj.getDisplayName()}
-            <small>{this.props.matchObj && <Link to={{pathname: `/event/${this.props.matchObj.event_key}`}}>@ EVENT NAME</Link>}</small>
+            <small>{this.props.matchObj && <Link to={{pathname: `/event/${this.props.matchObj.event_key}`}}>@ {eventName}</Link>}</small>
           </h1>
           <Grid container spacing={24}>
             <Grid item xs={6}>
