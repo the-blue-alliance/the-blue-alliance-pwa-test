@@ -36,11 +36,16 @@ class TeamAtEventDialog extends PureComponent {
   render() {
     console.log("Render Team@Event Dialog")
 
-    const { classes, matches, team, teamNumber } = this.props
+    const { classes, event, eventKey, matches, team, teamNumber } = this.props
 
     let title = `Team ${teamNumber}`
     if (team) {
       title = `Team ${team.get('team_number')} - ${team.get('nickname')}`
+    }
+    if (event.get('name')) {
+      title += ` @ ${event.get('name')}`
+    } else {
+      title += ` @ ${eventKey}`
     }
 
     return (

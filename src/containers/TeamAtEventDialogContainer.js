@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { fetchEventMatches, fetchEventTeams } from '../actions'
 import TeamAtEventDialog from '../components/TeamAtEventDialog'
-import { getTeamNumber, getEventKey, getTeam, getSortedMatches } from '../selectors/TeamAtEventDialogSelectors'
+import { getTeamNumber, getEventKey, getTeam, getEvent, getSortedMatches } from '../selectors/TeamAtEventDialogSelectors'
 
 
 const mapStateToProps = (state, props) => ({
@@ -11,6 +11,7 @@ const mapStateToProps = (state, props) => ({
   teamNumber: getTeamNumber(state, props),
   eventKey: getEventKey(state, props),
   team: getTeam(state, props),
+  event: getEvent(state, props),
   matches: getSortedMatches(state, props),
 });
 
