@@ -4,11 +4,11 @@ import ReactGA from 'react-ga';
 import Reboot from 'material-ui/Reboot';
 import { withStyles } from 'material-ui/styles';
 import Hidden from 'material-ui/Hidden';
-import Dialog from 'material-ui/Dialog';
 
 import TBASideNavContainer from './containers/TBASideNavContainer'
 import TBABottomNavContainer from './containers/TBABottomNavContainer'
 import TBASnackbarsContainer from './containers/TBASnackbarsContainer'
+import TBAModalDialog from './components/TBAModalDialog'
 
 import HomePageContainer from './containers/HomePageContainer'
 import EventListPageContainer from './containers/EventListPageContainer'
@@ -16,10 +16,6 @@ import EventPageContainer from './containers/EventPageContainer'
 import MatchPageContainer from './containers/MatchPageContainer'
 import TeamListPageContainer from './containers/TeamListPageContainer'
 import TeamPageContainer from './containers/TeamPageContainer'
-
-import MatchDialogContainer from './containers/MatchDialogContainer'
-import TeamAtEventDialogContainer from './containers/TeamAtEventDialogContainer'
-
 
 // For Google Analytics tracking
 ReactGA.initialize('UA-XXXXXXXX') // TODO: Change to real tracking number
@@ -57,15 +53,6 @@ class Analytics extends Component {
   render() {
     return null
   }
-}
-
-const ModalRoute = ({ component, ...rest }) => {
-  return (
-    <Route {...rest} render={routeProps => {
-      let props = Object.assign(routeProps, rest)
-      return React.createElement(component, props)
-    }}/>
-  )
 }
 
 class ModalSwitch extends React.Component {
@@ -121,19 +108,7 @@ class ModalSwitch extends React.Component {
           <Route path='/teams' component={TeamListPageContainer} />
           <Route path='/team/:teamNumber/:year?' component={TeamPageContainer} />
         </Switch>
-        {isModal ?
-          <Dialog
-            open={true}
-            onClose={this.handleClose}
-            maxWidth='md'
-            fullWidth
-          >
-            <ModalRoute path='/match/:matchKey' component={MatchDialogContainer} handleClose={this.handleClose} />
-            <ModalRoute path='/team/:teamNumber/:year?' component={TeamAtEventDialogContainer} handleClose={this.handleClose} />
-          </Dialog>
-          :
-          null
-        }
+        {isModal && <TBAModalDialog handleClose={this.handleClose} />}
       </div>
     )
   }
