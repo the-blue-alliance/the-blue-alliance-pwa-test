@@ -39,8 +39,16 @@ class TeamPage extends PureComponent {
     this.refreshFunction()
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.location.pathname !== nextProps.location.pathname) {
+      this.setState({ isFirstRender: true })
+    }
+  }
+
   componentDidUpdate() {
-    this.refreshFunction()
+    if (this.state.isFirstRender) {
+      this.refreshFunction()
+    }
     // Rerender without cascading
     setTimeout(() => this.setState({ isFirstRender: false }), 0)
   }
