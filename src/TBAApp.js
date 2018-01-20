@@ -71,6 +71,7 @@ const ModalRoute = ({ component, ...rest }) => {
 class ModalSwitch extends React.Component {
   previousLocation = this.props.location
   modalKeyDepths = {}
+  initial = true
 
   componentWillUpdate(nextProps) {
     const { location } = this.props
@@ -99,8 +100,9 @@ class ModalSwitch extends React.Component {
     const isModal = (
       location.state &&
       location.state.modal &&
-      this.previousLocation.pathname !== location.pathname // not initial render
+      !this.initial
     )
+    this.initial = false
 
     return (
       <div>
