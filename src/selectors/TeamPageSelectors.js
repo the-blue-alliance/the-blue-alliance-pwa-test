@@ -46,9 +46,9 @@ export const getSortedTeamYearEvents = createSelector(
 
 export const getTeamYearMatches = (state, props) => {
   for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
-    const teamYearEvents = state.getIn(['page', 'modelHistory', key, 'matches', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, 2017])
-    if (teamYearEvents !== undefined) {
-      return teamYearEvents
+    const teamYearMatches = state.getIn(['page', 'modelHistory', key, 'matches', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, 2017])
+    if (teamYearMatches !== undefined) {
+      return teamYearMatches
     }
   }
 }
