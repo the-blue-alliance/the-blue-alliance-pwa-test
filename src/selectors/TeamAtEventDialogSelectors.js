@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect'
-import { List } from 'immutable'
 import Match from '../database/Match'
 
 

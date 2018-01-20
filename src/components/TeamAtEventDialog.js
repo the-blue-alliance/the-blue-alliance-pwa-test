@@ -1,6 +1,22 @@
 import React, { PureComponent } from 'react';
-import Dialog, { DialogContent, DialogTitle } from 'material-ui/Dialog';
+import { withStyles } from 'material-ui/styles';
+import Grid from 'material-ui/Grid';
+import Dialog, { DialogContent } from 'material-ui/Dialog';
+import Toolbar from 'material-ui/Toolbar';
+import IconButton from 'material-ui/IconButton';
+import Typography from 'material-ui/Typography';
+import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
+import CloseIcon from 'material-ui-icons/Close';
 import MatchTable from './MatchTable'
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+  },
+  flex: {
+    flex: 1,
+  },
+})
 
 class TeamAtEventDialog extends PureComponent {
   handleClose = (e) => {
@@ -11,18 +27,39 @@ class TeamAtEventDialog extends PureComponent {
   render() {
     console.log("Render Team@Event Dialog")
 
+    const { classes } = this.props
+
     return (
       <Dialog
         open={true}
         onClose={this.handleClose}
+        maxWidth='md'
+        fullWidth
       >
-        <DialogTitle>Team {this.props.team.get('team_number')} - {this.props.team.get('nickname')}</DialogTitle>
+        <Toolbar>
+          <IconButton className={classes.button} aria-label="Back" onClick={() => window.history.back()}>
+            <ChevronLeftIcon />
+          </IconButton>
+          <Typography type="title" color="inherit" className={classes.flex}>
+            Team {this.props.team.get('team_number')} - {this.props.team.get('nickname')}
+          </Typography>
+          <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </Toolbar>
         <DialogContent>
-          <MatchTable matches={this.props.matches} />
+        <Grid container spacing={24}>
+          <Grid item xs={4}>
+            Status, Ranking, Awards, etc.
+          </Grid>
+          <Grid item xs={8}>
+            <MatchTable matches={this.props.matches} />
+          </Grid>
+        </Grid>
         </DialogContent>
       </Dialog>
     )
   }
 }
 
-export default TeamAtEventDialog
+export default withStyles(styles)(TeamAtEventDialog)

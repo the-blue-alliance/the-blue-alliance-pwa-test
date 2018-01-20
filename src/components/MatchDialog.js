@@ -1,8 +1,23 @@
 import React, { PureComponent } from 'react';
-import Dialog, { DialogContent, DialogTitle } from 'material-ui/Dialog';
+import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
+import Dialog, { DialogContent } from 'material-ui/Dialog';
+import Toolbar from 'material-ui/Toolbar';
+import IconButton from 'material-ui/IconButton';
+import Typography from 'material-ui/Typography';
+import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
+import CloseIcon from 'material-ui-icons/Close';
 import MatchBreakdownTable from './MatchBreakdownTable'
 import MatchVideos from './MatchVideos'
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+  },
+  flex: {
+    flex: 1,
+  },
+})
 
 class MatchDialog extends PureComponent {
   handleClose = (e) => {
@@ -13,6 +28,8 @@ class MatchDialog extends PureComponent {
   render() {
     console.log("Render Match Dialog")
 
+    const { classes } = this.props
+
     return (
       <Dialog
         open={true}
@@ -20,7 +37,17 @@ class MatchDialog extends PureComponent {
         maxWidth='md'
         fullWidth
       >
-        <DialogTitle>{this.props.matchObj.getDisplayName()}</DialogTitle>
+        <Toolbar>
+          <IconButton className={classes.button} aria-label="Back" onClick={() => window.history.back()}>
+            <ChevronLeftIcon />
+          </IconButton>
+          <Typography type="title" color="inherit" className={classes.flex}>
+            {this.props.matchObj.getDisplayName()}
+          </Typography>
+          <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </Toolbar>
         <DialogContent>
           <Grid container spacing={24}>
             <Grid item xs={6}>
@@ -36,4 +63,4 @@ class MatchDialog extends PureComponent {
   }
 }
 
-export default MatchDialog;
+export default withStyles(styles)(MatchDialog)
