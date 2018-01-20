@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { withStyles } from 'material-ui/styles';
+import { Link } from 'react-router-dom';
 import Grid from 'material-ui/Grid';
 import { DialogContent } from 'material-ui/Dialog';
 import Toolbar from 'material-ui/Toolbar';
@@ -38,14 +39,9 @@ class TeamAtEventDialog extends PureComponent {
 
     const { classes, event, eventKey, matches, team, teamNumber } = this.props
 
-    let title = `Team ${teamNumber}`
+    let teamTitle = `Team ${teamNumber}`
     if (team) {
-      title = `Team ${team.get('team_number')} - ${team.get('nickname')}`
-    }
-    if (event.get('name')) {
-      title += ` @ ${event.get('name')}`
-    } else {
-      title += ` @ ${eventKey}`
+      teamTitle = `Team ${team.get('team_number')} - ${team.get('nickname')}`
     }
 
     return (
@@ -55,7 +51,7 @@ class TeamAtEventDialog extends PureComponent {
             <ChevronLeftIcon />
           </IconButton>
           <Typography type="title" color="inherit" className={classes.flex}>
-            {title}
+            <Link to={{pathname: `/team/${teamNumber}/${event.get('year')}`, hash: eventKey}}>{teamTitle}</Link> @ <Link to={{pathname: `/event/${eventKey}`}}>{event.get('name')}</Link>
           </Typography>
           <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
             <CloseIcon />

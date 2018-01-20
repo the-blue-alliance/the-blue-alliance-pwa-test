@@ -40,6 +40,7 @@ class TeamPage extends PureComponent {
   }
 
   componentDidUpdate() {
+    this.refreshFunction()
     // Rerender without cascading
     setTimeout(() => this.setState({ isFirstRender: false }), 0)
   }
