@@ -13,6 +13,7 @@ import Divider from 'material-ui/Divider';
 const styles = theme => ({
   root:  {
     marginTop: 64,
+    overflowY: 'auto',
   }
 })
 
