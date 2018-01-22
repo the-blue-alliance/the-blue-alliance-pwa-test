@@ -223,6 +223,7 @@ class EventListPage extends PureComponent {
                     <h1>{`${2017} Events`}</h1>
                     {this.contentRef &&
                       <Scrollspy
+                        rootEl={`.${this.contentRef.className}`}
                         items={['official', 'unofficial']}
                         currentClassName={this.props.classes.sideNavSectionActive}
                         className={this.props.classes.sideNavSectionContainer}
