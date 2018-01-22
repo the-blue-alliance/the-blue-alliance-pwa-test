@@ -25,7 +25,7 @@ const styles = theme => ({
   }),
   active: {
     fontWeight: 'bold',
-  }
+  },
 });
 
 class TeamPage extends PureComponent {

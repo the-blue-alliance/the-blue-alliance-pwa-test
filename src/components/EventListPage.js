@@ -1,9 +1,12 @@
 import React, { PureComponent } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import { withStyles } from 'material-ui/styles';
+import { Link } from 'react-router-dom';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Hidden from 'material-ui/Hidden';
 import Grid from 'material-ui/Grid';
+import Paper from 'material-ui/Paper';
+import Scrollspy from 'react-scrollspy'
 
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ResponsiveLayout from './ResponsiveLayout'
@@ -12,7 +15,7 @@ import EventsList2 from './EventsList2'
 import EventFilterDialog from './EventFilterDialog'
 import YearPickerDialog from './YearPickerDialog'
 
-const styles = {
+const styles = theme => ({
   slideContainer: {
     position: 'absolute',
     top: 0,
@@ -22,18 +25,59 @@ const styles = {
   },
   sideNav: {
     position: 'fixed',
+    maxWidth: 150,
   },
-}
-
-let CMP_TYPES = new Set()
-CMP_TYPES.add(3)
-CMP_TYPES.add(4)
-
-let SEASON_TYPES = new Set()
-SEASON_TYPES.add(0)
-SEASON_TYPES.add(1)
-SEASON_TYPES.add(2)
-SEASON_TYPES.add(5)
+  sideNavSectionContainer: {
+    listStyleType: 'none',
+    margin: 0,
+    padding: 0,
+    '& a:hover': {
+      textDecoration: 'none',
+      backgroundColor: '#dddddd',
+      borderRight: `1px solid ${theme.palette.primary.main}`,
+    }
+  },
+  sideNavSection: {
+    '& > a': {
+      display: 'block',
+      padding: '5px 20px',
+    },
+    '& > ul': {
+      display: 'none',
+      listStyleType: 'none',
+      margin: 0,
+      padding: 0,
+    }
+  },
+  sideNavSectionActive: {
+    '& > a': {
+      fontWeight: 'bold',
+      borderRight: `1px solid ${theme.palette.primary.main}`,
+    },
+    '& > ul': {
+      display: 'block',
+    }
+  },
+  sideNavItem: {
+    paddingLeft: 10,
+    '& > a': {
+      display: 'block',
+      fontSize: 14,
+      padding: '5px 20px',
+    },
+  },
+  sideNavItemActive: {
+    '& > a': {
+      fontWeight: 'bold',
+      borderRight: `1px solid ${theme.palette.primary.main}`,
+    },
+  },
+  eventGroupCard: theme.mixins.gutters({
+    paddingTop: 16,
+    paddingBottom: 16,
+    marginTop: theme.spacing.unit * 3,
+  }),
+})
 
 class EventListTab extends PureComponent {
   render() {
@@ -123,65 +167,34 @@ class EventListPage extends PureComponent {
   };
 
   computeTabs = events => {
-    this.tabs = []
-    let tabIdx = -1
-    let lastTabName = null
-    let tabName = null
-    let tabEvents = []
-    events.forEach(event => {
-      // Create tabs
-      if (CMP_TYPES.has(event.get('event_type'))) {
-        if (event.get('year') >= 2017) {
-          tabName = `${event.get('city')} Championship`
-        } else {
-          tabName = 'Championship'
-        }
-      } else if (event.get('week') != null) {
-        tabName = `Week ${event.get('week') + 1}`
-      } else if (event.get('event_type') === 100) {
-        tabName = 'Preseason'
-      } else {
-        tabName = 'Offseason'
-      }
-
-      if (tabName !== lastTabName) {
-        tabIdx++
-        this.tabs.push(<EventListTab key={tabIdx} label={tabName} />)
-        lastTabName = tabName
-      }
-
-      if (tabEvents[tabIdx]) {
-        tabEvents[tabIdx].push(event)
-      } else {
-        tabEvents[tabIdx] = [event]
-      }
-    })
-    // Create tab content
-    this.tabContentList = tabEvents.map((events, i) => {
+    this.tabs = events.map((event, i) => <EventListTab key={i} label={event.get('label')} />)
+    this.tabContentList = events.map((events, i) => {
       if (!this.state.isFirstRender || i === this.props.pageState.get('tabIdx')) {
-        return <EventsList key={i} events={events} />
+        return <EventsList key={i} events={events.get('events')} />
       } else {
         return <div key={i} />
       }
     })
+
   }
 
   render() {
     console.log("Render EventListPage")
 
-    let events = this.props.sortedEvents
-    let filters = {
+    let events = this.props.groupedEvents
+
+     let filters = {
     }
     if (events) {
-      events.forEach(event => {
-        if (event.get('district') && !filters[event.getIn(['district', 'display_name'])]) {
-          filters[event.getIn(['district', 'display_name'])] = event.getIn(['district', 'abbreviation'])
-        }
-      })
+      // events.forEach(event => {
+      //   if (event.get('district') && !filters[event.getIn(['district', 'display_name'])]) {
+      //     filters[event.getIn(['district', 'display_name'])] = event.getIn(['district', 'abbreviation'])
+      //   }
+      // })
 
-      if (this.props.pageState.get('filters') && this.props.pageState.get('filters').size > 0) {
-        events = events.filter(event => this.props.pageState.get('filters').indexOf(event.getIn(['district', 'abbreviation'])) !== -1)
-      }
+      // if (this.props.pageState.get('filters') && this.props.pageState.get('filters').size > 0) {
+      //   events = events.filter(event => this.props.pageState.get('filters').indexOf(event.getIn(['district', 'abbreviation'])) !== -1)
+      // }
 
       // Only compute if events changed or isFirstRender changed
       if (!events.equals(this.lastEvents) || this.state.isFirstRender !== this.lastIsFirstRender) {
@@ -208,11 +221,79 @@ class EventListPage extends PureComponent {
                 <Grid item xs={3} lg={2}>
                   <div className={this.props.classes.sideNav}>
                     <h1>{`${2017} Events`}</h1>
-                    <p>Navigation stuff</p>
+                    {this.contentRef &&
+                      <Scrollspy
+                        items={['official', 'unofficial']}
+                        currentClassName={this.props.classes.sideNavSectionActive}
+                        className={this.props.classes.sideNavSectionContainer}
+                      >
+                        <li className={this.props.classes.sideNavSection}>
+                          <a href="#official">Official Events</a>
+                          <Scrollspy
+                            rootEl={`.${this.contentRef.className}`}
+                            items={events.filter(group => group.get('isOfficial')).map(group => group.get('label')).toJS()}
+                            currentClassName={this.props.classes.sideNavItemActive}
+                          >
+                            {events.filter(group => group.get('isOfficial')).map(group => {
+                              return (
+                                <li key={group.get('label')} className={this.props.classes.sideNavItem}>
+                                  <a href={`#${group.get('label')}`}>{group.get('label')}</a>
+                                </li>
+                              )
+                            })}
+                          </Scrollspy>
+                        </li>
+                        <li className={this.props.classes.sideNavSection}>
+                          <a href="#unofficial">Unofficial Events</a>
+                          <Scrollspy
+                            rootEl={`.${this.contentRef.className}`}
+                            items={events.filter(group => !group.get('isOfficial')).map(group => group.get('label')).toJS()}
+                            currentClassName={this.props.classes.sideNavItemActive}
+                          >
+                            {events.filter(group => !group.get('isOfficial')).map(group => {
+                              return (
+                                <li key={group.get('label')} className={this.props.classes.sideNavItem}>
+                                  <a href={`#${group.get('label')}`}>{group.get('label')}</a>
+                                </li>
+                              )
+                            })}
+                          </Scrollspy>
+                        </li>
+                      </Scrollspy>
+                    }
                   </div>
                 </Grid>
                 <Grid item xs={9} lg={10}>
-                  {events && <EventsList2 events={events} scrollElement={this.contentRef}/>}
+                  <div id='official'>
+                    <h1>Official Events</h1>
+                    {events.filter(group => group.get('isOfficial')).map(group => {
+                      return (
+                        <div key={group.get('label')} id={group.get('label')}>
+                          <h2>{group.get('label')}</h2>
+                          <Paper className={this.props.classes.eventGroupCard} elevation={4}>
+                            {group.get('events').map(event => {
+                              return <div key={event.key}><Link to={`/event/${event.key}`}>{event.name}</Link></div>
+                            })}
+                          </Paper>
+                        </div>
+                      )
+                    })}
+                  </div>
+                  <div id='unofficial'>
+                    <h1>Unofficial Events</h1>
+                    {events.filter(group => !group.get('isOfficial')).map(group => {
+                      return (
+                        <div key={group.get('label')} id={group.get('label')}>
+                          <h2>{group.get('label')}</h2>
+                          <Paper className={this.props.classes.eventGroupCard} elevation={4}>
+                            {group.get('events').map(event => {
+                              return <div key={event.key}><Link to={`/event/${event.key}`}>{event.name}</Link></div>
+                            })}
+                          </Paper>
+                        </div>
+                      )
+                    })}
+                  </div>
                 </Grid>
               </Grid>
             </ResponsiveLayout>
