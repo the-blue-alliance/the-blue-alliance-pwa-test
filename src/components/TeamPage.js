@@ -7,6 +7,7 @@ import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import { CircularProgress } from 'material-ui/Progress';
 import Hidden from 'material-ui/Hidden';
+import Scrollspy from 'react-scrollspy'
 
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ResponsiveLayout from './ResponsiveLayout'
@@ -15,12 +16,16 @@ import MatchTable from './MatchTable'
 const styles = theme => ({
   sideNav: {
     position: 'fixed',
+    maxWidth: 150,
   },
   eventCard: theme.mixins.gutters({
     paddingTop: 16,
     paddingBottom: 16,
     marginTop: theme.spacing.unit * 3,
   }),
+  active: {
+    fontWeight: 'bold',
+  }
 });
 
 class TeamPage extends PureComponent {
@@ -73,6 +78,8 @@ class TeamPage extends PureComponent {
     var name = null
     var nickname = null
     var eventList = <CircularProgress color="accent" size={100} />
+    var eventScrollspy = <CircularProgress color="accent" size={100} />
+    var scrollspyItems = []
     if (team) {
       if (team) {
         name = team.get('name')
@@ -80,20 +87,32 @@ class TeamPage extends PureComponent {
       }
     }
     if (teamYearEvents) {
-      eventList = teamYearEvents.valueSeq().map(function(event){
+      eventList = teamYearEvents.valueSeq().map(function(event) {
         return (
-          <Paper key={event.get('key')} className={classes.eventCard} elevation={4}>
-          <Grid container spacing={24}>
-            <Grid item xs={4}>
-              <h3><Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link></h3>
+          <Paper key={event.get('key')} id={event.get('key')} className={classes.eventCard} elevation={4}>
+            <Grid container spacing={24}>
+              <Grid item xs={4}>
+                <h3><Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link></h3>
+              </Grid>
+              <Grid item xs={8}>
+                <MatchTable matches={matchesByEvent.get(event.get('key'))} />
+              </Grid>
             </Grid>
-            <Grid item xs={8}>
-              <MatchTable matches={matchesByEvent.get(event.get('key'))} />
-            </Grid>
-          </Grid>
           </Paper>
         )
       })
+
+      eventScrollspy = teamYearEvents.valueSeq().map(function(event) {
+        return (
+          <li key={event.get('key')}>
+            <a href={`#${event.get('key')}`}>{event.get('short_name')}</a>
+          </li>
+        )
+      })
+
+      scrollspyItems = teamYearEvents.valueSeq().map(function(event) {
+        return event.get('key')
+      }).toJS()
     }
 
     return (
@@ -102,6 +121,7 @@ class TeamPage extends PureComponent {
           <TBAPageContainer
             documentTitle={`Team ${teamNumber} (${year})`}
             refreshFunction={this.refreshFunction}
+            contentRef={el => this.contentRef = el}
             restoreScroll={this.state.isFirstRender}
           >
             <ResponsiveLayout>
@@ -117,6 +137,14 @@ class TeamPage extends PureComponent {
                       <MenuItem value={2017}>2017 Season</MenuItem>
                       <MenuItem value={2016}>2016 Season</MenuItem>
                     </Select>
+                    {this.contentRef &&
+                    <Scrollspy
+                      rootEl={`.${this.contentRef.className}`}
+                      items={scrollspyItems}
+                      currentClassName={classes.active}
+                    >
+                      {eventScrollspy}
+                    </Scrollspy>}
                   </div>
                 </Grid>
                 <Grid item xs={9} lg={10}>
@@ -136,7 +164,7 @@ class TeamPage extends PureComponent {
           >
             <h1>Team {teamNumber}{nickname && ` - ${nickname}`}</h1>
             {name && <p>aka {name}</p>}
-            {eventList && <ul>{eventList}</ul>}
+            {eventList}
           </TBAPageContainer>
         </Hidden>
       </div>
