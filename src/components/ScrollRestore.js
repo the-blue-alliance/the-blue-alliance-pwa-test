@@ -4,9 +4,17 @@ import { withStyles } from 'material-ui/styles';
 const styles = {}
 
 class ScrollRestore extends PureComponent {
+  isThrottled = false
+
   scrollHandler = () => {
     if (!this.props.restoreScroll){
-      this.props.setPageState({ [this.props.scrollTopId]: this.ref.scrollTop })
+      if (!this.isThrottled) {
+        this.isThrottled = true
+        setTimeout(() => {
+          this.props.setPageState({ [this.props.scrollTopId]: this.ref.scrollTop })
+          this.isThrottled = false
+        }, 500)
+      }
     }
   }
 
