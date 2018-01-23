@@ -59,6 +59,7 @@ class EventListPageMobile extends PureComponent {
         title='Events'
         refreshFunction={this.props.refreshFunction}
         filterFunction={this.props.filterFunction}
+        filterCount={this.props.pageState.get('districtFilters').size}
         tabs={this.props.groupedEvents.length !== 0 &&
           <GroupedEventTabs
             groupedEvents={this.props.groupedEvents}

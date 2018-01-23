@@ -10,6 +10,7 @@ import FilterListIcon from 'material-ui-icons/FilterList';
 import RefreshIcon from 'material-ui-icons/Refresh';
 import { CircularProgress } from 'material-ui/Progress';
 import TBALamp from '../icons/tba_lamp';
+import HideableBadge from '../components/HideableBadge'
 
 const styles = theme => ({
   appBarTitle: {
@@ -30,7 +31,13 @@ class TBAToolbar extends PureComponent {
           {this.props.title ? this.props.title : 'The Blue Alliance'}
         </Typography>
         {this.props.filterFunction && <IconButton color="contrast" onClick={this.props.filterFunction}>
-          <FilterListIcon />
+          <HideableBadge
+            badgeContent={this.props.filterCount}
+            color='accent'
+            hidden={this.props.filterCount === 0}
+          >
+            <FilterListIcon />
+          </HideableBadge>
         </IconButton>}
         {!this.props.isLoading && this.props.refreshFunction &&
           <IconButton color="contrast" onClick={this.props.refreshFunction}>

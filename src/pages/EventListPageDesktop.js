@@ -12,6 +12,7 @@ import Scrollspy from 'react-scrollspy'
 import EventListCard from '../components/EventListCard'
 import ScrollLink from '../components/ScrollLink'
 import EventFilterDialogContainer from '../containers/EventFilterDialogContainer'
+import HideableBadge from '../components/HideableBadge'
 
 const styles = theme => ({
   sideNav: {
@@ -19,7 +20,8 @@ const styles = theme => ({
     width: '100%',
     maxWidth: 180,
   },
-  button: {
+  buttonContainer: {
+    textAlign: 'center',
     margin: `${theme.spacing.unit}px 0`,
   },
   leftIcon: {
@@ -113,6 +115,7 @@ class EventListPageDesktop extends PureComponent {
     const { year, groupedEvents } = this.props
     const officialEventsGrouped = groupedEvents.filter(group => group.get('isOfficial'))
     const unofficialEventsGrouped = groupedEvents.filter(group => !group.get('isOfficial'))
+    const filterCount = this.props.pageState.get('districtFilters').size
 
     return (
       <TBAPageContainer
@@ -126,16 +129,22 @@ class EventListPageDesktop extends PureComponent {
             <Grid item xs={3}>
               <div className={this.props.classes.sideNav}>
                 <h1>{`${year} Events`}</h1>
-                <Button
-                  className={this.props.classes.button}
-                  color='primary'
-                  raised
-                  fullWidth
-                  onClick={this.props.filterFunction}
-                >
-                  <Icon className={this.props.classes.leftIcon}>filter_list</Icon>
-                  Filter
-                </Button>
+                <div className={this.props.classes.buttonContainer}>
+                  <HideableBadge
+                    badgeContent={filterCount}
+                    color='accent'
+                    hidden={filterCount === 0}
+                  >
+                    <Button
+                      color='primary'
+                      raised
+                      onClick={this.props.filterFunction}
+                    >
+                        <Icon className={this.props.classes.leftIcon}>filter_list</Icon>
+                      Filter
+                    </Button>
+                  </HideableBadge>
+                </div>
                 {this.contentRef &&
                   <Scrollspy
                     rootEl={`.${this.contentRef.className}`}

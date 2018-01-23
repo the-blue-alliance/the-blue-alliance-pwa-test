@@ -57,6 +57,7 @@ class TBAPage extends PureComponent {
           title={this.props.title}
           refreshFunction={this.props.refreshFunction}
           filterFunction={this.props.filterFunction}
+          filterCount={this.props.filterCount}
           tabs={this.props.tabs}
         />
         <ScrollRestoreContainer
@@ -79,6 +80,7 @@ TBAPage.propTypes = {
   classes: PropTypes.object.isRequired,
   documentTitle: PropTypes.string.isRequired,
   title: PropTypes.string,
+  filterCount: PropTypes.number,
 }
 
 export default withStyles(styles)(TBAPage)
