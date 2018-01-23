@@ -17,6 +17,7 @@ const getDistrictFilters = (state, props) => {
   return getCurrentPageState(state, props).get('districtFilters')
 }
 
+// Sort by start date, then end date, then short name
 export const getSortedEvents = createSelector(
   [getEvents],
   (events) => {
@@ -26,6 +27,18 @@ export const getSortedEvents = createSelector(
           return -1
         }
         if (a.start_date > b.start_date) {
+          return 1
+        }
+        if (a.end_date < b.end_date) {
+          return -1
+        }
+        if (a.end_date > b.end_date) {
+          return 1
+        }
+        if (a.short_name < b.short_name) {
+          return -1
+        }
+        if (a.short_name > b.short_name) {
           return 1
         }
         return 0
