@@ -7,6 +7,7 @@ import SwipeableViews from 'react-swipeable-views';
 import TBAPageContainer from '../containers/TBAPageContainer'
 import GroupedEventTabs from '../components/GroupedEventTabs'
 import EventsList from '../components/EventsList'
+import EventFilterDialogContainer from '../containers/EventFilterDialogContainer'
 
 const styles = theme => ({
 })
@@ -59,7 +60,7 @@ class EventListPageMobile extends PureComponent {
         documentTitle={this.props.documentTitle}
         title='Events'
         refreshFunction={this.props.refreshFunction}
-        // filterFunction={this.filterFunction}
+        filterFunction={this.props.filterFunction}
         tabs={this.props.groupedEvents.length !== 0 &&
           <GroupedEventTabs
             groupedEvents={this.props.groupedEvents}
@@ -81,6 +82,7 @@ class EventListPageMobile extends PureComponent {
         >
           {this.tabContents}
         </SwipeableViews>
+        <EventFilterDialogContainer year={this.props.year} />
       </TBAPageContainer>
     )
   }
@@ -91,6 +93,7 @@ EventListPageMobile.propTypes = {
   documentTitle: PropTypes.string.isRequired,
   isFreshPage: PropTypes.bool.isRequired,
   refreshFunction: PropTypes.func.isRequired,
+  filterFunction: PropTypes.func.isRequired,
   pageState: ImmutablePropTypes.map.isRequired,
   setPageState: PropTypes.func.isRequired,
   year: PropTypes.number.isRequired,

@@ -32,6 +32,7 @@ export default class Event extends Record({
   year: undefined,
   week: undefined,
   event_type: undefined,
+  district: undefined,
   start_date: undefined,
   end_date: undefined,
   city: undefined,

@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
+import { Set } from 'immutable'
 import { resetPage, setPageState, setBottomNav, fetchYearEvents } from '../actions'
 import { getCurrentPageState, getYear } from '../selectors/CommonPageSelectors'
-import { getGroupedEvents } from '../selectors/EventListPageSelectors'
+import { getFilteredGroupedEvents } from '../selectors/EventListPageSelectors'
 import Hidden from 'material-ui/Hidden'
 
 import EventListPageDesktop from './EventListPageDesktop'
@@ -14,7 +15,7 @@ const mapStateToProps = (state, props) => ({
   // Params
   year: getYear(state, props),
   // Data
-  groupedEvents: getGroupedEvents(state, props),
+  groupedEvents: getFilteredGroupedEvents(state, props),
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -32,6 +33,8 @@ class EventListPageBase extends PureComponent {
     props.setBottomNav('events')
     props.resetPage({
       activeEventGroup: 'week-1',
+      filterDialogOpen: false,
+      districtFilters: Set(),
       // tabIdx: 0,
       // eventFilterOpen: false,
       // yearPickerOpen: false,
@@ -63,9 +66,9 @@ class EventListPageBase extends PureComponent {
     this.props.fetchYearEvents(this.props.year)
   }
 
-  // filterFunction = () => {
-  //   this.props.setPageState({ eventFilterOpen: true })
-  // }
+  filterFunction = () => {
+    this.props.setPageState({ filterDialogOpen: true })
+  }
 
   render() {
     console.log("Render EventListPageBase")
@@ -88,6 +91,7 @@ class EventListPageBase extends PureComponent {
             documentTitle={`${this.props.year} Events`}
             isFreshPage={this.state.isFreshPage}
             refreshFunction={this.refreshFunction}
+            filterFunction={this.filterFunction}
             pageState={this.props.pageState}
             setPageState={this.props.setPageState}
             year={this.props.year}

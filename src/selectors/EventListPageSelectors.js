@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
-import { List, Map } from 'immutable'
-import { getYear } from '../selectors/CommonPageSelectors'
+import { List, Map, Set } from 'immutable'
+import { getCurrentPageState, getYear } from '../selectors/CommonPageSelectors'
 import Event from '../database/Event'
 import { slugify } from '../utils'
 
@@ -11,6 +11,10 @@ const getEvents = (state, props) => {
       return events
     }
   }
+}
+
+const getDistrictFilters = (state, props) => {
+  return getCurrentPageState(state, props).get('districtFilters')
 }
 
 export const getSortedEvents = createSelector(
@@ -32,9 +36,10 @@ export const getSortedEvents = createSelector(
 )
 
 // Grouped by preseason, week, championship, FoC, and offseason month
-export const getGroupedEvents = createSelector(
-  [getSortedEvents],
-  (events) => {
+// With applied filters
+export const getFilteredGroupedEvents = createSelector(
+  [getSortedEvents, getDistrictFilters],
+  (events, districtFilters) => {
     let groupedEvents = List()
     if (events) {
       let preseasonEvents = List()
@@ -43,7 +48,8 @@ export const getGroupedEvents = createSelector(
       let focEvents = List()
       let offseasonEvents = List()
 
-      events.forEach(event => {
+      events.filter(e => districtFilters.size === 0 || districtFilters.has(e.getIn(['district', 'key'])))
+      .forEach(event => {
         if (event.isCMP()) {
           cmpEvents = cmpEvents.push(event)
         } else if (event.isFOC()) {
@@ -115,12 +121,14 @@ export const getGroupedEvents = createSelector(
       }
 
       // FoC
-      groupedEvents = groupedEvents.push(Map({
-        label: 'Festival of Champions',
-        slug: 'foc',
-        events: focEvents,
-        isOfficial: true,
-      }))
+      if (focEvents.size !== 0) {
+        groupedEvents = groupedEvents.push(Map({
+          label: 'Festival of Champions',
+          slug: 'foc',
+          events: focEvents,
+          isOfficial: true,
+        }))
+      }
 
       // Offseasons by Month
       let offseasonsByMonth = {}
@@ -142,5 +150,28 @@ export const getGroupedEvents = createSelector(
       }
     }
     return groupedEvents
+  }
+)
+
+export const getDistricts = createSelector(
+  [getSortedEvents],
+  (events) => {
+    let districts = Set()
+    if (events) {
+      events.forEach(event => {
+        if (event.district) {
+          districts = districts.add(event.district)
+        }
+      })
+    }
+    return districts.sort((a, b) => {
+      if (a.get('display_name') < b.get('display_name')) {
+        return -1
+      }
+      if (a.get('display_name') > b.get('display_name')) {
+        return 1
+      }
+      return 0
+    }).toList()
   }
 )

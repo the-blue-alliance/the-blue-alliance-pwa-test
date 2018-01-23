@@ -1,66 +1,72 @@
-import React, { PureComponent } from 'react';
-import { withStyles } from 'material-ui/styles';
-import Button from 'material-ui/Button';
-import List, { ListItem, ListItemText } from 'material-ui/List';
-import Dialog, { DialogTitle, DialogActions } from 'material-ui/Dialog';
-import blue from 'material-ui/colors/blue';
-import Checkbox from 'material-ui/Checkbox';
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import { withStyles } from 'material-ui/styles'
+import Button from 'material-ui/Button'
+import List, { ListItem, ListItemText } from 'material-ui/List'
+import Dialog, { DialogTitle, DialogActions } from 'material-ui/Dialog'
+import blue from 'material-ui/colors/blue'
+import Checkbox from 'material-ui/Checkbox'
 
 const styles = {
-  avatar: {
-    background: blue[100],
-    color: blue[600],
-  },
   listWrapper: {
     maxHeight: '100%',
     overflow: 'auto',
   },
-};
+}
 
 class EventFilterDialog extends PureComponent {
-  state = {
-    checked: [],
-  };
+  handleClose = () => {
+    this.props.setPageState({ filterDialogOpen: false })
+  }
 
-  handleRequestClose = () => {
-    this.props.onRequestClose();
-  };
+  handleToggle = (district) => () => {
+    let filters = this.props.districtFilters
+
+    if (filters.has(district.get('key'))) {
+      filters = filters.delete(district.get('key'))
+    } else {
+      filters = filters.add(district.get('key'))
+    }
+
+    this.props.setPageState({
+      districtFilters: filters,
+    })
+  }
 
   render() {
-    let filterNames = []
-    for (let label in this.props.eventFilters) {
-      filterNames.push(label)
-    }
-    filterNames.sort()
-
-    const listItems = filterNames.map((name, i) =>{
-      return (
-        <ListItem button onClick={this.props.handleToggle(this.props.eventFilters[name])} key={i}>
-          <Checkbox
-            checked={this.props.activeFilters.indexOf(this.props.eventFilters[name]) !== -1}
-            disableRipple
-          />
-          <ListItemText primary={`${name} District`} />
-        </ListItem>
-      )
-    })
-
     return (
-      <Dialog onRequestClose={this.handleRequestClose} open={this.props.open}>
+      <Dialog onClose={this.handleClose} open={this.props.isOpen}>
         <DialogTitle>Filter Events</DialogTitle>
         <div className={this.props.classes.listWrapper}>
           <List>
-            {listItems}
+            {this.props.districts.map(district =>{
+              return (
+                <ListItem key={district.get('key')} button onClick={this.handleToggle(district)}>
+                  <Checkbox
+                    checked={this.props.districtFilters.has(district.get('key'))}
+                  />
+                  <ListItemText primary={`${district.get('display_name')} District`} />
+                </ListItem>
+              )
+            })}
           </List>
         </div>
         <DialogActions>
-          <Button onClick={this.handleRequestClose} color="primary">
+          <Button onClick={this.handleClose} color="primary">
             Okay
           </Button>
           </DialogActions>
       </Dialog>
-    );
+    )
   }
 }
 
-export default withStyles(styles)(EventFilterDialog);
+EventFilterDialog.propTypes = {
+  classes: PropTypes.object.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  year: PropTypes.number.isRequired,
+  districts: ImmutablePropTypes.list.isRequired,
+}
+
+export default withStyles(styles)(EventFilterDialog)
