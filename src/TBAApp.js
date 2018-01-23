@@ -11,7 +11,7 @@ import TBASnackbarsContainer from './containers/TBASnackbarsContainer'
 import TBAModalDialog from './components/TBAModalDialog'
 
 import HomePageContainer from './containers/HomePageContainer'
-import EventListPageContainer from './containers/EventListPageContainer'
+import EventListPageBase from './pages/EventListPageBase'
 import EventPageContainer from './containers/EventPageContainer'
 import MatchPageContainer from './containers/MatchPageContainer'
 import TeamListPageContainer from './containers/TeamListPageContainer'
@@ -102,7 +102,7 @@ class ModalSwitch extends React.Component {
       <div>
         <Switch location={isModal ? this.previousLocation : location}>
           <Route exact path='/' component={HomePageContainer} />
-          <Route path='/events' component={EventListPageContainer} />
+          <Route path='/events' component={EventListPageBase} />
           <Route path='/event/:eventKey' component={EventPageContainer} />
           <Route path='/match/:matchKey' component={MatchPageContainer} />
           <Route path='/teams' component={TeamListPageContainer} />

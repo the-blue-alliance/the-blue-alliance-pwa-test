@@ -1,6 +1,7 @@
-import React, { PureComponent } from 'react';
-import { withStyles } from 'material-ui/styles';
-import classNames from 'classnames';
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import { withStyles } from 'material-ui/styles'
+import classNames from 'classnames'
 
 import TBAAppBarContainer from '../containers/TBAAppBarContainer'
 import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
@@ -38,11 +39,11 @@ class TBAPage extends PureComponent {
   }
 
   componentWillMount() {
-    // document.title = this.getDocumentTitle()
+    document.title = this.getDocumentTitle()
   }
 
   componentWillUpdate() {
-    // document.title = this.getDocumentTitle()
+    document.title = this.getDocumentTitle()
   }
 
   render() {
@@ -72,4 +73,10 @@ class TBAPage extends PureComponent {
   }
 }
 
-export default withStyles(styles)(TBAPage);
+TBAPage.propTypes = {
+  classes: PropTypes.object.isRequired,
+  documentTitle: PropTypes.string.isRequired,
+  title: PropTypes.string,
+}
+
+export default withStyles(styles)(TBAPage)
