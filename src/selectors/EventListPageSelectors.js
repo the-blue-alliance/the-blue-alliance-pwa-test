@@ -129,7 +129,7 @@ export const getFilteredGroupedEvents = createSelector(
       // Offseasons by Month
       let offseasonsByMonth = {}
       offseasonEvents.forEach(event => {
-        const month = `${new Date(event.start_date).toLocaleString('en-us', {month: 'short'})} Offseason`
+        const month = `${new Date(event.start_date).toLocaleString('en-us', {timeZone: 'UTC', month: 'short'})} Offseason`
         if (month in offseasonsByMonth) {
           offseasonsByMonth[month] = offseasonsByMonth[month].push(event)
         } else {

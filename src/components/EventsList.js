@@ -4,6 +4,7 @@ import { AutoSizer, List } from 'react-virtualized';
 import { withStyles } from 'material-ui/styles';
 import indigo from 'material-ui/colors/indigo';
 import { ListItem, ListItemText, ListSubheader } from 'material-ui/List';
+import Typography from 'material-ui/Typography';
 
 
 const styles = {
@@ -17,10 +18,53 @@ const styles = {
 
 class EventListItem extends PureComponent {
   render() {
+    const startDate = new Date(this.props.event.get('start_date'))
+    const endDate = new Date(this.props.event.get('end_date'))
+    let dateStr = endDate.toLocaleString('en-us', {
+      timeZone: 'UTC',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    })
+    if (startDate.getTime() !== endDate.getTime()) {
+      const startDateStr = startDate.toLocaleString('en-us', {
+        timeZone: 'UTC',
+        day: 'numeric',
+        month: 'short',
+      })
+      dateStr = `${startDateStr} to ${dateStr}`
+    }
+
     return (
       <LinkContainer to={`/event/${this.props.event.get('key')}`}>
         <ListItem button divider disableRipple>
-          <ListItemText primary={this.props.event.get('short_name')} secondary={`${this.props.event.get('city')}, ${this.props.event.get('state_prov')}, ${this.props.event.get('country')} | ${this.props.event.get('start_date')} - ${this.props.event.get('end_date')}`} />
+          <ListItemText
+            disableTypography
+            primary={
+              this.props.event.get('short_name')
+            }
+            secondary={
+              <Typography>
+                <span style={{
+                  float: 'left',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  width: 'calc(100% - 170px)',
+                }}>
+                  {this.props.event.getCityStateCountry()}
+                </span>
+                <span style={{
+                  float: 'right',
+                  width: 150,
+                  textAlign: 'right',
+                }}>
+                  {dateStr}
+                </span>
+              </Typography>
+
+            }
+          />
         </ListItem>
       </LinkContainer>
     )
@@ -208,7 +252,7 @@ class EventsList extends PureComponent {
             width={width}
             height={height}
             rowCount={this.listItems.length}
-            rowHeight={({ index }) => labelIdxs.has(index) ? 24 : 69}
+            rowHeight={({ index }) => labelIdxs.has(index) ? 24 : 66}
             rowRenderer={this.rowRenderer}
           />
         )}

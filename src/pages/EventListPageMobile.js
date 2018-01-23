@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from 'material-ui/styles'
-import SwipeableViews from 'react-swipeable-views';
+import SwipeableViews from 'react-swipeable-views'
 
 import TBAPageContainer from '../containers/TBAPageContainer'
 import GroupedEventTabs from '../components/GroupedEventTabs'

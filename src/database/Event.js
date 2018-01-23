@@ -39,6 +39,25 @@ export default class Event extends Record({
   state_prov: undefined,
   country: undefined,
 }) {
+  getCityStateCountry() {
+    if (this.cityStateCountry === undefined) {
+      this.cityStateCountry = ''
+      if (this.city) {
+          this.cityStateCountry += `${this.city}`
+      }
+      if (this.state_prov) {
+          this.cityStateCountry += `, ${this.state_prov}`
+      }
+      if (this.country) {
+          this.cityStateCountry += `, ${this.country}`
+      }
+      if (this.cityStateCountry === '') {
+          this.cityStateCountry = null
+      }
+    }
+    return this.cityStateCountry
+  }
+
   isCMP() {
     return CMP_TPYES.has(this.event_type)
   }
