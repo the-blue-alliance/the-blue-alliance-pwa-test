@@ -8,17 +8,26 @@ import WindowScrollerList from './WindowScrollerList'
 const styles = {
 }
 
+class TeamRow extends PureComponent {
+  render() {
+    const { team } = this.props
+    const cityStateCountry = team.getCityStateCountry()
+    return (
+      <LinkContainer to={`/team/${team.get('team_number')}`}>
+        <ListItem button divider disableRipple>
+          <ListItemText primary={`${team.get('team_number')} | ${team.get('nickname')}`} secondary={cityStateCountry ? cityStateCountry : '--'} />
+        </ListItem>
+      </LinkContainer>
+    )
+  }
+}
+
 class TeamsList extends PureComponent {
   rowRenderer = ({index, isScrolling, isVisible, key, parent, style}) => {
     const team = this.filteredTeams.get(index)
-    const cityStateCountry = team.getCityStateCountry()
     return (
       <div key={team.get('key')} style={style}>
-        <LinkContainer to={`/team/${team.get('team_number')}`}>
-          <ListItem button divider disableRipple>
-            <ListItemText primary={`${team.get('team_number')} | ${team.get('nickname')}`} secondary={cityStateCountry ? cityStateCountry : '--'} />
-          </ListItem>
-        </LinkContainer>
+        <TeamRow team={team}/>
       </div>
     )
   }

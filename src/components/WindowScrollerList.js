@@ -1,10 +1,5 @@
-import React, { PureComponent } from 'react';
-import { AutoSizer, WindowScroller, List } from 'react-virtualized';
-import { withStyles } from 'material-ui/styles';
-
-
-const styles = {
-}
+import React, { PureComponent } from 'react'
+import { AutoSizer, WindowScroller, List } from 'react-virtualized'
 
 
 class WindowScrollerList extends PureComponent {
@@ -23,8 +18,10 @@ class WindowScrollerList extends PureComponent {
   render() {
     console.log("Render WindowScrollerList")
 
+    const { scrollElement, ...restProps } = this.props
+
     return (
-      <WindowScroller scrollElement={this.props.scrollElement}>
+      <WindowScroller scrollElement={scrollElement}>
       {({ height, isScrolling, onChildScroll, scrollTop }) => {
         // 2017-12-31 react-virtualized 9.15.0 sometimes has height undefined
         if (height === undefined) {
@@ -39,18 +36,15 @@ class WindowScrollerList extends PureComponent {
               height={height}
               isScrolling={isScrolling}
               onScroll={onChildScroll}
-              rowCount={this.props.rowCount}
-              rowHeight={this.props.rowHeight}
-              estimatedRowSize={this.estimatedRowSize}
-              rowRenderer={this.props.rowRenderer}
               scrollTop={scrollTop}
+              {...restProps}
             />
           )}
         </AutoSizer>)
       }}
       </WindowScroller>
-    );
+    )
   }
 }
 
-export default withStyles(styles)(WindowScrollerList);
+export default WindowScrollerList
