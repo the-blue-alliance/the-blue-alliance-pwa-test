@@ -2,6 +2,7 @@ import { createSelector } from 'reselect'
 import { List, Map } from 'immutable'
 import { getYear } from '../selectors/CommonPageSelectors'
 import Event from '../database/Event'
+import { slugify } from '../utils'
 
 const getEvents = (state, props) => {
   for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
@@ -69,6 +70,7 @@ export const getGroupedEvents = createSelector(
       for (let month in preseasonsByMonth) {
         groupedEvents = groupedEvents.push(Map({
           label: month,
+          slug: slugify(month),
           events: preseasonsByMonth[month],
           isOfficial: false,
         }))
@@ -87,6 +89,7 @@ export const getGroupedEvents = createSelector(
       for (let week in eventsByWeek) {
         groupedEvents = groupedEvents.push(Map({
           label: week,
+          slug: slugify(week),
           events: eventsByWeek[week],
           isOfficial: true,
         }))
@@ -105,6 +108,7 @@ export const getGroupedEvents = createSelector(
       for (let cmp in eventsByCmp) {
         groupedEvents = groupedEvents.push(Map({
           label: cmp,
+          slug: slugify(cmp),
           events: eventsByCmp[cmp],
           isOfficial: true,
         }))
@@ -113,6 +117,7 @@ export const getGroupedEvents = createSelector(
       // FoC
       groupedEvents = groupedEvents.push(Map({
         label: 'Festival of Champions',
+        slug: 'foc',
         events: focEvents,
         isOfficial: true,
       }))
@@ -130,6 +135,7 @@ export const getGroupedEvents = createSelector(
       for (let month in offseasonsByMonth) {
         groupedEvents = groupedEvents.push(Map({
           label: month,
+          slug: slugify(month),
           events: offseasonsByMonth[month],
           isOfficial: false,
         }))

@@ -15,6 +15,8 @@ import EventsList2 from './EventsList2'
 import EventFilterDialog from './EventFilterDialog'
 import YearPickerDialog from './YearPickerDialog'
 
+import ScrollLink from './ScrollLink'
+
 const styles = theme => ({
   slideContainer: {
     position: 'absolute',
@@ -229,32 +231,32 @@ class EventListPage extends PureComponent {
                         className={this.props.classes.sideNavSectionContainer}
                       >
                         <li className={this.props.classes.sideNavSection}>
-                          <a href="#official">Official Events</a>
+                          <ScrollLink scrollEl={this.contentRef} to='official'>Official Events</ScrollLink>
                           <Scrollspy
                             rootEl={`.${this.contentRef.className}`}
-                            items={events.filter(group => group.get('isOfficial')).map(group => group.get('label')).toJS()}
+                            items={events.filter(group => group.get('isOfficial')).map(group => group.get('slug')).toJS()}
                             currentClassName={this.props.classes.sideNavItemActive}
                           >
                             {events.filter(group => group.get('isOfficial')).map(group => {
                               return (
                                 <li key={group.get('label')} className={this.props.classes.sideNavItem}>
-                                  <a href={`#${group.get('label')}`}>{group.get('label')}</a>
+                                  <ScrollLink scrollEl={this.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
                                 </li>
                               )
                             })}
                           </Scrollspy>
                         </li>
                         <li className={this.props.classes.sideNavSection}>
-                          <a href="#unofficial">Unofficial Events</a>
+                          <ScrollLink scrollEl={this.contentRef} to='unofficial'>Unofficial Events</ScrollLink>
                           <Scrollspy
                             rootEl={`.${this.contentRef.className}`}
-                            items={events.filter(group => !group.get('isOfficial')).map(group => group.get('label')).toJS()}
+                            items={events.filter(group => !group.get('isOfficial')).map(group => group.get('slug')).toJS()}
                             currentClassName={this.props.classes.sideNavItemActive}
                           >
                             {events.filter(group => !group.get('isOfficial')).map(group => {
                               return (
                                 <li key={group.get('label')} className={this.props.classes.sideNavItem}>
-                                  <a href={`#${group.get('label')}`}>{group.get('label')}</a>
+                                  <ScrollLink scrollEl={this.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
                                 </li>
                               )
                             })}
@@ -269,7 +271,7 @@ class EventListPage extends PureComponent {
                     <h1>Official Events</h1>
                     {events.filter(group => group.get('isOfficial')).map(group => {
                       return (
-                        <div key={group.get('label')} id={group.get('label')}>
+                        <div key={group.get('label')} id={group.get('slug')}>
                           <h2>{group.get('label')}</h2>
                           <Paper className={this.props.classes.eventGroupCard} elevation={4}>
                             {group.get('events').map(event => {
@@ -284,7 +286,7 @@ class EventListPage extends PureComponent {
                     <h1>Unofficial Events</h1>
                     {events.filter(group => !group.get('isOfficial')).map(group => {
                       return (
-                        <div key={group.get('label')} id={group.get('label')}>
+                        <div key={group.get('label')} id={group.get('slug')}>
                           <h2>{group.get('label')}</h2>
                           <Paper className={this.props.classes.eventGroupCard} elevation={4}>
                             {group.get('events').map(event => {
