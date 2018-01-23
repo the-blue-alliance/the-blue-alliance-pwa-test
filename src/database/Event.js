@@ -7,7 +7,7 @@ const CMP_DIVISION = 3
 const CMP_FINALS = 4
 const DISTRICT_CMP_DIVISION = 5
 const FOC = 6
-const OFFSEASON = 99
+// const OFFSEASON = 99
 const PRESEASON = 100
 
 const CMP_TPYES = new Set([
