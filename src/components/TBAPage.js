@@ -7,7 +7,8 @@ import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 
 const styles = theme => ({
   content: {
-    position: 'absolute',
+    backgroundColor: theme.palette.background.default,  // For some reason this is necessary to scroll to work on fixed sidenav
+    position: 'fixed',
     top: 56,
     right: 0,
     bottom: 56,
