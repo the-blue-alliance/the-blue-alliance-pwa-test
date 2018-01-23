@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from 'material-ui/styles'
+import { Map } from 'immutable'
 import Button from 'material-ui/Button'
 import List, { ListItem, ListItemText } from 'material-ui/List'
 import Dialog, { DialogTitle, DialogActions } from 'material-ui/Dialog'
@@ -14,6 +15,11 @@ const styles = {
     overflow: 'auto',
   },
 }
+
+// Fake district for filtering regionals
+const regional = Map({
+  key: 'regional',
+})
 
 class EventFilterDialog extends PureComponent {
   handleClose = () => {
@@ -40,6 +46,12 @@ class EventFilterDialog extends PureComponent {
         <DialogTitle>Filter Events</DialogTitle>
         <div className={this.props.classes.listWrapper}>
           <List>
+            <ListItem key={'regional'} button onClick={this.handleToggle(regional)}>
+              <Checkbox
+                checked={this.props.districtFilters.has(regional.get('key'))}
+              />
+              <ListItemText primary='Regionals' />
+            </ListItem>
             {this.props.districts.map(district =>{
               return (
                 <ListItem key={district.get('key')} button onClick={this.handleToggle(district)}>

@@ -48,8 +48,13 @@ export const getFilteredGroupedEvents = createSelector(
       let focEvents = List()
       let offseasonEvents = List()
 
-      events.filter(e => districtFilters && (districtFilters.size === 0 || districtFilters.has(e.getIn(['district', 'key']))))
-      .forEach(event => {
+      events.filter(event => {
+        return districtFilters && (
+          districtFilters.size === 0 ||
+          districtFilters.has(event.getIn(['district', 'key'])) ||
+          (districtFilters.has('regional') && event.isRegional())
+        )
+      }).forEach(event => {
         if (event.isCMP()) {
           cmpEvents = cmpEvents.push(event)
         } else if (event.isFOC()) {
