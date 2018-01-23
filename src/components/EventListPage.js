@@ -1,11 +1,9 @@
 import React, { PureComponent } from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import { withStyles } from 'material-ui/styles';
-import { Link } from 'react-router-dom';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import Hidden from 'material-ui/Hidden';
 import Grid from 'material-ui/Grid';
-import Paper from 'material-ui/Paper';
 import Scrollspy from 'react-scrollspy'
 
 import TBAPageContainer from '../containers/TBAPageContainer'
@@ -14,6 +12,7 @@ import EventsList from './EventsList'
 import EventsList2 from './EventsList2'
 import EventFilterDialog from './EventFilterDialog'
 import YearPickerDialog from './YearPickerDialog'
+import EventListCard from './EventListCard'
 
 import ScrollLink from './ScrollLink'
 
@@ -74,11 +73,6 @@ const styles = theme => ({
       borderRight: `1px solid ${theme.palette.primary.main}`,
     },
   },
-  eventGroupCard: theme.mixins.gutters({
-    paddingTop: 16,
-    paddingBottom: 16,
-    marginTop: theme.spacing.unit * 3,
-  }),
 })
 
 class EventListTab extends PureComponent {
@@ -273,11 +267,7 @@ class EventListPage extends PureComponent {
                       return (
                         <div key={group.get('label')} id={group.get('slug')}>
                           <h2>{group.get('label')}</h2>
-                          <Paper className={this.props.classes.eventGroupCard} elevation={4}>
-                            {group.get('events').map(event => {
-                              return <div key={event.key}><Link to={`/event/${event.key}`}>{event.name}</Link></div>
-                            })}
-                          </Paper>
+                          <EventListCard events={group.get('events')}/>
                         </div>
                       )
                     })}
@@ -288,11 +278,7 @@ class EventListPage extends PureComponent {
                       return (
                         <div key={group.get('label')} id={group.get('slug')}>
                           <h2>{group.get('label')}</h2>
-                          <Paper className={this.props.classes.eventGroupCard} elevation={4}>
-                            {group.get('events').map(event => {
-                              return <div key={event.key}><Link to={`/event/${event.key}`}>{event.name}</Link></div>
-                            })}
-                          </Paper>
+                          <EventListCard events={group.get('events')}/>
                         </div>
                       )
                     })}
