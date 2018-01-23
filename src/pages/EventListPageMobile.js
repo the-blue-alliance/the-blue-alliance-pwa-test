@@ -13,36 +13,34 @@ const styles = theme => ({
 })
 
 class EventListPageMobile extends PureComponent {
-  state = {isFirstRender: true}
+  state = {fastRender: true}
   tabContents = []
 
   tabHandleChangeIndex = index => {
     this.props.setPageState({activeEventGroup: this.props.groupedEvents.get(index).get('slug')});
   }
 
-  computeTabContents = (groupedEvents, isFirstRender) => {
+  computeTabContents = (groupedEvents, fastRender) => {
     this.tabContents = groupedEvents.map((group) => {
-      if (!isFirstRender || group.get('slug') === this.props.pageState.get('activeEventGroup')) {
+      if (!fastRender || group.get('slug') === this.props.pageState.get('activeEventGroup')) {
         return <EventsList key={group.get('slug')} events={group.get('events')} />
       } else {
         return <div key={group.get('slug')} />
       }
     }).toJS()
+    setTimeout(() => this.setState({ fastRender: false }), 0)
   }
 
   componentWillMount() {
-    this.computeTabContents(this.props.groupedEvents, this.state.isFirstRender)
-  }
-
-  componentDidMount() {
-    // Rerender without cascading
-    setTimeout(() => this.setState({ isFirstRender: false }), 0)
+    this.computeTabContents(this.props.groupedEvents, this.state.fastRender)
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (this.props.groupedEvents !== nextProps.groupedEvents ||
-        this.state.isFirstRender !== nextState.isFirstRender) {
-      this.computeTabContents(nextProps.groupedEvents, nextState.isFirstRender)
+    if (this.props.groupedEvents !== nextProps.groupedEvents) {
+      this.setState({ fastRender: true })
+      this.computeTabContents(nextProps.groupedEvents, true)
+    } else if (!nextState.fastRender) {
+      this.computeTabContents(nextProps.groupedEvents, nextState.fastRender)
     }
   }
 
