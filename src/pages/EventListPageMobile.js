@@ -33,16 +33,16 @@ class EventListPageMobile extends PureComponent {
     this.computeTabContents(this.props.groupedEvents, this.state.isFirstRender)
   }
 
+  componentDidMount() {
+    // Rerender without cascading
+    setTimeout(() => this.setState({ isFirstRender: false }), 0)
+  }
+
   componentWillUpdate(nextProps, nextState) {
     if (this.props.groupedEvents !== nextProps.groupedEvents ||
         this.state.isFirstRender !== nextState.isFirstRender) {
       this.computeTabContents(nextProps.groupedEvents, nextState.isFirstRender)
     }
-  }
-
-  componentDidUpdate() {
-    // Rerender without cascading
-    setTimeout(() => this.setState({ isFirstRender: false }), 0)
   }
 
   render() {

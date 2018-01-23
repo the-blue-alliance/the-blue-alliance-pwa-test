@@ -11,14 +11,16 @@ class ScrollRestore extends PureComponent {
       if (!this.isThrottled) {
         this.isThrottled = true
         setTimeout(() => {
-          this.props.setPageState({ [this.props.scrollTopId]: this.ref.scrollTop })
+          if (this.ref) {
+            this.props.setPageState({ [this.props.scrollTopId]: this.ref.scrollTop })
+          }
           this.isThrottled = false
-        }, 500)
+        }, 100)
       }
     }
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
     if (this.props.restoreScroll) {
       this.ref.scrollTop = this.props.pageState.get(this.props.scrollTopId)
     }

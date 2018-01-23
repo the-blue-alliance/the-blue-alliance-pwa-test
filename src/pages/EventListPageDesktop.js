@@ -63,6 +63,7 @@ const styles = theme => ({
 })
 
 class EventListPageDesktop extends PureComponent {
+  state = {isFirstRender: true}
   activeSection = null
   activeEventGroup = {
     'official': null,
@@ -83,6 +84,11 @@ class EventListPageDesktop extends PureComponent {
     }
   }
 
+  componentDidMount() {
+    // Rerender without cascading
+    setTimeout(() => this.setState({ isFirstRender: false }), 0)
+  }
+
   render() {
     console.log("Render EventListPageDesktop")
 
@@ -94,7 +100,7 @@ class EventListPageDesktop extends PureComponent {
         contentRef={el => this.contentRef = el}
         refreshFunction={this.props.refreshFunction}
         // filterFunction={this.filterFunction}
-        // restoreScroll={this.state.isFirstRender}
+        restoreScroll={this.state.isFirstRender}
       >
         <ResponsiveLayout>
           <Grid container spacing={24}>
