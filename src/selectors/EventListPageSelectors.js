@@ -64,20 +64,11 @@ export const getFilteredGroupedEvents = createSelector(
       })
 
       // Preseasons by Month
-      let preseasonsByMonth = {}
-      preseasonEvents.forEach(event => {
-        const month = new Date(event.start_date).toLocaleString('en-us', {month: 'long'})
-        if (month in preseasonsByMonth) {
-          preseasonsByMonth[month] = preseasonsByMonth[month].push(event)
-        } else {
-          preseasonsByMonth[month] = List([event])
-        }
-      })
-      for (let month in preseasonsByMonth) {
+      if (preseasonEvents.size !== 0) {
         groupedEvents = groupedEvents.push(Map({
-          label: month,
-          slug: slugify(month),
-          events: preseasonsByMonth[month],
+          label: 'Preseason',
+          slug: 'preseason',
+          events: preseasonEvents,
           isOfficial: false,
         }))
       }
@@ -133,7 +124,7 @@ export const getFilteredGroupedEvents = createSelector(
       // Offseasons by Month
       let offseasonsByMonth = {}
       offseasonEvents.forEach(event => {
-        const month = new Date(event.start_date).toLocaleString('en-us', {month: 'long'})
+        const month = `${new Date(event.start_date).toLocaleString('en-us', {month: 'short'})} Offseason`
         if (month in offseasonsByMonth) {
           offseasonsByMonth[month] = offseasonsByMonth[month].push(event)
         } else {
