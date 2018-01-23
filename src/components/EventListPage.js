@@ -17,13 +17,6 @@ import EventListCard from './EventListCard'
 import ScrollLink from './ScrollLink'
 
 const styles = theme => ({
-  slideContainer: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-  },
   sideNav: {
     position: 'fixed',
     maxWidth: 150,
@@ -330,7 +323,13 @@ class EventListPage extends PureComponent {
             }
           >*/}
             <SwipeableViews
-              containerStyle={styles.slideContainer}
+              containerStyle={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+              }}
               index={this.props.pageState.get('tabIdx')}
               onChangeIndex={this.tabHandleChangeIndex}
             >
