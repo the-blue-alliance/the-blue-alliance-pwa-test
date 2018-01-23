@@ -233,7 +233,7 @@ class EventListPage extends PureComponent {
                           >
                             {events.filter(group => group.get('isOfficial')).map(group => {
                               return (
-                                <li key={group.get('label')} className={this.props.classes.sideNavItem}>
+                                <li key={group.get('slug')} className={this.props.classes.sideNavItem}>
                                   <ScrollLink scrollEl={this.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
                                 </li>
                               )
@@ -249,7 +249,7 @@ class EventListPage extends PureComponent {
                           >
                             {events.filter(group => !group.get('isOfficial')).map(group => {
                               return (
-                                <li key={group.get('label')} className={this.props.classes.sideNavItem}>
+                                <li key={group.get('slug')} className={this.props.classes.sideNavItem}>
                                   <ScrollLink scrollEl={this.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
                                 </li>
                               )
@@ -265,7 +265,7 @@ class EventListPage extends PureComponent {
                     <h1>Official Events</h1>
                     {events.filter(group => group.get('isOfficial')).map(group => {
                       return (
-                        <div key={group.get('label')} id={group.get('slug')}>
+                        <div key={group.get('slug')} id={group.get('slug')}>
                           <h2>{group.get('label')}</h2>
                           <EventListCard events={group.get('events')}/>
                         </div>
@@ -276,7 +276,7 @@ class EventListPage extends PureComponent {
                     <h1>Unofficial Events</h1>
                     {events.filter(group => !group.get('isOfficial')).map(group => {
                       return (
-                        <div key={group.get('label')} id={group.get('slug')}>
+                        <div key={group.get('slug')} id={group.get('slug')}>
                           <h2>{group.get('label')}</h2>
                           <EventListCard events={group.get('events')}/>
                         </div>
