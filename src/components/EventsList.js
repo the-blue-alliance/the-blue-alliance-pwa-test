@@ -18,23 +18,6 @@ const styles = {
 
 class EventListItem extends PureComponent {
   render() {
-    const startDate = new Date(this.props.event.get('start_date'))
-    const endDate = new Date(this.props.event.get('end_date'))
-    let dateStr = endDate.toLocaleString('en-us', {
-      timeZone: 'UTC',
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    })
-    if (startDate.getTime() !== endDate.getTime()) {
-      const startDateStr = startDate.toLocaleString('en-us', {
-        timeZone: 'UTC',
-        day: 'numeric',
-        month: 'short',
-      })
-      dateStr = `${startDateStr} to ${dateStr}`
-    }
-
     return (
       <LinkContainer to={`/event/${this.props.event.get('key')}`}>
         <ListItem button divider disableRipple>
@@ -59,7 +42,7 @@ class EventListItem extends PureComponent {
                   width: 150,
                   textAlign: 'right',
                 }}>
-                  {dateStr}
+                  {this.props.event.getDateString()}
                 </span>
               </Typography>
 

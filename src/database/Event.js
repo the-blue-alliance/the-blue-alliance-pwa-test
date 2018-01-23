@@ -58,6 +58,28 @@ export default class Event extends Record({
     return this.cityStateCountry
   }
 
+  getDateString() {
+    if (this.dateStr === undefined) {
+      const startDate = new Date(this.start_date)
+      const endDate = new Date(this.end_date)
+      this.dateStr = endDate.toLocaleString('en-us', {
+        timeZone: 'UTC',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      })
+      if (startDate.getTime() !== endDate.getTime()) {
+        const startDateStr = startDate.toLocaleString('en-us', {
+          timeZone: 'UTC',
+          day: 'numeric',
+          month: 'short',
+        })
+        this.dateStr = `${startDateStr} to ${this.dateStr}`
+      }
+    }
+    return this.dateStr
+  }
+
   isCMP() {
     return CMP_TPYES.has(this.event_type)
   }

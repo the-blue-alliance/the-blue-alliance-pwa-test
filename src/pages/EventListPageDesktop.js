@@ -9,6 +9,7 @@ import Button from 'material-ui/Button'
 import Grid from 'material-ui/Grid'
 import Icon from 'material-ui/Icon'
 import Scrollspy from 'react-scrollspy'
+import Typography from 'material-ui/Typography'
 import EventListCard from '../components/EventListCard'
 import ScrollLink from '../components/ScrollLink'
 import EventFilterDialogContainer from '../containers/EventFilterDialogContainer'
@@ -199,7 +200,7 @@ class EventListPageDesktop extends PureComponent {
                 {officialEventsGrouped.map(group => {
                   return (
                     <div key={group.get('slug')} id={group.get('slug')}>
-                      <h2>{group.get('label')}</h2>
+                      <Typography type='title' gutterBottom>{group.get('label')}</Typography>
                       <EventListCard events={group.get('events')}/>
                     </div>
                   )
@@ -211,7 +212,7 @@ class EventListPageDesktop extends PureComponent {
                   {unofficialEventsGrouped.map(group => {
                     return (
                       <div key={group.get('slug')} id={group.get('slug')}>
-                        <h2>{group.get('label')}</h2>
+                        <Typography type='title' gutterBottom>{group.get('label')}</Typography>
                         <EventListCard events={group.get('events')}/>
                       </div>
                     )
