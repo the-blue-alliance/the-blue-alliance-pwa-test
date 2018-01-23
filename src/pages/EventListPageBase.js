@@ -25,6 +25,8 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 class EventListPageBase extends PureComponent {
+  state = {isFreshPage: true}
+
   constructor(props) {
     super(props)
     props.setBottomNav('events')
@@ -42,6 +44,8 @@ class EventListPageBase extends PureComponent {
 
   componentDidMount() {
     this.refreshFunction()
+    // Rerender without cascading
+    setTimeout(() => this.setState({ isFreshPage: false }), 0)
   }
 
   // componentWillUpdate(nextProps, nextState) {
@@ -71,6 +75,7 @@ class EventListPageBase extends PureComponent {
         <Hidden smDown>
           <EventListPageDesktop
             documentTitle={`${this.props.year} Events`}
+            isFreshPage={this.state.isFreshPage}
             refreshFunction={this.refreshFunction}
             pageState={this.props.pageState}
             setPageState={this.props.setPageState}
@@ -81,6 +86,7 @@ class EventListPageBase extends PureComponent {
         <Hidden mdUp>
           <EventListPageMobile
             documentTitle={`${this.props.year} Events`}
+            isFreshPage={this.state.isFreshPage}
             refreshFunction={this.refreshFunction}
             pageState={this.props.pageState}
             setPageState={this.props.setPageState}

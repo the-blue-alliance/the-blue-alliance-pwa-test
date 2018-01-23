@@ -85,6 +85,13 @@ class EventListPageDesktop extends PureComponent {
   }
 
   componentDidMount() {
+    if (!this.props.isFreshPage) {
+      const el =  document.getElementById(this.props.pageState.get('activeEventGroup'))
+      if (el) {
+        this.contentRef.scrollTo(0, el.offsetTop)
+      }
+    }
+
     // Rerender without cascading
     setTimeout(() => this.setState({ isFirstRender: false }), 0)
   }
@@ -187,6 +194,7 @@ class EventListPageDesktop extends PureComponent {
 EventListPageDesktop.propTypes = {
   classes: PropTypes.object.isRequired,
   documentTitle: PropTypes.string.isRequired,
+  isFreshPage: PropTypes.bool.isRequired,
   refreshFunction: PropTypes.func.isRequired,
   pageState: ImmutablePropTypes.map.isRequired,
   setPageState: PropTypes.func.isRequired,
