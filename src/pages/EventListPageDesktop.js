@@ -5,20 +5,31 @@ import { withStyles } from 'material-ui/styles'
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ResponsiveLayout from '../components/ResponsiveLayout'
 
+import Button from 'material-ui/Button'
 import Grid from 'material-ui/Grid'
+import Icon from 'material-ui/Icon'
 import Scrollspy from 'react-scrollspy'
 import EventListCard from '../components/EventListCard'
 import ScrollLink from '../components/ScrollLink'
+import EventFilterDialogContainer from '../containers/EventFilterDialogContainer'
 
 const styles = theme => ({
   sideNav: {
     position: 'fixed',
+    width: '100%',
     maxWidth: 180,
   },
+  button: {
+    margin: `${theme.spacing.unit}px 0`,
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
   sideNavSectionContainer: {
+    width: '100%',
     listStyleType: 'none',
     margin: 0,
-    padding: 0,
+    padding: theme.spacing.unit,
     '& a:hover': {
       textDecoration: 'none',
       backgroundColor: '#dddddd',
@@ -28,7 +39,7 @@ const styles = theme => ({
   sideNavSection: {
     '& > a': {
       display: 'block',
-      padding: '5px 20px',
+      padding: '5px 10px',
     },
     '& > ul': {
       display: 'none',
@@ -100,13 +111,14 @@ class EventListPageDesktop extends PureComponent {
     console.log("Render EventListPageDesktop")
 
     const { year, groupedEvents } = this.props
+    const officialEventsGrouped = groupedEvents.filter(group => group.get('isOfficial'))
+    const unofficialEventsGrouped = groupedEvents.filter(group => !group.get('isOfficial'))
 
     return (
       <TBAPageContainer
         documentTitle={this.props.documentTitle}
         contentRef={el => this.contentRef = el}
         refreshFunction={this.props.refreshFunction}
-        // filterFunction={this.filterFunction}
         restoreScroll={this.state.isFirstRender}
       >
         <ResponsiveLayout>
@@ -114,6 +126,16 @@ class EventListPageDesktop extends PureComponent {
             <Grid item xs={3}>
               <div className={this.props.classes.sideNav}>
                 <h1>{`${year} Events`}</h1>
+                <Button
+                  className={this.props.classes.button}
+                  color='primary'
+                  raised
+                  fullWidth
+                  onClick={this.props.filterFunction}
+                >
+                  <Icon className={this.props.classes.leftIcon}>filter_list</Icon>
+                  Filter
+                </Button>
                 {this.contentRef &&
                   <Scrollspy
                     rootEl={`.${this.contentRef.className}`}
@@ -126,11 +148,11 @@ class EventListPageDesktop extends PureComponent {
                       <ScrollLink scrollEl={this.contentRef} to='official'>Official Events</ScrollLink>
                       <Scrollspy
                         rootEl={`.${this.contentRef.className}`}
-                        items={groupedEvents.filter(group => group.get('isOfficial')).map(group => group.get('slug')).toJS()}
+                        items={officialEventsGrouped.map(group => group.get('slug')).toJS()}
                         currentClassName={this.props.classes.sideNavItemActive}
                         onUpdate={(el) => this.updateActiveEventGroup(el, 'official')}
                       >
-                        {groupedEvents.filter(group => group.get('isOfficial')).map(group => {
+                        {officialEventsGrouped.map(group => {
                           return (
                             <li key={group.get('slug')} className={this.props.classes.sideNavItem}>
                               <ScrollLink scrollEl={this.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
@@ -139,23 +161,25 @@ class EventListPageDesktop extends PureComponent {
                         })}
                       </Scrollspy>
                     </li>
-                    <li className={this.props.classes.sideNavSection}>
-                      <ScrollLink scrollEl={this.contentRef} to='unofficial'>Unofficial Events</ScrollLink>
-                      <Scrollspy
-                        rootEl={`.${this.contentRef.className}`}
-                        items={groupedEvents.filter(group => !group.get('isOfficial')).map(group => group.get('slug')).toJS()}
-                        currentClassName={this.props.classes.sideNavItemActive}
-                        onUpdate={(el) => this.updateActiveEventGroup(el, 'unofficial')}
-                      >
-                        {groupedEvents.filter(group => !group.get('isOfficial')).map(group => {
-                          return (
-                            <li key={group.get('slug')} className={this.props.classes.sideNavItem}>
-                              <ScrollLink scrollEl={this.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
-                            </li>
-                          )
-                        })}
-                      </Scrollspy>
-                    </li>
+                    {unofficialEventsGrouped.size !== 0 &&
+                      <li className={this.props.classes.sideNavSection}>
+                        <ScrollLink scrollEl={this.contentRef} to='unofficial'>Unofficial Events</ScrollLink>
+                        <Scrollspy
+                          rootEl={`.${this.contentRef.className}`}
+                          items={unofficialEventsGrouped.map(group => group.get('slug')).toJS()}
+                          currentClassName={this.props.classes.sideNavItemActive}
+                          onUpdate={(el) => this.updateActiveEventGroup(el, 'unofficial')}
+                        >
+                          {unofficialEventsGrouped.map(group => {
+                            return (
+                              <li key={group.get('slug')} className={this.props.classes.sideNavItem}>
+                                <ScrollLink scrollEl={this.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
+                              </li>
+                            )
+                          })}
+                        </Scrollspy>
+                      </li>
+                    }
                   </Scrollspy>
                 }
               </div>
@@ -163,7 +187,7 @@ class EventListPageDesktop extends PureComponent {
             <Grid item xs={9}>
               <div id='official'>
                 <h1>Official Events</h1>
-                {groupedEvents.filter(group => group.get('isOfficial')).map(group => {
+                {officialEventsGrouped.map(group => {
                   return (
                     <div key={group.get('slug')} id={group.get('slug')}>
                       <h2>{group.get('label')}</h2>
@@ -172,20 +196,23 @@ class EventListPageDesktop extends PureComponent {
                   )
                 })}
               </div>
-              <div id='unofficial'>
-                <h1>Unofficial Events</h1>
-                {groupedEvents.filter(group => !group.get('isOfficial')).map(group => {
-                  return (
-                    <div key={group.get('slug')} id={group.get('slug')}>
-                      <h2>{group.get('label')}</h2>
-                      <EventListCard events={group.get('events')}/>
-                    </div>
-                  )
-                })}
-              </div>
+              {unofficialEventsGrouped.size !== 0 &&
+                <div id='unofficial'>
+                  <h1>Unofficial Events</h1>
+                  {unofficialEventsGrouped.map(group => {
+                    return (
+                      <div key={group.get('slug')} id={group.get('slug')}>
+                        <h2>{group.get('label')}</h2>
+                        <EventListCard events={group.get('events')}/>
+                      </div>
+                    )
+                  })}
+                </div>
+              }
             </Grid>
           </Grid>
         </ResponsiveLayout>
+        <EventFilterDialogContainer year={this.props.year} />
       </TBAPageContainer>
     )
   }
@@ -196,6 +223,7 @@ EventListPageDesktop.propTypes = {
   documentTitle: PropTypes.string.isRequired,
   isFreshPage: PropTypes.bool.isRequired,
   refreshFunction: PropTypes.func.isRequired,
+  filterFunction: PropTypes.func.isRequired,
   pageState: ImmutablePropTypes.map.isRequired,
   setPageState: PropTypes.func.isRequired,
   year: PropTypes.number.isRequired,
