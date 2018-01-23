@@ -48,7 +48,7 @@ export const getFilteredGroupedEvents = createSelector(
       let focEvents = List()
       let offseasonEvents = List()
 
-      events.filter(e => districtFilters.size === 0 || districtFilters.has(e.getIn(['district', 'key'])))
+      events.filter(e => districtFilters && (districtFilters.size === 0 || districtFilters.has(e.getIn(['district', 'key']))))
       .forEach(event => {
         if (event.isCMP()) {
           cmpEvents = cmpEvents.push(event)
