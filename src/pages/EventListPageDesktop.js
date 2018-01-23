@@ -13,7 +13,7 @@ import ScrollLink from '../components/ScrollLink'
 const styles = theme => ({
   sideNav: {
     position: 'fixed',
-    maxWidth: 150,
+    maxWidth: 180,
   },
   sideNavSectionContainer: {
     listStyleType: 'none',
@@ -63,6 +63,26 @@ const styles = theme => ({
 })
 
 class EventListPageDesktop extends PureComponent {
+  activeSection = null
+  activeEventGroup = {
+    'official': null,
+    'unofficial': null,
+  }
+
+  updateActiveNavSection = (el) => {
+    this.activeSection = el ? el.id : null
+    if (this.activeEventGroup[this.activeSection]) {
+      this.props.setPageState({activeEventGroup: this.activeEventGroup[this.activeSection]})
+    }
+  }
+
+  updateActiveEventGroup = (el, section) => {
+    this.activeEventGroup[section] = el ? el.id : null
+    if (this.activeEventGroup[this.activeSection]) {
+      this.props.setPageState({activeEventGroup: this.activeEventGroup[this.activeSection]})
+    }
+  }
+
   render() {
     console.log("Render EventListPageDesktop")
 
@@ -78,7 +98,7 @@ class EventListPageDesktop extends PureComponent {
       >
         <ResponsiveLayout>
           <Grid container spacing={24}>
-            <Grid item xs={3} lg={2}>
+            <Grid item xs={3}>
               <div className={this.props.classes.sideNav}>
                 <h1>{`${year} Events`}</h1>
                 {this.contentRef &&
@@ -87,6 +107,7 @@ class EventListPageDesktop extends PureComponent {
                     items={['official', 'unofficial']}
                     currentClassName={this.props.classes.sideNavSectionActive}
                     className={this.props.classes.sideNavSectionContainer}
+                    onUpdate={(el) => {this.updateActiveNavSection(el)}}
                   >
                     <li className={this.props.classes.sideNavSection}>
                       <ScrollLink scrollEl={this.contentRef} to='official'>Official Events</ScrollLink>
@@ -94,6 +115,7 @@ class EventListPageDesktop extends PureComponent {
                         rootEl={`.${this.contentRef.className}`}
                         items={groupedEvents.filter(group => group.get('isOfficial')).map(group => group.get('slug')).toJS()}
                         currentClassName={this.props.classes.sideNavItemActive}
+                        onUpdate={(el) => this.updateActiveEventGroup(el, 'official')}
                       >
                         {groupedEvents.filter(group => group.get('isOfficial')).map(group => {
                           return (
@@ -110,6 +132,7 @@ class EventListPageDesktop extends PureComponent {
                         rootEl={`.${this.contentRef.className}`}
                         items={groupedEvents.filter(group => !group.get('isOfficial')).map(group => group.get('slug')).toJS()}
                         currentClassName={this.props.classes.sideNavItemActive}
+                        onUpdate={(el) => this.updateActiveEventGroup(el, 'unofficial')}
                       >
                         {groupedEvents.filter(group => !group.get('isOfficial')).map(group => {
                           return (
@@ -124,7 +147,7 @@ class EventListPageDesktop extends PureComponent {
                 }
               </div>
             </Grid>
-            <Grid item xs={9} lg={10}>
+            <Grid item xs={9}>
               <div id='official'>
                 <h1>Official Events</h1>
                 {groupedEvents.filter(group => group.get('isOfficial')).map(group => {
@@ -159,8 +182,10 @@ EventListPageDesktop.propTypes = {
   classes: PropTypes.object.isRequired,
   documentTitle: PropTypes.string.isRequired,
   refreshFunction: PropTypes.func.isRequired,
+  pageState: ImmutablePropTypes.map.isRequired,
+  setPageState: PropTypes.func.isRequired,
   year: PropTypes.number.isRequired,
-  groupedEvents: ImmutablePropTypes.list,
+  groupedEvents: ImmutablePropTypes.list.isRequired,
 }
 
 export default withStyles(styles)(EventListPageDesktop)

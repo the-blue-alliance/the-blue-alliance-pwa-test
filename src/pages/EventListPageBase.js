@@ -29,6 +29,7 @@ class EventListPageBase extends PureComponent {
     super(props)
     props.setBottomNav('events')
     props.resetPage({
+      activeEventGroup: 'week-1',
       // tabIdx: 0,
       // eventFilterOpen: false,
       // yearPickerOpen: false,
@@ -71,6 +72,8 @@ class EventListPageBase extends PureComponent {
           <EventListPageDesktop
             documentTitle={`${this.props.year} Events`}
             refreshFunction={this.refreshFunction}
+            pageState={this.props.pageState}
+            setPageState={this.props.setPageState}
             year={this.props.year}
             groupedEvents={this.props.groupedEvents}
           />
@@ -79,6 +82,8 @@ class EventListPageBase extends PureComponent {
           <EventListPageMobile
             documentTitle={`${this.props.year} Events`}
             refreshFunction={this.refreshFunction}
+            pageState={this.props.pageState}
+            setPageState={this.props.setPageState}
             year={this.props.year}
             groupedEvents={this.props.groupedEvents}
           />

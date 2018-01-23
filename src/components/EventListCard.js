@@ -16,6 +16,8 @@ const styles = theme => ({
 
 class EventListCard extends PureComponent {
   render() {
+    console.log("Render EventListCard")
+
     return (
       <Paper className={this.props.classes.eventListCard} elevation={4}>
         {this.props.events.map(event => {

@@ -15,15 +15,17 @@ const styles = theme => ({
     bottom: 56,
     left: 0,
     overflowX: 'hidden',
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('sm')]: {
       top: 64,
+    },
+    [theme.breakpoints.up('md')]: {
       bottom: 0,
       left: 180,
     },
   },
   tabbedContent: {
     top: 56 + 48,
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('sm')]: {
       top: 64 + 48,
     },
   },
