@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from 'material-ui/styles'
-import { Map } from 'immutable'
+import { Map, Set } from 'immutable'
 import Button from 'material-ui/Button'
 import List, { ListItem, ListItemText } from 'material-ui/List'
 import Dialog, { DialogTitle, DialogActions } from 'material-ui/Dialog'
@@ -24,6 +24,13 @@ const regional = Map({
 class EventFilterDialog extends PureComponent {
   handleClose = () => {
     this.props.setPageState({ filterDialogOpen: false })
+  }
+
+  handleClear = () => {
+    this.props.setPageState({
+      filterDialogOpen: false,
+      districtFilters: Set(),
+    })
   }
 
   handleToggle = (district) => () => {
@@ -65,10 +72,13 @@ class EventFilterDialog extends PureComponent {
           </List>
         </div>
         <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
+          <Button onClick={this.handleClear} color='primary'>
+            Clear filters
+          </Button>
+          <Button onClick={this.handleClose} color='primary' autoFocus>
             Okay
           </Button>
-          </DialogActions>
+        </DialogActions>
       </Dialog>
     )
   }
