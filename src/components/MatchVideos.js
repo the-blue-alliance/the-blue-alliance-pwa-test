@@ -26,7 +26,7 @@ class MatchVideos extends PureComponent {
         {match.get('videos').map(video => {
           return (
             <Grid item xs={12} key={video.get('key')}>
-              <iframe width="560" height="315" src={`https://www.youtube.com/embed/${video.get('key')}`} frameBorder="0" allowFullScreen></iframe>
+              <iframe title="Match Video" width="560" height="315" src={`https://www.youtube.com/embed/${video.get('key')}`} frameBorder="0" allowFullScreen></iframe>
             </Grid>
           )
         })}
