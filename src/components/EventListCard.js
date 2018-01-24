@@ -70,40 +70,42 @@ class EventListCard extends PureComponent {
             >
               {({isVisible}) => {
                 if (isVisible || !this.state.fastRender) {
-                  return [
-                    <div className={classes.eventListItem} key='content'>
-                      <Grid container spacing={24}>
-                        <Grid item xs={9}>
-                          <div className={classes.verticalCenter}>
-                            <Typography type='subheading' noWrap>
-                              <Link to={`/event/${event.key}`}>{event.name}</Link>
+                  return (
+                    <React.Fragment>
+                      <div className={classes.eventListItem}>
+                        <Grid container spacing={24}>
+                          <Grid item xs={9}>
+                            <div className={classes.verticalCenter}>
+                              <Typography type='subheading' noWrap>
+                                <Link to={`/event/${event.key}`}>{event.name}</Link>
+                              </Typography>
+                              <Typography type='body1'>
+                                {event.getCityStateCountry()}
+                              </Typography>
+                            </div>
+                          </Grid>
+                          <Grid item xs={3}>
+                            <Typography type='body1' align='right' className={classes.verticalCenter}>
+                              {event.getDateString()}
                             </Typography>
-                            <Typography type='body1'>
-                              {event.getCityStateCountry()}
-                            </Typography>
-                          </div>
+                          </Grid>
+                          {/*<Grid item xs={1}>
+                            <Tooltip title='Event webcast is offline' placement='right'>
+                              <IconButton color='default' disabled>
+                                <Icon>videocam_off</Icon>
+                              </IconButton>
+                            </Tooltip>
+                          </Grid>*/}
                         </Grid>
-                        <Grid item xs={3}>
-                          <Typography type='body1' align='right' className={classes.verticalCenter}>
-                            {event.getDateString()}
-                          </Typography>
-                        </Grid>
-                        {/*<Grid item xs={1}>
-                          <Tooltip title='Event webcast is offline' placement='right'>
-                            <IconButton color='default' disabled>
-                              <Icon>videocam_off</Icon>
-                            </IconButton>
-                          </Tooltip>
-                        </Grid>*/}
-                      </Grid>
-                    </div>,
-                    <Divider key='divider' className={events.size === i + 1 ? classes.hiddenDivider : null}/>,
-                  ]
+                      </div>
+                      <Divider className={events.size === i + 1 ? classes.hiddenDivider : null}/>
+                    </React.Fragment>
+                  )
                 } else {
                   return (events.size === i + 1 ?
-                    <div className={classes.eventListItemInvisibleWithoutDivider} key='content' />
+                    <div className={classes.eventListItemInvisibleWithoutDivider} />
                     :
-                    <div className={classes.eventListItemInvisible} key='content' />
+                    <div className={classes.eventListItemInvisible} />
                   )
                 }
               }}
