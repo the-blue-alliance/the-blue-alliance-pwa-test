@@ -31,24 +31,22 @@ const styles = theme => ({
 })
 
 class EventPage extends PureComponent {
-  constructor(props) {
-    super(props)
-    props.setBottomNav('events')
+  reset = props => {
+     // Set without overriding
     props.resetPage({
+      restoreScroll: true,
       tabIdx: 0,
     })
-    this.state = {
-      restoreScroll: true,
-    }
-  }
-
-  componentDidMount() {
+    // Override restoreScroll
+    props.setPageState({restoreScroll: true})
+    // Fetch data
     this.refreshFunction()
   }
 
-  componentDidUpdate() {
-    // Rerender without cascading
-    setTimeout(() => this.setState({ restoreScroll: false }), 0)
+  constructor(props) {
+    super(props)
+    this.reset(props)
+    props.setBottomNav('events')
   }
 
   refreshFunction = () => {
@@ -84,7 +82,6 @@ class EventPage extends PureComponent {
             documentTitle={name}
             refreshFunction={this.refreshFunction}
             contentRef={el => this.contentRef = el}
-            restoreScroll={this.state.restoreScroll}
           >
             <ResponsiveLayout>
               <Grid container spacing={24}>

@@ -26,12 +26,19 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 class EventListPageBase extends PureComponent {
-  defaultPageState = {
-    restoreScroll: true,
-    activeEventGroup: 'week-1',
-    filterDialogOpen: false,
-    districtFilters: Set(),
-    yearMenuOpen: false,
+  reset = props => {
+     // Set without overriding
+    props.resetPage({
+      restoreScroll: true,
+      activeEventGroup: 'week-1',
+      filterDialogOpen: false,
+      districtFilters: Set(),
+      yearMenuOpen: false,
+    })
+    // Override restoreScroll
+    props.setPageState({restoreScroll: true})
+    // Fetch data
+    this.refreshFunction()
   }
 
   constructor(props) {
@@ -44,12 +51,6 @@ class EventListPageBase extends PureComponent {
     if (this.props.location.pathname !== prevProps.location.pathname) {
       this.reset(this.props)
     }
-  }
-
-  reset = props => {
-    props.resetPage(this.defaultPageState)     // Set without overriding
-    props.setPageState({restoreScroll: true})  // Override restoreScroll
-    this.refreshFunction()
   }
 
   refreshFunction = () => {

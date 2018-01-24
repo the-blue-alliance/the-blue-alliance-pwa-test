@@ -29,33 +29,21 @@ const styles = theme => ({
 });
 
 class TeamPage extends PureComponent {
-  constructor(props) {
-    super(props)
-    props.setBottomNav('teams')
-    props.resetPage()
-    // props.setPageState({
-    // })
-    this.state = {
-      isFirstRender: true,
-    }
-  }
-
-  componentDidMount() {
+  reset = props => {
+     // Set without overriding
+    props.resetPage({
+      restoreScroll: true,
+    })
+    // Override restoreScroll
+    props.setPageState({restoreScroll: true})
+    // Fetch data
     this.refreshFunction()
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.location.pathname !== nextProps.location.pathname) {
-      this.setState({ isFirstRender: true })
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.state.isFirstRender) {
-      this.refreshFunction()
-    }
-    // Rerender without cascading
-    setTimeout(() => this.setState({ isFirstRender: false }), 0)
+  constructor(props) {
+    super(props)
+    this.reset(props)
+    props.setBottomNav('teams')
   }
 
   refreshFunction = () => {
@@ -122,7 +110,6 @@ class TeamPage extends PureComponent {
             documentTitle={`Team ${teamNumber} (${year})`}
             refreshFunction={this.refreshFunction}
             contentRef={el => this.contentRef = el}
-            restoreScroll={this.state.isFirstRender}
           >
             <ResponsiveLayout>
               <Grid container spacing={24}>
