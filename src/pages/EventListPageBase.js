@@ -38,7 +38,7 @@ class EventListPageBase extends PureComponent {
     // Override restoreScroll
     props.setPageState({restoreScroll: true})
     // Fetch data
-    this.refreshFunction()
+    this.refreshFunction(props)
   }
 
   constructor(props) {
@@ -47,14 +47,14 @@ class EventListPageBase extends PureComponent {
     props.setBottomNav('events')
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.location.pathname !== prevProps.location.pathname) {
-      this.reset(this.props)
+  componentWillUpdate(nextProps, nextState) {
+    if (this.props.location.pathname !== nextProps.location.pathname) {
+      this.reset(nextProps)
     }
   }
 
-  refreshFunction = () => {
-    this.props.fetchYearEvents(this.props.year)
+  refreshFunction = (props=this.props) => {
+    this.props.fetchYearEvents(props.year)
   }
 
   filterFunction = () => {
