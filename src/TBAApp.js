@@ -119,7 +119,24 @@ const styles = theme => ({
 })
 
 class TBAApp extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false }
+  }
+
+  componentDidCatch(error, info) {
+    this.setState({ hasError: true })
+  }
+
   render() {
+    if (this.state.hasError) {
+      return (
+        <div>
+          Whoops! Something went wrong on our end.
+          Please close the app and restart it.
+        </div>
+      )
+    }
     return (
       <div>
         <Reboot />
