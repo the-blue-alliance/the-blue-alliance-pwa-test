@@ -5,10 +5,10 @@ import Badge from 'material-ui/Badge'
 
 class HideableBadge extends PureComponent {
   render() {
-    const { hidden, children, ...restProps } = this.props
+    const { hidden, children, style, ...restProps } = this.props
     if (hidden) {
       return (
-        <div>
+        <div style={style}>
           {children}
         </div>
       )

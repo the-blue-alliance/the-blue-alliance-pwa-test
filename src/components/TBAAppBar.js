@@ -35,6 +35,7 @@ class TBAToolbar extends PureComponent {
             badgeContent={this.props.filterCount}
             color='accent'
             hidden={this.props.filterCount === 0}
+            style={{height: 24, width: 24}}
           >
             <FilterListIcon />
           </HideableBadge>
