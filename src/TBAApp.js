@@ -102,6 +102,7 @@ class ModalSwitch extends React.Component {
       <div>
         <Switch location={isModal ? this.previousLocation : location}>
           <Route exact path='/' component={HomePageContainer} />
+          <Route path='/events/:year' component={EventListPageBase} />
           <Route path='/events' component={EventListPageBase} />
           <Route path='/event/:eventKey' component={EventPageContainer} />
           <Route path='/match/:matchKey' component={MatchPageContainer} />

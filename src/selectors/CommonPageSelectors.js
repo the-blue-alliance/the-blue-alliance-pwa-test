@@ -22,5 +22,5 @@ export const getYear = (state, props) => {
     return props.year
   }
   const year = parseInt(props.match.params.year, 10)
-  return year ? year : 2017
+  return year ? year : 2018
 }

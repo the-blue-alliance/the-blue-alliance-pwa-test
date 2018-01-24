@@ -113,7 +113,10 @@ export const getFilteredGroupedEvents = createSelector(
       // Championship(s)
       let eventsByCmp = {}
       cmpEvents.forEach(event => {
-        const cmp = `${event.city} Championship`
+        let cmp = 'Championship'
+        if (event.year >= 2017) {
+          cmp = `${event.city} Championship`
+        }
         if (cmp in eventsByCmp) {
           eventsByCmp[cmp] = eventsByCmp[cmp].push(event)
         } else {
