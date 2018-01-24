@@ -45,7 +45,7 @@ class TBAToolbar extends PureComponent {
           </IconButton>
         }
         {this.props.isLoading &&  <IconButton color="contrast" disabled>
-          <CircularProgress color="accent" size={20} />
+          <CircularProgress color="accent" size={20} thickness={5}/>
         </IconButton>}
         <IconButton color="contrast">
           <SearchIcon />
