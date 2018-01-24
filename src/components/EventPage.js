@@ -66,13 +66,13 @@ class EventPage extends PureComponent {
   render() {
     console.log("Render Event Page")
 
-    const event = this.props.event
-    const matches = this.props.matches
-    const teams = this.props.teams
+    const { classes, event, matches, teams } = this.props
 
     var name = null
+    var year = undefined
     if (event) {
-      name = `${event.get('name')} ${event.get('year')}`
+      year = event.get('year')
+      name = `${event.get('name')} ${year}`
     }
 
     return (
@@ -80,7 +80,7 @@ class EventPage extends PureComponent {
         <Hidden smDown>
           <TBAPageContainer
             history={this.props.history}
-            documentTitle={name}
+            documentTitle={name ? name : ''}
             refreshFunction={this.refreshFunction}
             contentRef={el => this.contentRef = el}
           >
@@ -100,7 +100,7 @@ class EventPage extends PureComponent {
                       <Tab label="Teams" />
                     </Tabs>
                   </Paper>
-                  <div className={classNames({[this.props.classes.hidden]: this.props.tabIdx !== 0})}>
+                  <div className={classNames({[classes.hidden]: this.props.tabIdx !== 0})}>
                     <Grid container spacing={24}>
                       <Grid item xs={6}>
                         <h3>Qualification Results</h3>
@@ -114,7 +114,7 @@ class EventPage extends PureComponent {
                   </div>
                   {this.props.tabIdx === 1 &&
                   <div>
-                    <TeamsList scrollElement={this.contentRef} teams={teams} />
+                    <TeamsList scrollElement={this.contentRef} teams={teams} year={year}/>
                   </div>}
                 </Grid>
               </Grid>
@@ -172,8 +172,8 @@ class EventPage extends PureComponent {
                 </List>
               </div>
               <MatchList matches={matches} />
-              <div ref={el => this.contentRef = el} className={this.props.classes.scrollContainer}>
-                <TeamsList scrollElement={this.contentRef} teams={teams} />
+              <div ref={el => this.contentRef = el} className={classes.scrollContainer}>
+                <TeamsList scrollElement={this.contentRef} teams={teams} year={year}/>
               </div>
             </SwipeableViews>
           </TBAPageContainer>

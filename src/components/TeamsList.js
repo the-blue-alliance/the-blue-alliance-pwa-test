@@ -10,10 +10,14 @@ const styles = {
 
 class TeamRow extends PureComponent {
   render() {
-    const { team } = this.props
+    const { team, year } = this.props
     const cityStateCountry = team.getCityStateCountry()
+    let to = `/team/${team.get('team_number')}`
+    if (year) {
+      to += `/${year}`
+    }
     return (
-      <LinkContainer to={`/team/${team.get('team_number')}`}>
+      <LinkContainer to={to}>
         <ListItem button divider disableRipple>
           <ListItemText primary={`${team.get('team_number')} | ${team.get('nickname')}`} secondary={cityStateCountry ? cityStateCountry : '--'} />
         </ListItem>
@@ -27,7 +31,7 @@ class TeamsList extends PureComponent {
     const team = this.filteredTeams.get(index)
     return (
       <div key={team.get('key')} style={style}>
-        <TeamRow team={team}/>
+        <TeamRow team={team} year={this.props.year} />
       </div>
     )
   }
