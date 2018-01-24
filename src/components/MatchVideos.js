@@ -18,7 +18,7 @@ class MatchVideos extends PureComponent {
     const { match } = this.props
 
     if (match === undefined) {
-      return <CircularProgress color="accent" size={100} />
+      return <CircularProgress color="secondary" size={100} />
     }
 
     return (

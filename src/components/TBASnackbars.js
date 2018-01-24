@@ -48,7 +48,7 @@ class TBASnackbars extends React.PureComponent {
           onClose={this.handleSnackbarClose}
           message={<span>Ready for use offline!</span>}
           action={[
-            <Button key="info" color="accent" onClick={this.closeSnackbarAndOpenDialog}>
+            <Button key="info" color="secondary" onClick={this.closeSnackbarAndOpenDialog}>
               More Info
             </Button>,
             <IconButton
@@ -86,7 +86,7 @@ class TBASnackbars extends React.PureComponent {
           onClose={this.handleSnackbarClose}
           message={<span>The Blue Alliance has been updated! Please refresh for the latest content.</span>}
           action={[
-            <Button key="refresh" color="accent" onClick={() => window.location.reload()}>
+            <Button key="refresh" color="secondary" onClick={() => window.location.reload()}>
               Refresh Now
             </Button>,
             <IconButton

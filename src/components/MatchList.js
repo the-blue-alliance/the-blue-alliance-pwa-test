@@ -41,7 +41,7 @@ class MatchList extends PureComponent {
         </AutoSizer>
       )
     } else {
-      return <CircularProgress color="accent" size={100} />
+      return <CircularProgress color="secondary" size={100} />
     }
   }
 }

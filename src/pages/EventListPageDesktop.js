@@ -133,7 +133,7 @@ class EventListPageDesktop extends PureComponent {
                 <div className={this.props.classes.buttonContainer}>
                   <HideableBadge
                     badgeContent={filterCount}
-                    color='accent'
+                    color='secondary'
                     hidden={filterCount === 0}
                   >
                     <Button

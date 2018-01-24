@@ -30,10 +30,10 @@ class TBAToolbar extends PureComponent {
         <Typography type="title" color="inherit" className={this.props.classes.appBarTitle}>
           {this.props.title ? this.props.title : 'The Blue Alliance'}
         </Typography>
-        {this.props.filterFunction && <IconButton color="contrast" onClick={this.props.filterFunction}>
+        {this.props.filterFunction && <IconButton color="inherit" onClick={this.props.filterFunction}>
           <HideableBadge
             badgeContent={this.props.filterCount}
-            color='accent'
+            color='secondary'
             hidden={this.props.filterCount === 0}
             style={{height: 24, width: 24}}
           >
@@ -41,14 +41,14 @@ class TBAToolbar extends PureComponent {
           </HideableBadge>
         </IconButton>}
         {!this.props.isLoading && this.props.refreshFunction &&
-          <IconButton color="contrast" onClick={this.props.refreshFunction}>
+          <IconButton color="inherit" onClick={this.props.refreshFunction}>
             <RefreshIcon />
           </IconButton>
         }
-        {this.props.isLoading &&  <IconButton color="contrast" disabled>
-          <CircularProgress color="accent" size={20} thickness={5}/>
+        {this.props.isLoading &&  <IconButton color="inherit" disabled>
+          <CircularProgress color="secondary" size={20} thickness={5}/>
         </IconButton>}
-        <IconButton color="contrast">
+        <IconButton color="inherit">
           <SearchIcon />
         </IconButton>
       </Toolbar>

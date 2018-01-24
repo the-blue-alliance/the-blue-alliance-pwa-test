@@ -157,7 +157,7 @@ class MatchTable extends PureComponent {
     console.log('Render MatchTable')
 
     if (this.props.matches === undefined) {
-      return <CircularProgress color="accent" size={100} />
+      return <CircularProgress color="secondary" size={100} />
     } else if (this.props.matches.size === 0) {
       return <div>NO MATCHES</div>
     }

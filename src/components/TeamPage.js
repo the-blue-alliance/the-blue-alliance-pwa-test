@@ -77,8 +77,8 @@ class TeamPage extends PureComponent {
 
     var name = null
     var nickname = null
-    var eventList = <CircularProgress color="accent" size={100} />
-    var eventScrollspy = <CircularProgress color="accent" size={100} />
+    var eventList = <CircularProgress color="secondary" size={100} />
+    var eventScrollspy = <CircularProgress color="secondary" size={100} />
     var scrollspyItems = []
     if (team) {
       if (team) {

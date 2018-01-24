@@ -55,7 +55,7 @@ class TeamsList extends PureComponent {
         />
       )
     } else {
-      return <CircularProgress color="accent" size={100} />
+      return <CircularProgress color="secondary" size={100} />
     }
   }
 }
