@@ -61,7 +61,7 @@ class TBAToolbar extends PureComponent {
           </HideableBadge>
         </IconButton>}
         {!this.props.isLoading && this.props.refreshFunction &&
-          <IconButton color="inherit" onClick={this.props.refreshFunction}>
+          <IconButton color="inherit" onClick={() => this.props.refreshFunction()}>
             <RefreshIcon />
           </IconButton>
         }
