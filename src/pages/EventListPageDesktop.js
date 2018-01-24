@@ -113,6 +113,16 @@ class EventListPageDesktop extends PureComponent {
     this.props.history.push(`/events/${year}`)
   }
 
+  componentDidMount() {
+    // Scroll to proper section if not restoreScroll
+    if (!this.props.pageState.get('restoreScroll')) {
+      const el =  document.getElementById(this.props.pageState.get('activeEventGroup'))
+      if (el) {
+        this.contentRef.scrollTo(0, el.offsetTop)
+      }
+    }
+  }
+
   render() {
     console.log("Render EventListPageDesktop")
 
