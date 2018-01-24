@@ -2,18 +2,21 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from 'material-ui/styles'
-import TBAPageContainer from '../containers/TBAPageContainer'
-import ResponsiveLayout from '../components/ResponsiveLayout'
+import { Link } from 'react-router-dom'
 
 import Button from 'material-ui/Button'
 import Grid from 'material-ui/Grid'
 import Icon from 'material-ui/Icon'
-import Scrollspy from 'react-scrollspy'
+import Menu, { MenuItem } from 'material-ui/Menu'
 import Typography from 'material-ui/Typography'
-import EventListCard from '../components/EventListCard'
-import ScrollLink from '../components/ScrollLink'
+import Scrollspy from 'react-scrollspy'
+
+import TBAPageContainer from '../containers/TBAPageContainer'
+import ResponsiveLayout from '../components/ResponsiveLayout'
 import EventFilterDialogContainer from '../containers/EventFilterDialogContainer'
+import EventListCard from '../components/EventListCard'
 import HideableBadge from '../components/HideableBadge'
+import ScrollLink from '../components/ScrollLink'
 
 const styles = theme => ({
   sideNav: {
@@ -77,7 +80,9 @@ const styles = theme => ({
 })
 
 class EventListPageDesktop extends PureComponent {
-  state = {isFirstRender: true}
+  state = {
+    anchorEl: null,
+  }
   activeSection = null
   activeEventGroup = {
     'official': null,
@@ -98,39 +103,61 @@ class EventListPageDesktop extends PureComponent {
     }
   }
 
-  componentDidMount() {
-    if (!this.props.isFreshPage) {
-      const el =  document.getElementById(this.props.pageState.get('activeEventGroup'))
-      if (el) {
-        this.contentRef.scrollTo(0, el.offsetTop)
-      }
-    }
+  handleYearOpen = event => {
+    this.setState({ anchorEl: event.currentTarget });
+    this.props.setYearMenuOpen(true)
+  }
 
-    // Rerender without cascading
-    setTimeout(() => this.setState({ isFirstRender: false }), 0)
+  handleYearSelect = year => {
+    this.props.setYearMenuOpen(false)
+    this.props.history.push(`/events/${year}`)
   }
 
   render() {
     console.log("Render EventListPageDesktop")
 
-    const { year, groupedEvents } = this.props
+    const { classes, year, groupedEvents } = this.props
     const officialEventsGrouped = groupedEvents.filter(group => group.get('isOfficial'))
     const unofficialEventsGrouped = groupedEvents.filter(group => !group.get('isOfficial'))
     const filterCount = this.props.pageState.get('districtFilters').size
+
+    let validYears = []
+    for (let y=2018; y>=1992; y--) {
+      validYears.push(y)
+    }
 
     return (
       <TBAPageContainer
         documentTitle={this.props.documentTitle}
         contentRef={el => this.contentRef = el}
         refreshFunction={this.props.refreshFunction}
-        restoreScroll={this.state.isFirstRender}
       >
         <ResponsiveLayout>
           <Grid container spacing={24}>
             <Grid item xs={3}>
-              <div className={this.props.classes.sideNav}>
-                <h1>{`${year} Events`}</h1>
-                <div className={this.props.classes.buttonContainer}>
+              <div className={classes.sideNav}>
+                <Button
+                  onClick={this.handleYearOpen}
+                >
+                  {`${year} Events`}
+                </Button>
+                <Menu
+                  anchorEl={this.state.anchorEl}
+                  open={this.props.pageState.get('yearMenuOpen')}
+                  onClose={() => this.props.setYearMenuOpen(false)}
+                >
+                  {validYears.map(y =>
+                    <MenuItem
+                      key={y}
+                      selected={y === year}
+                      onClick={() => this.handleYearSelect(y)}
+                    >
+                      {y} Events
+                    </MenuItem>
+                  )}
+                </Menu>
+
+                <div className={classes.buttonContainer}>
                   <HideableBadge
                     badgeContent={filterCount}
                     color='secondary'
@@ -141,7 +168,7 @@ class EventListPageDesktop extends PureComponent {
                       raised
                       onClick={this.props.filterFunction}
                     >
-                        <Icon className={this.props.classes.leftIcon}>filter_list</Icon>
+                        <Icon className={classes.leftIcon}>filter_list</Icon>
                       Filter
                     </Button>
                   </HideableBadge>
@@ -150,21 +177,21 @@ class EventListPageDesktop extends PureComponent {
                   <Scrollspy
                     rootEl={`.${this.contentRef.className}`}
                     items={['official', 'unofficial']}
-                    currentClassName={this.props.classes.sideNavSectionActive}
-                    className={this.props.classes.sideNavSectionContainer}
+                    currentClassName={classes.sideNavSectionActive}
+                    className={classes.sideNavSectionContainer}
                     onUpdate={(el) => {this.updateActiveNavSection(el)}}
                   >
-                    <li className={this.props.classes.sideNavSection}>
+                    <li className={classes.sideNavSection}>
                       <ScrollLink scrollEl={this.contentRef} to='official'>Official Events</ScrollLink>
                       <Scrollspy
                         rootEl={`.${this.contentRef.className}`}
                         items={officialEventsGrouped.map(group => group.get('slug')).toJS()}
-                        currentClassName={this.props.classes.sideNavItemActive}
+                        currentClassName={classes.sideNavItemActive}
                         onUpdate={(el) => this.updateActiveEventGroup(el, 'official')}
                       >
                         {officialEventsGrouped.map(group => {
                           return (
-                            <li key={group.get('slug')} className={this.props.classes.sideNavItem}>
+                            <li key={group.get('slug')} className={classes.sideNavItem}>
                               <ScrollLink scrollEl={this.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
                             </li>
                           )
@@ -172,17 +199,17 @@ class EventListPageDesktop extends PureComponent {
                       </Scrollspy>
                     </li>
                     {unofficialEventsGrouped.size !== 0 &&
-                      <li className={this.props.classes.sideNavSection}>
+                      <li className={classes.sideNavSection}>
                         <ScrollLink scrollEl={this.contentRef} to='unofficial'>Unofficial Events</ScrollLink>
                         <Scrollspy
                           rootEl={`.${this.contentRef.className}`}
                           items={unofficialEventsGrouped.map(group => group.get('slug')).toJS()}
-                          currentClassName={this.props.classes.sideNavItemActive}
+                          currentClassName={classes.sideNavItemActive}
                           onUpdate={(el) => this.updateActiveEventGroup(el, 'unofficial')}
                         >
                           {unofficialEventsGrouped.map(group => {
                             return (
-                              <li key={group.get('slug')} className={this.props.classes.sideNavItem}>
+                              <li key={group.get('slug')} className={classes.sideNavItem}>
                                 <ScrollLink scrollEl={this.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
                               </li>
                             )
@@ -222,7 +249,7 @@ class EventListPageDesktop extends PureComponent {
             </Grid>
           </Grid>
         </ResponsiveLayout>
-        <EventFilterDialogContainer year={this.props.year} />
+        <EventFilterDialogContainer year={year} />
       </TBAPageContainer>
     )
   }
@@ -231,9 +258,9 @@ class EventListPageDesktop extends PureComponent {
 EventListPageDesktop.propTypes = {
   classes: PropTypes.object.isRequired,
   documentTitle: PropTypes.string.isRequired,
-  isFreshPage: PropTypes.bool.isRequired,
   refreshFunction: PropTypes.func.isRequired,
   filterFunction: PropTypes.func.isRequired,
+  setYearMenuOpen: PropTypes.func.isRequired,
   pageState: ImmutablePropTypes.map.isRequired,
   setPageState: PropTypes.func.isRequired,
   year: PropTypes.number.isRequired,

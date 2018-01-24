@@ -26,41 +26,31 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 class EventListPageBase extends PureComponent {
-  state = {isFreshPage: true}
+  defaultPageState = {
+    restoreScroll: true,
+    activeEventGroup: 'week-1',
+    filterDialogOpen: false,
+    districtFilters: Set(),
+    yearMenuOpen: false,
+  }
 
   constructor(props) {
     super(props)
+    this.reset(props)
     props.setBottomNav('events')
-    props.resetPage({
-      activeEventGroup: 'week-1',
-      filterDialogOpen: false,
-      districtFilters: Set(),
-      // tabIdx: 0,
-      // eventFilterOpen: false,
-      // yearPickerOpen: false,
-      // filters: [],
-    })
-    // this.state = {
-    //   isFirstRender: true,
-    // }
   }
 
-  componentDidMount() {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.location.pathname !== prevProps.location.pathname) {
+      this.reset(this.props)
+    }
+  }
+
+  reset = props => {
+    props.resetPage(this.defaultPageState)     // Set without overriding
+    props.setPageState({restoreScroll: true})  // Override restoreScroll
     this.refreshFunction()
-    // Rerender without cascading
-    setTimeout(() => this.setState({ isFreshPage: false }), 0)
   }
-
-  // componentWillUpdate(nextProps, nextState) {
-  //   if (nextProps.sortedEvents !== this.props.sortedEvents) {
-  //     this.setState({ isFirstRender: true })
-  //   }
-  // }
-
-  // componentDidUpdate() {
-  //   // Rerender without cascading
-  //   setTimeout(() => this.setState({ isFirstRender: false }), 0)
-  // }
 
   refreshFunction = () => {
     this.props.fetchYearEvents(this.props.year)
@@ -70,6 +60,10 @@ class EventListPageBase extends PureComponent {
     this.props.setPageState({ filterDialogOpen: true })
   }
 
+  setYearMenuOpen = (isOpen) => {
+    this.props.setPageState({ yearMenuOpen: isOpen })
+  }
+
   render() {
     console.log("Render EventListPageBase")
 
@@ -77,10 +71,11 @@ class EventListPageBase extends PureComponent {
       <div>
         <Hidden smDown>
           <EventListPageDesktop
+            history={this.props.history}
             documentTitle={`${this.props.year} Events`}
-            isFreshPage={this.state.isFreshPage}
             refreshFunction={this.refreshFunction}
             filterFunction={this.filterFunction}
+            setYearMenuOpen={this.setYearMenuOpen}
             pageState={this.props.pageState}
             setPageState={this.props.setPageState}
             year={this.props.year}
@@ -89,8 +84,8 @@ class EventListPageBase extends PureComponent {
         </Hidden>
         <Hidden mdUp>
           <EventListPageMobile
+            history={this.props.history}
             documentTitle={`${this.props.year} Events`}
-            isFreshPage={this.state.isFreshPage}
             refreshFunction={this.refreshFunction}
             filterFunction={this.filterFunction}
             pageState={this.props.pageState}

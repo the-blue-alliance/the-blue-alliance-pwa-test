@@ -67,7 +67,6 @@ class TBAPage extends PureComponent {
             [this.props.classes.content]: true,
             [this.props.classes.tabbedContent]: this.props.tabs,
           })}
-          restoreScroll={this.props.restoreScroll}
         >
           {this.props.children}
         </ScrollRestoreContainer>

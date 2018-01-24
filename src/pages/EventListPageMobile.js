@@ -90,7 +90,6 @@ class EventListPageMobile extends PureComponent {
 EventListPageMobile.propTypes = {
   classes: PropTypes.object.isRequired,
   documentTitle: PropTypes.string.isRequired,
-  isFreshPage: PropTypes.bool.isRequired,
   refreshFunction: PropTypes.func.isRequired,
   filterFunction: PropTypes.func.isRequired,
   pageState: ImmutablePropTypes.map.isRequired,
