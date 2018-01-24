@@ -134,6 +134,7 @@ class TBAApp extends Component {
         <div>
           Whoops! Something went wrong on our end.
           Please close the app and restart it.
+          <a href="/">Or try clicking here!</a>
         </div>
       )
     }
