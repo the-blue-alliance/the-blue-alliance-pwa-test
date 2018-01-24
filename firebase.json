@@ -18,11 +18,20 @@
         ]
       },
       {
+        "source": "/favicon.ico",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=604800"
+          }
+        ]
+      },
+      {
         "source": "/static/css/*",
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "31536000"
+            "value": "max-age=31536000"
           }
         ]
       },
@@ -31,7 +40,7 @@
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "31536000"
+            "value": "max-age=31536000"
           }
         ]
       }
