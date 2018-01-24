@@ -4,7 +4,7 @@ import TBASideNavContent from '../components/TBASideNavContent'
 
 
 const mapStateToProps = (state, props) => ({
-  offlineOnly: state.getIn(['appNav', 'offlineOnly']),
+  offlineOnly: state.getIn(['appState', 'offlineOnly']),
 });
 
 const mapDispatchToProps = (dispatch) => ({

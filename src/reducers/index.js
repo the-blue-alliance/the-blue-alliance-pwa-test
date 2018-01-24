@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux-immutable'
-import appNav from './appNav'
+import appState from './appState'
 import page from './page'
 
 const reducer = combineReducers({
-  appNav,
+  appState,
   page,
 })
 

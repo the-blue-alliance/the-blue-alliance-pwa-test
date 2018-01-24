@@ -3,7 +3,7 @@ import TBABottomNav from '../components/TBABottomNav'
 
 
 const mapStateToProps = (state, props) => ({
-  bottomNavValue: state.getIn(['appNav', 'bottomNavValue']),
+  bottomNavValue: state.getIn(['appState', 'bottomNavValue']),
 });
 
 const mapDispatchToProps = (dispatch) => ({

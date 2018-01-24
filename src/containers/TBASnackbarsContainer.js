@@ -4,7 +4,7 @@ import TBASnackbars from '../components/TBASnackbars'
 
 
 const mapStateToProps = (state, props) => ({
-  snackbar: state.getIn(['appNav', 'snackbar']),
+  snackbar: state.getIn(['appState', 'snackbar']),
 });
 
 const mapDispatchToProps = (dispatch) => ({

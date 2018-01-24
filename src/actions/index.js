@@ -77,7 +77,7 @@ export function fetchEventInfo(eventKey) {
     })
 
     // Update from API
-    if (!getState().getIn(['appNav', 'offlineOnly'])) {
+    if (!getState().getIn(['appState', 'offlineOnly'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -114,7 +114,7 @@ export function fetchEventMatches(eventKey) {
     })
 
     // Update from API
-    if (!getState().getIn(['appNav', 'offlineOnly'])) {
+    if (!getState().getIn(['appState', 'offlineOnly'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/matches`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -155,7 +155,7 @@ export function fetchEventTeams(eventKey) {
     })
 
     // Update from API
-    if (!getState().getIn(['appNav', 'offlineOnly'])) {
+    if (!getState().getIn(['appState', 'offlineOnly'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/teams`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -193,7 +193,7 @@ export function fetchYearEvents(year) {
     })
 
     // Update from API
-    if (!getState().getIn(['appNav', 'offlineOnly'])) {
+    if (!getState().getIn(['appState', 'offlineOnly'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/events/${year}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -232,7 +232,7 @@ export function fetchTeamInfo(teamNumber) {
     })
 
     // Update from API
-    if (!getState().getIn(['appNav', 'offlineOnly'])) {
+    if (!getState().getIn(['appState', 'offlineOnly'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -275,7 +275,7 @@ export function fetchTeamYearEvents(teamNumber, year) {
     })
 
     // Update from API
-    if (!getState().getIn(['appNav', 'offlineOnly'])) {
+    if (!getState().getIn(['appState', 'offlineOnly'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/events/${year}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -318,7 +318,7 @@ export function fetchTeamYearMatches(teamNumber, year) {
     })
 
     // Update from API
-    if (!getState().getIn(['appNav', 'offlineOnly'])) {
+    if (!getState().getIn(['appState', 'offlineOnly'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/matches/${year}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -366,7 +366,7 @@ export function fetchTeamListHelper(pageNum) {
     })
 
     // Update from API
-    if (!getState().getIn(['appNav', 'offlineOnly'])) {
+    if (!getState().getIn(['appState', 'offlineOnly'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/teams/${pageNum}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -412,7 +412,7 @@ export function fetchMatchInfo(matchKey) {
     })
 
     // Update from API
-    if (!getState().getIn(['appNav', 'offlineOnly'])) {
+    if (!getState().getIn(['appState', 'offlineOnly'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/match/${matchKey}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}

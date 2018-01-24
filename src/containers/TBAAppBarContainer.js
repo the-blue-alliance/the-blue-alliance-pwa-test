@@ -3,7 +3,7 @@ import TBAAppBar from '../components/TBAAppBar'
 
 
 const mapStateToProps = (state, props) => ({
-  isLoading: state.getIn(['appNav', 'loadingCount']) > 0,
+  isLoading: state.getIn(['appState', 'loadingCount']) > 0,
 });
 
 const mapDispatchToProps = (dispatch) => ({
