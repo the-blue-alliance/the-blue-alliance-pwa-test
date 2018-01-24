@@ -18,18 +18,27 @@ import EventListCard from '../components/EventListCard'
 import HideableBadge from '../components/HideableBadge'
 import ScrollLink from '../components/ScrollLink'
 
+
+const sideNavWidth = 180
 const styles = theme => ({
   sideNav: {
     position: 'fixed',
     width: '100%',
-    maxWidth: 180,
+    maxWidth: sideNavWidth,
+    marginTop: theme.spacing.unit*3,
+  },
+  yearButton: {
+    marginBottom: theme.spacing.unit*3,
   },
   buttonContainer: {
     textAlign: 'center',
-    margin: `${theme.spacing.unit}px 0`,
+    marginBottom: theme.spacing.unit*3,
   },
   leftIcon: {
     marginRight: theme.spacing.unit,
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
   },
   sideNavSectionContainer: {
     width: '100%',
@@ -81,7 +90,7 @@ const styles = theme => ({
 
 class EventListPageDesktop extends PureComponent {
   state = {
-    anchorEl: null,
+    yearMenuAnchorEl: null,
   }
   activeSection = null
   activeEventGroup = {
@@ -104,13 +113,15 @@ class EventListPageDesktop extends PureComponent {
   }
 
   handleYearOpen = event => {
-    this.setState({ anchorEl: event.currentTarget });
+    this.setState({ yearMenuAnchorEl: event.currentTarget });
     this.props.setYearMenuOpen(true)
   }
 
   handleYearSelect = year => {
     this.props.setYearMenuOpen(false)
-    this.props.history.push(`/events/${year}`)
+    if (year !== this.props.year) {
+      this.props.history.push(`/events/${year}`)
+    }
   }
 
   componentDidMount() {
@@ -147,14 +158,23 @@ class EventListPageDesktop extends PureComponent {
             <Grid item xs={3}>
               <div className={classes.sideNav}>
                 <Button
+                  color='primary'
+                  raised
+                  fullWidth
                   onClick={this.handleYearOpen}
+                  className={classes.yearButton}
                 >
-                  {`${year} Events`}
+                  {`${year} Events`}<Icon className={classes.rightIcon}>arrow_drop_down</Icon>
                 </Button>
                 <Menu
-                  anchorEl={this.state.anchorEl}
+                  anchorEl={this.state.yearMenuAnchorEl}
                   open={this.props.pageState.get('yearMenuOpen')}
                   onClose={() => this.props.setYearMenuOpen(false)}
+                  PaperProps={{
+                    style: {
+                      width: sideNavWidth,
+                    },
+                  }}
                 >
                   {validYears.map(y =>
                     <MenuItem
@@ -174,7 +194,7 @@ class EventListPageDesktop extends PureComponent {
                     hidden={filterCount === 0}
                   >
                     <Button
-                      color='primary'
+                      color='default'
                       raised
                       onClick={this.props.filterFunction}
                     >
