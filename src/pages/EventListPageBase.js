@@ -89,6 +89,7 @@ class EventListPageBase extends PureComponent {
             documentTitle={`${this.props.year} Events`}
             refreshFunction={this.refreshFunction}
             filterFunction={this.filterFunction}
+            setYearMenuOpen={this.setYearMenuOpen}
             pageState={this.props.pageState}
             setPageState={this.props.setPageState}
             year={this.props.year}

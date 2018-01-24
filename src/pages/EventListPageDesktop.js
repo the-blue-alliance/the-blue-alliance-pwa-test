@@ -142,6 +142,7 @@ class EventListPageDesktop extends PureComponent {
     const unofficialEventsGrouped = groupedEvents.filter(group => !group.get('isOfficial'))
     const filterCount = this.props.pageState.get('districtFilters').size
 
+    // Compute valid years
     let validYears = []
     for (let y=2018; y>=1992; y--) {
       validYears.push(y)

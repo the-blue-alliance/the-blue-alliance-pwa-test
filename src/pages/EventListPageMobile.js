@@ -4,16 +4,30 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from 'material-ui/styles'
 import SwipeableViews from 'react-swipeable-views'
 
+import ButtonBase from 'material-ui/ButtonBase'
+import Icon from 'material-ui/Icon'
+import Menu, { MenuItem } from 'material-ui/Menu'
+import Typography from 'material-ui/Typography'
+
 import TBAPageContainer from '../containers/TBAPageContainer'
 import GroupedEventTabs from '../components/GroupedEventTabs'
 import EventsList from '../components/EventsList'
 import EventFilterDialogContainer from '../containers/EventFilterDialogContainer'
 
 const styles = theme => ({
+  yearSelector: {
+    height: 56,
+    [theme.breakpoints.up('sm')]: {
+      height: 64,
+    },
+  },
 })
 
 class EventListPageMobile extends PureComponent {
-  state = {fastRender: true}
+  state = {
+    fastRender: true,
+    yearMenuAnchorEl: null,
+  }
   tabContents = []
 
   tabHandleChangeIndex = index => {
@@ -29,6 +43,18 @@ class EventListPageMobile extends PureComponent {
       }
     }).toJS()
     setTimeout(() => this.setState({ fastRender: false }), 0)
+  }
+
+  handleYearOpen = event => {
+    this.setState({ yearMenuAnchorEl: event.currentTarget });
+    this.props.setYearMenuOpen(true)
+  }
+
+  handleYearSelect = year => {
+    this.props.setYearMenuOpen(false)
+    if (year !== this.props.year) {
+      this.props.history.push(`/events/${year}`)
+    }
   }
 
   componentWillMount() {
@@ -47,7 +73,7 @@ class EventListPageMobile extends PureComponent {
   render() {
     console.log("Render EventListPageMobile")
 
-    const { year, groupedEvents, pageState } = this.props
+    const { classes, year, groupedEvents, pageState } = this.props
 
     // Build group -> index map
     let groupToIndex = {}
@@ -55,11 +81,27 @@ class EventListPageMobile extends PureComponent {
       groupToIndex[group.get('slug')] = index
     })
 
+    // Compute valid years
+    let validYears = []
+    for (let y=2018; y>=1992; y--) {
+      validYears.push(y)
+    }
+
     return (
       <TBAPageContainer
         history={this.props.history}
         documentTitle={this.props.documentTitle}
-        title={`${year} Events`}
+        title={
+          <ButtonBase
+            className={classes.yearSelector}
+            onClick={this.handleYearOpen}
+          >
+            <Typography type='title' color='inherit'>
+              {`${year} Events`}
+            </Typography>
+            <Icon>arrow_drop_down</Icon>
+          </ButtonBase>
+        }
         refreshFunction={this.props.refreshFunction}
         filterFunction={this.props.filterFunction}
         filterCount={pageState.get('districtFilters').size}
@@ -85,6 +127,21 @@ class EventListPageMobile extends PureComponent {
           {this.tabContents}
         </SwipeableViews>
         <EventFilterDialogContainer year={year} />
+        <Menu
+          anchorEl={this.state.yearMenuAnchorEl}
+          open={this.props.pageState.get('yearMenuOpen')}
+          onClose={() => this.props.setYearMenuOpen(false)}
+        >
+          {validYears.map(y =>
+            <MenuItem
+              key={y}
+              selected={y === year}
+              onClick={() => this.handleYearSelect(y)}
+            >
+              {y} Events
+            </MenuItem>
+          )}
+        </Menu>
       </TBAPageContainer>
     )
   }
@@ -95,6 +152,7 @@ EventListPageMobile.propTypes = {
   documentTitle: PropTypes.string.isRequired,
   refreshFunction: PropTypes.func.isRequired,
   filterFunction: PropTypes.func.isRequired,
+  setYearMenuOpen: PropTypes.func.isRequired,
   pageState: ImmutablePropTypes.map.isRequired,
   setPageState: PropTypes.func.isRequired,
   year: PropTypes.number.isRequired,

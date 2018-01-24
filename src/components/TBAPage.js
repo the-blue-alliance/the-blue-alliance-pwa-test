@@ -80,7 +80,7 @@ TBAPage.propTypes = {
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   documentTitle: PropTypes.string.isRequired,
-  title: PropTypes.string,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   filterCount: PropTypes.number,
 }
 
