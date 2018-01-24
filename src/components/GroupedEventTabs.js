@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from 'material-ui/styles'
-import { Link } from 'react-router-dom'
 
 import Tabs, { Tab } from 'material-ui/Tabs';
 
