@@ -23,6 +23,9 @@ class EventListItem extends PureComponent {
         <ListItem button divider disableRipple>
           <ListItemText
             disableTypography
+            style={{
+              padding: 0,
+            }}
             primary={
               this.props.event.get('short_name')
             }
@@ -235,7 +238,7 @@ class EventsList extends PureComponent {
             width={width}
             height={height}
             rowCount={this.listItems.length}
-            rowHeight={({ index }) => labelIdxs.has(index) ? 24 : 66}
+            rowHeight={({ index }) => labelIdxs.has(index) ? 24 : 64}
             rowRenderer={this.rowRenderer}
           />
         )}

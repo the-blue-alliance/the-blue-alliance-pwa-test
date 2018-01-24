@@ -3,10 +3,12 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from 'material-ui/styles'
 import { Map, Set } from 'immutable'
+
 import Button from 'material-ui/Button'
-import List, { ListItem, ListItemText } from 'material-ui/List'
-import Dialog, { DialogTitle, DialogActions } from 'material-ui/Dialog'
 import Checkbox from 'material-ui/Checkbox'
+import Dialog, { DialogTitle, DialogActions } from 'material-ui/Dialog'
+import Divider from 'material-ui/Divider'
+import List, { ListItem, ListItemText } from 'material-ui/List'
 
 const styles = {
   listWrapper: {
@@ -50,6 +52,7 @@ class EventFilterDialog extends PureComponent {
     return (
       <Dialog onClose={this.handleClose} open={this.props.isOpen}>
         <DialogTitle>Filter Events</DialogTitle>
+        <Divider />
         <div className={this.props.classes.listWrapper}>
           <List>
             <ListItem key={'regional'} button onClick={this.handleToggle(regional)}>
@@ -70,6 +73,7 @@ class EventFilterDialog extends PureComponent {
             })}
           </List>
         </div>
+        <Divider />
         <DialogActions>
           <Button onClick={this.handleClear} color='primary'>
             Clear filters
