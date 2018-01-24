@@ -4,6 +4,8 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from 'material-ui/styles'
 
 import Button from 'material-ui/Button'
+import { CircularProgress } from 'material-ui/Progress'
+import EventIcon from 'material-ui-icons/Event'
 import Grid from 'material-ui/Grid'
 import Icon from 'material-ui/Icon'
 import Menu, { MenuItem } from 'material-ui/Menu'
@@ -85,6 +87,21 @@ const styles = theme => ({
       borderRight: `1px solid ${theme.palette.primary.main}`,
     },
   },
+  zeroDataContainer: {
+    paddingTop: theme.spacing.unit*3,
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    textAlign: 'center',
+  },
+  zeroDataIcon: {
+    width: '15%',
+    height: 'auto',
+    margin: '0 auto',
+  },
+  zeroDataSpinner: {
+    margin: '0 auto',
+  },
 })
 
 class EventListPageDesktop extends PureComponent {
@@ -136,7 +153,7 @@ class EventListPageDesktop extends PureComponent {
   render() {
     console.log("Render EventListPageDesktop")
 
-    const { classes, year, groupedEvents } = this.props
+    const { classes, year, groupedEvents, isLoading } = this.props
     const officialEventsGrouped = groupedEvents.filter(group => group.get('isOfficial'))
     const unofficialEventsGrouped = groupedEvents.filter(group => !group.get('isOfficial'))
     const filterCount = this.props.pageState.get('districtFilters').size
@@ -188,22 +205,24 @@ class EventListPageDesktop extends PureComponent {
                   )}
                 </Menu>
 
-                <div className={classes.buttonContainer}>
-                  <HideableBadge
-                    badgeContent={filterCount}
-                    color='secondary'
-                    hidden={filterCount === 0}
-                  >
-                    <Button
-                      color='default'
-                      raised
-                      onClick={this.props.filterFunction}
+                {groupedEvents.size !== 0 &&
+                  <div className={classes.buttonContainer}>
+                    <HideableBadge
+                      badgeContent={filterCount}
+                      color='secondary'
+                      hidden={filterCount === 0}
                     >
-                        <Icon className={classes.leftIcon}>filter_list</Icon>
-                      Filter
-                    </Button>
-                  </HideableBadge>
-                </div>
+                      <Button
+                        color='default'
+                        raised
+                        onClick={this.props.filterFunction}
+                      >
+                          <Icon className={classes.leftIcon}>filter_list</Icon>
+                        Filter
+                      </Button>
+                    </HideableBadge>
+                  </div>
+                }
                 {this.contentRef &&
                   <Scrollspy
                     rootEl={`.${this.contentRef.className}`}
@@ -212,23 +231,25 @@ class EventListPageDesktop extends PureComponent {
                     className={classes.sideNavSectionContainer}
                     onUpdate={(el) => {this.updateActiveNavSection(el)}}
                   >
-                    <li className={classes.sideNavSection}>
-                      <ScrollLink scrollEl={this.contentRef} to='official'>Official Events</ScrollLink>
-                      <Scrollspy
-                        rootEl={`.${this.contentRef.className}`}
-                        items={officialEventsGrouped.map(group => group.get('slug')).toJS()}
-                        currentClassName={classes.sideNavItemActive}
-                        onUpdate={(el) => this.updateActiveEventGroup(el, 'official')}
-                      >
-                        {officialEventsGrouped.map(group => {
-                          return (
-                            <li key={group.get('slug')} className={classes.sideNavItem}>
-                              <ScrollLink scrollEl={this.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
-                            </li>
-                          )
-                        })}
-                      </Scrollspy>
-                    </li>
+                    {officialEventsGrouped.size !== 0  &&
+                      <li className={classes.sideNavSection}>
+                        <ScrollLink scrollEl={this.contentRef} to='official'>Official Events</ScrollLink>
+                        <Scrollspy
+                          rootEl={`.${this.contentRef.className}`}
+                          items={officialEventsGrouped.map(group => group.get('slug')).toJS()}
+                          currentClassName={classes.sideNavItemActive}
+                          onUpdate={(el) => this.updateActiveEventGroup(el, 'official')}
+                        >
+                          {officialEventsGrouped.map(group => {
+                            return (
+                              <li key={group.get('slug')} className={classes.sideNavItem}>
+                                <ScrollLink scrollEl={this.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
+                              </li>
+                            )
+                          })}
+                        </Scrollspy>
+                      </li>
+                    }
                     {unofficialEventsGrouped.size !== 0 &&
                       <li className={classes.sideNavSection}>
                         <ScrollLink scrollEl={this.contentRef} to='unofficial'>Unofficial Events</ScrollLink>
@@ -253,20 +274,35 @@ class EventListPageDesktop extends PureComponent {
               </div>
             </Grid>
             <Grid item xs={9}>
-              <div id='official'>
-                <h1>Official Events</h1>
-                {officialEventsGrouped.map(group => {
-                  return (
-                    <div key={group.get('slug')} id={group.get('slug')}>
-                      <Typography type='title' gutterBottom>{group.get('label')}</Typography>
-                      <EventListCard events={group.get('events')}/>
-                    </div>
-                  )
-                })}
-              </div>
+              <h1>{year} <em>FIRST</em> Robotics Competition Events</h1>
+
+              {groupedEvents.size === 0 &&
+                <div className={classes.zeroDataContainer}>
+                  {isLoading ?
+                    <CircularProgress color='secondary' size='15%' className={classes.zeroDataSpinner} />
+                    :
+                    <EventIcon className={classes.zeroDataIcon} />
+                  }
+                  <Typography type='subheading'>{isLoading ? 'Events loading' : 'No events found'}</Typography>
+                </div>
+              }
+
+              {officialEventsGrouped.size !== 0 &&
+                <div id='official'>
+                  <h2>Official Events</h2>
+                  {officialEventsGrouped.map(group => {
+                    return (
+                      <div key={group.get('slug')} id={group.get('slug')}>
+                        <Typography type='title' gutterBottom>{group.get('label')}</Typography>
+                        <EventListCard events={group.get('events')}/>
+                      </div>
+                    )
+                  })}
+                </div>
+              }
               {unofficialEventsGrouped.size !== 0 &&
                 <div id='unofficial'>
-                  <h1>Unofficial Events</h1>
+                  <h2>Unofficial Events</h2>
                   {unofficialEventsGrouped.map(group => {
                     return (
                       <div key={group.get('slug')} id={group.get('slug')}>
@@ -289,6 +325,7 @@ class EventListPageDesktop extends PureComponent {
 EventListPageDesktop.propTypes = {
   classes: PropTypes.object.isRequired,
   documentTitle: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
   refreshFunction: PropTypes.func.isRequired,
   filterFunction: PropTypes.func.isRequired,
   setYearMenuOpen: PropTypes.func.isRequired,

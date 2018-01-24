@@ -5,6 +5,8 @@ import { withStyles } from 'material-ui/styles'
 import SwipeableViews from 'react-swipeable-views'
 
 import ButtonBase from 'material-ui/ButtonBase'
+import { CircularProgress } from 'material-ui/Progress'
+import EventIcon from 'material-ui-icons/Event'
 import Icon from 'material-ui/Icon'
 import Menu, { MenuItem } from 'material-ui/Menu'
 import Typography from 'material-ui/Typography'
@@ -20,6 +22,21 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       height: 64,
     },
+  },
+  zeroDataContainer: {
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    textAlign: 'center',
+  },
+  zeroDataIcon: {
+    width: '25%',
+    height: 'auto',
+    margin: '0 auto',
+  },
+  zeroDataSpinner: {
+    margin: '0 auto',
   },
 })
 
@@ -73,7 +90,7 @@ class EventListPageMobile extends PureComponent {
   render() {
     console.log("Render EventListPageMobile")
 
-    const { classes, year, groupedEvents, pageState } = this.props
+    const { classes, year, groupedEvents, isLoading, pageState } = this.props
 
     // Build group -> index map
     let groupToIndex = {}
@@ -86,6 +103,8 @@ class EventListPageMobile extends PureComponent {
     for (let y=2018; y>=1992; y--) {
       validYears.push(y)
     }
+
+    const hasEvents = groupedEvents.size !== 0
 
     return (
       <TBAPageContainer
@@ -105,7 +124,7 @@ class EventListPageMobile extends PureComponent {
         refreshFunction={this.props.refreshFunction}
         filterFunction={this.props.filterFunction}
         filterCount={pageState.get('districtFilters').size}
-        tabs={groupedEvents.length !== 0 &&
+        tabs={hasEvents &&
           <GroupedEventTabs
             groupedEvents={groupedEvents}
             activeGroup={pageState.get('activeEventGroup')}
@@ -113,19 +132,30 @@ class EventListPageMobile extends PureComponent {
           />
         }
       >
-        <SwipeableViews
-          containerStyle={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-          }}
-          index={groupToIndex[this.props.pageState.get('activeEventGroup')]}
-          onChangeIndex={this.tabHandleChangeIndex}
-        >
-          {this.tabContents}
-        </SwipeableViews>
+        {hasEvents ?
+          <SwipeableViews
+            containerStyle={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0,
+            }}
+            index={groupToIndex[this.props.pageState.get('activeEventGroup')]}
+            onChangeIndex={this.tabHandleChangeIndex}
+          >
+            {this.tabContents}
+          </SwipeableViews>
+          :
+          <div className={classes.zeroDataContainer}>
+            {isLoading ?
+              <CircularProgress color='secondary' size='25%' className={classes.zeroDataSpinner} />
+              :
+              <EventIcon className={classes.zeroDataIcon} />
+            }
+            <Typography type='subheading'>{isLoading ? 'Events loading' : 'No events found'}</Typography>
+          </div>
+        }
         <EventFilterDialogContainer year={year} />
         <Menu
           anchorEl={this.state.yearMenuAnchorEl}
@@ -150,6 +180,7 @@ class EventListPageMobile extends PureComponent {
 EventListPageMobile.propTypes = {
   classes: PropTypes.object.isRequired,
   documentTitle: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
   refreshFunction: PropTypes.func.isRequired,
   filterFunction: PropTypes.func.isRequired,
   setYearMenuOpen: PropTypes.func.isRequired,

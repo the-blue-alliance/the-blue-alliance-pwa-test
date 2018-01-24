@@ -11,6 +11,7 @@ import EventListPageMobile from './EventListPageMobile'
 
 const mapStateToProps = (state, props) => ({
   // States
+  isLoading: state.getIn(['appState', 'loadingCount']) > 0,
   pageState: getCurrentPageState(state, props),
   // Params
   year: getYear(state, props),
@@ -74,6 +75,7 @@ class EventListPageBase extends PureComponent {
           <EventListPageDesktop
             history={this.props.history}
             documentTitle={`${this.props.year} Events`}
+            isLoading={this.props.isLoading}
             refreshFunction={this.refreshFunction}
             filterFunction={this.filterFunction}
             setYearMenuOpen={this.setYearMenuOpen}
@@ -87,6 +89,7 @@ class EventListPageBase extends PureComponent {
           <EventListPageMobile
             history={this.props.history}
             documentTitle={`${this.props.year} Events`}
+            isLoading={this.props.isLoading}
             refreshFunction={this.refreshFunction}
             filterFunction={this.filterFunction}
             setYearMenuOpen={this.setYearMenuOpen}
