@@ -72,7 +72,7 @@ class EventPage extends PureComponent {
 
     var name = null
     if (event) {
-      name = event.get('name')
+      name = `${event.get('name')} ${event.get('year')}`
     }
 
     return (
