@@ -149,6 +149,7 @@ class EventListPageDesktop extends PureComponent {
 
     return (
       <TBAPageContainer
+        history={this.props.history}
         documentTitle={this.props.documentTitle}
         contentRef={el => this.contentRef = el}
         refreshFunction={this.props.refreshFunction}

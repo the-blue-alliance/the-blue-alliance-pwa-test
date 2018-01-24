@@ -79,6 +79,7 @@ class EventPage extends PureComponent {
       <div>
         <Hidden smDown>
           <TBAPageContainer
+            history={this.props.history}
             documentTitle={name}
             refreshFunction={this.refreshFunction}
             contentRef={el => this.contentRef = el}
@@ -122,6 +123,7 @@ class EventPage extends PureComponent {
         </Hidden>
         <Hidden mdUp>
           <TBAPageContainer
+            history={this.props.history}
             documentTitle={name}
             title={name}
             refreshFunction={this.refreshFunction}

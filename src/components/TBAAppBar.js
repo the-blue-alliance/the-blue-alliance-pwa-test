@@ -1,20 +1,27 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
-import IconButton from 'material-ui/IconButton';
-import SearchIcon from 'material-ui-icons/Search';
-import FilterListIcon from 'material-ui-icons/FilterList';
-import RefreshIcon from 'material-ui-icons/Refresh';
-import { CircularProgress } from 'material-ui/Progress';
-import TBALamp from '../icons/tba_lamp';
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import { withStyles } from 'material-ui/styles'
+
+import AppBar from 'material-ui/AppBar'
+import ArrowBackIcon from 'material-ui-icons/ArrowBack'
+import FilterListIcon from 'material-ui-icons/FilterList'
+import IconButton from 'material-ui/IconButton'
+import { CircularProgress } from 'material-ui/Progress'
+import RefreshIcon from 'material-ui-icons/Refresh'
+import SearchIcon from 'material-ui-icons/Search'
+import Toolbar from 'material-ui/Toolbar'
+import Typography from 'material-ui/Typography'
+
+import TBALamp from '../icons/tba_lamp'
 import HideableBadge from '../components/HideableBadge'
 
 const styles = theme => ({
   appBarTitle: {
     flex: 1,
+  },
+  backButton: {
+    marginLeft: -12,
+    marginRight: 8,
   },
   logo: {
     height: 48,
@@ -24,11 +31,24 @@ const styles = theme => ({
 
 class TBAToolbar extends PureComponent {
   render() {
+    const { classes, title } = this.props
+
     return (
       <Toolbar>
-        {!this.props.title && <TBALamp className={this.props.classes.logo} />}
-        <Typography type="title" color="inherit" className={this.props.classes.appBarTitle}>
-          {this.props.title ? this.props.title : 'The Blue Alliance'}
+        {title ?
+          <IconButton
+            className={classes.backButton}
+            color="inherit"
+            aria-label="Back"
+            onClick={this.props.history.goBack}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+          :
+          <TBALamp className={classes.logo} />
+        }
+        <Typography type="title" color="inherit" className={classes.appBarTitle}>
+          {title ? title : 'The Blue Alliance'}
         </Typography>
         {this.props.filterFunction && <IconButton color="inherit" onClick={this.props.filterFunction}>
           <HideableBadge
@@ -65,12 +85,12 @@ class TBAAppBar extends PureComponent {
         <TBAToolbar {...otherProps} />
         {tabs}
       </AppBar>
-    );
+    )
   }
 }
 
 TBAAppBar.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 
-export default withStyles(styles)(TBAAppBar);
+export default withStyles(styles)(TBAAppBar)

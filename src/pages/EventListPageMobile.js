@@ -47,23 +47,26 @@ class EventListPageMobile extends PureComponent {
   render() {
     console.log("Render EventListPageMobile")
 
+    const { year, groupedEvents, pageState } = this.props
+
     // Build group -> index map
     let groupToIndex = {}
-    this.props.groupedEvents.forEach((group, index) => {
+    groupedEvents.forEach((group, index) => {
       groupToIndex[group.get('slug')] = index
     })
 
     return (
       <TBAPageContainer
+        history={this.props.history}
         documentTitle={this.props.documentTitle}
-        title='Events'
+        title={`${year} Events`}
         refreshFunction={this.props.refreshFunction}
         filterFunction={this.props.filterFunction}
-        filterCount={this.props.pageState.get('districtFilters').size}
-        tabs={this.props.groupedEvents.length !== 0 &&
+        filterCount={pageState.get('districtFilters').size}
+        tabs={groupedEvents.length !== 0 &&
           <GroupedEventTabs
-            groupedEvents={this.props.groupedEvents}
-            activeGroup={this.props.pageState.get('activeEventGroup')}
+            groupedEvents={groupedEvents}
+            activeGroup={pageState.get('activeEventGroup')}
             setPageState={this.props.setPageState}
           />
         }
@@ -81,7 +84,7 @@ class EventListPageMobile extends PureComponent {
         >
           {this.tabContents}
         </SwipeableViews>
-        <EventFilterDialogContainer year={this.props.year} />
+        <EventFilterDialogContainer year={year} />
       </TBAPageContainer>
     )
   }

@@ -14,7 +14,10 @@ class Home extends PureComponent {
   render() {
     console.log("Render Home");
     return (
-      <TBAPageContainer>
+      <TBAPageContainer
+        history={this.props.history}
+        documentTitle='The Blue Alliance'
+      >
         <ResponsiveLayout>
           <h1>Home</h1>
           <Link to="/team/254">254</Link>

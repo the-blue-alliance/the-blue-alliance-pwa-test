@@ -107,6 +107,7 @@ class TeamPage extends PureComponent {
       <div>
         <Hidden smDown>
           <TBAPageContainer
+            history={this.props.history}
             documentTitle={`Team ${teamNumber} (${year})`}
             refreshFunction={this.refreshFunction}
             contentRef={el => this.contentRef = el}
@@ -145,6 +146,7 @@ class TeamPage extends PureComponent {
         </Hidden>
         <Hidden mdUp>
           <TBAPageContainer
+            history={this.props.history}
             documentTitle={`Team ${teamNumber} (${year})`}
             title={`Team ${teamNumber} (${year})`}
             refreshFunction={this.refreshFunction}
