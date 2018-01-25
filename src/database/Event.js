@@ -1,16 +1,16 @@
 import { Record } from 'immutable';
 
-const REGIONAL = 0
-const DISTRICT = 1
-const DISTRICT_CMP = 2
-const CMP_DIVISION = 3
-const CMP_FINALS = 4
-const DISTRICT_CMP_DIVISION = 5
-const FOC = 6
-// const OFFSEASON = 99
-const PRESEASON = 100
+export const REGIONAL = 0
+export const DISTRICT = 1
+export const DISTRICT_CMP = 2
+export const CMP_DIVISION = 3
+export const CMP_FINALS = 4
+export const DISTRICT_CMP_DIVISION = 5
+export const FOC = 6
+export const OFFSEASON = 99
+export const PRESEASON = 100
 
-const CMP_TPYES = new Set([
+const CMP_TYPES = new Set([
   CMP_DIVISION,
   CMP_FINALS,
 ])
@@ -81,7 +81,11 @@ export default class Event extends Record({
   }
 
   isCMP() {
-    return CMP_TPYES.has(this.event_type)
+    return CMP_TYPES.has(this.event_type)
+  }
+
+  isDistrictQual() {
+    return this.event_type === DISTRICT
   }
 
   isFOC() {

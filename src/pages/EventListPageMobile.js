@@ -13,9 +13,8 @@ import Typography from 'material-ui/Typography'
 
 import TBAPageContainer from '../containers/TBAPageContainer'
 import GroupedEventTabs from '../components/GroupedEventTabs'
-import EventsList2 from '../components/EventsList2'
+import EventsList3 from '../components/EventsList3'
 import EventFilterDialogContainer from '../containers/EventFilterDialogContainer'
-import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 
 const styles = theme => ({
   yearSelector: {
@@ -62,28 +61,7 @@ class EventListPageMobile extends PureComponent {
     this.tabContents = groupedEvents.map((group) => {
       const slug = group.get('slug')
       if (!fastRender || slug === this.props.pageState.get('activeEventGroup')) {
-        // return <EventsList2 key={slug} events={group.get('events')} />
-        return (
-          <ScrollRestoreContainer
-            key={slug}
-            contentRef={(r) => this.tabRefs[slug] = r}
-            scrollId={slug}
-            className={this.props.classes.scrollContainer}
-          >
-            {/*<EventsList2 key={slug} events={group.get('events')} scrollElement={this.tabRefs[slug]}/>*/}
-            hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
-            <br/>2<br/>2<br/>2<br/>2<br/>2<br/>2<br/>2<br/>2<br/>2<br/>2<br/>2<br/>2<br/>2<br/>2
-            <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
-            <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
-            <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
-            <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
-            <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
-            <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
-            <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
-            <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
-            <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
-          </ScrollRestoreContainer>
-        )
+        return <EventsList3 key={slug} scrollId={slug} events={group.get('events')} />
       } else {
         return <div key={slug} />
       }
@@ -118,8 +96,9 @@ class EventListPageMobile extends PureComponent {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (this.props.groupedEvents !== nextProps.groupedEvents) {
-      this.computeTabContents(nextProps.groupedEvents, this.state.fastRender)
+    if (this.props.groupedEvents !== nextProps.groupedEvents ||
+        (this.state.fastRender && !nextState.fastRender)) {
+      this.computeTabContents(nextProps.groupedEvents, nextState.fastRender)
     }
   }
 
