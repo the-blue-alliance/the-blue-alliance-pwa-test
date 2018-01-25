@@ -48,8 +48,8 @@ const styles = theme => ({
     padding: theme.spacing.unit,
     '& a:hover': {
       textDecoration: 'none',
-      backgroundColor: '#dddddd',
-      borderRight: `1px solid ${theme.palette.primary.main}`,
+      backgroundColor: theme.palette.primary[50],
+      borderRight: `1px solid ${theme.palette.secondary.main}`,
     }
   },
   sideNavSection: {
@@ -67,7 +67,7 @@ const styles = theme => ({
   sideNavSectionActive: {
     '& > a': {
       fontWeight: 'bold',
-      borderRight: `1px solid ${theme.palette.primary.main}`,
+      borderRight: `1px solid ${theme.palette.secondary.main}`,
     },
     '& > ul': {
       display: 'block',
@@ -84,7 +84,7 @@ const styles = theme => ({
   sideNavItemActive: {
     '& > a': {
       fontWeight: 'bold',
-      borderRight: `1px solid ${theme.palette.primary.main}`,
+      borderRight: `1px solid ${theme.palette.secondary.main}`,
     },
   },
   zeroDataContainer: {
