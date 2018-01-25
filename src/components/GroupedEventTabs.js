@@ -38,6 +38,7 @@ class GroupedEventTabs extends PureComponent {
         indicatorColor="white"
         scrollable
         scrollButtons="auto"
+        className='hide-scrollbar'
       >
         {this.props.groupedEvents.map((group) =>
           <PureTab key={group.get('slug')} value={group.get('slug')} label={group.get('label')} />

@@ -17,3 +17,12 @@ a:visited {
 h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
 }
+
+/* For hiding scrollbar on tabs. Doesn't work for Firefox */
+.hide-scrollbar ::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+}
