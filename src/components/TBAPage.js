@@ -62,7 +62,7 @@ class TBAPage extends PureComponent {
           tabs={this.props.tabs}
         />
         <ScrollRestoreContainer
-          scrollTopId={'pageScrollTop'}
+          scrollId={'_page'}
           contentRef={this.props.contentRef}
           className={classNames({
             [this.props.classes.content]: true,

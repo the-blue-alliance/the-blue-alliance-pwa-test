@@ -1,20 +1,20 @@
 import { connect } from 'react-redux'
-import { setPageState } from '../actions'
-import { getCurrentPageState } from '../selectors/CommonPageSelectors'
+import { setScrollState } from '../actions'
+import { getCurrentScrollStates } from '../selectors/CommonPageSelectors'
 import ScrollRestore from '../components/ScrollRestore.js'
 
 
 const mapStateToProps = (state, props) => ({
-  pageState: getCurrentPageState(state, props),
-});
+  scrollState: getCurrentScrollStates(state, props).get(props.scrollId),
+})
 
 const mapDispatchToProps = (dispatch) => ({
-  setPageState: (pageState) => dispatch(setPageState(pageState)),
-});
+  setScrollState: (id, scrollTop) => dispatch(setScrollState(id, scrollTop)),
+})
 
 const ScrollRestoreContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(ScrollRestore);
+)(ScrollRestore)
 
-export default ScrollRestoreContainer;
+export default ScrollRestoreContainer

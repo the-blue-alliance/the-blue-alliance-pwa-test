@@ -48,6 +48,17 @@ export function setPageState(pageState) {
   }
 }
 
+export function setScrollState(scrollId, scrollTop) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: types.SET_SCROLL_STATE,
+      pageKey: getState().getIn(['router', 'location', 'key']),
+      scrollId,
+      scrollTop,
+    })
+  }
+}
+
 // Snackbars
 export const openSnackbar = (value) => ({
   type: types.OPEN_SNACKBAR,

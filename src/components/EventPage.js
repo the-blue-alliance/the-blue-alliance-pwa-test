@@ -34,11 +34,8 @@ class EventPage extends PureComponent {
   reset = props => {
      // Set without overriding
     props.resetPage({
-      restoreScroll: true,
       tabIdx: 0,
     })
-    // Override restoreScroll
-    props.setPageState({restoreScroll: true})
     // Fetch data
     this.refreshFunction()
   }

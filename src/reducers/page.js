@@ -61,12 +61,17 @@ const updateMulti = (state, subPath, data, mergeByKey=false) => {
 const page = (state = Map({
   currentKey: undefined,
   historyOrder: OrderedSet(),  // Reverse ordered LRU keys
+  scrollHistory: Map(),
   stateHistory: Map(),
   modelHistory: Map(),
 }), action) => {
   let currentPageState = state.getIn(['stateHistory', action.pageKey])
   if (currentPageState === undefined) {
     currentPageState = Map()
+  }
+  let currentScrollState = state.getIn(['scrollHistory', action.pageKey])
+  if (currentScrollState === undefined) {
+    currentScrollState = Map()
   }
   const currentKey = state.get('currentKey')
   let currentPageModels = state.getIn(['modelHistory', currentKey])
@@ -85,6 +90,9 @@ const page = (state = Map({
     case types.SET_PAGE_STATE:
       return state.setIn(['stateHistory', action.pageKey],
         currentPageState.merge(action.pageState))
+    case types.SET_SCROLL_STATE:
+      return state.setIn(['scrollHistory', action.pageKey],
+        currentScrollState.merge({[action.scrollId]: action.scrollTop}))
     case types.RECEIVE_TEAM_INFO:
       return updateSingle(
         state,

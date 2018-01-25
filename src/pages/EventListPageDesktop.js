@@ -106,6 +106,7 @@ const styles = theme => ({
 
 class EventListPageDesktop extends PureComponent {
   state = {
+    contentRef: null,
     yearMenuAnchorEl: null,
   }
   activeSection = null
@@ -140,15 +141,19 @@ class EventListPageDesktop extends PureComponent {
     }
   }
 
-  componentDidMount() {
-    // Scroll to proper section if not restoreScroll
-    if (!this.props.pageState.get('restoreScroll')) {
-      const el =  document.getElementById(this.props.pageState.get('activeEventGroup'))
-      if (el) {
-        this.contentRef.scrollTo(0, el.offsetTop)
-      }
-    }
-  }
+  // componentDidMount() {
+  //   // Scroll to proper section if not restoreScroll
+  //   // if (!this.props.pageState.get('restoreScroll') || true) {
+  //   console.log("!!!!!!!!!!")
+  //   console.log(this.state)
+  //   if (this.state.contentRef && !this.props.pageState.get('isFreshPage')) {
+  //     console.log("!!!!!!!!!!!!!!!!!!")
+  //     const el =  document.getElementById(this.props.pageState.get('activeEventGroup'))
+  //     if (el) {
+  //       this.state.contentRef.scrollTo(0, el.offsetTop)
+  //     }
+  //   }
+  // }
 
   render() {
     console.log("Render EventListPageDesktop")
@@ -168,7 +173,7 @@ class EventListPageDesktop extends PureComponent {
       <TBAPageContainer
         history={this.props.history}
         documentTitle={this.props.documentTitle}
-        contentRef={el => this.contentRef = el}
+        contentRef={el => this.setState({contentRef: el})}
         refreshFunction={this.props.refreshFunction}
       >
         <ResponsiveLayout>
@@ -223,9 +228,9 @@ class EventListPageDesktop extends PureComponent {
                     </HideableBadge>
                   </div>
                 }
-                {this.contentRef &&
+                {this.state.contentRef &&
                   <Scrollspy
-                    rootEl={`.${this.contentRef.className}`}
+                    rootEl={`.${this.state.contentRef.className}`}
                     items={['official', 'unofficial']}
                     currentClassName={classes.sideNavSectionActive}
                     className={classes.sideNavSectionContainer}
@@ -233,9 +238,9 @@ class EventListPageDesktop extends PureComponent {
                   >
                     {officialEventsGrouped.size !== 0  &&
                       <li className={classes.sideNavSection}>
-                        <ScrollLink scrollEl={this.contentRef} to='official'>Official Events</ScrollLink>
+                        <ScrollLink scrollEl={this.state.contentRef} to='official'>Official Events</ScrollLink>
                         <Scrollspy
-                          rootEl={`.${this.contentRef.className}`}
+                          rootEl={`.${this.state.contentRef.className}`}
                           items={officialEventsGrouped.map(group => group.get('slug')).toJS()}
                           currentClassName={classes.sideNavItemActive}
                           onUpdate={(el) => this.updateActiveEventGroup(el, 'official')}
@@ -243,7 +248,7 @@ class EventListPageDesktop extends PureComponent {
                           {officialEventsGrouped.map(group => {
                             return (
                               <li key={group.get('slug')} className={classes.sideNavItem}>
-                                <ScrollLink scrollEl={this.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
+                                <ScrollLink scrollEl={this.state.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
                               </li>
                             )
                           })}
@@ -252,9 +257,9 @@ class EventListPageDesktop extends PureComponent {
                     }
                     {unofficialEventsGrouped.size !== 0 &&
                       <li className={classes.sideNavSection}>
-                        <ScrollLink scrollEl={this.contentRef} to='unofficial'>Unofficial Events</ScrollLink>
+                        <ScrollLink scrollEl={this.state.contentRef} to='unofficial'>Unofficial Events</ScrollLink>
                         <Scrollspy
-                          rootEl={`.${this.contentRef.className}`}
+                          rootEl={`.${this.state.contentRef.className}`}
                           items={unofficialEventsGrouped.map(group => group.get('slug')).toJS()}
                           currentClassName={classes.sideNavItemActive}
                           onUpdate={(el) => this.updateActiveEventGroup(el, 'unofficial')}
@@ -262,7 +267,7 @@ class EventListPageDesktop extends PureComponent {
                           {unofficialEventsGrouped.map(group => {
                             return (
                               <li key={group.get('slug')} className={classes.sideNavItem}>
-                                <ScrollLink scrollEl={this.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
+                                <ScrollLink scrollEl={this.state.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
                               </li>
                             )
                           })}

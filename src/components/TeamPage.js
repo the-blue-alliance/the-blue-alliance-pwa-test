@@ -32,10 +32,7 @@ class TeamPage extends PureComponent {
   reset = props => {
      // Set without overriding
     props.resetPage({
-      restoreScroll: true,
     })
-    // Override restoreScroll
-    props.setPageState({restoreScroll: true})
     // Fetch data
     this.refreshFunction()
   }

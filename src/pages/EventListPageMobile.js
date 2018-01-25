@@ -13,8 +13,9 @@ import Typography from 'material-ui/Typography'
 
 import TBAPageContainer from '../containers/TBAPageContainer'
 import GroupedEventTabs from '../components/GroupedEventTabs'
-import EventsList from '../components/EventsList'
+import EventsList2 from '../components/EventsList2'
 import EventFilterDialogContainer from '../containers/EventFilterDialogContainer'
+import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 
 const styles = theme => ({
   yearSelector: {
@@ -22,6 +23,11 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       height: 64,
     },
+  },
+  scrollContainer: {
+    width: '100%',
+    height: '100%',
+    overflow: 'scroll',
   },
   zeroDataContainer: {
     height: '100%',
@@ -46,6 +52,7 @@ class EventListPageMobile extends PureComponent {
     yearMenuAnchorEl: null,
   }
   tabContents = []
+  tabRefs = {}
 
   tabHandleChangeIndex = index => {
     this.props.setPageState({activeEventGroup: this.props.groupedEvents.get(index).get('slug')});
@@ -54,7 +61,7 @@ class EventListPageMobile extends PureComponent {
   computeTabContents = (groupedEvents, fastRender) => {
     this.tabContents = groupedEvents.map((group) => {
       if (!fastRender || group.get('slug') === this.props.pageState.get('activeEventGroup')) {
-        return <EventsList key={group.get('slug')} events={group.get('events')} />
+        return <EventsList2 key={group.get('slug')} events={group.get('events')} />
       } else {
         return <div key={group.get('slug')} />
       }
@@ -144,7 +151,30 @@ class EventListPageMobile extends PureComponent {
             index={groupToIndex[this.props.pageState.get('activeEventGroup')]}
             onChangeIndex={this.tabHandleChangeIndex}
           >
-            {this.tabContents}
+            {groupedEvents.map((group) => {
+              const slug = group.get('slug')
+              return (
+                <ScrollRestoreContainer
+                  key={slug}
+                  contentRef={(r) => this.tabRefs[slug] = r}
+                  scrollId={slug}
+                  className={classes.scrollContainer}
+                >
+                  {/*<EventsList2 key={group.get('slug')} events={group.get('events')} scrollElement={this.tabRefs[slug]}/>*/}
+                  hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
+                  <br/>2<br/>2<br/>2<br/>2<br/>2<br/>2<br/>2<br/>2<br/>2<br/>2<br/>2<br/>2<br/>2<br/>2
+                  <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
+                  <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
+                  <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
+                  <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
+                  <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
+                  <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
+                  <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
+                  <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
+                  <br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi<br/>hi
+                </ScrollRestoreContainer>
+              )
+            })}
           </SwipeableViews>
           :
           <div className={classes.zeroDataContainer}>

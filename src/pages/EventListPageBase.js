@@ -30,14 +30,11 @@ class EventListPageBase extends PureComponent {
   reset = props => {
      // Set without overriding
     props.resetPage({
-      restoreScroll: true,
       activeEventGroup: 'week-1',
       filterDialogOpen: false,
       districtFilters: Set(),
       yearMenuOpen: false,
     })
-    // Override restoreScroll
-    props.setPageState({restoreScroll: true})
     // Fetch data
     this.refreshFunction(props)
   }

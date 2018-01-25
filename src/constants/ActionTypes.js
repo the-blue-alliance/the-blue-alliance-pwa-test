@@ -11,6 +11,7 @@ export const RESET_PAGE = 'RESET_PAGE'
 
 // Set page state
 export const SET_PAGE_STATE = 'SET_PAGE_STATE'
+export const SET_SCROLL_STATE = 'SET_SCROLL_STATE'
 
 // Snackbars
 export const OPEN_SNACKBAR = 'OPEN_SNACKBAR'

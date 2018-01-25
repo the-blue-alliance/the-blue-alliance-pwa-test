@@ -9,11 +9,23 @@ const getStateHistory = (state, props) => {
   return state.getIn(['page', 'stateHistory'])
 }
 
+const getScrollHistory = (state, props) => {
+  return state.getIn(['page', 'scrollHistory'])
+}
+
 export const getCurrentPageState = createSelector(
   [getCurrentPageKey, getStateHistory],
   (pageKey, stateHistory) => {
     const pageState = stateHistory.get(pageKey)
     return pageState === undefined ? Map() : pageState
+  }
+)
+
+export const getCurrentScrollStates = createSelector(
+  [getCurrentPageKey, getScrollHistory],
+  (pageKey, scrollHistory) => {
+    const scrollStates = scrollHistory.get(pageKey)
+    return scrollStates === undefined ? Map() : scrollStates
   }
 )
 
