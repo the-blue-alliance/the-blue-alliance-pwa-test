@@ -20,7 +20,7 @@ class ScrollRestore extends PureComponent {
   }
 
   componentDidUpdate() {
-    if (this.props.scrollState) {
+    if (this.props.scrollState && this.ref.scrollTop !== this.props.scrollState) {
       this.ref.scrollTop = this.props.scrollState
     }
   }
