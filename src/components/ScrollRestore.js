@@ -6,11 +6,22 @@ const styles = {}
 
 class ScrollRestore extends PureComponent {
   isThrottled = false
+  isScrolling = false
+  isScrollingTimeout = null
 
   scrollHandler = () => {
     if (!this.isThrottled) {
+      // Keep track if scrolling
+      this.isScrolling = true
+      clearTimeout(this.isScrollingTimeout)
+      this.isScrollingTimeout = setTimeout(() => {
+        this.isScrolling = false
+      }, 500)
+
+      // Throttle scroll handler
       this.isThrottled = true
       setTimeout(() => {
+        // Update scroll state
         if (this.ref && (this.props.scrollState !== this.ref.scrollTop)) {
           this.props.setScrollState(this.props.scrollId, this.ref.scrollTop)
         }
@@ -20,14 +31,26 @@ class ScrollRestore extends PureComponent {
   }
 
   componentDidMount() {
-    if (this.props.scrollState && this.ref.scrollTop !== this.props.scrollState) {
-      this.ref.scrollTop = this.props.scrollState
+    if (!this.isScrolling) {
+      if (this.props.scrollState) {
+        if (this.ref.scrollTop !== this.props.scrollState) {
+          this.ref.scrollTop = this.props.scrollState
+        }
+      } else {
+        this.ref.scrollTop = 0
+      }
     }
   }
 
   componentDidUpdate() {
-    if (this.props.scrollState && this.ref.scrollTop !== this.props.scrollState) {
-      this.ref.scrollTop = this.props.scrollState
+    if (!this.isScrolling) {
+      if (this.props.scrollState) {
+        if (this.ref.scrollTop !== this.props.scrollState) {
+          this.ref.scrollTop = this.props.scrollState
+        }
+      } else {
+        this.ref.scrollTop = 0
+      }
     }
   }
 
