@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes'
 import * as sources from '../constants/DataSources'
-import db, { addEvent, addEvents, addEventTeams, addMatch, addMatches, addTeam, addTeams, addTeamEvents } from '../database/db'
+import db, { addAwards, addEvent, addEvents, addEventTeams, addMatch, addMatches, addTeam, addTeams, addTeamEvents } from '../database/db'
 import fetch from 'isomorphic-fetch'
 
 // TODO: This can use a lot of refactoring to make things DRY. 2017-09-27 @fangeugene
@@ -255,6 +255,56 @@ export function fetchTeamInfo(teamNumber) {
           dataSource = sources.API
           dispatch(receiveTeamInfo(teamKey, team))
           addTeam(team)
+        }
+        dispatch(decrementLoadingCount())
+      })
+    }
+  }
+}
+
+export const receiveTeamYearAwards = (teamKey, year, awards) => ({
+  type: types.RECEIVE_TEAM_YEAR_AWARDS,
+  teamKey,
+  year,
+  data: awards,
+})
+
+export function fetchTeamYearAwards(teamNumber, year) {
+  return (dispatch, getState) => {
+    let dataSource = sources.DEFAULT
+    const teamKey = `frc${teamNumber}`
+    // Update from IndexedDB
+    db.awardTeams.where('teamKey_year').equals(`${teamKey}_${year}`).toArray().then(awardTeams => {
+      Promise.all(
+        awardTeams.map(awardTeam => db.awards.get(awardTeam.awardKey))
+      ).then(awards => {
+        if (dataSource < sources.IDB) {
+          dataSource = sources.IDB
+          dispatch(receiveTeamYearAwards(teamKey, year, awards))
+        }
+      })
+    })
+
+    // Update from API
+    if (!getState().getIn(['appState', 'offlineOnly'])) {
+      dispatch(incrementLoadingCount())
+      fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/awards/${year}`,
+        {headers: {'X-TBA-Auth-Key': TBA_KEY}
+      }).then(
+        response => response.json(),
+        error => console.log('An error occured.', error)
+      ).then(awards => {
+        // Add keys to awards
+        return awards.map(award => {
+          var newAward = Object.assign({}, award)
+          newAward.key = `${award.event_key}_${award.award_type}`
+          return newAward
+        })
+      }).then(awards => {
+        if (dataSource < sources.API && awards !== undefined) {
+          dataSource = sources.API
+          dispatch(receiveTeamYearAwards(teamKey, year, awards))
+          addAwards(awards)
         }
         dispatch(decrementLoadingCount())
       })

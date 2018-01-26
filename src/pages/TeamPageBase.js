@@ -5,11 +5,11 @@ import { Set } from 'immutable'
 
 // Actions
 import { push } from 'connected-react-router'
-import { resetPage, setPageState, setBottomNav, fetchTeamInfo, fetchTeamYearEvents, fetchTeamYearMatches } from '../actions'
+import { resetPage, setPageState, setBottomNav, fetchTeamInfo, fetchTeamYearAwards, fetchTeamYearEvents, fetchTeamYearMatches } from '../actions'
 
 // Selectors
 import { getCurrentPageState, getYear } from '../selectors/CommonPageSelectors'
-import { getTeamNumber, getTeamModel, getSortedTeamYearEvents, getMatchesByEvent } from '../selectors/TeamPageSelectors'
+import { getTeamNumber, getTeamModel, getSortedTeamYearEvents, getAwardsByEvent, getMatchesByEvent } from '../selectors/TeamPageSelectors'
 
 // Components
 import Hidden from 'material-ui/Hidden'
@@ -28,6 +28,7 @@ const mapStateToProps = (state, props) => ({
   // Data
   team: getTeamModel(state, props),
   teamYearEvents: getSortedTeamYearEvents(state, props),
+  awardsByEvent: getAwardsByEvent(state, props),
   matchesByEvent: getMatchesByEvent(state, props),
 })
 
@@ -37,6 +38,7 @@ const mapDispatchToProps = (dispatch) => ({
   setPageState: (pageState) => dispatch(setPageState(pageState)),
   setBottomNav: (value) => dispatch(setBottomNav(value)),
   fetchTeamInfo: (teamNumber) => dispatch(fetchTeamInfo(teamNumber)),
+  fetchTeamYearAwards: (teamNumber, year) => dispatch(fetchTeamYearAwards(teamNumber, year)),
   fetchTeamYearEvents: (teamNumber, year) => dispatch(fetchTeamYearEvents(teamNumber, year)),
   fetchTeamYearMatches: (teamNumber, year) => dispatch(fetchTeamYearMatches(teamNumber, year)),
 })
@@ -66,6 +68,7 @@ class TeamPageBase extends PureComponent {
 
   refreshFunction = (props=this.props) => {
     this.props.fetchTeamInfo(props.teamNumber)
+    this.props.fetchTeamYearAwards(props.teamNumber, props.year)
     this.props.fetchTeamYearEvents(props.teamNumber, props.year)
     this.props.fetchTeamYearMatches(props.teamNumber, props.year)
   }
@@ -77,7 +80,7 @@ class TeamPageBase extends PureComponent {
   render() {
     console.log("Render TeamPageBase")
 
-    const { teamNumber, team, year, teamYearEvents, matchesByEvent } = this.props
+    const { teamNumber, team, year, teamYearEvents, awardsByEvent, matchesByEvent } = this.props
 
     let documentTitle = `Team ${teamNumber} (${year})`
     if (team && team.get('nickname')) {
@@ -107,6 +110,7 @@ class TeamPageBase extends PureComponent {
             teamNumber={teamNumber}
             team={team}
             teamYearEvents={teamYearEvents}
+            awardsByEvent={awardsByEvent}
             matchesByEvent={matchesByEvent}
           />
         </Hidden>
@@ -124,6 +128,7 @@ class TeamPageBase extends PureComponent {
             teamNumber={teamNumber}
             team={team}
             teamYearEvents={teamYearEvents}
+            awardsByEvent={awardsByEvent}
             matchesByEvent={matchesByEvent}
           />
         </Hidden>

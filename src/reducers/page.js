@@ -98,6 +98,11 @@ const page = (state = Map({
         state,
         ['teams', 'byKey', action.teamKey],
         action.data)
+    case types.RECEIVE_TEAM_YEAR_AWARDS:
+      return updateMulti(
+        state,
+        ['awards', 'collections', 'byTeamYear', action.teamKey, action.year],
+        action.data)
     case types.RECEIVE_TEAM_YEAR_EVENTS:
       return updateMulti(
         state,

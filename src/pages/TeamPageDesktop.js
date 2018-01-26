@@ -90,7 +90,7 @@ class TeamPageDesktop extends PureComponent {
   render() {
     console.log("Render TeamPageDesktop")
 
-    const { classes, year, validYears, isLoading, yearMenuOpen, teamNumber, team, teamYearEvents, matchesByEvent } = this.props
+    const { classes, year, validYears, isLoading, yearMenuOpen, teamNumber, team, teamYearEvents, awardsByEvent, matchesByEvent } = this.props
 
     return (
       <TBAPageContainer
@@ -213,11 +213,16 @@ class TeamPageDesktop extends PureComponent {
                           <Typography type='subheading'>Qual record: <b>8-1-0</b></Typography>
                           <Typography type='subheading'>Alliance: <b>Captain</b> of <b>Alliance 1</b></Typography>
                           <Typography type='subheading'>Playoff record: <b>6-0-0</b></Typography>
-                          <Typography type='subheading'>Awards:</Typography>
-                          <ul className={classes.awardList}>
-                            <li>Regional Winners</li>
-                            <li>Quality Award sponsored by Motorola Solutions Foundation</li>
-                          </ul>
+                          {awardsByEvent.get(event.get('key')) &&
+                            <React.Fragment>
+                              <Typography type='subheading'>Awards:</Typography>
+                              <ul className={classes.awardList}>
+                                {awardsByEvent.get(event.get('key')).map(award =>
+                                  <li key={award.key}>{award.name}</li>
+                                )}
+                              </ul>
+                            </React.Fragment>
+                          }
                         </Grid>
                         <Grid item xs={8}>
                           <MatchTable matches={matchesByEvent.get(event.get('key'))} />

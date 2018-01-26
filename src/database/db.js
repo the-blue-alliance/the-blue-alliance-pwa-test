@@ -12,10 +12,34 @@ db.version(2).stores({
 db.version(3).stores({
   matchTeams: '&key, matchKey, teamKey, teamKey_year, teamKey_eventKey',
 })
+db.version(4).stores({
+  awards: '&key, event_key',
+  awardTeams: '&key, awardKey, teamKey, teamKey_year, teamKey_eventKey',
+})
 
 export default db;
 
 // Write helpers. TODO: needs to handle deletion
+export const addAwards = (awards) => {
+  db.awards.bulkPut(awards)
+  let awardTeams = []
+  awards.forEach(award => {
+    for (let recipient of award.recipient_list) {
+      const teamKey = recipient.team_key
+      if (teamKey) {
+        awardTeams.push({
+          key: `${award.key}_${teamKey}`,
+          awardKey: award.key,
+          teamKey: teamKey,
+          teamKey_year: `${teamKey}_${award.year}`,
+          teamKey_eventKey: `${teamKey}_${award.event_key}`,
+        })
+      }
+    }
+  })
+  db.awardTeams.bulkPut(awardTeams)
+}
+
 export const addEvent = (event) => db.events.put(event)
 
 export const addEvents = (events) => db.events.bulkPut(events)

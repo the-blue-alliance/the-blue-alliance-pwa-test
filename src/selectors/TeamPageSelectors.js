@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect'
 import { List, Map } from 'immutable'
 import { getYear } from '../selectors/CommonPageSelectors'
+import Award from '../database/Award'
 import Event from '../database/Event'
 import Match from '../database/Match'
 import Team from '../database/Team'
@@ -25,6 +26,50 @@ export const getTeamModel = createSelector(
       return new Team(team)
     }
     return undefined
+  }
+)
+
+export const getTeamYearAwards = (state, props) => {
+  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
+    const teamYearAwards = state.getIn(['page', 'modelHistory', key, 'awards', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, getYear(state, props)])
+    if (teamYearAwards !== undefined) {
+      return teamYearAwards
+    }
+  }
+}
+
+export const getAwardsByEvent = createSelector(
+  [getTeamYearAwards],
+  (awards) => {
+    let awardsByEvent = Map()
+    if (awards) {
+      // Group by event
+      awards.map(a => new Award(a)).forEach(a => {
+        let oldList = awardsByEvent.get(a.event_key)
+        if (oldList ===  undefined) {
+          oldList = List()
+        }
+        awardsByEvent = awardsByEvent.set(a.event_key, oldList.push(a))
+      })
+    }
+
+    // Sort each event's awards
+    // TODO: actually sort
+    for (let eventKey of awardsByEvent.keys()) {
+      awardsByEvent = awardsByEvent.set(
+        eventKey,
+        awardsByEvent.get(eventKey).sort((a, b) => {
+          if (a.award_type < b.award_type) {
+            return -1
+          }
+          if (a.award_type > b.award_type) {
+            return 1
+          }
+          return 0
+        })
+      )
+    }
+    return awardsByEvent
   }
 )
 
