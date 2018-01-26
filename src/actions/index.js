@@ -76,6 +76,14 @@ export const receiveEventInfo = (eventKey, data) => ({
   data,
 })
 
+function handleErrors(response) {
+  if (!response.ok) {
+    console.log(response)
+    throw Error(response.statusText)
+  }
+  return response.json()
+}
+
 export function fetchEventInfo(eventKey) {
   return (dispatch, getState) => {
     let dataSource = sources.DEFAULT
@@ -92,16 +100,16 @@ export function fetchEventInfo(eventKey) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
-      }).then(
-        response => response.json(),
-        error => console.log('An error occured.', error)
-      ).then(event => {
+      }).then(handleErrors).then(event => {
         if (dataSource < sources.API && event !== undefined) {
           dataSource = sources.API
           dispatch(receiveEventInfo(eventKey, event))
           addEvent(event)
         }
         dispatch(decrementLoadingCount())
+      }).catch(error => {
+        dispatch(decrementLoadingCount())
+        console.log(error)
       })
     }
   }
@@ -129,16 +137,16 @@ export function fetchEventMatches(eventKey) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/matches`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
-      }).then(
-        response => response.json(),
-        error => console.log('An error occured.', error)
-      ).then(matches => {
+      }).then(handleErrors).then(matches => {
         if (dataSource < sources.API && matches !== undefined) {
           dataSource = sources.API
           dispatch(receiveEventMatches(eventKey, matches))
           addMatches(matches)
         }
         dispatch(decrementLoadingCount())
+      }).catch(error => {
+        dispatch(decrementLoadingCount())
+        console.log(error)
       })
     }
   }
@@ -170,16 +178,16 @@ export function fetchEventTeams(eventKey) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/teams`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
-      }).then(
-        response => response.json(),
-        error => console.log('An error occured.', error)
-      ).then(teams => {
+      }).then(handleErrors).then(teams => {
         if (dataSource < sources.API && teams !== undefined) {
           dataSource = sources.API
           dispatch(receiveEventTeams(eventKey, teams))
           addEventTeams(eventKey, teams)
         }
         dispatch(decrementLoadingCount())
+      }).catch(error => {
+        dispatch(decrementLoadingCount())
+        console.log(error)
       })
     }
   }
@@ -208,16 +216,16 @@ export function fetchYearEvents(year) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/events/${year}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
-      }).then(
-        response => response.json(),
-        error => console.log('An error occured.', error)
-      ).then(events => {
+      }).then(handleErrors).then(events => {
         if (dataSource < sources.API && events !== undefined) {
           dataSource = sources.API
           dispatch(receiveYearEvents(year, events))
           addEvents(events)
         }
         dispatch(decrementLoadingCount())
+      }).catch(error => {
+        dispatch(decrementLoadingCount())
+        console.log(error)
       })
     }
   }
@@ -247,16 +255,16 @@ export function fetchTeamInfo(teamNumber) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
-      }).then(
-        response => response.json(),
-        error => console.log('An error occured.', error)
-      ).then(team => {
+      }).then(handleErrors).then(team => {
         if (dataSource < sources.API && team !== undefined) {
           dataSource = sources.API
           dispatch(receiveTeamInfo(teamKey, team))
           addTeam(team)
         }
         dispatch(decrementLoadingCount())
+      }).catch(error => {
+        dispatch(decrementLoadingCount())
+        console.log(error)
       })
     }
   }
@@ -290,10 +298,7 @@ export function fetchTeamYearAwards(teamNumber, year) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/awards/${year}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
-      }).then(
-        response => response.json(),
-        error => console.log('An error occured.', error)
-      ).then(awards => {
+      }).then(handleErrors).then(awards => {
         // Add keys to awards
         return awards.map(award => {
           var newAward = Object.assign({}, award)
@@ -307,6 +312,9 @@ export function fetchTeamYearAwards(teamNumber, year) {
           addAwards(awards)
         }
         dispatch(decrementLoadingCount())
+      }).catch(error => {
+        dispatch(decrementLoadingCount())
+        console.log(error)
       })
     }
   }
@@ -340,16 +348,16 @@ export function fetchTeamYearEvents(teamNumber, year) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/events/${year}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
-      }).then(
-        response => response.json(),
-        error => console.log('An error occured.', error)
-      ).then(events => {
+      }).then(handleErrors).then(events => {
         if (dataSource < sources.API && events !== undefined) {
           dataSource = sources.API
           dispatch(receiveTeamYearEvents(teamKey, year, events))
           addTeamEvents(teamKey, events)
         }
         dispatch(decrementLoadingCount())
+      }).catch(error => {
+        dispatch(decrementLoadingCount())
+        console.log(error)
       })
     }
   }
@@ -383,16 +391,16 @@ export function fetchTeamYearMatches(teamNumber, year) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/matches/${year}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
-      }).then(
-        response => response.json(),
-        error => console.log('An error occured.', error)
-      ).then(matches => {
+      }).then(handleErrors).then(matches => {
         if (dataSource < sources.API && matches !== undefined) {
           dataSource = sources.API
           dispatch(receiveTeamYearMatches(teamKey, year, matches))
           addMatches(matches)
         }
         dispatch(decrementLoadingCount())
+      }).catch(error => {
+        dispatch(decrementLoadingCount())
+        console.log(error)
       })
     }
   }
@@ -431,16 +439,16 @@ export function fetchTeamListHelper(pageNum) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/teams/${pageNum}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
-      }).then(
-        response => response.json(),
-        error => console.log('An error occured.', error)
-      ).then(teams => {
+      }).then(handleErrors).then(teams => {
         if (dataSource < sources.API && teams !== undefined) {
           dataSource = sources.API
           dispatch(receiveTeamListPage(teams))
           addTeams(teams)
         }
         dispatch(decrementLoadingCount())
+      }).catch(error => {
+        dispatch(decrementLoadingCount())
+        console.log(error)
       })
     }
   }
@@ -477,16 +485,16 @@ export function fetchMatchInfo(matchKey) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/match/${matchKey}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
-      }).then(
-        response => response.json(),
-        error => console.log('An error occured.', error)
-      ).then(match => {
+      }).then(handleErrors).then(match => {
         if (dataSource < sources.API && match !== undefined) {
           dataSource = sources.API
           dispatch(receiveMatchInfo(matchKey, match))
           addMatch(match)
         }
         dispatch(decrementLoadingCount())
+      }).catch(error => {
+        dispatch(decrementLoadingCount())
+        console.log(error)
       })
     }
   }
