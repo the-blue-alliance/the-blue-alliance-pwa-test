@@ -12,7 +12,6 @@ import Grid from 'material-ui/Grid'
 import Icon from 'material-ui/Icon'
 import Menu, { MenuItem } from 'material-ui/Menu'
 import Typography from 'material-ui/Typography'
-import Scrollspy from 'react-scrollspy'
 
 // TBA Components
 import TBAPageContainer from '../containers/TBAPageContainer'
@@ -20,7 +19,7 @@ import ResponsiveLayout from '../components/ResponsiveLayout'
 import EventFilterDialogContainer from '../containers/EventFilterDialogContainer'
 import EventListCard from '../components/EventListCard'
 import HideableBadge from '../components/HideableBadge'
-import ScrollLink from '../components/ScrollLink'
+import NestedScrollspy from '../components/NestedScrollspy'
 
 const sideNavWidth = 160
 const styles = theme => ({
@@ -42,52 +41,6 @@ const styles = theme => ({
   },
   rightIcon: {
     marginLeft: theme.spacing.unit,
-  },
-  sideNavSectionContainer: {
-    width: '100%',
-    listStyleType: 'none',
-    margin: 0,
-    padding: theme.spacing.unit,
-    '& a:hover': {
-      textDecoration: 'none',
-      backgroundColor: theme.palette.primary[50],
-      borderRight: `1px solid ${theme.palette.secondary.main}`,
-    }
-  },
-  sideNavSection: {
-    '& > a': {
-      display: 'block',
-      padding: '5px 10px',
-    },
-    '& > ul': {
-      display: 'none',
-      listStyleType: 'none',
-      margin: 0,
-      padding: 0,
-    }
-  },
-  sideNavSectionActive: {
-    '& > a': {
-      fontWeight: 'bold',
-      borderRight: `1px solid ${theme.palette.secondary.main}`,
-    },
-    '& > ul': {
-      display: 'block',
-    }
-  },
-  sideNavItem: {
-    paddingLeft: 10,
-    '& > a': {
-      display: 'block',
-      fontSize: 14,
-      padding: '5px 20px',
-    },
-  },
-  sideNavItemActive: {
-    '& > a': {
-      fontWeight: 'bold',
-      borderRight: `1px solid ${theme.palette.secondary.main}`,
-    },
   },
   zeroDataContainer: {
     paddingTop: theme.spacing.unit*3,
@@ -111,25 +64,6 @@ class EventListPageDesktop extends PureComponent {
     contentRef: null,
     yearMenuAnchorEl: null,
   }
-  activeSection = null
-  activeEventGroup = {
-    'official': null,
-    'unofficial': null,
-  }
-
-  updateActiveNavSection = (el) => {
-    this.activeSection = el ? el.id : null
-    if (this.activeEventGroup[this.activeSection]) {
-      this.props.setPageState({activeEventGroup: this.activeEventGroup[this.activeSection]})
-    }
-  }
-
-  updateActiveEventGroup = (el, section) => {
-    this.activeEventGroup[section] = el ? el.id : null
-    if (this.activeEventGroup[this.activeSection]) {
-      this.props.setPageState({activeEventGroup: this.activeEventGroup[this.activeSection]})
-    }
-  }
 
   handleYearOpen = event => {
     this.setState({ yearMenuAnchorEl: event.currentTarget });
@@ -143,12 +77,24 @@ class EventListPageDesktop extends PureComponent {
     }
   }
 
+  scrollspyActiveCallback = (section, item) => {
+    this.props.setPageState({activeEventGroup: item})
+  }
+
   render() {
     console.log("Render EventListPageDesktop")
 
     const { classes, year, validYears, groupedEvents, isLoading, yearMenuOpen, filterCount } = this.props
     const officialEventsGrouped = groupedEvents.filter(group => group.get('isOfficial'))
     const unofficialEventsGrouped = groupedEvents.filter(group => !group.get('isOfficial'))
+
+    let sections = []
+    if (officialEventsGrouped.size > 0) {
+      sections.push('official')
+    }
+    if (unofficialEventsGrouped.size > 0) {
+      sections.push('unofficial')
+    }
 
     return (
       <TBAPageContainer
@@ -209,52 +155,30 @@ class EventListPageDesktop extends PureComponent {
                   </div>
                 }
                 {this.state.contentRef &&
-                  <Scrollspy
-                    rootEl={`.${this.state.contentRef.className}`}
-                    items={['official', 'unofficial']}
-                    currentClassName={classes.sideNavSectionActive}
-                    className={classes.sideNavSectionContainer}
-                    onUpdate={(el) => {this.updateActiveNavSection(el)}}
-                  >
-                    {officialEventsGrouped.size !== 0  &&
-                      <li className={classes.sideNavSection}>
-                        <ScrollLink scrollEl={this.state.contentRef} to='official'>Official Events</ScrollLink>
-                        <Scrollspy
-                          rootEl={`.${this.state.contentRef.className}`}
-                          items={officialEventsGrouped.map(group => group.get('slug')).toJS()}
-                          currentClassName={classes.sideNavItemActive}
-                          onUpdate={(el) => this.updateActiveEventGroup(el, 'official')}
-                        >
-                          {officialEventsGrouped.map(group => {
-                            return (
-                              <li key={group.get('slug')} className={classes.sideNavItem}>
-                                <ScrollLink scrollEl={this.state.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
-                              </li>
-                            )
-                          })}
-                        </Scrollspy>
-                      </li>
-                    }
-                    {unofficialEventsGrouped.size !== 0 &&
-                      <li className={classes.sideNavSection}>
-                        <ScrollLink scrollEl={this.state.contentRef} to='unofficial'>Unofficial Events</ScrollLink>
-                        <Scrollspy
-                          rootEl={`.${this.state.contentRef.className}`}
-                          items={unofficialEventsGrouped.map(group => group.get('slug')).toJS()}
-                          currentClassName={classes.sideNavItemActive}
-                          onUpdate={(el) => this.updateActiveEventGroup(el, 'unofficial')}
-                        >
-                          {unofficialEventsGrouped.map(group => {
-                            return (
-                              <li key={group.get('slug')} className={classes.sideNavItem}>
-                                <ScrollLink scrollEl={this.state.contentRef} to={group.get('slug')}>{group.get('label')}</ScrollLink>
-                              </li>
-                            )
-                          })}
-                        </Scrollspy>
-                      </li>
-                    }
-                  </Scrollspy>
+                  <NestedScrollspy
+                    collapseSections
+                    contentRef={this.state.contentRef}
+                    sections={sections}
+                    sectionLabels={{
+                      'official': 'Official',
+                      'unofficial': 'Unofficial',
+                    }}
+                    sectionItems={{
+                      'official': officialEventsGrouped.map(group => {
+                        return ({
+                          'id': group.get('slug'),
+                          'label': group.get('label'),
+                        })
+                      }).toJS(),
+                      'unofficial': unofficialEventsGrouped.map(group => {
+                        return ({
+                          'id': group.get('slug'),
+                          'label': group.get('label'),
+                        })
+                      }).toJS(),
+                    }}
+                    activeItemCallback={this.scrollspyActiveCallback}
+                  />
                 }
               </div>
             </Grid>

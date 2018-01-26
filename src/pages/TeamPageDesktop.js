@@ -15,7 +15,6 @@ import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
 import Select from 'material-ui/Select'
 import { Link } from 'react-router-dom'
-import Scrollspy from 'react-scrollspy'
 
 // TBA Components
 import TBAPageContainer from '../containers/TBAPageContainer'
@@ -23,7 +22,7 @@ import ResponsiveLayout from '../components/ResponsiveLayout'
 import EventListCard from '../components/EventListCard'
 import HideableBadge from '../components/HideableBadge'
 import MatchTable from '../components/MatchTable'
-import ScrollLink from '../components/ScrollLink'
+import NestedScrollspy from '../components/NestedScrollspy'
 
 const sideNavWidth = 160
 const styles = theme => ({
@@ -45,51 +44,6 @@ const styles = theme => ({
   },
   rightIcon: {
     marginLeft: theme.spacing.unit,
-  },
-  sideNavSectionContainer: {
-    width: '100%',
-    listStyleType: 'none',
-    margin: 0,
-    padding: theme.spacing.unit,
-    '& a:hover': {
-      textDecoration: 'none',
-      backgroundColor: theme.palette.primary[50],
-      borderRight: `1px solid ${theme.palette.secondary.main}`,
-    }
-  },
-  sideNavSection: {
-    '& > a': {
-      display: 'block',
-      padding: '5px 10px',
-    },
-    '& > ul': {
-      listStyleType: 'none',
-      margin: 0,
-      padding: 0,
-    }
-  },
-  sideNavSectionActive: {
-    '& > a': {
-      fontWeight: 'bold',
-      borderRight: `1px solid ${theme.palette.secondary.main}`,
-    },
-    '& > ul': {
-      display: 'block',
-    }
-  },
-  sideNavItem: {
-    paddingLeft: 10,
-    '& > a': {
-      display: 'block',
-      fontSize: 14,
-      padding: '5px 20px',
-    },
-  },
-  sideNavItemActive: {
-    '& > a': {
-      fontWeight: 'bold',
-      borderRight: `1px solid ${theme.palette.secondary.main}`,
-    },
   },
   zeroDataContainer: {
     paddingTop: theme.spacing.unit*3,
@@ -117,25 +71,6 @@ class TeamPageDesktop extends PureComponent {
   state = {
     contentRef: null,
     yearMenuAnchorEl: null,
-  }
-  activeSection = null
-  activeEventGroup = {
-    'official': null,
-    'unofficial': null,
-  }
-
-  updateActiveNavSection = (el) => {
-    // this.activeSection = el ? el.id : null
-    // if (this.activeEventGroup[this.activeSection]) {
-    //   this.props.setPageState({activeEventGroup: this.activeEventGroup[this.activeSection]})
-    // }
-  }
-
-  updateActiveEvent = (el, section) => {
-    // this.activeEventGroup[section] = el ? el.id : null
-    // if (this.activeEventGroup[this.activeSection]) {
-    //   this.props.setPageState({activeEventGroup: this.activeEventGroup[this.activeSection]})
-    // }
   }
 
   handleYearOpen = event => {
@@ -203,42 +138,24 @@ class TeamPageDesktop extends PureComponent {
                 </Menu>
 
                 {this.state.contentRef &&
-                  <Scrollspy
-                    rootEl={`.${this.state.contentRef.className}`}
-                    items={['team-info', 'event-results', 'media', 'robot-profile']}
-                    currentClassName={classes.sideNavSectionActive}
-                    className={classes.sideNavSectionContainer}
-                    onUpdate={(el) => {this.updateActiveNavSection(el)}}
-                  >
-                    <li className={classes.sideNavSection}>
-                      <ScrollLink scrollEl={this.state.contentRef} to='team-info'>Team Info</ScrollLink>
-                    </li>
-                    <li className={classes.sideNavSection}>
-                      <ScrollLink scrollEl={this.state.contentRef} to='event-results'>Event Results</ScrollLink>
-                      {teamYearEvents !== 0  &&
-                        <Scrollspy
-                          rootEl={`.${this.state.contentRef.className}`}
-                          items={teamYearEvents.map(event => event.get('event_code')).toJS()}
-                          currentClassName={classes.sideNavItemActive}
-                          onUpdate={(el) => this.updateActiveEvent(el, 'event-results')}
-                        >
-                          {teamYearEvents.map(event => {
-                            return (
-                              <li key={event.get('key')} className={classes.sideNavItem}>
-                                <ScrollLink scrollEl={this.state.contentRef} to={event.get('event_code')}>{event.get('short_name')}</ScrollLink>
-                              </li>
-                            )
-                          })}
-                        </Scrollspy>
-                      }
-                    </li>
-                    <li className={classes.sideNavSection}>
-                      <ScrollLink scrollEl={this.state.contentRef} to='media'>Media</ScrollLink>
-                    </li>
-                    <li className={classes.sideNavSection}>
-                      <ScrollLink scrollEl={this.state.contentRef} to='robot-profile'>Robot Profile</ScrollLink>
-                    </li>
-                  </Scrollspy>
+                  <NestedScrollspy
+                    contentRef={this.state.contentRef}
+                    sections={['team-info', 'event-results', 'media', 'robot-profile']}
+                    sectionLabels={{
+                      'team-info': 'Team Info',
+                      'event-results': 'Event Results',
+                      'media': 'Media',
+                      'robot-profile': 'Robot Profile',
+                    }}
+                    sectionItems={{
+                      'event-results': teamYearEvents.map(event => {
+                        return ({
+                          'id': event.get('event_code'),
+                          'label': event.get('short_name'),
+                        })
+                      }).toJS(),
+                    }}
+                  />
                 }
               </div>
             </Grid>
