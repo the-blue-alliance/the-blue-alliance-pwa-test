@@ -60,7 +60,7 @@ class EventListPageMobile extends PureComponent {
   computeTabContents = (groupedEvents, fastRender) => {
     this.tabContents = groupedEvents.map((group) => {
       const slug = group.get('slug')
-      if (!fastRender || slug === this.props.pageState.get('activeEventGroup')) {
+      if (!fastRender || slug === this.props.activeEventGroup) {
         return <EventsList3 key={slug} scrollId={slug} events={group.get('events')} />
       } else {
         return <div key={slug} />
@@ -76,7 +76,7 @@ class EventListPageMobile extends PureComponent {
   handleYearSelect = year => {
     this.props.setYearMenuOpen(false)
     if (year !== this.props.year) {
-      this.props.history.push(`/events/${year}`)
+      this.props.pushHistory(`/events/${year}`)
     }
   }
 
@@ -110,7 +110,7 @@ class EventListPageMobile extends PureComponent {
   render() {
     console.log("Render EventListPageMobile")
 
-    const { classes, year, groupedEvents, isLoading, pageState } = this.props
+    const { classes, year, validYears, groupedEvents, isLoading, yearMenuOpen, filterCount, activeEventGroup } = this.props
 
     // Build group -> index map
     let groupToIndex = {}
@@ -118,17 +118,10 @@ class EventListPageMobile extends PureComponent {
       groupToIndex[group.get('slug')] = index
     })
 
-    // Compute valid years
-    let validYears = []
-    for (let y=2018; y>=1992; y--) {
-      validYears.push(y)
-    }
-
     const hasEvents = groupedEvents.size !== 0
 
     return (
       <TBAPageContainer
-        history={this.props.history}
         documentTitle={this.props.documentTitle}
         title={
           <ButtonBase
@@ -143,11 +136,11 @@ class EventListPageMobile extends PureComponent {
         }
         refreshFunction={this.props.refreshFunction}
         filterFunction={this.props.filterFunction}
-        filterCount={pageState.get('districtFilters').size}
+        filterCount={filterCount}
         tabs={hasEvents &&
           <GroupedEventTabs
             groupedEvents={groupedEvents}
-            activeGroup={pageState.get('activeEventGroup')}
+            activeGroup={activeEventGroup}
             setPageState={this.props.setPageState}
           />
         }
@@ -161,7 +154,7 @@ class EventListPageMobile extends PureComponent {
               bottom: 0,
               left: 0,
             }}
-            index={groupToIndex[this.props.pageState.get('activeEventGroup')]}
+            index={groupToIndex[activeEventGroup]}
             onChangeIndex={this.tabHandleChangeIndex}
           >
             {this.tabContents}
@@ -179,7 +172,7 @@ class EventListPageMobile extends PureComponent {
         <EventFilterDialogContainer year={year} />
         <Menu
           anchorEl={this.state.yearMenuAnchorEl}
-          open={this.props.pageState.get('yearMenuOpen')}
+          open={yearMenuOpen}
           onClose={() => this.props.setYearMenuOpen(false)}
         >
           {validYears.map(y =>
@@ -204,10 +197,12 @@ EventListPageMobile.propTypes = {
   refreshFunction: PropTypes.func.isRequired,
   filterFunction: PropTypes.func.isRequired,
   setYearMenuOpen: PropTypes.func.isRequired,
-  pageState: ImmutablePropTypes.map.isRequired,
   setPageState: PropTypes.func.isRequired,
+  filterCount: PropTypes.number.isRequired,
+  yearMenuOpen: PropTypes.bool.isRequired,
   year: PropTypes.number.isRequired,
   groupedEvents: ImmutablePropTypes.list.isRequired,
+  activeEventGroup: PropTypes.string.isRequired,
 }
 
 export default withStyles(styles)(EventListPageMobile)

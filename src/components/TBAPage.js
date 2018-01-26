@@ -54,7 +54,6 @@ class TBAPage extends PureComponent {
     return (
       <div>
         <TBAAppBarContainer
-          history={this.props.history}
           title={this.props.title}
           refreshFunction={this.props.refreshFunction}
           filterFunction={this.props.filterFunction}
@@ -78,7 +77,6 @@ class TBAPage extends PureComponent {
 
 TBAPage.propTypes = {
   classes: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
   documentTitle: PropTypes.string.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   filterCount: PropTypes.number,

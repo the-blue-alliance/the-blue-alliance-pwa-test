@@ -1,8 +1,10 @@
+// General
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from 'material-ui/styles'
 
+// Components
 import Button from 'material-ui/Button'
 import { CircularProgress } from 'material-ui/Progress'
 import EventIcon from 'material-ui-icons/Event'
@@ -12,13 +14,13 @@ import Menu, { MenuItem } from 'material-ui/Menu'
 import Typography from 'material-ui/Typography'
 import Scrollspy from 'react-scrollspy'
 
+// TBA Components
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ResponsiveLayout from '../components/ResponsiveLayout'
 import EventFilterDialogContainer from '../containers/EventFilterDialogContainer'
 import EventListCard from '../components/EventListCard'
 import HideableBadge from '../components/HideableBadge'
 import ScrollLink from '../components/ScrollLink'
-
 
 const sideNavWidth = 180
 const styles = theme => ({
@@ -137,41 +139,19 @@ class EventListPageDesktop extends PureComponent {
   handleYearSelect = year => {
     this.props.setYearMenuOpen(false)
     if (year !== this.props.year) {
-      this.props.history.push(`/events/${year}`)
+      this.props.pushHistory(`/events/${year}`)
     }
   }
-
-  // componentDidMount() {
-  //   // Scroll to proper section if not restoreScroll
-  //   // if (!this.props.pageState.get('restoreScroll') || true) {
-  //   console.log("!!!!!!!!!!")
-  //   console.log(this.state)
-  //   if (this.state.contentRef && !this.props.pageState.get('isFreshPage')) {
-  //     console.log("!!!!!!!!!!!!!!!!!!")
-  //     const el =  document.getElementById(this.props.pageState.get('activeEventGroup'))
-  //     if (el) {
-  //       this.state.contentRef.scrollTo(0, el.offsetTop)
-  //     }
-  //   }
-  // }
 
   render() {
     console.log("Render EventListPageDesktop")
 
-    const { classes, year, groupedEvents, isLoading } = this.props
+    const { classes, year, validYears, groupedEvents, isLoading, yearMenuOpen, filterCount } = this.props
     const officialEventsGrouped = groupedEvents.filter(group => group.get('isOfficial'))
     const unofficialEventsGrouped = groupedEvents.filter(group => !group.get('isOfficial'))
-    const filterCount = this.props.pageState.get('districtFilters').size
-
-    // Compute valid years
-    let validYears = []
-    for (let y=2018; y>=1992; y--) {
-      validYears.push(y)
-    }
 
     return (
       <TBAPageContainer
-        history={this.props.history}
         documentTitle={this.props.documentTitle}
         contentRef={el => this.setState({contentRef: el})}
         refreshFunction={this.props.refreshFunction}
@@ -191,7 +171,7 @@ class EventListPageDesktop extends PureComponent {
                 </Button>
                 <Menu
                   anchorEl={this.state.yearMenuAnchorEl}
-                  open={this.props.pageState.get('yearMenuOpen')}
+                  open={yearMenuOpen}
                   onClose={() => this.props.setYearMenuOpen(false)}
                   PaperProps={{
                     style: {
@@ -334,8 +314,9 @@ EventListPageDesktop.propTypes = {
   refreshFunction: PropTypes.func.isRequired,
   filterFunction: PropTypes.func.isRequired,
   setYearMenuOpen: PropTypes.func.isRequired,
-  pageState: ImmutablePropTypes.map.isRequired,
   setPageState: PropTypes.func.isRequired,
+  filterCount: PropTypes.number.isRequired,
+  yearMenuOpen: PropTypes.bool.isRequired,
   year: PropTypes.number.isRequired,
   groupedEvents: ImmutablePropTypes.list.isRequired,
 }

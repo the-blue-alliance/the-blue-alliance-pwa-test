@@ -40,7 +40,7 @@ class TBAToolbar extends PureComponent {
             className={classes.backButton}
             color="inherit"
             aria-label="Back"
-            onClick={this.props.history.goBack}
+            onClick={this.props.goBack}
           >
             <ArrowBackIcon />
           </IconButton>
