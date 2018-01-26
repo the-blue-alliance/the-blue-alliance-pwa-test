@@ -15,7 +15,7 @@ import EventListPageBase from './pages/EventListPageBase'
 import EventPageContainer from './containers/EventPageContainer'
 import MatchPageContainer from './containers/MatchPageContainer'
 import TeamListPageContainer from './containers/TeamListPageContainer'
-import TeamPageContainer from './containers/TeamPageContainer'
+import TeamPageBase from './pages/TeamPageBase'
 
 // For Google Analytics tracking
 ReactGA.initialize('UA-XXXXXXXX') // TODO: Change to real tracking number
@@ -107,7 +107,7 @@ class ModalSwitch extends React.Component {
           <Route path='/event/:eventKey' component={EventPageContainer} />
           <Route path='/match/:matchKey' component={MatchPageContainer} />
           <Route path='/teams' component={TeamListPageContainer} />
-          <Route path='/team/:teamNumber/:year?' component={TeamPageContainer} />
+          <Route path='/team/:teamNumber/:year?' component={TeamPageBase} />
         </Switch>
         {isModal && <TBAModalDialog restoreBackState={this.restoreBackState} />}
       </div>

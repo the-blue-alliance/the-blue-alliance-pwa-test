@@ -22,7 +22,7 @@ import EventListCard from '../components/EventListCard'
 import HideableBadge from '../components/HideableBadge'
 import ScrollLink from '../components/ScrollLink'
 
-const sideNavWidth = 180
+const sideNavWidth = 160
 const styles = theme => ({
   sideNav: {
     position: 'fixed',
@@ -158,7 +158,7 @@ class EventListPageDesktop extends PureComponent {
       >
         <ResponsiveLayout>
           <Grid container spacing={24}>
-            <Grid item xs={3}>
+            <Grid item xs={3} lg={2}>
               <div className={classes.sideNav}>
                 <Button
                   color='primary'
@@ -258,7 +258,7 @@ class EventListPageDesktop extends PureComponent {
                 }
               </div>
             </Grid>
-            <Grid item xs={9}>
+            <Grid item xs={9} lg={10}>
               <h1>{year} <em>FIRST</em> Robotics Competition Events</h1>
 
               {groupedEvents.size === 0 &&
