@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from 'material-ui/styles'
-import SwipeableViews from 'react-swipeable-views'
 
 import ButtonBase from 'material-ui/ButtonBase'
 import { CircularProgress } from 'material-ui/Progress'
@@ -12,9 +11,9 @@ import Menu, { MenuItem } from 'material-ui/Menu'
 import Typography from 'material-ui/Typography'
 
 import TBAPageContainer from '../containers/TBAPageContainer'
-import GroupedEventTabs from '../components/GroupedEventTabs'
-import EventsList3 from '../components/EventsList3'
 import EventFilterDialogContainer from '../containers/EventFilterDialogContainer'
+import GroupedEventTabsContainer from '../containers/GroupedEventTabsContainer'
+import GroupedEventTabContentsContainer from '../containers/GroupedEventTabContentsContainer'
 
 const styles = theme => ({
   yearSelector: {
@@ -47,26 +46,9 @@ const styles = theme => ({
 
 class EventListPageMobile extends PureComponent {
   state = {
-    fastRender: true,
     yearMenuAnchorEl: null,
   }
-  tabContents = []
   tabRefs = {}
-
-  tabHandleChangeIndex = index => {
-    this.props.setPageState({activeEventGroup: this.props.groupedEvents.get(index).get('slug')});
-  }
-
-  computeTabContents = (groupedEvents, fastRender) => {
-    this.tabContents = groupedEvents.map((group) => {
-      const slug = group.get('slug')
-      if (!fastRender || slug === this.props.activeEventGroup) {
-        return <EventsList3 key={slug} scrollId={slug} events={group.get('events')} />
-      } else {
-        return <div key={slug} />
-      }
-    }).toJS()
-  }
 
   handleYearOpen = event => {
     this.setState({ yearMenuAnchorEl: event.currentTarget });
@@ -80,43 +62,10 @@ class EventListPageMobile extends PureComponent {
     }
   }
 
-  componentWillMount() {
-    this.computeTabContents(this.props.groupedEvents, this.state.fastRender)
-  }
-
-  componentDidMount() {
-    // Render without cascading
-    setTimeout(() => this.setState({ fastRender: false }), 0)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.groupedEvents !== nextProps.groupedEvents) {
-      this.setState({ fastRender: true })
-    }
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    if (this.props.groupedEvents !== nextProps.groupedEvents ||
-        (this.state.fastRender && !nextState.fastRender)) {
-      this.computeTabContents(nextProps.groupedEvents, nextState.fastRender)
-    }
-  }
-
-  componentDidUpdate() {
-    // Render without cascading
-    setTimeout(() => this.setState({ fastRender: false }), 0)
-  }
-
   render() {
     console.log("Render EventListPageMobile")
 
-    const { classes, year, validYears, groupedEvents, isLoading, yearMenuOpen, filterCount, activeEventGroup } = this.props
-
-    // Build group -> index map
-    let groupToIndex = {}
-    groupedEvents.forEach((group, index) => {
-      groupToIndex[group.get('slug')] = index
-    })
+    const { classes, year, validYears, groupedEvents, isLoading, yearMenuOpen, filterCount } = this.props
 
     const hasEvents = groupedEvents.size !== 0
 
@@ -137,28 +86,10 @@ class EventListPageMobile extends PureComponent {
         refreshFunction={this.props.refreshFunction}
         filterFunction={this.props.filterFunction}
         filterCount={filterCount}
-        tabs={hasEvents &&
-          <GroupedEventTabs
-            groupedEvents={groupedEvents}
-            activeGroup={activeEventGroup}
-            setPageState={this.props.setPageState}
-          />
-        }
+        tabs={hasEvents && <GroupedEventTabsContainer groupedEvents={groupedEvents}/>}
       >
         {hasEvents ?
-          <SwipeableViews
-            containerStyle={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              bottom: 0,
-              left: 0,
-            }}
-            index={groupToIndex[activeEventGroup]}
-            onChangeIndex={this.tabHandleChangeIndex}
-          >
-            {this.tabContents}
-          </SwipeableViews>
+          <GroupedEventTabContentsContainer groupedEvents={groupedEvents}/>
           :
           <div className={classes.zeroDataContainer}>
             {isLoading ?
@@ -202,7 +133,6 @@ EventListPageMobile.propTypes = {
   yearMenuOpen: PropTypes.bool.isRequired,
   year: PropTypes.number.isRequired,
   groupedEvents: ImmutablePropTypes.list.isRequired,
-  activeEventGroup: PropTypes.string.isRequired,
 }
 
 export default withStyles(styles)(EventListPageMobile)

@@ -25,7 +25,6 @@ const mapStateToProps = (state, props) => ({
   isLoading: state.getIn(['appState', 'loadingCount']) > 0,
   districtFilters: getCurrentPageState(state, props).get('districtFilters'),
   yearMenuOpen: getCurrentPageState(state, props).get('yearMenuOpen'),
-  activeEventGroup: getCurrentPageState(state, props).get('activeEventGroup'),
   // Data
   groupedEvents: getFilteredGroupedEvents(state, props),
 })
@@ -120,7 +119,6 @@ class EventListPageBase extends PureComponent {
             groupedEvents={this.props.groupedEvents}
             filterCount={filterCount}
             yearMenuOpen={this.props.yearMenuOpen}
-            activeEventGroup={this.props.activeEventGroup}
           />
         </Hidden>
       </div>
