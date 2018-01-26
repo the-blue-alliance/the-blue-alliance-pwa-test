@@ -74,7 +74,7 @@ class EventsList extends PureComponent {
     if (eventsByType[Event.REGIONAL]) {
       this.groupedEvents.push((
         <div key={'r'}>
-          <EventListSubheader text='Regionals' />
+          <EventListSubheader text='Regional Events' />
           {eventsByType[Event.REGIONAL].map(event =>
             <EventListItem key={event.get('key')} event={event}/>
           )}
