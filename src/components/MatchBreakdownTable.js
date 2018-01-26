@@ -57,7 +57,7 @@ class MatchBreakdownTable extends PureComponent {
       const teamNum = teamKey.substr(3)
       return (
         <div key={teamKey}>
-          <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key, state: {modal: true}}}>{teamNum}</Link>
+          <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>{teamNum}</Link>
         </div>
       )
     })

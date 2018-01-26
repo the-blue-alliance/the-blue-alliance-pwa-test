@@ -51,7 +51,7 @@ class TeamAtEventDialog extends PureComponent {
             <ChevronLeftIcon />
           </IconButton>
           <Typography type="title" color="inherit" className={classes.flex}>
-            <Link to={{pathname: `/team/${teamNumber}/${event.get('year')}`, hash: eventKey}}>{teamTitle}</Link> @ <Link to={{pathname: `/event/${eventKey}`}}>{event.get('name')}</Link>
+            <Link to={{pathname: `/team/${teamNumber}/${event.get('year')}`, hash: eventKey.substring(4)}}>{teamTitle}</Link> @ <Link to={{pathname: `/event/${eventKey}`}}>{event.get('name')}</Link>
           </Typography>
           <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
             <CloseIcon />

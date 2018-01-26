@@ -16,7 +16,7 @@ export const getTeam = (state, props) => {
 }
 
 export const getEventKey = (state, props) => {
-  return props.location.hash.substring(1)
+  return `${props.match.params.year}${props.location.hash.substring(1)}`
 }
 
 export const getEvent = (state, props) => {

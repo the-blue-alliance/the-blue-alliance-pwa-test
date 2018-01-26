@@ -218,14 +218,14 @@ class TeamPageDesktop extends PureComponent {
                       {teamYearEvents !== 0  &&
                         <Scrollspy
                           rootEl={`.${this.state.contentRef.className}`}
-                          items={teamYearEvents.map(event => event.get('key')).toJS()}
+                          items={teamYearEvents.map(event => event.get('event_code')).toJS()}
                           currentClassName={classes.sideNavItemActive}
                           onUpdate={(el) => this.updateActiveEvent(el, 'event-results')}
                         >
                           {teamYearEvents.map(event => {
                             return (
                               <li key={event.get('key')} className={classes.sideNavItem}>
-                                <ScrollLink scrollEl={this.state.contentRef} to={event.get('key')}>{event.get('short_name')}</ScrollLink>
+                                <ScrollLink scrollEl={this.state.contentRef} to={event.get('event_code')}>{event.get('short_name')}</ScrollLink>
                               </li>
                             )
                           })}
@@ -249,7 +249,7 @@ class TeamPageDesktop extends PureComponent {
                 <h2>Event Results</h2>
                 {teamYearEvents.valueSeq().map(function(event) {
                   return (
-                    <Paper key={event.get('key')} id={event.get('key')} className={classes.eventCard} elevation={4}>
+                    <Paper key={event.get('key')} id={event.get('event_code')} className={classes.eventCard} elevation={4}>
                       <Grid container spacing={24}>
                         <Grid item xs={4}>
                           <h3><Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link></h3>
