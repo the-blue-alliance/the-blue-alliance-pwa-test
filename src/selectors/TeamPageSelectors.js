@@ -3,6 +3,7 @@ import { List, Map } from 'immutable'
 import { getYear } from '../selectors/CommonPageSelectors'
 import Event from '../database/Event'
 import Match from '../database/Match'
+import Team from '../database/Team'
 
 export const getTeamNumber = (state, props) => {
   return parseInt(props.match.params.teamNumber, 10)
@@ -16,6 +17,16 @@ export const getTeam = (state, props) => {
     }
   }
 }
+
+export const getTeamModel = createSelector(
+  [getTeam],
+  (team) => {
+    if (team) {
+      return new Team(team)
+    }
+    return undefined
+  }
+)
 
 export const getTeamYearEvents = (state, props) => {
   for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {

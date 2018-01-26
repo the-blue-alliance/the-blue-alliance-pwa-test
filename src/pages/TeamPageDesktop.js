@@ -10,8 +10,10 @@ import { CircularProgress } from 'material-ui/Progress'
 import EventIcon from 'material-ui-icons/Event'
 import Grid from 'material-ui/Grid'
 import Icon from 'material-ui/Icon'
+import LocalMoviesIcon from 'material-ui-icons/LocalMovies'
 import Menu, { MenuItem } from 'material-ui/Menu'
 import Paper from 'material-ui/Paper'
+import PhotoLibraryIcon from 'material-ui-icons/PhotoLibrary'
 import Typography from 'material-ui/Typography'
 import Select from 'material-ui/Select'
 import { Link } from 'react-router-dom'
@@ -39,11 +41,8 @@ const styles = theme => ({
     textAlign: 'center',
     marginBottom: theme.spacing.unit*3,
   },
-  leftIcon: {
-    marginRight: theme.spacing.unit,
-  },
-  rightIcon: {
-    marginLeft: theme.spacing.unit,
+  infoIcon: {
+    fontSize: 'inherit',
   },
   zeroDataContainer: {
     paddingTop: theme.spacing.unit*3,
@@ -63,8 +62,11 @@ const styles = theme => ({
   eventCard: theme.mixins.gutters({
     paddingTop: 16,
     paddingBottom: 16,
-    marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 3,
   }),
+  awardList: {
+    margin: 0,
+  },
 })
 
 class TeamPageDesktop extends PureComponent {
@@ -89,13 +91,6 @@ class TeamPageDesktop extends PureComponent {
     console.log("Render TeamPageDesktop")
 
     const { classes, year, validYears, isLoading, yearMenuOpen, teamNumber, team, teamYearEvents, matchesByEvent } = this.props
-
-    let name = null
-    let nickname = null
-    if (team) {
-      name = team.get('name')
-      nickname = team.get('nickname')
-    }
 
     return (
       <TBAPageContainer
@@ -154,22 +149,75 @@ class TeamPageDesktop extends PureComponent {
                           'label': event.get('short_name'),
                         })
                       }).toJS(),
+                      'media': [
+                        {
+                          'id': 'photos',
+                          'label': 'Photos',
+                        },
+                        {
+                          'id': 'videos',
+                          'label': 'Videos',
+                        },
+                      ],
                     }}
                   />
                 }
               </div>
             </Grid>
             <Grid item xs={9} lg={10}>
-              <h1 id='team-info'>Team {teamNumber}{nickname && ` - ${nickname}`}</h1>
-              {name && <p>aka {name}</p>}
+              <div id='team-info'>
+                <h1>Team {teamNumber}{team && team.nickname && ` - ${team.nickname}`}</h1>
+                {team && team.getCityStateCountry() &&
+                  <Typography type='body1'>
+                    <Icon className={classes.infoIcon}>location_on</Icon> From <a target='_blank' href={`https://www.google.com/maps?q=${team.getCityStateCountry()}`}>{team.getCityStateCountry()}</a>
+                  </Typography>
+                }
+                {team && team.name &&
+                  <Typography type='body1'>
+                    <Icon className={classes.infoIcon}>info</Icon> aka <i>{team.name}</i>
+                  </Typography>
+                }
+                {team && team.rookie_year &&
+                  <Typography type='body1'>
+                    <Icon className={classes.infoIcon}>event</Icon> Rookie Year: {team.rookie_year}
+                  </Typography>
+                }
+                {team && team.website &&
+                  <Typography type='body1'>
+                    <Icon className={classes.infoIcon}>public</Icon> <a target='_blank' href={team.website}>{team.website}</a>
+                  </Typography>
+                }
+              </div>
               <div id='event-results'>
                 <h2>Event Results</h2>
+                {teamYearEvents.size === 0 &&
+                  <div className={classes.zeroDataContainer}>
+                    {isLoading ?
+                      <CircularProgress color='secondary' size='15%' className={classes.zeroDataSpinner} />
+                      :
+                      <EventIcon className={classes.zeroDataIcon} />
+                    }
+                    <Typography type='subheading'>{isLoading ? 'Events loading' : 'No events found'}</Typography>
+                  </div>
+                }
+
                 {teamYearEvents.valueSeq().map(function(event) {
                   return (
                     <Paper key={event.get('key')} id={event.get('event_code')} className={classes.eventCard} elevation={4}>
                       <Grid container spacing={24}>
                         <Grid item xs={4}>
-                          <h3><Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link></h3>
+                          <Typography type='title' gutterBottom>
+                            <Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link>
+                          </Typography>
+                          <Typography type='subheading'>Rank: <b>1/60</b></Typography>
+                          <Typography type='subheading'>Qual record: <b>8-1-0</b></Typography>
+                          <Typography type='subheading'>Alliance: <b>Captain</b> of <b>Alliance 1</b></Typography>
+                          <Typography type='subheading'>Playoff record: <b>6-0-0</b></Typography>
+                          <Typography type='subheading'>Awards:</Typography>
+                          <ul className={classes.awardList}>
+                            <li>Regional Winners</li>
+                            <li>Quality Award sponsored by Motorola Solutions Foundation</li>
+                          </ul>
                         </Grid>
                         <Grid item xs={8}>
                           <MatchTable matches={matchesByEvent.get(event.get('key'))} />
@@ -181,6 +229,32 @@ class TeamPageDesktop extends PureComponent {
               </div>
               <div id='media'>
                 <h2>Media</h2>
+                <div id='photos'>
+                  <Typography type='title' gutterBottom>Photos</Typography>
+                  {true &&
+                    <div className={classes.zeroDataContainer}>
+                      {isLoading ?
+                        <CircularProgress color='secondary' size='15%' className={classes.zeroDataSpinner} />
+                        :
+                        <PhotoLibraryIcon className={classes.zeroDataIcon} />
+                      }
+                      <Typography type='subheading'>{isLoading ? 'Photos loading' : 'No photos found'}</Typography>
+                    </div>
+                  }
+                </div>
+                <div id='videos'>
+                  <Typography type='title' gutterBottom>Videos</Typography>
+                  {true &&
+                    <div className={classes.zeroDataContainer}>
+                      {isLoading ?
+                        <CircularProgress color='secondary' size='15%' className={classes.zeroDataSpinner} />
+                        :
+                        <LocalMoviesIcon className={classes.zeroDataIcon} />
+                      }
+                      <Typography type='subheading'>{isLoading ? 'Videos loading' : 'No videos found'}</Typography>
+                    </div>
+                  }
+                </div>
               </div>
               <div id='robot-profile'>
                 <h2>Robot Profile</h2>

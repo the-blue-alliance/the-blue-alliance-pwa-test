@@ -3,10 +3,13 @@ import { Record } from 'immutable';
 export default class Team extends Record({
   key: undefined,
   team_number: undefined,
+  name: undefined,
   nickname: undefined,
   city: undefined,
   state_prov: undefined,
   country: undefined,
+  rookie_year: undefined,
+  website: undefined,
 }) {
   getCityStateCountry() {
     if (this.cityStateCountry === undefined) {

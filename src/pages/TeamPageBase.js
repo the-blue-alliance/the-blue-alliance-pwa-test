@@ -9,7 +9,7 @@ import { resetPage, setPageState, setBottomNav, fetchTeamInfo, fetchTeamYearEven
 
 // Selectors
 import { getCurrentPageState, getYear } from '../selectors/CommonPageSelectors'
-import { getTeamNumber, getTeam, getSortedTeamYearEvents, getMatchesByEvent } from '../selectors/TeamPageSelectors'
+import { getTeamNumber, getTeamModel, getSortedTeamYearEvents, getMatchesByEvent } from '../selectors/TeamPageSelectors'
 
 // Components
 import Hidden from 'material-ui/Hidden'
@@ -26,7 +26,7 @@ const mapStateToProps = (state, props) => ({
   isLoading: state.getIn(['appState', 'loadingCount']) > 0,
   yearMenuOpen: getCurrentPageState(state, props).get('yearMenuOpen'),
   // Data
-  team: getTeam(state, props),
+  team: getTeamModel(state, props),
   teamYearEvents: getSortedTeamYearEvents(state, props),
   matchesByEvent: getMatchesByEvent(state, props),
 })
@@ -79,6 +79,11 @@ class TeamPageBase extends PureComponent {
 
     const { teamNumber, team, year, teamYearEvents, matchesByEvent } = this.props
 
+    let documentTitle = `Team ${teamNumber} (${year})`
+    if (team && team.get('nickname')) {
+      documentTitle = `${team.get('nickname')} - Team ${teamNumber} (${year})`
+    }
+
     // Compute valid years
     // TODO: temporary until server fetch implemented
     let validYears = []
@@ -90,7 +95,7 @@ class TeamPageBase extends PureComponent {
       <div>
         <Hidden smDown>
           <TeamPageDesktop
-            documentTitle={`Team ${teamNumber} (${year})`}
+            documentTitle={documentTitle}
             year={year}
             validYears={validYears}
             refreshFunction={this.refreshFunction}
@@ -107,7 +112,7 @@ class TeamPageBase extends PureComponent {
         </Hidden>
         <Hidden mdUp>
           <TeamPageDesktop
-            documentTitle={`Team ${teamNumber} (${year})`}
+            documentTitle={documentTitle}
             year={year}
             validYears={validYears}
             refreshFunction={this.refreshFunction}
