@@ -50,7 +50,7 @@ class EventsList extends PureComponent {
     })
 
     // Combine everything in display order:
-    // FoC, Regional, District Qualifier (alphabetical), District Div, District CMP, CMP DIV, CMP, Preseason, Offseason
+    // Regional, District Qualifier (alphabetical), District Div, District CMP, CMP DIV, CMP, FOC, Preseason, Offseason
     let sortedLabels = []
     for (let label in eventsByDistrictLabel) {
       sortedLabels.push(label)
@@ -58,18 +58,6 @@ class EventsList extends PureComponent {
     sortedLabels.sort()
 
     this.groupedEvents = []
-    // FoC
-    if (eventsByType[Event.FOC]) {
-      this.groupedEvents.push((
-        <div key={'foc'}>
-          <EventListSubheader text='Festival of Champions' />
-          {eventsByType[Event.FOC].map(event =>
-            <EventListItem key={event.get('key')} event={event}/>
-          )}
-        </div>
-      ))
-    }
-
     // Regionals
     if (eventsByType[Event.REGIONAL]) {
       this.groupedEvents.push((
@@ -138,6 +126,18 @@ class EventsList extends PureComponent {
         <div key={'cf'}>
           <EventListSubheader text='Championship Finals' />
           {eventsByType[Event.CMP_FINALS].map(event =>
+            <EventListItem key={event.get('key')} event={event}/>
+          )}
+        </div>
+      ))
+    }
+
+    // FoC
+    if (eventsByType[Event.FOC]) {
+      this.groupedEvents.push((
+        <div key={'foc'}>
+          <EventListSubheader text='Festival of Champions' />
+          {eventsByType[Event.FOC].map(event =>
             <EventListItem key={event.get('key')} event={event}/>
           )}
         </div>

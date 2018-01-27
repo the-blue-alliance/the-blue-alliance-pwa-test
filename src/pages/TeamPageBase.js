@@ -33,7 +33,7 @@ import Hidden from 'material-ui/Hidden'
 
 // TBA Components
 import TeamPageDesktop from './TeamPageDesktop'
-// import TeamPageMobile from './TeamPageMobile'
+import TeamPageMobile from './TeamPageMobile'
 
 const mapStateToProps = (state, props) => ({
   // Params
@@ -41,6 +41,7 @@ const mapStateToProps = (state, props) => ({
   year: getYear(state, props),
   // States
   isLoading: state.getIn(['appState', 'loadingCount']) > 0,
+  activeTab: getCurrentPageState(state, props).get('activeTab'),
   yearMenuOpen: getCurrentPageState(state, props).get('yearMenuOpen'),
   // Data
   team: getTeamModel(state, props),
@@ -68,7 +69,7 @@ class TeamPageBase extends PureComponent {
   reset = props => {
      // Set without overriding
     props.resetPage({
-      // activeEventGroup: 'week-1',
+      activeTab: 0,
       yearMenuOpen: false,
     })
     // Fetch data
@@ -146,7 +147,7 @@ class TeamPageBase extends PureComponent {
           />
         </Hidden>
         <Hidden mdUp>
-          <TeamPageDesktop
+          <TeamPageMobile
             documentTitle={documentTitle}
             year={year}
             validYears={validYears}
@@ -155,6 +156,7 @@ class TeamPageBase extends PureComponent {
             setPageState={this.props.setPageState}
             pushHistory={this.props.pushHistory}
             isLoading={this.props.isLoading}
+            activeTab={this.props.activeTab}
             yearMenuOpen={this.props.yearMenuOpen}
             teamNumber={teamNumber}
             team={team}
