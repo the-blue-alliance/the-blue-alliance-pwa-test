@@ -71,7 +71,7 @@ class TeamAtEventDialog extends PureComponent {
     if (this.props.location.pathname !== nextProps.location.pathname) {
       this.reset(nextProps)
       // Needed because not all statuses for an event are loaded
-      this.props.fetchTeamEventStatus(this.props.teamNumber, this.props.eventKey)
+      this.props.fetchTeamEventStatus(nextProps.teamNumber, nextProps.eventKey)
     }
   }
 
