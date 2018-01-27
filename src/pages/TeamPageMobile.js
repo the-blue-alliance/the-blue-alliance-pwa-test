@@ -1,17 +1,11 @@
 // General
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from 'material-ui/styles'
 
 // Components
 import ButtonBase from 'material-ui/ButtonBase'
-import { CircularProgress } from 'material-ui/Progress'
 import Divider from 'material-ui/Divider'
-import ExpansionPanel, {
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
-} from 'material-ui/ExpansionPanel'
 import Icon from 'material-ui/Icon'
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
 import Menu, { MenuItem } from 'material-ui/Menu'
@@ -22,10 +16,7 @@ import SwipeableViews from 'react-swipeable-views'
 
 // TBA Components
 import TBAPageContainer from '../containers/TBAPageContainer'
-import EventFilterDialogContainer from '../containers/EventFilterDialogContainer'
 import EventsList3 from '../components/EventsList3'
-import GroupedEventTabsContainer from '../containers/GroupedEventTabsContainer'
-import GroupedEventTabContentsContainer from '../containers/GroupedEventTabContentsContainer'
 
 const styles = theme => ({
   yearSelector: {
@@ -101,14 +92,10 @@ class TeamPageMobile extends PureComponent {
       classes,
       year,
       validYears,
-      isLoading,
       yearMenuOpen,
       teamNumber,
       team,
       teamYearEvents,
-      awardsByEvent,
-      matchesByEvent,
-      statusByEvent,
     } = this.props
 
     return (
