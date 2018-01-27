@@ -10,6 +10,15 @@ export const getTeamNumber = (state, props) => {
   return parseInt(props.match.params.teamNumber, 10)
 }
 
+export const getTeamYears = (state, props) => {
+  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
+    const teamYears = state.getIn(['page', 'modelHistory', key, 'teamYears', 'byKey', `frc${getTeamNumber(state, props)}`, 'years'])
+    if (teamYears !== undefined) {
+      return teamYears
+    }
+  }
+}
+
 export const getTeam = (state, props) => {
   for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
     const team = state.getIn(['page', 'modelHistory', key, 'teams', 'byKey', `frc${getTeamNumber(state, props)}`])

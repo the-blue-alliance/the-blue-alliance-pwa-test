@@ -19,6 +19,9 @@ db.version(4).stores({
 db.version(5).stores({
   teamEventStatus: '&key',
 })
+db.version(6).stores({
+  teamYears: '&key',
+})
 
 export default db;
 
@@ -79,6 +82,8 @@ export const addMatches = (matches) => {
   })
   db.matchTeams.bulkPut(matchTeams)
 }
+
+export const addTeamYears = (teamYears) => db.teamYears.put(teamYears)
 
 export const addTeam = (team) => db.teams.put(team)
 

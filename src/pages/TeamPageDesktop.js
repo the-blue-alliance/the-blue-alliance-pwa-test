@@ -82,7 +82,19 @@ class TeamPageDesktop extends PureComponent {
   render() {
     console.log("Render TeamPageDesktop")
 
-    const { classes, year, validYears, isLoading, yearMenuOpen, teamNumber, team, teamYearEvents, awardsByEvent, matchesByEvent, statusByEvent } = this.props
+    const {
+      classes,
+      year,
+      validYears,
+      isLoading,
+      yearMenuOpen,
+      teamNumber,
+      team,
+      teamYearEvents,
+      awardsByEvent,
+      matchesByEvent,
+      statusByEvent,
+    } = this.props
 
     return (
       <TBAPageContainer
@@ -113,15 +125,25 @@ class TeamPageDesktop extends PureComponent {
                     },
                   }}
                 >
-                  {validYears.map(y =>
+                  {validYears ?
+                    validYears.map(y =>
+                      <MenuItem
+                        key={y}
+                        selected={y === year}
+                        onClick={() => this.handleYearSelect(y)}
+                      >
+                        {y} Season
+                      </MenuItem>
+                    ).reverse()
+                    :
                     <MenuItem
-                      key={y}
-                      selected={y === year}
-                      onClick={() => this.handleYearSelect(y)}
-                    >
-                      {y} Season
+                        key={year}
+                        selected={true}
+                        onClick={() => this.handleYearSelect(year)}
+                      >
+                      {year} Season
                     </MenuItem>
-                  )}
+                  }
                 </Menu>
 
                 {this.state.contentRef &&

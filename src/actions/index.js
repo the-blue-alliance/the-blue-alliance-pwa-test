@@ -1,6 +1,18 @@
 import * as types from '../constants/ActionTypes'
 import * as sources from '../constants/DataSources'
-import db, { addAwards, addEvent, addEvents, addEventTeams, addMatch, addMatches, addTeam, addTeams, addTeamEvents, addTeamEventStatus } from '../database/db'
+import db, {
+  addAwards,
+  addEvent,
+  addEvents,
+  addEventTeams,
+  addMatch,
+  addMatches,
+  addTeamYears,
+  addTeam,
+  addTeams,
+  addTeamEvents,
+  addTeamEventStatus,
+} from '../database/db'
 import fetch from 'isomorphic-fetch'
 
 // TODO: This can use a lot of refactoring to make things DRY. 2017-09-27 @fangeugene
@@ -276,6 +288,49 @@ export function fetchYearEvents(year) {
 }
 
 // Team Page
+export const receiveTeamYears = (teamKey, data) => ({
+  type: types.RECEIVE_TEAM_YEARS,
+  teamKey,
+  data,
+})
+
+export function fetchTeamYears(teamNumber) {
+  return (dispatch, getState) => {
+    let dataSource = sources.DEFAULT
+    const teamKey = `frc${teamNumber}`
+    // Update from IndexedDB
+    db.teamYears.get(teamKey).then(teamYears => {
+      if (dataSource < sources.IDB && teamYears !== undefined) {
+        dataSource = sources.IDB
+        dispatch(receiveTeamYears(teamKey, teamYears))
+      }
+    })
+
+    // Update from API
+    if (!getState().getIn(['appState', 'offlineOnly'])) {
+      dispatch(incrementLoadingCount())
+      fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/years_participated`,
+        {headers: {'X-TBA-Auth-Key': TBA_KEY}
+      }).then(handleErrors).then(years => {
+        return {
+          key: teamKey,
+          years: years,
+        }
+      }).then(teamYears => {
+        if (dataSource < sources.API && teamYears !== undefined) {
+          dataSource = sources.API
+          dispatch(receiveTeamYears(teamKey, teamYears))
+          addTeamYears(teamYears)
+        }
+        dispatch(decrementLoadingCount())
+      }).catch(error => {
+        dispatch(decrementLoadingCount())
+        console.log(error)
+      })
+    }
+  }
+}
+
 export const receiveTeamInfo = (teamKey, data) => ({
   type: types.RECEIVE_TEAM_INFO,
   teamKey,

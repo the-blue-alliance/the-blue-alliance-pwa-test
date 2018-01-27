@@ -93,6 +93,11 @@ const page = (state = Map({
     case types.SET_SCROLL_STATE:
       return state.setIn(['scrollHistory', action.pageKey],
         currentScrollState.merge({[action.scrollId]: action.scrollTop}))
+    case types.RECEIVE_TEAM_YEARS:
+      return updateSingle(
+        state,
+        ['teamYears', 'byKey', action.teamKey],
+        action.data)
     case types.RECEIVE_TEAM_INFO:
       return updateSingle(
         state,
