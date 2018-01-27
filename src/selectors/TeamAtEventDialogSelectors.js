@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect'
+import Award from '../database/Award'
 import Match from '../database/Match'
 
 
@@ -37,7 +38,7 @@ const getEventMatches = (state, props) => {
   }
 }
 
-export const getTeamYearMatches = (state, props) => {
+const getTeamYearMatches = (state, props) => {
   for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
     const teamYearMatches = state.getIn(['page', 'modelHistory', key, 'matches', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, parseInt(getEventKey(state, props).substring(0, 4), 10)])
     if (teamYearMatches !== undefined) {
@@ -74,3 +75,62 @@ export const getSortedMatches = createSelector(
     return undefined
   }
 )
+
+const getEventAwards = (state, props) => {
+  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
+    const awards = state.getIn(['page', 'modelHistory', key, 'awards', 'collections', 'byEvent', getEventKey(state, props)])
+    if (awards !== undefined) {
+      return awards
+    }
+  }
+}
+
+const getTeamYearAwards = (state, props) => {
+  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
+    const teamYearAwards = state.getIn(['page', 'modelHistory', key, 'awards', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, parseInt(getEventKey(state, props).substring(0, 4), 10)])
+    if (teamYearAwards !== undefined) {
+      return teamYearAwards
+    }
+  }
+}
+
+export const getSortedAwards = createSelector(
+  [getTeamNumber, getEventKey, getEventAwards, getTeamYearAwards],
+  (teamNumber, eventKey, eventAwards, teamAwards) => {
+    let awards = eventAwards
+    if (!eventAwards) {
+      awards = teamAwards
+    }
+
+    if (awards) {
+      awards = awards.map(a => new Award(a)).filter(a => {
+        return a.get('recipient_list').map(r => r.get('team_key')).toSet().has(`frc${teamNumber}`)
+      })
+
+      // TODO: actually sort
+      awards = awards.toList().sort((a, b) => {
+        if (a.award_type < b.award_type) {
+          return -1
+        }
+        if (a.award_type > b.award_type) {
+          return 1
+        }
+        return 0
+      })
+
+      if (awards.size > 0) {
+        return awards
+      }
+    }
+    return undefined
+  }
+)
+
+export const getTeamEventStatus = (state, props) => {
+  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
+    const status = state.getIn(['page', 'modelHistory', key, 'teamEventStatuses', 'byTeamEvent', `frc${getTeamNumber(state, props)}`, getEventKey(state, props)])
+    if (status !== undefined) {
+      return status
+    }
+  }
+}

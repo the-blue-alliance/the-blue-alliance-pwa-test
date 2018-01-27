@@ -21,6 +21,7 @@ const styles = theme => ({
   },
   flex: {
     flex: 1,
+    textAlign: 'center',
   },
 })
 
@@ -34,15 +35,22 @@ class TeamAtEventDialog extends PureComponent {
     this.refreshFunction()
   }
 
+  componentDidUpdate() {
+    // Needed because not all statuses for an event are loaded
+    this.props.fetchTeamEventStatus(this.props.teamNumber, this.props.eventKey)
+  }
+
   refreshFunction = () => {
+    this.props.fetchEventAwards(this.props.eventKey)
     this.props.fetchEventMatches(this.props.eventKey)
     this.props.fetchEventTeams(this.props.eventKey)
+    this.props.fetchTeamEventStatus(this.props.teamNumber, this.props.eventKey)
   }
 
   render() {
     console.log("Render Team@Event Dialog")
 
-    const { classes, event, eventKey, matches, team, teamNumber } = this.props
+    const { classes, awards, event, eventKey, matches, status, team, teamNumber } = this.props
 
     let teamTitle = `Team ${teamNumber}`
     if (team) {
@@ -64,10 +72,10 @@ class TeamAtEventDialog extends PureComponent {
         </Toolbar>
         <DialogContent>
           <TeamAtEvent
-            // awards={awardsByEvent.get(eventKey)}
+            awards={awards}
             event={event}
             matches={matches}
-            // status={statusByEvent && statusByEvent.get(eventKey)}
+            status={status}
           />
         </DialogContent>
       </div>

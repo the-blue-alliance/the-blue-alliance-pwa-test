@@ -115,6 +115,50 @@ export function fetchEventInfo(eventKey) {
   }
 }
 
+export const receiveEventAwards = (eventKey, awards) => ({
+  type: types.RECEIVE_EVENT_AWARDS,
+  eventKey,
+  data: awards,
+})
+
+export function fetchEventAwards(eventKey) {
+  return (dispatch, getState) => {
+    let dataSource = sources.DEFAULT
+    // Update from IndexedDB
+    db.awards.where('event_key').equals(eventKey).toArray().then(awards => {
+      if (dataSource < sources.IDB && awards !== undefined) {
+        dataSource = sources.IDB
+        dispatch(receiveEventAwards(eventKey, awards))
+      }
+    })
+
+    // Update from API
+    if (!getState().getIn(['appState', 'offlineOnly'])) {
+      dispatch(incrementLoadingCount())
+      fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/awards`,
+        {headers: {'X-TBA-Auth-Key': TBA_KEY}
+      }).then(handleErrors).then(awards => {
+        // Add keys to awards
+        return awards.map(award => {
+          var newAward = Object.assign({}, award)
+          newAward.key = `${award.event_key}_${award.award_type}`
+          return newAward
+        })
+      }).then(awards => {
+        if (dataSource < sources.API && awards !== undefined) {
+          dataSource = sources.API
+          dispatch(receiveEventAwards(eventKey, awards))
+          addAwards(awards)
+        }
+        dispatch(decrementLoadingCount())
+      }).catch(error => {
+        dispatch(decrementLoadingCount())
+        console.log(error)
+      })
+    }
+  }
+}
+
 export const receiveEventMatches = (eventKey, matches) => ({
   type: types.RECEIVE_EVENT_MATCHES,
   eventKey,
