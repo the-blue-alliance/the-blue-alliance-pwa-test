@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
+import clipboard from 'clipboard-polyfill'
 
 import AppBar from 'material-ui/AppBar'
 import ArrowBackIcon from 'material-ui-icons/ArrowBack'
@@ -9,6 +10,8 @@ import IconButton from 'material-ui/IconButton'
 import { CircularProgress } from 'material-ui/Progress'
 import RefreshIcon from 'material-ui-icons/Refresh'
 import SearchIcon from 'material-ui-icons/Search'
+import ShareIcon from 'material-ui-icons/Share'
+import Snackbar from 'material-ui/Snackbar'
 import Toolbar from 'material-ui/Toolbar'
 import Typography from 'material-ui/Typography'
 
@@ -19,8 +22,10 @@ const styles = theme => ({
   appBarTitle: {
     flex: 1,
   },
+  toolbar: {
+    padding: 0,
+  },
   backButton: {
-    marginLeft: -12,
     marginRight: 8,
   },
   logo: {
@@ -30,48 +35,83 @@ const styles = theme => ({
 })
 
 class TBAToolbar extends PureComponent {
+  state = {
+    snackbarOpen: false,
+  }
+
+  handleClose = () => {
+    this.setState({ snackbarOpen: false })
+  }
+
+  handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+          title: document.title,
+          url: document.URL,
+      })
+    } else {
+      clipboard.writeText(document.URL)
+      this.setState({ snackbarOpen: true })
+    }
+  }
+
   render() {
     const { classes, title } = this.props
 
     return (
-      <Toolbar>
-        {title ?
-          <IconButton
-            className={classes.backButton}
-            color="inherit"
-            aria-label="Back"
-            onClick={this.props.goBack}
-          >
-            <ArrowBackIcon />
+      <React.Fragment>
+        <Toolbar className={classes.toolbar}>
+          {title ?
+            <IconButton
+              className={classes.backButton}
+              color="inherit"
+              aria-label="Back"
+              onClick={this.props.goBack}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+            :
+            <TBALamp className={classes.logo} />
+          }
+          <Typography type="title" color="inherit" className={classes.appBarTitle}>
+            {title ? title : 'The Blue Alliance'}
+          </Typography>
+          {this.props.filterFunction && <IconButton color="inherit" onClick={this.props.filterFunction}>
+            <HideableBadge
+              badgeContent={this.props.filterCount}
+              color='secondary'
+              hidden={this.props.filterCount === 0}
+              style={{height: 24, width: 24}}
+            >
+              <FilterListIcon />
+            </HideableBadge>
+          </IconButton>}
+          {!this.props.isLoading && this.props.refreshFunction &&
+            <IconButton color="inherit" onClick={() => this.props.refreshFunction()}>
+              <RefreshIcon />
+            </IconButton>
+          }
+          {this.props.isLoading &&  <IconButton color="inherit" disabled>
+            <CircularProgress color="secondary" size={20} thickness={5}/>
+          </IconButton>}
+          <IconButton color="inherit">
+            <SearchIcon />
           </IconButton>
-          :
-          <TBALamp className={classes.logo} />
-        }
-        <Typography type="title" color="inherit" className={classes.appBarTitle}>
-          {title ? title : 'The Blue Alliance'}
-        </Typography>
-        {this.props.filterFunction && <IconButton color="inherit" onClick={this.props.filterFunction}>
-          <HideableBadge
-            badgeContent={this.props.filterCount}
-            color='secondary'
-            hidden={this.props.filterCount === 0}
-            style={{height: 24, width: 24}}
-          >
-            <FilterListIcon />
-          </HideableBadge>
-        </IconButton>}
-        {!this.props.isLoading && this.props.refreshFunction &&
-          <IconButton color="inherit" onClick={() => this.props.refreshFunction()}>
-            <RefreshIcon />
+          <IconButton color="inherit" onClick={this.handleShare}>
+            <ShareIcon />
           </IconButton>
-        }
-        {this.props.isLoading &&  <IconButton color="inherit" disabled>
-          <CircularProgress color="secondary" size={20} thickness={5}/>
-        </IconButton>}
-        <IconButton color="inherit">
-          <SearchIcon />
-        </IconButton>
-      </Toolbar>
+        </Toolbar>
+        <Snackbar
+          anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+          open={this.state.snackbarOpen}
+          onClose={this.handleClose}
+          autoHideDuration={2000}
+          SnackbarContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message='Link copied!'
+        />
+      </React.Fragment>
     )
   }
 }
