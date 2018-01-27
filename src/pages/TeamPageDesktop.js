@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from 'material-ui/styles'
-import { ordinal } from '../utils'
 
 // Components
 import Button from 'material-ui/Button'
@@ -24,8 +23,8 @@ import TBAPageContainer from '../containers/TBAPageContainer'
 import ResponsiveLayout from '../components/ResponsiveLayout'
 import EventListCard from '../components/EventListCard'
 import HideableBadge from '../components/HideableBadge'
-import MatchTable from '../components/MatchTable'
 import NestedScrollspy from '../components/NestedScrollspy'
+import TeamAtEvent from '../components/TeamAtEvent'
 
 const sideNavWidth = 160
 const styles = theme => ({
@@ -65,9 +64,6 @@ const styles = theme => ({
     paddingBottom: 16,
     marginBottom: theme.spacing.unit * 3,
   }),
-  awardList: {
-    margin: 0,
-  },
 })
 
 class TeamPageDesktop extends PureComponent {
@@ -204,50 +200,14 @@ class TeamPageDesktop extends PureComponent {
 
                 {teamYearEvents.valueSeq().map(function(event) {
                   const eventKey = event.key
-                  const awards = awardsByEvent.get(eventKey)
-                  const status = statusByEvent && statusByEvent.get(eventKey)
                   return (
-                    <Paper key={eventKey} id={event.get('event_code')} className={classes.eventCard} elevation={4}>
-                      <Grid container spacing={24}>
-                        <Grid item xs={4}>
-                          <Typography type='title' gutterBottom>
-                            <Link to={`/event/${eventKey}`}>{event.get('name')}</Link>
-                          </Typography>
-                          {status && status.getIn(['qual', 'ranking', 'rank']) &&
-                            <Typography type='subheading'>
-                              Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b>
-                            </Typography>
-                          }
-                          {status && status.getIn(['qual', 'ranking', 'record']) &&
-                            <Typography type='subheading'>
-                              Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b>
-                            </Typography>
-                          }
-                          {status && status.getIn(['alliance']) &&
-                            <Typography type='subheading'>
-                              Alliance: <b>{status.getIn(['alliance', 'pick']) === 0 ? 'Captain' : `${ordinal(status.getIn(['alliance', 'pick']))} Pick`}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
-                            </Typography>
-                          }
-                          {status && status.getIn(['playoff', 'record']) &&
-                            <Typography type='subheading'>
-                              Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
-                            </Typography>
-                          }
-                          {awards &&
-                            <React.Fragment>
-                              <Typography type='subheading'>Awards:</Typography>
-                              <ul className={classes.awardList}>
-                                {awards.map(award =>
-                                  <li key={award.key}>{award.name}</li>
-                                )}
-                              </ul>
-                            </React.Fragment>
-                          }
-                        </Grid>
-                        <Grid item xs={8}>
-                          <MatchTable matches={matchesByEvent.get(eventKey)} />
-                        </Grid>
-                      </Grid>
+                    <Paper key={event.key} id={event.get('event_code')} className={classes.eventCard} elevation={4}>
+                      <TeamAtEvent
+                        awards={awardsByEvent.get(eventKey)}
+                        event={event}
+                        matches={matchesByEvent.get(eventKey)}
+                        status={statusByEvent && statusByEvent.get(eventKey)}
+                      />
                     </Paper>
                   )
                 })}
