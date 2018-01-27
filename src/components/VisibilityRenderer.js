@@ -9,6 +9,10 @@ class VisibilityRenderer extends PureComponent {
   }
 
   updateVisibility = () => {
+    if (this.props.disable) {
+      return
+    }
+
     const rect = ReactDOM.findDOMNode(this).getBoundingClientRect()
     const containmentRect = {
       top: 0,
@@ -62,7 +66,7 @@ class VisibilityRenderer extends PureComponent {
   }
 
   render() {
-    if (this.state.renderState === 3) {
+    if (this.state.renderState === 3 || this.props.disable) {
       return this.props.render
     }
     if (this.state.renderState === 2 && this.state.isVisible) {
@@ -79,6 +83,7 @@ VisibilityRenderer.propTypes = {
   preRender: PropTypes.element,
   fastRender: PropTypes.element.isRequired,
   render: PropTypes.element.isRequired,
+  disable: PropTypes.bool,
 }
 
 export default VisibilityRenderer

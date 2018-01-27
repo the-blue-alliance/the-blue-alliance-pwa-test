@@ -21,7 +21,7 @@ const styles = theme => ({
 class TeamAtEvent extends PureComponent {
   render() {
     console.log("Render TeamAtEvent")
-    const { classes, awards, event, matches, status } = this.props
+    const { classes, awards, event, matches, status, disableVisibilityRenderer } = this.props
     return (
       <Grid container spacing={24}>
         <Grid item xs={4}>
@@ -60,7 +60,7 @@ class TeamAtEvent extends PureComponent {
           }
         </Grid>
         <Grid item xs={8}>
-          <MatchTable matches={matches} />
+          <MatchTable matches={matches} disableVisibilityRenderer={disableVisibilityRenderer}/>
         </Grid>
       </Grid>
     )

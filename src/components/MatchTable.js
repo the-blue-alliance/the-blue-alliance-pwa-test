@@ -109,11 +109,12 @@ class MatchTable extends PureComponent {
     const rpEarnedTextA = match.rpEarnedTextA()
     const rpEarnedTextB = match.rpEarnedTextB()
 
-    const { classes } = this.props
+    const { classes, disableVisibilityRenderer } = this.props
 
     return (
       <VisibilityRenderer
         key={match.key}
+        disable={disableVisibilityRenderer}
         preRender={
           <tr className={classes.tr}>
             <td className={classes.td}>

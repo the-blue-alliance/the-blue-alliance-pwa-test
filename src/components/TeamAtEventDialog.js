@@ -126,6 +126,7 @@ class TeamAtEventDialog extends PureComponent {
               event={event}
               matches={matches}
               status={status}
+              disableVisibilityRenderer
             />
           </DialogContent>
         </Hidden>
