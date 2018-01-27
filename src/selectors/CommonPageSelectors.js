@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect'
 import { Map } from 'immutable';
 
+// Pages
 const getCurrentPageKey = (state, props) => {
   return state.getIn(['page', 'currentKey'])
 }
@@ -36,3 +37,20 @@ export const getYear = (state, props) => {
   const year = parseInt(props.match.params.year, 10)
   return year ? year : 2018
 }
+
+// Modals
+const getCurrentModalKey = (state, props) => {
+  return state.getIn(['page', 'currentModalKey'])
+}
+
+const getStateHistoryModal = (state, props) => {
+  return state.getIn(['page', 'stateHistoryModal'])
+}
+
+export const getCurrentModalState = createSelector(
+  [getCurrentModalKey, getStateHistoryModal],
+  (modalKey, stateHistory) => {
+    const modalState = stateHistory.get(modalKey)
+    return modalState === undefined ? Map() : modalState
+  }
+)

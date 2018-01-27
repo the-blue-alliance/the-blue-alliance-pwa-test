@@ -39,7 +39,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 class EventListPageBase extends PureComponent {
   reset = props => {
-     // Set without overriding
     props.resetPage({
       activeEventGroup: 'week-1',
       filterDialogOpen: false,

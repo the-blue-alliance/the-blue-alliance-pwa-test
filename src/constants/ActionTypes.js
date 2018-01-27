@@ -13,6 +13,10 @@ export const RESET_PAGE = 'RESET_PAGE'
 export const SET_PAGE_STATE = 'SET_PAGE_STATE'
 export const SET_SCROLL_STATE = 'SET_SCROLL_STATE'
 
+// Set modal state
+export const RESET_MODAL = 'RESET_MODAL'
+export const SET_MODAL_STATE = 'SET_MODAL_STATE'
+
 // Snackbars
 export const OPEN_SNACKBAR = 'OPEN_SNACKBAR'
 export const CLOSE_SNACKBAR = 'CLOSE_SNACKBAR'

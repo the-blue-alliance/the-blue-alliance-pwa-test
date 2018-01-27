@@ -64,10 +64,16 @@ const page = (state = Map({
   scrollHistory: Map(),
   stateHistory: Map(),
   modelHistory: Map(),
+  currentModalKey: undefined,
+  stateHistoryModal: Map(),
 }), action) => {
   let currentPageState = state.getIn(['stateHistory', action.pageKey])
   if (currentPageState === undefined) {
     currentPageState = Map()
+  }
+  let currentModalState = state.getIn(['stateHistoryModal', action.pageKey])
+  if (currentModalState === undefined) {
+    currentModalState = Map()
   }
   let currentScrollState = state.getIn(['scrollHistory', action.pageKey])
   if (currentScrollState === undefined) {
@@ -93,6 +99,16 @@ const page = (state = Map({
     case types.SET_SCROLL_STATE:
       return state.setIn(['scrollHistory', action.pageKey],
         currentScrollState.merge({[action.scrollId]: action.scrollTop}))
+    case types.RESET_MODAL:
+      state = state.set('currentModalKey', action.pageKey)
+      if (action.defaultState && state.getIn(['stateHistoryModal', action.pageKey]) === undefined) {
+        state = state.setIn(['stateHistoryModal', action.pageKey], fromJS(action.defaultState))
+      }
+      state = state.set('historyOrder', state.get('historyOrder').delete(action.pageKey).add(action.pageKey))
+      return state
+    case types.SET_MODAL_STATE:
+      return state.setIn(['stateHistoryModal', action.pageKey],
+        currentModalState.merge(action.modalState))
     case types.RECEIVE_TEAM_YEARS:
       return updateSingle(
         state,

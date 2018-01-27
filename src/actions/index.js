@@ -71,6 +71,28 @@ export function setScrollState(scrollId, scrollTop) {
   }
 }
 
+// Resetting modal
+export function resetModal(defaultState) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: types.RESET_MODAL,
+      pageKey: getState().getIn(['router', 'location', 'key']),
+      defaultState,
+    })
+  }
+}
+
+// Set modal state
+export function setModalState(modalState) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: types.SET_MODAL_STATE,
+      pageKey: getState().getIn(['router', 'location', 'key']),
+      modalState,
+    })
+  }
+}
+
 // Snackbars
 export const openSnackbar = (value) => ({
   type: types.OPEN_SNACKBAR,
