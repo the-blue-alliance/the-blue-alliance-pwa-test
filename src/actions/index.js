@@ -89,7 +89,7 @@ export function fetchEventInfo(eventKey) {
     let dataSource = sources.DEFAULT
     // Update from IndexedDB
     db.events.get(eventKey).then(event => {
-      if (dataSource < sources.IDB) {
+      if (dataSource < sources.IDB && event !== undefined) {
         dataSource = sources.IDB
         dispatch(receiveEventInfo(eventKey, event))
       }
@@ -126,7 +126,7 @@ export function fetchEventMatches(eventKey) {
     let dataSource = sources.DEFAULT
     // Update from IndexedDB
     db.matches.where('event_key').equals(eventKey).toArray().then(matches => {
-      if (dataSource < sources.IDB) {
+      if (dataSource < sources.IDB && matches !== undefined) {
         dataSource = sources.IDB
         dispatch(receiveEventMatches(eventKey, matches))
       }
@@ -166,7 +166,7 @@ export function fetchEventTeams(eventKey) {
       Promise.all(
         eventTeams.map(eventTeam => db.teams.get(eventTeam.teamKey))
       ).then(teams => {
-        if (dataSource < sources.IDB) {
+        if (dataSource < sources.IDB && teams !== undefined) {
           dataSource = sources.IDB
           dispatch(receiveEventTeams(eventKey, teams))
         }
@@ -205,7 +205,7 @@ export function fetchYearEvents(year) {
     let dataSource = sources.DEFAULT
     // Update from IndexedDB
     db.events.where('year').equals(year).toArray().then(events => {
-      if (dataSource < sources.IDB) {
+      if (dataSource < sources.IDB && events !== undefined) {
         dataSource = sources.IDB
         dispatch(receiveYearEvents(year, events))
       }
@@ -244,7 +244,7 @@ export function fetchTeamInfo(teamNumber) {
     const teamKey = `frc${teamNumber}`
     // Update from IndexedDB
     db.teams.get(teamKey).then(team => {
-      if (dataSource < sources.IDB) {
+      if (dataSource < sources.IDB && team !== undefined) {
         dataSource = sources.IDB
         dispatch(receiveTeamInfo(teamKey, team))
       }
@@ -286,7 +286,7 @@ export function fetchTeamYearAwards(teamNumber, year) {
       Promise.all(
         awardTeams.map(awardTeam => db.awards.get(awardTeam.awardKey))
       ).then(awards => {
-        if (dataSource < sources.IDB) {
+        if (dataSource < sources.IDB && awards !== undefined) {
           dataSource = sources.IDB
           dispatch(receiveTeamYearAwards(teamKey, year, awards))
         }
@@ -336,7 +336,7 @@ export function fetchTeamYearEvents(teamNumber, year) {
       Promise.all(
         eventTeams.map(eventTeam => db.events.get(eventTeam.eventKey))
       ).then(events => {
-        if (dataSource < sources.IDB) {
+        if (dataSource < sources.IDB && events !== undefined) {
           dataSource = sources.IDB
           dispatch(receiveTeamYearEvents(teamKey, year, events))
         }
@@ -379,7 +379,7 @@ export function fetchTeamYearMatches(teamNumber, year) {
       Promise.all(
         matchTeams.map(matchTeam => db.matches.get(matchTeam.matchKey))
       ).then(matches => {
-        if (dataSource < sources.IDB) {
+        if (dataSource < sources.IDB && matches !== undefined) {
           dataSource = sources.IDB
           dispatch(receiveTeamYearMatches(teamKey, year, matches))
         }
@@ -428,7 +428,7 @@ export function fetchTeamListHelper(pageNum) {
 
     // Update from IndexedDB
     db.teams.where('team_number').between(pageNum * 500, pageNum * 500 + 500).toArray().then(teams => {
-      if (dataSource < sources.IDB) {
+      if (dataSource < sources.IDB && teams !== undefined) {
         dataSource = sources.IDB
         dispatch(receiveTeamListPage(teams))
       }
@@ -474,7 +474,7 @@ export function fetchMatchInfo(matchKey) {
     let dataSource = sources.DEFAULT
     // Update from IndexedDB
     db.matches.get(matchKey).then(match => {
-      if (dataSource < sources.IDB) {
+      if (dataSource < sources.IDB && match !== undefined) {
         dataSource = sources.IDB
         dispatch(receiveMatchInfo(matchKey, match))
       }
