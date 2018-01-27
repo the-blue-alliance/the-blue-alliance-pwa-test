@@ -1,7 +1,6 @@
 // General
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from 'material-ui/styles'
 
 // Components
@@ -15,14 +14,10 @@ import Menu, { MenuItem } from 'material-ui/Menu'
 import Paper from 'material-ui/Paper'
 import PhotoLibraryIcon from 'material-ui-icons/PhotoLibrary'
 import Typography from 'material-ui/Typography'
-import Select from 'material-ui/Select'
-import { Link } from 'react-router-dom'
 
 // TBA Components
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ResponsiveLayout from '../components/ResponsiveLayout'
-import EventListCard from '../components/EventListCard'
-import HideableBadge from '../components/HideableBadge'
 import NestedScrollspy from '../components/NestedScrollspy'
 import TeamAtEvent from '../components/TeamAtEvent'
 

@@ -67,7 +67,7 @@ class GroupedEventTabContents extends PureComponent {
   render() {
     console.log("Render GroupedEventTabContents")
 
-    const { activeEventGroup, groupedEvents } = this.props
+    const { activeEventGroup } = this.props
 
     return (
       <SwipeableViews

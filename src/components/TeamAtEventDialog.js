@@ -4,7 +4,6 @@ import { withStyles } from 'material-ui/styles'
 import { Link } from 'react-router-dom'
 
 // Components
-import Grid from 'material-ui/Grid'
 import { DialogContent } from 'material-ui/Dialog'
 import Toolbar from 'material-ui/Toolbar'
 import IconButton from 'material-ui/IconButton'
