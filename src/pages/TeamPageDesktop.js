@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from 'material-ui/styles'
+import { ordinal } from '../utils'
 
 // Components
 import Button from 'material-ui/Button'
@@ -90,7 +91,7 @@ class TeamPageDesktop extends PureComponent {
   render() {
     console.log("Render TeamPageDesktop")
 
-    const { classes, year, validYears, isLoading, yearMenuOpen, teamNumber, team, teamYearEvents, awardsByEvent, matchesByEvent } = this.props
+    const { classes, year, validYears, isLoading, yearMenuOpen, teamNumber, team, teamYearEvents, awardsByEvent, matchesByEvent, statusByEvent } = this.props
 
     return (
       <TBAPageContainer
@@ -202,22 +203,41 @@ class TeamPageDesktop extends PureComponent {
                 }
 
                 {teamYearEvents.valueSeq().map(function(event) {
+                  const eventKey = event.key
+                  const awards = awardsByEvent.get(eventKey)
+                  const status = statusByEvent && statusByEvent.get(eventKey)
                   return (
-                    <Paper key={event.get('key')} id={event.get('event_code')} className={classes.eventCard} elevation={4}>
+                    <Paper key={eventKey} id={event.get('event_code')} className={classes.eventCard} elevation={4}>
                       <Grid container spacing={24}>
                         <Grid item xs={4}>
                           <Typography type='title' gutterBottom>
-                            <Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link>
+                            <Link to={`/event/${eventKey}`}>{event.get('name')}</Link>
                           </Typography>
-                          <Typography type='subheading'>Rank: <b>1/60</b></Typography>
-                          <Typography type='subheading'>Qual record: <b>8-1-0</b></Typography>
-                          <Typography type='subheading'>Alliance: <b>Captain</b> of <b>Alliance 1</b></Typography>
-                          <Typography type='subheading'>Playoff record: <b>6-0-0</b></Typography>
-                          {awardsByEvent.get(event.get('key')) &&
+                          {status && status.getIn(['qual', 'ranking', 'rank']) &&
+                            <Typography type='subheading'>
+                              Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b>
+                            </Typography>
+                          }
+                          {status && status.getIn(['qual', 'ranking', 'record']) &&
+                            <Typography type='subheading'>
+                              Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b>
+                            </Typography>
+                          }
+                          {status && status.getIn(['alliance']) &&
+                            <Typography type='subheading'>
+                              Alliance: <b>{status.getIn(['alliance', 'pick']) === 0 ? 'Captain' : `${ordinal(status.getIn(['alliance', 'pick']))} Pick`}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
+                            </Typography>
+                          }
+                          {status && status.getIn(['playoff', 'record']) &&
+                            <Typography type='subheading'>
+                              Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
+                            </Typography>
+                          }
+                          {awards &&
                             <React.Fragment>
                               <Typography type='subheading'>Awards:</Typography>
                               <ul className={classes.awardList}>
-                                {awardsByEvent.get(event.get('key')).map(award =>
+                                {awards.map(award =>
                                   <li key={award.key}>{award.name}</li>
                                 )}
                               </ul>
@@ -225,7 +245,7 @@ class TeamPageDesktop extends PureComponent {
                           }
                         </Grid>
                         <Grid item xs={8}>
-                          <MatchTable matches={matchesByEvent.get(event.get('key'))} />
+                          <MatchTable matches={matchesByEvent.get(eventKey)} />
                         </Grid>
                       </Grid>
                     </Paper>

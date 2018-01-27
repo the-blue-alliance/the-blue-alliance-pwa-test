@@ -5,11 +5,11 @@ import { Set } from 'immutable'
 
 // Actions
 import { push } from 'connected-react-router'
-import { resetPage, setPageState, setBottomNav, fetchTeamInfo, fetchTeamYearAwards, fetchTeamYearEvents, fetchTeamYearMatches } from '../actions'
+import { resetPage, setPageState, setBottomNav, fetchTeamInfo, fetchTeamYearAwards, fetchTeamYearEvents, fetchTeamYearMatches, fetchTeamEventStatus } from '../actions'
 
 // Selectors
 import { getCurrentPageState, getYear } from '../selectors/CommonPageSelectors'
-import { getTeamNumber, getTeamModel, getSortedTeamYearEvents, getAwardsByEvent, getMatchesByEvent } from '../selectors/TeamPageSelectors'
+import { getTeamNumber, getTeamModel, getSortedTeamYearEvents, getAwardsByEvent, getMatchesByEvent, getStatusByEvent } from '../selectors/TeamPageSelectors'
 
 // Components
 import Hidden from 'material-ui/Hidden'
@@ -30,6 +30,7 @@ const mapStateToProps = (state, props) => ({
   teamYearEvents: getSortedTeamYearEvents(state, props),
   awardsByEvent: getAwardsByEvent(state, props),
   matchesByEvent: getMatchesByEvent(state, props),
+  statusByEvent: getStatusByEvent(state, props),
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -41,6 +42,7 @@ const mapDispatchToProps = (dispatch) => ({
   fetchTeamYearAwards: (teamNumber, year) => dispatch(fetchTeamYearAwards(teamNumber, year)),
   fetchTeamYearEvents: (teamNumber, year) => dispatch(fetchTeamYearEvents(teamNumber, year)),
   fetchTeamYearMatches: (teamNumber, year) => dispatch(fetchTeamYearMatches(teamNumber, year)),
+  fetchTeamEventStatus: (teamNumber, eventKey) => dispatch(fetchTeamEventStatus(teamNumber, eventKey)),
 })
 
 class TeamPageBase extends PureComponent {
@@ -64,6 +66,12 @@ class TeamPageBase extends PureComponent {
     if (this.props.location.pathname !== nextProps.location.pathname) {
       this.reset(nextProps)
     }
+
+    // Temporary until API endpoint to fetch all team@event statuses for a year
+    // @fangeugene 2018-01-26
+    if (this.props.teamYearEvents !== nextProps.teamYearEvents) {
+      nextProps.teamYearEvents.forEach(event => this.props.fetchTeamEventStatus(this.props.teamNumber, event.key))
+    }
   }
 
   refreshFunction = (props=this.props) => {
@@ -80,7 +88,7 @@ class TeamPageBase extends PureComponent {
   render() {
     console.log("Render TeamPageBase")
 
-    const { teamNumber, team, year, teamYearEvents, awardsByEvent, matchesByEvent } = this.props
+    const { teamNumber, team, year, teamYearEvents, awardsByEvent, matchesByEvent, statusByEvent } = this.props
 
     let documentTitle = `Team ${teamNumber} (${year})`
     if (team && team.get('nickname')) {
@@ -112,6 +120,7 @@ class TeamPageBase extends PureComponent {
             teamYearEvents={teamYearEvents}
             awardsByEvent={awardsByEvent}
             matchesByEvent={matchesByEvent}
+            statusByEvent={statusByEvent}
           />
         </Hidden>
         <Hidden mdUp>
@@ -130,6 +139,7 @@ class TeamPageBase extends PureComponent {
             teamYearEvents={teamYearEvents}
             awardsByEvent={awardsByEvent}
             matchesByEvent={matchesByEvent}
+            statusByEvent={statusByEvent}
           />
         </Hidden>
       </div>

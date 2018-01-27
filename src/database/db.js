@@ -16,6 +16,9 @@ db.version(4).stores({
   awards: '&key, event_key',
   awardTeams: '&key, awardKey, teamKey, teamKey_year, teamKey_eventKey',
 })
+db.version(5).stores({
+  teamEventStatus: '&key',
+})
 
 export default db;
 
@@ -91,4 +94,9 @@ export const addTeamEvents = (teamKey, events) => {
       teamKey_year: `${teamKey}_${event.year}`,
     }
   }))
+}
+
+export const addTeamEventStatus = (teamKey, eventKey, status) => {
+  status['key'] = `${teamKey}_${eventKey}`
+  db.teamEventStatus.put(status)
 }

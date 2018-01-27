@@ -143,3 +143,12 @@ export const getMatchesByEvent = createSelector(
     return matchesByEvent
   }
 )
+
+export const getStatusByEvent = (state, props) => {
+  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
+    const teamEventStatuses = state.getIn(['page', 'modelHistory', key, 'teamEventStatuses', 'byTeamEvent', `frc${getTeamNumber(state, props)}`])
+    if (teamEventStatuses !== undefined) {
+      return teamEventStatuses
+    }
+  }
+}
