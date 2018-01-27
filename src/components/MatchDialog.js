@@ -8,9 +8,12 @@ import CloseIcon from 'material-ui-icons/Close'
 import { DialogContent } from 'material-ui/Dialog'
 import Divider from 'material-ui/Divider'
 import Grid from 'material-ui/Grid'
+import Hidden from 'material-ui/Hidden'
 import IconButton from 'material-ui/IconButton'
+import Tabs, { Tab } from 'material-ui/Tabs'
 import Toolbar from 'material-ui/Toolbar'
 import Typography from 'material-ui/Typography'
+import SwipeableViews from 'react-swipeable-views'
 
 // TBA Components
 import MatchBreakdownTable from './MatchBreakdownTable'
@@ -24,16 +27,60 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit*2,
     paddingBottom: theme.spacing.unit*2,
   },
+  contentMobile: {
+    position: 'fixed',
+    top: 64 + 48,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    padding: 0,
+  },
+  tabContent: {
+    padding: theme.spacing.unit,
+  },
   flex: {
     flex: 1,
     textAlign: 'center',
   },
+  toolbar: {
+    padding: 0,
+  },
 })
 
 class MatchDialog extends PureComponent {
+  reset = props => {
+    props.resetModal({
+      tabIdx: 0,
+    })
+  }
+
+  constructor(props) {
+    super(props)
+    this.reset(props)
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (this.props.location.pathname !== nextProps.location.pathname) {
+      this.reset(nextProps)
+    }
+  }
+
   handleClose = (e) => {
     e.stopPropagation()
     this.props.handleClose()
+  }
+
+  handleClose = (e) => {
+    e.stopPropagation()
+    this.props.handleClose()
+  }
+
+  tabHandleChange = (event, value) => {
+    this.props.setModalState({tabIdx: value})
+  }
+
+  tabHandleChangeIndex = index => {
+    this.props.setModalState({tabIdx: index})
   }
 
   render() {
@@ -43,28 +90,75 @@ class MatchDialog extends PureComponent {
 
     return (
       <React.Fragment>
-        <Toolbar>
-          <IconButton className={classes.button} aria-label="Back" onClick={() => window.history.back()}>
-            <ChevronLeftIcon />
-          </IconButton>
-          <Typography type="title" color="inherit" className={classes.flex}>
-            {this.props.matchObj.getDisplayName()}
-          </Typography>
-          <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
-            <CloseIcon />
-          </IconButton>
-        </Toolbar>
-        <Divider />
-        <DialogContent className={classes.content}>
-          <Grid container spacing={24}>
-            <Grid item xs={6}>
-              <MatchBreakdownTable match={this.props.matchObj}/>
+        <Hidden smDown>
+          <Toolbar>
+            <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
+              <ChevronLeftIcon />
+            </IconButton>
+            <Typography type="title" color="inherit" className={classes.flex}>
+              {this.props.matchObj.getDisplayName()}
+            </Typography>
+            <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </Toolbar>
+          <Divider />
+          <DialogContent className={classes.content}>
+            <Grid container spacing={24}>
+              <Grid item xs={6}>
+                <MatchBreakdownTable match={this.props.matchObj}/>
+              </Grid>
+              <Grid item xs={6}>
+                <MatchVideos match={this.props.matchObj}/>
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <MatchVideos match={this.props.matchObj}/>
-            </Grid>
-          </Grid>
-        </DialogContent>
+          </DialogContent>
+        </Hidden>
+        <Hidden mdUp>
+          <Toolbar className={classes.toolbar}>
+            <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
+              <ChevronLeftIcon />
+            </IconButton>
+            <Typography type="title" color="inherit" className={classes.flex}>
+              {this.props.matchObj.getDisplayName()}
+            </Typography>
+            <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </Toolbar>
+          <Tabs
+            value={this.props.tabIdx}
+            onChange={this.tabHandleChange}
+            indicatorColor='primary'
+            scrollable
+            scrollButtons='auto'
+            className='hide-scrollbar'
+          >
+            <Tab value={0} label='Breakdown' />
+            <Tab value={1} label='Videos' />
+          </Tabs>
+          <Divider />
+          <DialogContent className={classes.contentMobile}>
+            <SwipeableViews
+              containerStyle={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+              }}
+              index={this.props.tabIdx}
+              onChangeIndex={this.tabHandleChangeIndex}
+            >
+              <div className={classes.tabContent}>
+                <MatchBreakdownTable match={this.props.matchObj}/>
+              </div>
+              <div className={classes.tabContent}>
+                <MatchVideos match={this.props.matchObj}/>
+              </div>
+            </SwipeableViews>
+          </DialogContent>
+        </Hidden>
       </React.Fragment>
     )
   }

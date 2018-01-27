@@ -44,11 +44,6 @@ const styles = theme => ({
   toolbar: {
     padding: 0,
   },
-  containerStyle: {
-    width: '100%',
-    height: '100%',
-    overflow: 'scroll',
-  },
 })
 
 class TeamAtEventDialog extends PureComponent {
@@ -132,7 +127,7 @@ class TeamAtEventDialog extends PureComponent {
         </Hidden>
         <Hidden mdUp>
           <Toolbar className={classes.toolbar}>
-            <IconButton className={classes.button} aria-label="Back" onClick={() => window.history.back()}>
+            <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
               <ChevronLeftIcon />
             </IconButton>
             <Typography type="title" color="inherit" className={classes.flex}>

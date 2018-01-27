@@ -9,7 +9,7 @@ import Icon from 'material-ui/Icon';
 const styles = theme => ({
   table: {
     padding: '5px 0',
-    margin: '0 0 1em 0',
+    margin: 0,
     width: '100%',
     marginLeft: 'auto',
     backgroundColor: '#ffffff',

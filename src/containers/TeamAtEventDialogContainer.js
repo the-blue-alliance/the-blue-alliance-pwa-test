@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { goBack } from 'connected-react-router'
-import { resetModal, setModalState,fetchEventAwards, fetchEventMatches, fetchEventTeams, fetchTeamEventStatus } from '../actions'
+import { resetModal, setModalState, fetchEventAwards, fetchEventMatches, fetchEventTeams, fetchTeamEventStatus } from '../actions'
 import { getCurrentModalState } from '../selectors/CommonPageSelectors'
 import TeamAtEventDialog from '../components/TeamAtEventDialog'
 import { getTeamNumber, getEventKey, getTeam, getEvent, getSortedMatches, getSortedAwards, getTeamEventStatus } from '../selectors/TeamAtEventDialogSelectors'
