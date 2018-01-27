@@ -125,7 +125,7 @@ class TeamPageBase extends PureComponent {
     }
 
     return (
-      <div>
+      <React.Fragment>
         <Hidden smDown>
           <TeamPageDesktop
             documentTitle={documentTitle}
@@ -164,7 +164,7 @@ class TeamPageBase extends PureComponent {
             statusByEvent={statusByEvent}
           />
         </Hidden>
-      </div>
+      </React.Fragment>
     )
   }
 }

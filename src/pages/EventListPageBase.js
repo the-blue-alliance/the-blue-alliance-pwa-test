@@ -88,7 +88,7 @@ class EventListPageBase extends PureComponent {
     const filterCount = districtFilters ? districtFilters.size : 0
 
     return (
-      <div>
+      <React.Fragment>
         <Hidden smDown>
           <EventListPageDesktop
             documentTitle={`${year} Events`}
@@ -121,7 +121,7 @@ class EventListPageBase extends PureComponent {
             yearMenuOpen={this.props.yearMenuOpen}
           />
         </Hidden>
-      </div>
+      </React.Fragment>
     )
   }
 }
