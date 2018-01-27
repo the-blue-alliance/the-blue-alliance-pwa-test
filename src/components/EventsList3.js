@@ -27,6 +27,8 @@ class EventsList extends PureComponent {
   computeGroupedEvents = (events) => {
     console.log("Computing event list!")
 
+    const team = this.props.team
+
     let eventsByType = {}
     let eventsByDistrictLabel = {}
     let labelToDistrict = {}
@@ -64,7 +66,7 @@ class EventsList extends PureComponent {
         <div key={'r'}>
           <EventListSubheader text='Regional Events' />
           {eventsByType[Event.REGIONAL].map(event =>
-            <EventListItem key={event.get('key')} event={event}/>
+            <EventListItem key={event.get('key')} event={event} team={team}/>
           )}
         </div>
       ))
@@ -77,7 +79,7 @@ class EventsList extends PureComponent {
           <div key={`d-${labelToDistrict[label]}`}>
             <EventListSubheader text={label} />
             {eventsByDistrictLabel[label].map(event =>
-              <EventListItem key={event.get('key')} event={event}/>
+              <EventListItem key={event.get('key')} event={event} team={team}/>
             )}
           </div>
         ))
@@ -90,7 +92,7 @@ class EventsList extends PureComponent {
         <div key={'dcd'}>
           <EventListSubheader text='District Championship Divisions' />
           {eventsByType[Event.DISTRICT_CMP_DIVISION].map(event =>
-            <EventListItem key={event.get('key')} event={event}/>
+            <EventListItem key={event.get('key')} event={event} team={team}/>
           )}
         </div>
       ))
@@ -102,7 +104,7 @@ class EventsList extends PureComponent {
         <div key={'dc'}>
           <EventListSubheader text='District Championships' />
           {eventsByType[Event.DISTRICT_CMP].map(event =>
-            <EventListItem key={event.get('key')} event={event}/>
+            <EventListItem key={event.get('key')} event={event} team={team}/>
           )}
         </div>
       ))
@@ -114,7 +116,7 @@ class EventsList extends PureComponent {
         <div key={'cd'}>
           <EventListSubheader text='Championship Divisions' />
           {eventsByType[Event.CMP_DIVISION].map(event =>
-            <EventListItem key={event.get('key')} event={event}/>
+            <EventListItem key={event.get('key')} event={event} team={team}/>
           )}
         </div>
       ))
@@ -126,7 +128,7 @@ class EventsList extends PureComponent {
         <div key={'cf'}>
           <EventListSubheader text='Championship Finals' />
           {eventsByType[Event.CMP_FINALS].map(event =>
-            <EventListItem key={event.get('key')} event={event}/>
+            <EventListItem key={event.get('key')} event={event} team={team}/>
           )}
         </div>
       ))
@@ -138,7 +140,7 @@ class EventsList extends PureComponent {
         <div key={'foc'}>
           <EventListSubheader text='Festival of Champions' />
           {eventsByType[Event.FOC].map(event =>
-            <EventListItem key={event.get('key')} event={event}/>
+            <EventListItem key={event.get('key')} event={event} team={team}/>
           )}
         </div>
       ))
@@ -150,7 +152,7 @@ class EventsList extends PureComponent {
         <div key={'pe'}>
           <EventListSubheader text='Preseason Events' />
           {eventsByType[Event.PRESEASON].map(event =>
-            <EventListItem key={event.get('key')} event={event}/>
+            <EventListItem key={event.get('key')} event={event} team={team}/>
           )}
         </div>
       ))
@@ -162,7 +164,7 @@ class EventsList extends PureComponent {
         <div key={'oe'}>
           <EventListSubheader text='Offseason Events' />
           {eventsByType[Event.OFFSEASON].map(event =>
-            <EventListItem key={event.get('key')} event={event}/>
+            <EventListItem key={event.get('key')} event={event} team={team}/>
           )}
         </div>
       ))
@@ -199,6 +201,7 @@ EventsList.propTypes = {
   classes: PropTypes.object.isRequired,
   scrollId: PropTypes.string.isRequired,
   events: ImmutablePropTypes.list.isRequired,
+  team: ImmutablePropTypes.record,
 }
 
 export default withStyles(styles)(EventsList)

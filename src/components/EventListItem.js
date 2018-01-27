@@ -27,16 +27,18 @@ const styles = theme => ({
 
 class EventListItem extends PureComponent {
   render() {
-    const { classes, event } = this.props
+    const { classes, event, team } = this.props
+    let to = `/event/${event.key}`
+    if (team) {
+      to = {pathname: `/team/${team.team_number}/${event.year}`, hash:event.event_code, state: {modal: true}}
+    }
     return (
-      <LinkContainer to={`/event/${event.get('key')}`}>
+      <LinkContainer to={to}>
         <ListItem button divider disableRipple>
           <ListItemText
             className={classes.listItemText}
             disableTypography
-            primary={
-              event.get('short_name')
-            }
+            primary={event.short_name}
             secondary={
               <Typography>
                 <span className={classes.locationContainer}>
@@ -57,6 +59,7 @@ class EventListItem extends PureComponent {
 EventListItem.propTypes = {
   classes: PropTypes.object.isRequired,
   event: ImmutablePropTypes.record.isRequired,
+  team: ImmutablePropTypes.record,
 }
 
 export default withStyles(styles)(EventListItem)

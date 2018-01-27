@@ -242,7 +242,11 @@ class TeamPageMobile extends PureComponent {
               </List>
             </Paper>
           </div>
-          <EventsList3 scrollId='events' events={teamYearEvents} />
+          {team ?
+            <EventsList3 scrollId='events' events={teamYearEvents} team={team}/>
+            :
+            <div>TODO Placeholder</div>
+          }
           <div>Media</div>
         </SwipeableViews>
       </TBAPageContainer>

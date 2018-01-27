@@ -173,9 +173,9 @@ class TeamAtEventDialog extends PureComponent {
               index={this.props.tabIdx}
               onChangeIndex={this.tabHandleChangeIndex}
             >
-              <div>Summary</div>
+              <div>{JSON.stringify(status)}</div>
               <MatchList matches={matches} />
-              <div>Awards</div>
+              <div>{JSON.stringify(awards)}</div>
             </SwipeableViews>
           </DialogContent>
         </Hidden>
