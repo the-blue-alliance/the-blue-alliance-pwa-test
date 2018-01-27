@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 
 // Components
 import { DialogContent } from 'material-ui/Dialog'
+import Divider from 'material-ui/Divider'
 import Toolbar from 'material-ui/Toolbar'
 import IconButton from 'material-ui/IconButton'
 import Typography from 'material-ui/Typography'
@@ -17,6 +18,10 @@ import TeamAtEvent from '../components/TeamAtEvent'
 const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
+  },
+  content: {
+    paddingTop: theme.spacing.unit*2,
+    paddingBottom: theme.spacing.unit*2,
   },
   flex: {
     flex: 1,
@@ -57,7 +62,7 @@ class TeamAtEventDialog extends PureComponent {
     }
 
     return (
-      <div>
+      <React.Fragment>
         <Toolbar>
           <IconButton className={classes.button} aria-label="Back" onClick={() => window.history.back()}>
             <ChevronLeftIcon />
@@ -69,7 +74,8 @@ class TeamAtEventDialog extends PureComponent {
             <CloseIcon />
           </IconButton>
         </Toolbar>
-        <DialogContent>
+        <Divider />
+        <DialogContent className={classes.content}>
           <TeamAtEvent
             awards={awards}
             event={event}
@@ -77,7 +83,7 @@ class TeamAtEventDialog extends PureComponent {
             status={status}
           />
         </DialogContent>
-      </div>
+      </React.Fragment>
     )
   }
 }

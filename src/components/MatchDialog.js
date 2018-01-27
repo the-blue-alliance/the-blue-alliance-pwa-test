@@ -1,12 +1,18 @@
-import React, { PureComponent } from 'react';
-import { withStyles } from 'material-ui/styles';
-import Grid from 'material-ui/Grid';
-import { DialogContent } from 'material-ui/Dialog';
-import Toolbar from 'material-ui/Toolbar';
-import IconButton from 'material-ui/IconButton';
-import Typography from 'material-ui/Typography';
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
-import CloseIcon from 'material-ui-icons/Close';
+// General
+import React, { PureComponent } from 'react'
+import { withStyles } from 'material-ui/styles'
+
+// Components
+import ChevronLeftIcon from 'material-ui-icons/ChevronLeft'
+import CloseIcon from 'material-ui-icons/Close'
+import { DialogContent } from 'material-ui/Dialog'
+import Divider from 'material-ui/Divider'
+import Grid from 'material-ui/Grid'
+import IconButton from 'material-ui/IconButton'
+import Toolbar from 'material-ui/Toolbar'
+import Typography from 'material-ui/Typography'
+
+// TBA Components
 import MatchBreakdownTable from './MatchBreakdownTable'
 import MatchVideos from './MatchVideos'
 
@@ -14,8 +20,13 @@ const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
   },
+  content: {
+    paddingTop: theme.spacing.unit*2,
+    paddingBottom: theme.spacing.unit*2,
+  },
   flex: {
     flex: 1,
+    textAlign: 'center',
   },
 })
 
@@ -31,7 +42,7 @@ class MatchDialog extends PureComponent {
     const { classes } = this.props
 
     return (
-      <div>
+      <React.Fragment>
         <Toolbar>
           <IconButton className={classes.button} aria-label="Back" onClick={() => window.history.back()}>
             <ChevronLeftIcon />
@@ -43,7 +54,8 @@ class MatchDialog extends PureComponent {
             <CloseIcon />
           </IconButton>
         </Toolbar>
-        <DialogContent>
+        <Divider />
+        <DialogContent className={classes.content}>
           <Grid container spacing={24}>
             <Grid item xs={6}>
               <MatchBreakdownTable match={this.props.matchObj}/>
@@ -53,7 +65,7 @@ class MatchDialog extends PureComponent {
             </Grid>
           </Grid>
         </DialogContent>
-      </div>
+      </React.Fragment>
     )
   }
 }
