@@ -4,11 +4,14 @@ import classNames from 'classnames'
 import { withStyles } from 'material-ui/styles'
 
 // Components
-import PlayCircleOutlineIcon from 'material-ui-icons/PlayCircleOutline'
 import { CircularProgress } from 'material-ui/Progress'
+import Icon from 'material-ui/Icon'
 import Tooltip from 'material-ui/Tooltip'
 import Typography from 'material-ui/Typography'
 import { Link } from 'react-router-dom'
+
+// TBA Components
+import VisibilityRenderer from './VisibilityRenderer'
 
 const styles = theme => ({
   table: {
@@ -55,6 +58,12 @@ const styles = theme => ({
   winner: {
     fontWeight: 'bold',
   },
+  fakeLink: {
+    color: theme.palette.primary.main,
+  },
+  fastRender: {
+    color: 'rgba(0, 0, 0,  0)',
+  },
   rpDotA: {
     position: 'absolute',
     top: '2px',
@@ -70,8 +79,8 @@ const styles = theme => ({
     width: '4px',
   },
   playIcon: {
-    width: 16,
-    height: 16,
+    fontSize: 'inherit',
+    margin: '-2px',
   },
   zeroDataContainer: {
     paddingTop: theme.spacing.unit*3,
@@ -103,70 +112,128 @@ class MatchTable extends PureComponent {
     const { classes } = this.props
 
     return (
-      <tr key={match.key} className={classes.tr}>
-        <td className={classes.td}>
-          {match.videos.size > 0 && <PlayCircleOutlineIcon className={classes.playIcon}/>}
-        </td>
-        <td className={classes.td}>
-          <Link to={{pathname: `/match/${match.key}`, state: {modal: true}}}>{match.getDisplayName()}</Link>
-        </td>
-        {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
-          const teamNum = teamKey.substr(3)
-          return (
-            <td
-              key={teamKey}
-              className={classNames({
-                  [classes.td]: true,
-                  [classes.red]: true,
-                  [classes.winner]: redWin
-              })}
-            >
-              <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>{teamNum}</Link>
+      <VisibilityRenderer
+        key={match.key}
+        preRender={
+          <tr className={classes.tr}>
+            <td className={classes.td}>
+              {match.videos.size > 0 && <Icon className={classes.playIcon}>play_circle_outline</Icon>}
             </td>
-          )
-        })}
-        {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
-          const teamNum = teamKey.substr(3)
-          return (
-            <td
-              key={teamKey}
-              className={classNames({
-                  [classes.td]: true,
-                  [classes.blue]: true,
-                  [classes.winner]: blueWin
-              })}
-            >
-              <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>{teamNum}</Link>
+            <td className={classNames({[classes.td]: true, [classes.fakeLink]: true})}>
+              {match.getDisplayName()}
             </td>
-          )
-        })}
-        <td className={classNames({[classes.td]: true, [classes.redScore]: true, [classes.winner]: redWin})}>
-          {match.rpEarnedA('red') && <Tooltip title={rpEarnedTextA} placement="top">
-            <svg className={classes.rpDotA}>
-              <circle cx="2" cy="2" r="2"/>
-            </svg>
-          </Tooltip>}
-          {match.rpEarnedB('red') &&  <Tooltip title={rpEarnedTextB} placement="top">
-            <svg className={classes.rpDotB}>
-              <circle cx="2" cy="2" r="2"/>
-            </svg>
-          </Tooltip>}
-          {redScore}
-        </td>
-        <td className={classNames({[classes.td]: true, [classes.blueScore]: true, [classes.winner]: blueWin})}>
-          {match.rpEarnedA('blue') &&  <Tooltip title={rpEarnedTextA} placement="top">
-            <svg className={classes.rpDotA}>
-              <circle cx="2" cy="2" r="2"/>
-            </svg>
-          </Tooltip>}
-         {match.rpEarnedB('blue') &&  <Tooltip title={rpEarnedTextB} placement="top">
-            <svg className={classes.rpDotB}>
-              <circle cx="2" cy="2" r="2"/>
-            </svg>
-          </Tooltip>}
-          {blueScore}
-        </td>
-      </tr>
+            {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
+              const teamNum = teamKey.substr(3)
+              return (
+                <td
+                  key={teamKey}
+                  className={classNames({
+                      [classes.td]: true,
+                      [classes.red]: true,
+                      [classes.winner]: redWin,
+                      [classes.fakeLink]: true,
+                  })}
+                >
+                  {teamNum}
+                </td>
+              )
+            })}
+            {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
+              const teamNum = teamKey.substr(3)
+              return (
+                <td
+                  key={teamKey}
+                  className={classNames({
+                      [classes.td]: true,
+                      [classes.blue]: true,
+                      [classes.winner]: blueWin,
+                      [classes.fakeLink]: true,
+                  })}
+                >
+                  {teamNum}
+                </td>
+              )
+            })}
+            <td className={classNames({[classes.td]: true, [classes.redScore]: true, [classes.winner]: redWin})}>
+              {redScore}
+            </td>
+            <td className={classNames({[classes.td]: true, [classes.blueScore]: true, [classes.winner]: blueWin})}>
+              {blueScore}
+            </td>
+          </tr>
+        }
+        fastRender={
+          <tr className={classes.tr}>
+            <td className={classNames({[classes.td]: true, [classes.fastRender]: true})} colSpan='10'>TBA</td>
+          </tr>
+        }
+        render={
+          <tr className={classes.tr}>
+            <td className={classes.td}>
+              {match.videos.size > 0 && <Icon className={classes.playIcon}>play_circle_outline</Icon>}
+            </td>
+            <td className={classes.td}>
+              <Link to={{pathname: `/match/${match.key}`, state: {modal: true}}}>{match.getDisplayName()}</Link>
+            </td>
+            {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
+              const teamNum = teamKey.substr(3)
+              return (
+                <td
+                  key={teamKey}
+                  className={classNames({
+                      [classes.td]: true,
+                      [classes.red]: true,
+                      [classes.winner]: redWin
+                  })}
+                >
+                  <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>{teamNum}</Link>
+                </td>
+              )
+            })}
+            {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
+              const teamNum = teamKey.substr(3)
+              return (
+                <td
+                  key={teamKey}
+                  className={classNames({
+                      [classes.td]: true,
+                      [classes.blue]: true,
+                      [classes.winner]: blueWin
+                  })}
+                >
+                  <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>{teamNum}</Link>
+                </td>
+              )
+            })}
+            <td className={classNames({[classes.td]: true, [classes.redScore]: true, [classes.winner]: redWin})}>
+              {match.rpEarnedA('red') && <Tooltip title={rpEarnedTextA} placement="top">
+                <svg className={classes.rpDotA}>
+                  <circle cx="2" cy="2" r="2"/>
+                </svg>
+              </Tooltip>}
+              {match.rpEarnedB('red') &&  <Tooltip title={rpEarnedTextB} placement="top">
+                <svg className={classes.rpDotB}>
+                  <circle cx="2" cy="2" r="2"/>
+                </svg>
+              </Tooltip>}
+              {redScore}
+            </td>
+            <td className={classNames({[classes.td]: true, [classes.blueScore]: true, [classes.winner]: blueWin})}>
+              {match.rpEarnedA('blue') &&  <Tooltip title={rpEarnedTextA} placement="top">
+                <svg className={classes.rpDotA}>
+                  <circle cx="2" cy="2" r="2"/>
+                </svg>
+              </Tooltip>}
+             {match.rpEarnedB('blue') &&  <Tooltip title={rpEarnedTextB} placement="top">
+                <svg className={classes.rpDotB}>
+                  <circle cx="2" cy="2" r="2"/>
+                </svg>
+              </Tooltip>}
+              {blueScore}
+            </td>
+          </tr>
+        }
+      />
     )
   }
 
@@ -195,7 +262,7 @@ class MatchTable extends PureComponent {
       <table className={classes.table} border='1'>
         <thead className={classes.thead}>
           <tr className={classNames({[classes.tr]: true, [classes.key]: true})}>
-            <th className={classes.th}><PlayCircleOutlineIcon className={classes.playIcon}/></th>
+            <th className={classes.th}><Icon className={classes.playIcon}>play_circle_outline</Icon></th>
             <th className={classes.th}>Match</th>
             <th className={classes.th} colSpan='3'>Red Alliance</th>
             <th className={classes.th} colSpan='3'>Blue Alliance</th>

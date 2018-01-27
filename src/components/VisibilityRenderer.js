@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 class VisibilityRenderer extends PureComponent {
   state = {
-    renderState: 0,  // 0: FastRender for layout, 1: Render if visible, 2: Render regardless
+    renderState: 0,  // 0: fastRender for layout, 1: preRender if visible, 2: Render if visible, 3: Render regardless
     isVisible: false,
   }
 
@@ -23,16 +23,20 @@ class VisibilityRenderer extends PureComponent {
       rect.right >= containmentRect.left
     )
 
-    let newState = {
-      renderState: this.state.renderState + 1,
-    }
+    let newState = {}
     if (this.state.isVisible !== isVisible) {
       newState['isVisible'] = isVisible
     }
-    if (newState.renderState === 1) {
+    if (this.state.renderState === 0) {
       // Update state before render occurs
+      newState['renderState'] = this.props.preRender ? 1 : 2
       this.setState(newState)
-    } else if (newState.renderState === 2) {
+      return
+    }
+    if (this.state.renderState < 3) {
+      newState['renderState'] = this.state.renderState + 1
+    }
+    if (Object.keys(newState).length > 0) {
       // Render without cascading
       setTimeout(() => this.setState(newState))
     }
@@ -58,17 +62,23 @@ class VisibilityRenderer extends PureComponent {
   }
 
   render() {
-    if (this.state.renderState === 0 ||
-        (this.state.renderState === 1 && !this.state.isVisible)) {
-      return this.props.fastRender
+    if (this.state.renderState === 3) {
+      return this.props.render
     }
-    return this.props.render
+    if (this.state.renderState === 2 && this.state.isVisible) {
+      return this.props.render
+    }
+    if (this.state.renderState === 1 && this.state.isVisible) {
+      return this.props.preRender
+    }
+    return this.props.fastRender
   }
 }
 
 VisibilityRenderer.propTypes = {
-  render: PropTypes.element.isRequired,
+  preRender: PropTypes.element,
   fastRender: PropTypes.element.isRequired,
+  render: PropTypes.element.isRequired,
 }
 
 export default VisibilityRenderer
