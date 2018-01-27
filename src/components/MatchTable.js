@@ -1,10 +1,14 @@
-import React, { PureComponent } from 'react';
-import classNames from 'classnames';
-import { withStyles } from 'material-ui/styles';
-import { Link } from 'react-router-dom';
-import { CircularProgress } from 'material-ui/Progress';
-import Tooltip from 'material-ui/Tooltip';
-import PlayCircleOutlineIcon from 'material-ui-icons/PlayCircleOutline';
+// General
+import React, { PureComponent } from 'react'
+import classNames from 'classnames'
+import { withStyles } from 'material-ui/styles'
+
+// Components
+import PlayCircleOutlineIcon from 'material-ui-icons/PlayCircleOutline'
+import { CircularProgress } from 'material-ui/Progress'
+import Tooltip from 'material-ui/Tooltip'
+import Typography from 'material-ui/Typography'
+import { Link } from 'react-router-dom'
 
 const styles = theme => ({
   table: {
@@ -69,7 +73,17 @@ const styles = theme => ({
     width: 16,
     height: 16,
   },
-});
+  zeroDataContainer: {
+    paddingTop: theme.spacing.unit*3,
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    textAlign: 'center',
+  },
+  zeroDataSpinner: {
+    margin: '0 auto',
+  },
+})
 
 class MatchTable extends PureComponent {
   renderRow(match) {
@@ -85,12 +99,15 @@ class MatchTable extends PureComponent {
     const blueWin = match.winning_alliance === 'blue'
     const rpEarnedTextA = match.rpEarnedTextA()
     const rpEarnedTextB = match.rpEarnedTextB()
+
+    const { classes } = this.props
+
     return (
-      <tr key={match.key} className={this.props.classes.tr}>
-        <td className={this.props.classes.td}>
-          {match.videos.size > 0 && <PlayCircleOutlineIcon className={this.props.classes.playIcon}/>}
+      <tr key={match.key} className={classes.tr}>
+        <td className={classes.td}>
+          {match.videos.size > 0 && <PlayCircleOutlineIcon className={classes.playIcon}/>}
         </td>
-        <td className={this.props.classes.td}>
+        <td className={classes.td}>
           <Link to={{pathname: `/match/${match.key}`, state: {modal: true}}}>{match.getDisplayName()}</Link>
         </td>
         {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
@@ -99,9 +116,9 @@ class MatchTable extends PureComponent {
             <td
               key={teamKey}
               className={classNames({
-                  [this.props.classes.td]: true,
-                  [this.props.classes.red]: true,
-                  [this.props.classes.winner]: redWin
+                  [classes.td]: true,
+                  [classes.red]: true,
+                  [classes.winner]: redWin
               })}
             >
               <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>{teamNum}</Link>
@@ -114,36 +131,36 @@ class MatchTable extends PureComponent {
             <td
               key={teamKey}
               className={classNames({
-                  [this.props.classes.td]: true,
-                  [this.props.classes.blue]: true,
-                  [this.props.classes.winner]: blueWin
+                  [classes.td]: true,
+                  [classes.blue]: true,
+                  [classes.winner]: blueWin
               })}
             >
               <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>{teamNum}</Link>
             </td>
           )
         })}
-        <td className={classNames({[this.props.classes.td]: true, [this.props.classes.redScore]: true, [this.props.classes.winner]: redWin})}>
+        <td className={classNames({[classes.td]: true, [classes.redScore]: true, [classes.winner]: redWin})}>
           {match.rpEarnedA('red') && <Tooltip title={rpEarnedTextA} placement="top">
-            <svg className={this.props.classes.rpDotA}>
+            <svg className={classes.rpDotA}>
               <circle cx="2" cy="2" r="2"/>
             </svg>
           </Tooltip>}
           {match.rpEarnedB('red') &&  <Tooltip title={rpEarnedTextB} placement="top">
-            <svg className={this.props.classes.rpDotB}>
+            <svg className={classes.rpDotB}>
               <circle cx="2" cy="2" r="2"/>
             </svg>
           </Tooltip>}
           {redScore}
         </td>
-        <td className={classNames({[this.props.classes.td]: true, [this.props.classes.blueScore]: true, [this.props.classes.winner]: blueWin})}>
+        <td className={classNames({[classes.td]: true, [classes.blueScore]: true, [classes.winner]: blueWin})}>
           {match.rpEarnedA('blue') &&  <Tooltip title={rpEarnedTextA} placement="top">
-            <svg className={this.props.classes.rpDotA}>
+            <svg className={classes.rpDotA}>
               <circle cx="2" cy="2" r="2"/>
             </svg>
           </Tooltip>}
          {match.rpEarnedB('blue') &&  <Tooltip title={rpEarnedTextB} placement="top">
-            <svg className={this.props.classes.rpDotB}>
+            <svg className={classes.rpDotB}>
               <circle cx="2" cy="2" r="2"/>
             </svg>
           </Tooltip>}
@@ -155,9 +172,15 @@ class MatchTable extends PureComponent {
 
   render() {
     console.log('Render MatchTable')
+    const { classes } = this.props
 
     if (this.props.matches === undefined) {
-      return <CircularProgress color="secondary" size={100} />
+      return (
+        <div className={classes.zeroDataContainer}>
+          <CircularProgress color='secondary' size='15%' className={classes.zeroDataSpinner} />
+          <Typography type='subheading'>Matches loading</Typography>
+        </div>
+      )
     } else if (this.props.matches.size === 0) {
       return <div>NO MATCHES</div>
     }
@@ -169,44 +192,44 @@ class MatchTable extends PureComponent {
     const fMatches = this.props.matches.filter(match => match.get('comp_level') === 'f')
 
     return (
-      <table className={this.props.classes.table} border='1'>
-        <thead className={this.props.classes.thead}>
-          <tr className={classNames({[this.props.classes.tr]: true, [this.props.classes.key]: true})}>
-            <th className={this.props.classes.th}><PlayCircleOutlineIcon className={this.props.classes.playIcon}/></th>
-            <th className={this.props.classes.th}>Match</th>
-            <th className={this.props.classes.th} colSpan='3'>Red Alliance</th>
-            <th className={this.props.classes.th} colSpan='3'>Blue Alliance</th>
-            <th className={this.props.classes.th} colSpan='2'>Scores</th>
+      <table className={classes.table} border='1'>
+        <thead className={classes.thead}>
+          <tr className={classNames({[classes.tr]: true, [classes.key]: true})}>
+            <th className={classes.th}><PlayCircleOutlineIcon className={classes.playIcon}/></th>
+            <th className={classes.th}>Match</th>
+            <th className={classes.th} colSpan='3'>Red Alliance</th>
+            <th className={classes.th} colSpan='3'>Blue Alliance</th>
+            <th className={classes.th} colSpan='2'>Scores</th>
           </tr>
         </thead>
         <tbody>
           {qmMatches.size > 0 &&
-            <tr className={classNames({[this.props.classes.tr]: true, [this.props.classes.key]: true})}>
-              <th className={this.props.classes.th} colSpan='10'>Qualifications</th>
+            <tr className={classNames({[classes.tr]: true, [classes.key]: true})}>
+              <th className={classes.th} colSpan='10'>Qualifications</th>
             </tr>
           }
           {qmMatches.size > 0 && qmMatches.map(match => this.renderRow(match))}
           {efMatches.size > 0 &&
-            <tr className={classNames({[this.props.classes.tr]: true, [this.props.classes.key]: true})}>
-              <th className={this.props.classes.th} colSpan='10'>Octo-Finals</th>
+            <tr className={classNames({[classes.tr]: true, [classes.key]: true})}>
+              <th className={classes.th} colSpan='10'>Octo-Finals</th>
             </tr>
           }
           {efMatches.size > 0 && efMatches.map(match => this.renderRow(match))}
           {qfMatches.size > 0 &&
-            <tr className={classNames({[this.props.classes.tr]: true, [this.props.classes.key]: true})}>
-              <th className={this.props.classes.th} colSpan='10'>Quarterfinals</th>
+            <tr className={classNames({[classes.tr]: true, [classes.key]: true})}>
+              <th className={classes.th} colSpan='10'>Quarterfinals</th>
             </tr>
           }
           {qfMatches.size > 0 && qfMatches.map(match => this.renderRow(match))}
           {sfMatches.size > 0 &&
-            <tr className={classNames({[this.props.classes.tr]: true, [this.props.classes.key]: true})}>
-              <th className={this.props.classes.th} colSpan='10'>Semifinals</th>
+            <tr className={classNames({[classes.tr]: true, [classes.key]: true})}>
+              <th className={classes.th} colSpan='10'>Semifinals</th>
             </tr>
           }
           {sfMatches.size > 0 && sfMatches.map(match => this.renderRow(match))}
           {fMatches.size > 0 &&
-            <tr className={classNames({[this.props.classes.tr]: true, [this.props.classes.key]: true})}>
-              <th className={this.props.classes.th} colSpan='10'>Finals</th>
+            <tr className={classNames({[classes.tr]: true, [classes.key]: true})}>
+              <th className={classes.th} colSpan='10'>Finals</th>
             </tr>
           }
           {fMatches.size > 0 && fMatches.map(match => this.renderRow(match))}
@@ -216,4 +239,4 @@ class MatchTable extends PureComponent {
   }
 }
 
-export default withStyles(styles)(MatchTable);
+export default withStyles(styles)(MatchTable)
