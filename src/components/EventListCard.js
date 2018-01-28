@@ -6,10 +6,7 @@ import { Link } from 'react-router-dom'
 
 import Divider from 'material-ui/Divider'
 import Grid from 'material-ui/Grid'
-import Icon from 'material-ui/Icon'
-import IconButton from 'material-ui/IconButton'
 import Paper from 'material-ui/Paper'
-import Tooltip from 'material-ui/Tooltip'
 import Typography from 'material-ui/Typography'
 
 import VisibilityRenderer from './VisibilityRenderer'

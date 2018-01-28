@@ -3,9 +3,7 @@ import React, { PureComponent } from 'react'
 import { withStyles } from 'material-ui/styles'
 
 // Components
-import { CircularProgress } from 'material-ui/Progress'
 import List from 'material-ui/List'
-import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
 
 // TBA Components
 import EventListSubheader from './EventListSubheader'

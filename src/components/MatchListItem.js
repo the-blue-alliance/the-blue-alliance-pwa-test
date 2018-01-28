@@ -7,8 +7,7 @@ import { withStyles } from 'material-ui/styles'
 
 // Components
 import Grid from 'material-ui/Grid'
-import { ListItem, ListItemText } from 'material-ui/List'
-import Typography from 'material-ui/Typography'
+import { ListItem } from 'material-ui/List'
 import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
 
 const styles = theme => ({
