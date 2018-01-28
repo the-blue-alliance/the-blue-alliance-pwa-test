@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 import { List } from 'immutable'
+import Event from '../database/Event'
 import Match from '../database/Match'
 import Team from '../database/Team'
 
@@ -16,6 +17,16 @@ export const getEvent = (state, props) => {
     }
   }
 }
+
+export const getEventModel = createSelector(
+  [getEvent],
+  (event) => {
+    if (event) {
+      return new Event(event)
+    }
+    return undefined
+  }
+)
 
 const getEventMatches = (state, props) => {
   for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {

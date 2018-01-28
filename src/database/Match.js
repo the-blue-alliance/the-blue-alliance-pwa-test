@@ -26,11 +26,11 @@ export default class Match extends Record({
   score_breakdown: undefined,
   videos: undefined,
 }) {
-  getDisplayName() {
+  getDisplayName(short=false) {
     if (this.comp_level === 'qm' || this.comp_level === 'f') {
       return `${COMP_LEVELS[this.comp_level]} ${this.match_number}`
     } else {
-      return `${COMP_LEVELS[this.comp_level]} ${this.set_number} Match ${this.match_number}`
+      return `${COMP_LEVELS[this.comp_level]} ${this.set_number} ${short ? '-' : 'Match'} ${this.match_number}`
     }
   }
 

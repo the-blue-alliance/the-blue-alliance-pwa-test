@@ -121,7 +121,7 @@ class EventPage extends PureComponent {
         <Hidden mdUp>
           <TBAPageContainer
             history={this.props.history}
-            documentTitle={name}
+            documentTitle={name ? name : ''}
             title={name}
             refreshFunction={this.refreshFunction}
             tabs={
@@ -158,17 +158,21 @@ class EventPage extends PureComponent {
                     <ListItemText primary={name} />
                   </ListItem>
                 </List>
-                <Divider />
-                <List>
-                  <ListItem>
-                    <ListItemIcon>
-                      <EventIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Dates go here" />
-                  </ListItem>
-                </List>
+                {event && event.getDateString() &&
+                  <React.Fragment>
+                    <Divider />
+                    <List>
+                      <ListItem>
+                        <ListItemIcon>
+                          <EventIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={event.getDateString()} />
+                      </ListItem>
+                    </List>
+                  </React.Fragment>
+                }
               </div>
-              <MatchList matches={matches} />
+              {matches ? <MatchList scrollId='matches' matches={matches} /> : <div>NO MATCHES</div>}
               <div ref={el => this.contentRef = el} className={classes.scrollContainer}>
                 <TeamsList scrollElement={this.contentRef} teams={teams} year={year}/>
               </div>
