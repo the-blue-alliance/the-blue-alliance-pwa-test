@@ -1,7 +1,7 @@
 // General
 import React, { PureComponent } from 'react'
 import { withStyles } from 'material-ui/styles'
-import { Link } from 'react-router-dom'
+import { ordinal } from '../utils'
 
 // Components
 import Button from 'material-ui/Button'
@@ -10,11 +10,13 @@ import Divider from 'material-ui/Divider'
 import Hidden from 'material-ui/Hidden'
 import Icon from 'material-ui/Icon'
 import IconButton from 'material-ui/IconButton'
+import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import Toolbar from 'material-ui/Toolbar'
 import Typography from 'material-ui/Typography'
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft'
 import CloseIcon from 'material-ui-icons/Close'
+import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views'
 
 // TBA Components
@@ -42,6 +44,9 @@ const styles = theme => ({
     textAlign: 'center',
   },
   toolbar: {
+    padding: 0,
+  },
+  list: {
     padding: 0,
   },
 })
@@ -168,9 +173,69 @@ class TeamAtEventDialog extends PureComponent {
               index={this.props.tabIdx}
               onChangeIndex={this.tabHandleChangeIndex}
             >
-              <div>{JSON.stringify(status)}</div>
+              <div>
+                <List className={classes.list}>
+                  {status && status.getIn(['qual', 'ranking', 'rank']) &&
+                    <React.Fragment>
+                      <ListItem>
+                        <Typography type='subheading'>
+                          Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b>
+                        </Typography>
+                      </ListItem>
+                      <Divider />
+                    </React.Fragment>
+                  }
+                  {status && status.getIn(['qual', 'ranking', 'record']) &&
+                    <React.Fragment>
+                      <ListItem>
+                        <Typography type='subheading'>
+                          Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b>
+                        </Typography>
+                      </ListItem>
+                      <Divider />
+                    </React.Fragment>
+                  }
+                  {status && status.getIn(['alliance']) &&
+                    <React.Fragment>
+                      <ListItem>
+                        <Typography type='subheading'>
+                          Alliance: <b>{status.getIn(['alliance', 'pick']) === 0 ? 'Captain' : `${ordinal(status.getIn(['alliance', 'pick']))} Pick`}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
+                        </Typography>
+                      </ListItem>
+                        <Divider />
+                    </React.Fragment>
+                  }
+                  {status && status.getIn(['playoff', 'record']) &&
+                    <React.Fragment>
+                      <ListItem>
+                        <Typography type='subheading'>
+                          Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
+                        </Typography>
+                      </ListItem>
+                      <Divider />
+                    </React.Fragment>
+                  }
+                </List>
+              </div>
               <MatchList matches={matches} />
-              <div>{JSON.stringify(awards)}</div>
+              <div>
+                {awards &&
+                  <List className={classes.list}>
+                  {awards.map(award => {
+                    return (
+                      <React.Fragment>
+                        <ListItem>
+                          <Typography type='subheading'>
+                            {award.name}
+                          </Typography>
+                        </ListItem>
+                        <Divider />
+                      </React.Fragment>
+                    )
+                  })}
+                  </List>
+                }
+              </div>
             </SwipeableViews>
           </DialogContent>
         </Hidden>
