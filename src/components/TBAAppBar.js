@@ -6,6 +6,7 @@ import clipboard from 'clipboard-polyfill'
 import AppBar from 'material-ui/AppBar'
 import ArrowBackIcon from 'material-ui-icons/ArrowBack'
 import FilterListIcon from 'material-ui-icons/FilterList'
+import Hidden from 'material-ui/Hidden'
 import IconButton from 'material-ui/IconButton'
 import { CircularProgress } from 'material-ui/Progress'
 import RefreshIcon from 'material-ui-icons/Refresh'
@@ -17,6 +18,7 @@ import Typography from 'material-ui/Typography'
 
 import TBALamp from '../icons/tba_lamp'
 import HideableBadge from '../components/HideableBadge'
+import TBAAppBarSearch from '../components/TBAAppBarSearch'
 
 const styles = theme => ({
   appBarTitle: {
@@ -76,6 +78,9 @@ class TBAToolbar extends PureComponent {
           <Typography type="title" color="inherit" className={classes.appBarTitle}>
             {title ? title : 'The Blue Alliance'}
           </Typography>
+          <Hidden smDown>
+            <TBAAppBarSearch />
+          </Hidden>
           {this.props.filterFunction && <IconButton color="inherit" onClick={this.props.filterFunction}>
             <HideableBadge
               badgeContent={this.props.filterCount}
@@ -94,9 +99,11 @@ class TBAToolbar extends PureComponent {
           {this.props.isLoading &&  <IconButton color="inherit" disabled>
             <CircularProgress color="secondary" size={20} thickness={5}/>
           </IconButton>}
-          <IconButton color="inherit">
-            <SearchIcon />
-          </IconButton>
+          <Hidden mdUp>
+            <IconButton color="inherit">
+              <SearchIcon />
+            </IconButton>
+          </Hidden>
           <IconButton color="inherit" onClick={this.handleShare}>
             <ShareIcon />
           </IconButton>

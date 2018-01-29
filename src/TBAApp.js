@@ -18,7 +18,7 @@ import TeamListPageContainer from './containers/TeamListPageContainer'
 import TeamPageBase from './pages/TeamPageBase'
 
 // For Google Analytics tracking
-ReactGA.initialize('UA-XXXXXXXX') // TODO: Change to real tracking number
+ReactGA.initialize('UA-3251931-11') // TODO: Change to real tracking number
 var canUseDOM = !!(
       typeof window !== 'undefined' &&
       window.document &&
@@ -56,6 +56,9 @@ class Analytics extends Component {
 }
 
 class ModalSwitch extends React.Component {
+  state = {
+    modalOpen: false,
+  }
   previousLocation = this.props.location
   modalKeyDepths = {}
   initialKey = null
@@ -73,7 +76,7 @@ class ModalSwitch extends React.Component {
       this.previousLocation = this.props.location
     }
 
-    if (nextProps.history.action === 'PUSH') {
+    if (nextProps.location.key !== location.key && nextProps.history.action === 'PUSH') {
       if (location.state && location.state.modal) {
         if (location.key in this.modalKeyDepths) {
           this.modalKeyDepths[nextProps.location.key] = this.modalKeyDepths[location.key] + 1
@@ -84,22 +87,35 @@ class ModalSwitch extends React.Component {
         this.modalKeyDepths[nextProps.location.key] = 1
       }
     }
+
+    const nextIsModal = (
+      nextProps.location.state &&
+      nextProps.location.state.modal &&
+      this.initialKey !== nextProps.location.key
+    )
+    if (nextIsModal && !this.state.modalOpen) {
+      this.setState({modalOpen: true})
+    }
+    if (!nextIsModal && this.state.modalOpen) {
+      this.setState({modalOpen: false})
+    }
   }
 
-  restoreBackState = () => {
+  handleClose = () => {
+    this.setState({modalOpen: false})
     this.props.history.go(-this.modalKeyDepths[this.props.location.key])
   }
 
   render() {
     const { location } = this.props
     const isModal = (
-      location.state &&
+      location.state !== undefined &&
       location.state.modal &&
       this.initialKey !== location.key
     )
 
     return (
-      <div>
+      <React.Fragment>
         <Switch location={isModal ? this.previousLocation : location}>
           <Route exact path='/' component={HomePageContainer} />
           <Route path='/events/:year' component={EventListPageBase} />
@@ -109,8 +125,8 @@ class ModalSwitch extends React.Component {
           <Route path='/teams' component={TeamListPageContainer} />
           <Route path='/team/:teamNumber/:year?' component={TeamPageBase} />
         </Switch>
-        {isModal && <TBAModalDialog restoreBackState={this.restoreBackState} />}
-      </div>
+        <TBAModalDialog isModal={isModal} open={this.state.modalOpen} handleClose={this.handleClose} />
+      </React.Fragment>
     )
   }
 }

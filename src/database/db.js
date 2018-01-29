@@ -102,6 +102,8 @@ export const addTeamEvents = (teamKey, events) => {
 }
 
 export const addTeamEventStatus = (teamKey, eventKey, status) => {
-  status['key'] = `${teamKey}_${eventKey}`
-  db.teamEventStatus.put(status)
+  if (status) {
+    status['key'] = `${teamKey}_${eventKey}`
+    db.teamEventStatus.put(status)
+  }
 }

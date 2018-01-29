@@ -4,6 +4,7 @@ import { withStyles } from 'material-ui/styles'
 import { ordinal } from '../utils'
 
 // Components
+import AppBar from 'material-ui/AppBar'
 import Button from 'material-ui/Button'
 import { DialogContent } from 'material-ui/Dialog'
 import Divider from 'material-ui/Divider'
@@ -21,6 +22,7 @@ import SwipeableViews from 'react-swipeable-views'
 
 // TBA Components
 import MatchList from './MatchList'
+import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 import TeamAtEvent from '../components/TeamAtEvent'
 
 const styles = theme => ({
@@ -42,6 +44,11 @@ const styles = theme => ({
   flex: {
     flex: 1,
     textAlign: 'center',
+  },
+  scrollContainer: {
+    width: '100%',
+    height: '100%',
+    overflow: 'scroll',
   },
   toolbar: {
     padding: 0,
@@ -131,36 +138,37 @@ class TeamAtEventDialog extends PureComponent {
           </DialogContent>
         </Hidden>
         <Hidden mdUp>
-          <Toolbar className={classes.toolbar}>
-            <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
-              <ChevronLeftIcon />
-            </IconButton>
-            <Typography type="title" color="inherit" className={classes.flex}>
-                <Button
-                  color='primary'
-                  component={Link}
-                  to={{pathname: `/team/${teamNumber}/${event.get('year')}`, hash: eventKey.substring(4)}}
-                >
-                  {teamTitle} <Icon>chevron_right</Icon>
-                </Button>
-            </Typography>
-            <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-          <Tabs
-            value={this.props.tabIdx}
-            onChange={this.tabHandleChange}
-            indicatorColor='primary'
-            scrollable
-            scrollButtons='auto'
-            className='hide-scrollbar'
-          >
-            <Tab value={0} label='Summary' />
-            <Tab value={1} label='Matches' />
-            <Tab value={2} label='Awards' />
-          </Tabs>
-          <Divider />
+          <AppBar color='default'>
+            <Toolbar className={classes.toolbar}>
+              <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
+                <ChevronLeftIcon />
+              </IconButton>
+              <Typography type="title" color="inherit" className={classes.flex}>
+                  <Button
+                    color='primary'
+                    component={Link}
+                    to={{pathname: `/team/${teamNumber}/${event.get('year')}`, hash: eventKey.substring(4)}}
+                  >
+                    {teamTitle} <Icon>chevron_right</Icon>
+                  </Button>
+              </Typography>
+              <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </Toolbar>
+            <Tabs
+              value={this.props.tabIdx}
+              onChange={this.tabHandleChange}
+              indicatorColor='primary'
+              scrollable
+              scrollButtons='auto'
+              className='hide-scrollbar'
+            >
+              <Tab value={0} label='Summary' />
+              <Tab value={1} label='Matches' />
+              <Tab value={2} label='Awards' />
+            </Tabs>
+          </AppBar>
           <DialogContent className={classes.contentMobile}>
             <SwipeableViews
               containerStyle={{
@@ -173,7 +181,10 @@ class TeamAtEventDialog extends PureComponent {
               index={this.props.tabIdx}
               onChangeIndex={this.tabHandleChangeIndex}
             >
-              <div>
+              <ScrollRestoreContainer
+                scrollId='summary'
+                className={classes.scrollContainer}
+              >
                 <List className={classes.list}>
                   {status && status.getIn(['qual', 'ranking', 'rank']) &&
                     <React.Fragment>
@@ -216,14 +227,17 @@ class TeamAtEventDialog extends PureComponent {
                     </React.Fragment>
                   }
                 </List>
-              </div>
-              <MatchList matches={matches} />
-              <div>
+              </ScrollRestoreContainer>
+              <MatchList matches={matches} scrollId='matches' />
+              <ScrollRestoreContainer
+                scrollId='awards'
+                className={classes.scrollContainer}
+              >
                 {awards &&
                   <List className={classes.list}>
                   {awards.map(award => {
                     return (
-                      <React.Fragment>
+                      <React.Fragment key={award.key}>
                         <ListItem>
                           <Typography type='subheading'>
                             {award.name}
@@ -235,7 +249,7 @@ class TeamAtEventDialog extends PureComponent {
                   })}
                   </List>
                 }
-              </div>
+              </ScrollRestoreContainer>
             </SwipeableViews>
           </DialogContent>
         </Hidden>

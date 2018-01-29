@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react'
 import { withStyles } from 'material-ui/styles'
 
 // Components
+import AppBar from 'material-ui/AppBar'
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft'
 import CloseIcon from 'material-ui-icons/Close'
 import { DialogContent } from 'material-ui/Dialog'
@@ -115,17 +116,18 @@ class MatchDialog extends PureComponent {
           </DialogContent>
         </Hidden>
         <Hidden mdUp>
-          <Toolbar className={classes.toolbar}>
-            <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
-              <ChevronLeftIcon />
-            </IconButton>
-            <Typography type="title" color="inherit" className={classes.flex}>
-              {this.props.matchObj.getDisplayName()}
-            </Typography>
-            <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
+          <AppBar color='default'>
+            <Toolbar className={classes.toolbar}>
+              <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
+                <ChevronLeftIcon />
+              </IconButton>
+              <Typography type="title" color="inherit" className={classes.flex}>
+                {this.props.matchObj.getDisplayName()}
+              </Typography>
+              <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </Toolbar>
           <Tabs
             value={this.props.tabIdx}
             onChange={this.tabHandleChange}
@@ -137,7 +139,7 @@ class MatchDialog extends PureComponent {
             <Tab value={0} label='Breakdown' />
             <Tab value={1} label='Videos' />
           </Tabs>
-          <Divider />
+          </AppBar>
           <DialogContent className={classes.contentMobile}>
             <SwipeableViews
               containerStyle={{

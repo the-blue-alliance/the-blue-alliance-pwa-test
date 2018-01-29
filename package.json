@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "autosuggest-highlight": "^3.1.1",
     "classnames": "^2.2.5",
     "clipboard-polyfill": "^2.4.1",
     "connected-react-router": "^4.3.0",
@@ -13,6 +14,7 @@
     "material-ui": "^1.0.0-beta.30",
     "material-ui-icons": "^1.0.0-alpha.19",
     "react": "^16.2.0",
+    "react-autosuggest": "^9.3.2",
     "react-dom": "^16.2.0",
     "react-ga": "^2.4.0",
     "react-immutable-proptypes": "^2.1.0",

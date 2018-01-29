@@ -21,37 +21,33 @@ const ModalRoute = ({ component, ...rest }) => {
 }
 
 class TBAModalDialog extends React.Component {
-  state = {
-    open: true,
-  }
-
-  handleClose = () => {
-    this.setState({open: false})
-  }
-
   render() {
-    const { fullScreen, restoreBackState } = this.props
-
+    const { isModal, open, fullScreen, handleClose } = this.props
     return (
       <Dialog
-        open={this.state.open}
-        onClose={this.handleClose}
+        open={open}
+        onBackdropClick={handleClose}
         maxWidth='md'
         fullWidth
         fullScreen={fullScreen}
         transition={Transition}
-        onExited={restoreBackState}
       >
-        <ModalRoute path='/match/:matchKey' component={MatchDialogContainer} handleClose={this.handleClose} />
-        <ModalRoute path='/team/:teamNumber/:year?' component={TeamAtEventDialogContainer} handleClose={this.handleClose} />
+        {isModal &&
+          <React.Fragment>
+            <ModalRoute path='/match/:matchKey' component={MatchDialogContainer} handleClose={handleClose} />
+            <ModalRoute path='/team/:teamNumber/:year?' component={TeamAtEventDialogContainer} handleClose={handleClose} />
+          </React.Fragment>
+        }
       </Dialog>
     )
   }
 }
 
 TBAModalDialog.propTypes = {
+  isModal: PropTypes.bool.isRequired,
+  open: PropTypes.bool.isRequired,
   fullScreen: PropTypes.bool.isRequired,
-  restoreBackState: PropTypes.func.isRequired,
+  handleClose: PropTypes.func.isRequired,
 }
 
 export default withMobileDialog()(TBAModalDialog)
