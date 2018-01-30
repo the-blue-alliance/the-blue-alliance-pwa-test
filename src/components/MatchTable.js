@@ -12,7 +12,6 @@ import { Link } from 'react-router-dom'
 
 // TBA Components
 import TeamAtEventPopover from './TeamAtEventPopover'
-import VisibilityRenderer from './VisibilityRenderer'
 
 const styles = theme => ({
   table: {
@@ -62,9 +61,6 @@ const styles = theme => ({
   fakeLink: {
     color: theme.palette.primary.main,
   },
-  fastRender: {
-    color: 'rgba(0, 0, 0,  0)',
-  },
   rpDotA: {
     position: 'absolute',
     top: '2px',
@@ -96,6 +92,9 @@ const styles = theme => ({
 })
 
 class MatchTable extends PureComponent {
+  state = {
+    isFirstRender: true,
+  }
   renderRow(match) {
     let redScore = match.alliances.getIn(['red', 'score'])
     let blueScore = match.alliances.getIn(['blue', 'score'])
@@ -110,137 +109,114 @@ class MatchTable extends PureComponent {
     const rpEarnedTextA = match.rpEarnedTextA()
     const rpEarnedTextB = match.rpEarnedTextB()
 
-    const { classes, disableVisibilityRenderer } = this.props
+    const { classes } = this.props
+    const isFirstRender = this.state.isFirstRender
 
     return (
-      <VisibilityRenderer
-        key={match.key}
-        disable={disableVisibilityRenderer}
-        preRender={
-          <tr className={classes.tr}>
-            <td className={classes.td}>
-              {match.videos.size > 0 && <Icon className={classes.playIcon}>play_circle_outline</Icon>}
-            </td>
-            <td className={classNames({[classes.td]: true, [classes.fakeLink]: true})}>
-              {match.getDisplayName()}
-            </td>
-            {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
-              const teamNum = teamKey.substr(3)
-              return (
-                <td
-                  key={teamKey}
-                  className={classNames({
-                      [classes.td]: true,
-                      [classes.red]: true,
-                      [classes.winner]: redWin,
-                      [classes.fakeLink]: true,
-                  })}
-                >
-                  {teamNum}
-                </td>
-              )
-            })}
-            {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
-              const teamNum = teamKey.substr(3)
-              return (
-                <td
-                  key={teamKey}
-                  className={classNames({
-                      [classes.td]: true,
-                      [classes.blue]: true,
-                      [classes.winner]: blueWin,
-                      [classes.fakeLink]: true,
-                  })}
-                >
-                  {teamNum}
-                </td>
-              )
-            })}
-            <td className={classNames({[classes.td]: true, [classes.redScore]: true, [classes.winner]: redWin})}>
-              {redScore}
-            </td>
-            <td className={classNames({[classes.td]: true, [classes.blueScore]: true, [classes.winner]: blueWin})}>
-              {blueScore}
-            </td>
-          </tr>
+      <tr key={match.key} className={classes.tr}>
+        <td className={classes.td}>
+          {match.videos.size > 0 && <Icon className={classes.playIcon}>play_circle_outline</Icon>}
+        </td>
+        {isFirstRender ?
+          <td className={classNames({[classes.td]: true, [classes.fakeLink]: true})}>
+            {match.getDisplayName()}
+          </td>
+          :
+          <td className={classes.td}>
+            <Link to={{pathname: `/match/${match.key}`, state: {modal: true}}}>{match.getDisplayName()}</Link>
+          </td>
         }
-        fastRender={
-          <tr className={classes.tr}>
-            <td className={classNames({[classes.td]: true, [classes.fastRender]: true})} colSpan='10'>TBA</td>
-          </tr>
-        }
-        render={
-          <tr className={classes.tr}>
-            <td className={classes.td}>
-              {match.videos.size > 0 && <Icon className={classes.playIcon}>play_circle_outline</Icon>}
+
+        {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
+          const teamNum = teamKey.substr(3)
+          return (isFirstRender ?
+            <td
+              key={teamKey}
+              className={classNames({
+                  [classes.td]: true,
+                  [classes.red]: true,
+                  [classes.winner]: redWin,
+                  [classes.fakeLink]: true,
+              })}
+            >
+              {teamNum}
             </td>
-            <td className={classes.td}>
-              <Link to={{pathname: `/match/${match.key}`, state: {modal: true}}}>{match.getDisplayName()}</Link>
+            :
+            <TeamAtEventPopover
+              key={teamKey}
+              wrapper='td'
+              teamKey={teamKey}
+              className={classNames({
+                  [classes.td]: true,
+                  [classes.red]: true,
+                  [classes.winner]: redWin
+              })}
+            >
+              <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>{teamNum}</Link>
+            </TeamAtEventPopover>
+          )
+        })}
+        {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
+          const teamNum = teamKey.substr(3)
+          return (isFirstRender ?
+            <td
+              key={teamKey}
+              className={classNames({
+                  [classes.td]: true,
+                  [classes.blue]: true,
+                  [classes.winner]: blueWin,
+                  [classes.fakeLink]: true,
+              })}
+            >
+              {teamNum}
             </td>
-            {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
-              const teamNum = teamKey.substr(3)
-              return (
-                <TeamAtEventPopover
-                  key={teamKey}
-                  wrapper='td'
-                  teamKey={teamKey}
-                  className={classNames({
-                      [classes.td]: true,
-                      [classes.red]: true,
-                      [classes.winner]: redWin
-                  })}
-                >
-                  <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>{teamNum}</Link>
-                </TeamAtEventPopover>
-              )
-            })}
-            {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
-              const teamNum = teamKey.substr(3)
-              return (
-                <TeamAtEventPopover
-                  key={teamKey}
-                  wrapper='td'
-                  teamKey={teamKey}
-                  className={classNames({
-                      [classes.td]: true,
-                      [classes.blue]: true,
-                      [classes.winner]: blueWin
-                  })}
-                >
-                  <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>{teamNum}</Link>
-                </TeamAtEventPopover>
-              )
-            })}
-            <td className={classNames({[classes.td]: true, [classes.redScore]: true, [classes.winner]: redWin})}>
-              {match.rpEarnedA('red') && <Tooltip title={rpEarnedTextA} placement="top">
-                <svg className={classes.rpDotA}>
-                  <circle cx="2" cy="2" r="2"/>
-                </svg>
-              </Tooltip>}
-              {match.rpEarnedB('red') &&  <Tooltip title={rpEarnedTextB} placement="top">
-                <svg className={classes.rpDotB}>
-                  <circle cx="2" cy="2" r="2"/>
-                </svg>
-              </Tooltip>}
-              {redScore}
-            </td>
-            <td className={classNames({[classes.td]: true, [classes.blueScore]: true, [classes.winner]: blueWin})}>
-              {match.rpEarnedA('blue') &&  <Tooltip title={rpEarnedTextA} placement="top">
-                <svg className={classes.rpDotA}>
-                  <circle cx="2" cy="2" r="2"/>
-                </svg>
-              </Tooltip>}
-             {match.rpEarnedB('blue') &&  <Tooltip title={rpEarnedTextB} placement="top">
-                <svg className={classes.rpDotB}>
-                  <circle cx="2" cy="2" r="2"/>
-                </svg>
-              </Tooltip>}
-              {blueScore}
-            </td>
-          </tr>
-        }
-      />
+            :
+            <TeamAtEventPopover
+              key={teamKey}
+              wrapper='td'
+              teamKey={teamKey}
+              className={classNames({
+                  [classes.td]: true,
+                  [classes.blue]: true,
+                  [classes.winner]: blueWin
+              })}
+            >
+              <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>{teamNum}</Link>
+            </TeamAtEventPopover>
+          )
+        })}
+        <td className={classNames({[classes.td]: true, [classes.redScore]: true, [classes.winner]: redWin})}>
+          {!isFirstRender && match.rpEarnedA('red') && <Tooltip title={rpEarnedTextA} placement="top">
+            <svg className={classes.rpDotA}>
+              <circle cx="2" cy="2" r="2"/>
+            </svg>
+          </Tooltip>}
+          {!isFirstRender && match.rpEarnedB('red') &&  <Tooltip title={rpEarnedTextB} placement="top">
+            <svg className={classes.rpDotB}>
+              <circle cx="2" cy="2" r="2"/>
+            </svg>
+          </Tooltip>}
+          {redScore}
+        </td>
+        <td className={classNames({[classes.td]: true, [classes.blueScore]: true, [classes.winner]: blueWin})}>
+          {!isFirstRender && match.rpEarnedA('blue') &&  <Tooltip title={rpEarnedTextA} placement="top">
+            <svg className={classes.rpDotA}>
+              <circle cx="2" cy="2" r="2"/>
+            </svg>
+          </Tooltip>}
+          {!isFirstRender && match.rpEarnedB('blue') &&  <Tooltip title={rpEarnedTextB} placement="top">
+            <svg className={classes.rpDotB}>
+              <circle cx="2" cy="2" r="2"/>
+            </svg>
+          </Tooltip>}
+          {blueScore}
+        </td>
+      </tr>
     )
+  }
+
+  componentDidMount() {
+    setTimeout(() => this.setState({isFirstRender: false}), 0)
   }
 
   render() {
