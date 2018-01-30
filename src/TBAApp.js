@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import ReactGA from 'react-ga';
-import Reboot from 'material-ui/Reboot';
-import { withStyles } from 'material-ui/styles';
-import Hidden from 'material-ui/Hidden';
+import React, { Component } from 'react'
+import { Route, Switch } from 'react-router-dom'
+import ReactGA from 'react-ga'
+import indigo from 'material-ui/colors/indigo'
+import amber from 'material-ui/colors/amber'
+import Reboot from 'material-ui/Reboot'
+import { withStyles, MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
+import Hidden from 'material-ui/Hidden'
 
 import TBASideNavContainer from './containers/TBASideNavContainer'
 import TBABottomNavContainer from './containers/TBABottomNavContainer'
@@ -134,6 +136,18 @@ class ModalSwitch extends React.Component {
 const styles = theme => ({
 })
 
+const theme = createMuiTheme({
+  palette: {
+    primary: indigo,
+    secondary: amber,
+  },
+  typography: {
+    title: {
+      fontWeight: 400,
+    },
+  },
+})
+
 class TBAApp extends Component {
   constructor(props) {
     super(props)
@@ -155,7 +169,7 @@ class TBAApp extends Component {
       )
     }
     return (
-      <div>
+      <MuiThemeProvider theme={theme}>
         <Reboot />
         <TBASnackbarsContainer />
         <Hidden smDown implementation="css">
@@ -166,9 +180,9 @@ class TBAApp extends Component {
         </Hidden>
         <Route component={ModalSwitch} />
         <Route path="/" component={Analytics}/>
-      </div>
+      </MuiThemeProvider>
     )
   }
 }
 
-export default withStyles(styles)(TBAApp);
+export default withStyles(styles)(TBAApp)

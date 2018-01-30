@@ -1,14 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Map } from 'immutable';
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import indigo from 'material-ui/colors/indigo';
-import amber from 'material-ui/colors/amber';
-import registerServiceWorker from './registerServiceWorker';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Map } from 'immutable'
+import registerServiceWorker from './registerServiceWorker'
 
-import { applyMiddleware, createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux'
 import { Provider } from 'react-redux'
-import thunk from 'redux-thunk';
+import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import { createBrowserHistory } from 'history'
 import { ConnectedRouter, connectRouter, routerMiddleware } from 'connected-react-router/immutable'
@@ -27,7 +24,7 @@ const store = createStore(
   connectRouter(history)(reducer),
   initialState,
   applyMiddleware(thunk, routerMiddleware(history)),
-);
+)
 
 // Subscribe to the store to keep the url hash in sync
 let lastHash = null
@@ -40,26 +37,12 @@ store.subscribe(() => {
   }
 })
 
-const theme = createMuiTheme({
-  palette: {
-    primary: indigo,
-    secondary: amber,
-  },
-  typography: {
-    title: {
-      fontWeight: 400,
-    },
-  },
-});
-
 ReactDOM.hydrate(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <MuiThemeProvider theme={theme}>
-        <TBAApp />
-      </MuiThemeProvider>
+      <TBAApp />
     </ConnectedRouter>
   </Provider>,
-  document.getElementById('root'));
+  document.getElementById('root'))
 
-registerServiceWorker(store);
+registerServiceWorker(store)
