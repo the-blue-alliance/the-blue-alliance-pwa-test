@@ -42,7 +42,7 @@ const updateMulti = (state, subPath, data, mergeByKey=false) => {
   // Merge data -> history -> current
   const key = findLastKey(state, subPath)
   let newCollection = Map()
-  data.forEach(o => newCollection = newCollection.set(o.key, fromJS(o)))
+  fromJS(data).forEach(o => newCollection = newCollection.set(o.get('key'), o))
   let lastCollection = Map()
   if (key !== undefined) {
     lastCollection = state.getIn(['modelHistory', key].concat(subPath))
