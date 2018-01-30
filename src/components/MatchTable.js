@@ -186,29 +186,57 @@ class MatchTable extends PureComponent {
           )
         })}
         <td className={classNames({[classes.td]: true, [classes.redScore]: true, [classes.winner]: redWin})}>
-          {!isFirstRender && match.rpEarnedA('red') && <Tooltip title={rpEarnedTextA} placement="top">
+          {match.rpEarnedA('red') && (
+            isFirstRender ?
             <svg className={classes.rpDotA}>
               <circle cx="2" cy="2" r="2"/>
             </svg>
-          </Tooltip>}
-          {!isFirstRender && match.rpEarnedB('red') &&  <Tooltip title={rpEarnedTextB} placement="top">
-            <svg className={classes.rpDotB}>
-              <circle cx="2" cy="2" r="2"/>
-            </svg>
-          </Tooltip>}
+            :
+            <Tooltip title={rpEarnedTextA} placement="top">
+              <svg className={classes.rpDotA}>
+                <circle cx="2" cy="2" r="2"/>
+              </svg>
+            </Tooltip>
+          )}
+          {match.rpEarnedB('red') && (
+            isFirstRender ?
+              <svg className={classes.rpDotB}>
+                <circle cx="2" cy="2" r="2"/>
+              </svg>
+              :
+             <Tooltip title={rpEarnedTextB} placement="top">
+              <svg className={classes.rpDotB}>
+                <circle cx="2" cy="2" r="2"/>
+              </svg>
+            </Tooltip>
+          )}
           {redScore}
         </td>
         <td className={classNames({[classes.td]: true, [classes.blueScore]: true, [classes.winner]: blueWin})}>
-          {!isFirstRender && match.rpEarnedA('blue') &&  <Tooltip title={rpEarnedTextA} placement="top">
+          {match.rpEarnedA('blue') && (
+            isFirstRender ?
             <svg className={classes.rpDotA}>
               <circle cx="2" cy="2" r="2"/>
             </svg>
-          </Tooltip>}
-          {!isFirstRender && match.rpEarnedB('blue') &&  <Tooltip title={rpEarnedTextB} placement="top">
-            <svg className={classes.rpDotB}>
-              <circle cx="2" cy="2" r="2"/>
-            </svg>
-          </Tooltip>}
+            :
+            <Tooltip title={rpEarnedTextA} placement="top">
+              <svg className={classes.rpDotA}>
+                <circle cx="2" cy="2" r="2"/>
+              </svg>
+            </Tooltip>
+          )}
+          {match.rpEarnedB('blue') && (
+            isFirstRender ?
+              <svg className={classes.rpDotB}>
+                <circle cx="2" cy="2" r="2"/>
+              </svg>
+              :
+             <Tooltip title={rpEarnedTextB} placement="top">
+              <svg className={classes.rpDotB}>
+                <circle cx="2" cy="2" r="2"/>
+              </svg>
+            </Tooltip>
+          )}
           {blueScore}
         </td>
       </tr>
@@ -216,7 +244,11 @@ class MatchTable extends PureComponent {
   }
 
   componentDidMount() {
-    setTimeout(() => this.setState({isFirstRender: false}), 0)
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() =>
+        this.setState({isFirstRender: false})
+      )
+    )
   }
 
   render() {
