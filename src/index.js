@@ -4,7 +4,6 @@ import { Map } from 'immutable';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import indigo from 'material-ui/colors/indigo';
 import amber from 'material-ui/colors/amber';
-import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
 import { applyMiddleware, createStore } from 'redux';
