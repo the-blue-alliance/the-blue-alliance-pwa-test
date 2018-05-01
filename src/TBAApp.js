@@ -117,6 +117,7 @@ class ModalSwitch extends React.Component {
     )
 
     return (
+      <React.StrictMode>
       <React.Fragment>
         <Switch location={isModal ? this.previousLocation : location}>
           <Route exact path='/' component={HomePageContainer} />
@@ -129,6 +130,7 @@ class ModalSwitch extends React.Component {
         </Switch>
         <TBAModalDialog isModal={isModal} open={this.state.modalOpen} handleClose={this.handleClose} />
       </React.Fragment>
+      </React.StrictMode>
     )
   }
 }
