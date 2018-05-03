@@ -35,10 +35,10 @@ class Analytics extends Component {
     this.sendPageChange(this.getPage(props.location))
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     // When props change, check if the URL has changed or not
-    if (this.getPage(this.props.location) !== this.getPage(nextProps.location)) {
-      this.sendPageChange(this.getPage(nextProps.location))
+    if (this.getPage(this.props.location) !== this.getPage(prevProps.location)) {
+      this.sendPageChange(this.getPage(this.props.location))
     }
   }
 
@@ -65,8 +65,9 @@ class ModalSwitch extends React.Component {
   modalKeyDepths = {}
   initialKey = null
 
-  componentWillMount() {
-    this.initialKey = this.props.location.key
+  constructor(props) {
+    super(props)
+    this.initialKey = props.location.key
   }
 
   componentWillUpdate(nextProps) {
