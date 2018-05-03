@@ -25,7 +25,9 @@ const styles = theme => ({
     flex: 1,
   },
   toolbar: {
-    padding: 0,
+    [theme.breakpoints.down('sm')]: {
+      padding: 0,
+    },
   },
   backButton: {
     marginRight: 8,
