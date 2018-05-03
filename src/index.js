@@ -38,11 +38,13 @@ store.subscribe(() => {
 })
 
 ReactDOM.hydrate(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <TBAApp />
-    </ConnectedRouter>
-  </Provider>,
+  <React.StrictMode>
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <TBAApp />
+      </ConnectedRouter>
+    </Provider>
+  </React.StrictMode>,
   document.getElementById('root'))
 
 registerServiceWorker(store)
