@@ -7,7 +7,7 @@ import { withStyles } from 'material-ui/styles'
 // Components
 import Button from 'material-ui/Button'
 import { CircularProgress } from 'material-ui/Progress'
-import EventIcon from 'material-ui-icons/Event'
+import EventIcon from '@material-ui/icons/Event'
 import Grid from 'material-ui/Grid'
 import Icon from 'material-ui/Icon'
 import Menu, { MenuItem } from 'material-ui/Menu'
@@ -108,7 +108,7 @@ class EventListPageDesktop extends PureComponent {
               <div className={classes.sideNav}>
                 <Button
                   color='primary'
-                  raised
+                  variant="raised"
                   fullWidth
                   onClick={this.handleYearOpen}
                   className={classes.yearButton}
@@ -145,7 +145,7 @@ class EventListPageDesktop extends PureComponent {
                     >
                       <Button
                         color='default'
-                        raised
+                        variant="raised"
                         onClick={this.props.filterFunction}
                       >
                           <Icon className={classes.leftIcon}>filter_list</Icon>
@@ -192,7 +192,7 @@ class EventListPageDesktop extends PureComponent {
                     :
                     <EventIcon className={classes.zeroDataIcon} />
                   }
-                  <Typography type='subheading'>{isLoading ? 'Events loading' : 'No events found'}</Typography>
+                  <Typography variant='subheading'>{isLoading ? 'Events loading' : 'No events found'}</Typography>
                 </div>
               }
 
@@ -202,7 +202,7 @@ class EventListPageDesktop extends PureComponent {
                   {officialEventsGrouped.map(group => {
                     return (
                       <div key={group.get('slug')} id={group.get('slug')}>
-                        <Typography type='title' gutterBottom>{group.get('label')}</Typography>
+                        <Typography variant='title' gutterBottom>{group.get('label')}</Typography>
                         <EventListCard events={group.get('events')}/>
                       </div>
                     )
@@ -215,7 +215,7 @@ class EventListPageDesktop extends PureComponent {
                   {unofficialEventsGrouped.map(group => {
                     return (
                       <div key={group.get('slug')} id={group.get('slug')}>
-                        <Typography type='title' gutterBottom>{group.get('label')}</Typography>
+                        <Typography variant='title' gutterBottom>{group.get('label')}</Typography>
                         <EventListCard events={group.get('events')}/>
                       </div>
                     )

@@ -14,7 +14,7 @@ import { push } from 'connected-react-router'
 import Paper from 'material-ui/Paper'
 import ListSubheader from 'material-ui/List/ListSubheader'
 import { MenuItem } from 'material-ui/Menu'
-import SearchIcon from 'material-ui-icons/Search'
+import SearchIcon from '@material-ui/icons/Search'
 import Autosuggest from 'react-autosuggest'
 
 const styles = theme => ({

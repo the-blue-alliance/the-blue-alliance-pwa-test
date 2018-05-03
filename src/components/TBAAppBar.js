@@ -4,14 +4,14 @@ import { withStyles } from 'material-ui/styles'
 import clipboard from 'clipboard-polyfill'
 
 import AppBar from 'material-ui/AppBar'
-import ArrowBackIcon from 'material-ui-icons/ArrowBack'
-import FilterListIcon from 'material-ui-icons/FilterList'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import FilterListIcon from '@material-ui/icons/FilterList'
 import Hidden from 'material-ui/Hidden'
 import IconButton from 'material-ui/IconButton'
 import { CircularProgress } from 'material-ui/Progress'
-import RefreshIcon from 'material-ui-icons/Refresh'
-import SearchIcon from 'material-ui-icons/Search'
-import ShareIcon from 'material-ui-icons/Share'
+import RefreshIcon from '@material-ui/icons/Refresh'
+import SearchIcon from '@material-ui/icons/Search'
+import ShareIcon from '@material-ui/icons/Share'
 import Snackbar from 'material-ui/Snackbar'
 import Toolbar from 'material-ui/Toolbar'
 import Typography from 'material-ui/Typography'
@@ -75,7 +75,7 @@ class TBAToolbar extends PureComponent {
             :
             <TBALamp className={classes.logo} />
           }
-          <Typography type="title" color="inherit" className={classes.appBarTitle}>
+          <Typography variant="title" color="inherit" className={classes.appBarTitle}>
             {title ? title : 'The Blue Alliance'}
           </Typography>
           <Hidden smDown>

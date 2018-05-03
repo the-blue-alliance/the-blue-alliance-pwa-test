@@ -15,8 +15,8 @@ import List, { ListItem } from 'material-ui/List'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import Toolbar from 'material-ui/Toolbar'
 import Typography from 'material-ui/Typography'
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft'
-import CloseIcon from 'material-ui-icons/Close'
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import CloseIcon from '@material-ui/icons/Close'
 import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views'
 
@@ -119,7 +119,7 @@ class TeamAtEventDialog extends PureComponent {
             <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
               <ChevronLeftIcon />
             </IconButton>
-            <Typography type="title" color="inherit" className={classes.flex}>
+            <Typography variant="title" color="inherit" className={classes.flex}>
               <Link to={{pathname: `/team/${teamNumber}/${event.get('year')}`, hash: eventKey.substring(4)}}>{teamTitle}</Link>
             </Typography>
             <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
@@ -142,7 +142,7 @@ class TeamAtEventDialog extends PureComponent {
               <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
                 <ChevronLeftIcon />
               </IconButton>
-              <Typography type="title" color="inherit" className={classes.flex}>
+              <Typography variant="title" color="inherit" className={classes.flex}>
                   <Button
                     color='primary'
                     component={Link}
@@ -188,7 +188,7 @@ class TeamAtEventDialog extends PureComponent {
                   {status && status.getIn(['qual', 'ranking', 'rank']) &&
                     <React.Fragment>
                       <ListItem>
-                        <Typography type='subheading'>
+                        <Typography variant='subheading'>
                           Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b>
                         </Typography>
                       </ListItem>
@@ -198,7 +198,7 @@ class TeamAtEventDialog extends PureComponent {
                   {status && status.getIn(['qual', 'ranking', 'record']) &&
                     <React.Fragment>
                       <ListItem>
-                        <Typography type='subheading'>
+                        <Typography variant='subheading'>
                           Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b>
                         </Typography>
                       </ListItem>
@@ -208,7 +208,7 @@ class TeamAtEventDialog extends PureComponent {
                   {status && status.getIn(['alliance']) &&
                     <React.Fragment>
                       <ListItem>
-                        <Typography type='subheading'>
+                        <Typography variant='subheading'>
                           Alliance: <b>{status.getIn(['alliance', 'pick']) === 0 ? 'Captain' : `${ordinal(status.getIn(['alliance', 'pick']))} Pick`}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
                         </Typography>
                       </ListItem>
@@ -218,7 +218,7 @@ class TeamAtEventDialog extends PureComponent {
                   {status && status.getIn(['playoff', 'record']) &&
                     <React.Fragment>
                       <ListItem>
-                        <Typography type='subheading'>
+                        <Typography variant='subheading'>
                           Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
                         </Typography>
                       </ListItem>
@@ -238,7 +238,7 @@ class TeamAtEventDialog extends PureComponent {
                     return (
                       <React.Fragment key={award.key}>
                         <ListItem>
-                          <Typography type='subheading'>
+                          <Typography variant='subheading'>
                             {award.name}
                           </Typography>
                         </ListItem>

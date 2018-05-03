@@ -17,7 +17,7 @@ class TBASideNav extends PureComponent {
 
     return (
       <Drawer
-        type="permanent"
+        variant="permanent"
         className={this.props.classes.root}
       >
         <TBASideNavContentContainer />

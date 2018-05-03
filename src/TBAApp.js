@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 import ReactGA from 'react-ga'
 import indigo from 'material-ui/colors/indigo'
 import amber from 'material-ui/colors/amber'
-import Reboot from 'material-ui/Reboot'
+import CssBaseline from 'material-ui/CssBaseline'
 import { withStyles, MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 import Hidden from 'material-ui/Hidden'
 
@@ -170,7 +170,7 @@ class TBAApp extends Component {
     }
     return (
       <MuiThemeProvider theme={theme}>
-        <Reboot />
+        <CssBaseline />
         <TBASnackbarsContainer />
         <Hidden smDown implementation="css">
           <Route path="/" component={TBASideNavContainer} />

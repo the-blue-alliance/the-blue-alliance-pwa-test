@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom'
 import { withStyles } from 'material-ui/styles';
-import HomeIcon from 'material-ui-icons/Home';
-import StarIcon from 'material-ui-icons/Star';
-import VideocamIcon from 'material-ui-icons/Videocam';
-import EventIcon from 'material-ui-icons/Event';
-import PeopleIcon from 'material-ui-icons/People';
+import HomeIcon from '@material-ui/icons/Home';
+import StarIcon from '@material-ui/icons/Star';
+import VideocamIcon from '@material-ui/icons/Videocam';
+import EventIcon from '@material-ui/icons/Event';
+import PeopleIcon from '@material-ui/icons/People';
 import List, { ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
 import Switch from 'material-ui/Switch';
 import Divider from 'material-ui/Divider';
