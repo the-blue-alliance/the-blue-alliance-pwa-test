@@ -5,7 +5,7 @@ import { withStyles } from 'material-ui/styles'
 
 import ButtonBase from 'material-ui/ButtonBase'
 import { CircularProgress } from 'material-ui/Progress'
-import EventIcon from 'material-ui-icons/Event'
+import EventIcon from '@material-ui/icons/Event'
 import Icon from 'material-ui/Icon'
 import Menu, { MenuItem } from 'material-ui/Menu'
 import Typography from 'material-ui/Typography'
@@ -77,7 +77,7 @@ class EventListPageMobile extends PureComponent {
             className={classes.yearSelector}
             onClick={this.handleYearOpen}
           >
-            <Typography type='title' color='inherit'>
+            <Typography variant='title' color='inherit'>
               {`${year} Events`}
             </Typography>
             <Icon>arrow_drop_down</Icon>
@@ -97,7 +97,7 @@ class EventListPageMobile extends PureComponent {
               :
               <EventIcon className={classes.zeroDataIcon} />
             }
-            <Typography type='subheading'>{isLoading ? 'Events loading' : 'No events found'}</Typography>
+            <Typography variant='subheading'>{isLoading ? 'Events loading' : 'No events found'}</Typography>
           </div>
         }
         <EventFilterDialogContainer year={year} />

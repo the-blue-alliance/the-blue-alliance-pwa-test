@@ -25,32 +25,32 @@ class TeamAtEvent extends PureComponent {
     return (
       <Grid container spacing={24}>
         <Grid item xs={4}>
-          <Typography type='title' gutterBottom>
+          <Typography variant='title' gutterBottom>
             <Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link>
           </Typography>
           {status && status.getIn(['qual', 'ranking', 'rank']) &&
-            <Typography type='subheading'>
+            <Typography variant='subheading'>
               Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b>
             </Typography>
           }
           {status && status.getIn(['qual', 'ranking', 'record']) &&
-            <Typography type='subheading'>
+            <Typography variant='subheading'>
               Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b>
             </Typography>
           }
           {status && status.getIn(['alliance']) &&
-            <Typography type='subheading'>
+            <Typography variant='subheading'>
               Alliance: <b>{status.getIn(['alliance', 'pick']) === 0 ? 'Captain' : `${ordinal(status.getIn(['alliance', 'pick']))} Pick`}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
             </Typography>
           }
           {status && status.getIn(['playoff', 'record']) &&
-            <Typography type='subheading'>
+            <Typography variant='subheading'>
               Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
             </Typography>
           }
           {awards &&
             <React.Fragment>
-              <Typography type='subheading'>Awards:</Typography>
+              <Typography variant='subheading'>Awards:</Typography>
               <ul className={classes.awardList}>
                 {awards.map(award =>
                   <li key={award.key}>{award.name}</li>

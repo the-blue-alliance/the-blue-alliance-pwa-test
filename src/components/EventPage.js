@@ -6,8 +6,8 @@ import Hidden from 'material-ui/Hidden';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
-import InfoOutlineIcon from 'material-ui-icons/InfoOutline';
-import EventIcon from 'material-ui-icons/Event';
+import InfoOutlineIcon from '@material-ui/icons/InfoOutline';
+import EventIcon from '@material-ui/icons/Event';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 

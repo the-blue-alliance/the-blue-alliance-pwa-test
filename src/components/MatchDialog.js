@@ -4,8 +4,8 @@ import { withStyles } from 'material-ui/styles'
 
 // Components
 import AppBar from 'material-ui/AppBar'
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft'
-import CloseIcon from 'material-ui-icons/Close'
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import CloseIcon from '@material-ui/icons/Close'
 import { DialogContent } from 'material-ui/Dialog'
 import Divider from 'material-ui/Divider'
 import Grid from 'material-ui/Grid'
@@ -96,7 +96,7 @@ class MatchDialog extends PureComponent {
             <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
               <ChevronLeftIcon />
             </IconButton>
-            <Typography type="title" color="inherit" className={classes.flex}>
+            <Typography variant="title" color="inherit" className={classes.flex}>
               {this.props.matchObj.getDisplayName()}
             </Typography>
             <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
@@ -121,7 +121,7 @@ class MatchDialog extends PureComponent {
               <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
                 <ChevronLeftIcon />
               </IconButton>
-              <Typography type="title" color="inherit" className={classes.flex}>
+              <Typography variant="title" color="inherit" className={classes.flex}>
                 {this.props.matchObj.getDisplayName()}
               </Typography>
               <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>

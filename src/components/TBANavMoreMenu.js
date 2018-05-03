@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom'
 import { withStyles } from 'material-ui/styles'
 import Menu, { MenuItem } from 'material-ui/Menu';
 import { ListItemIcon, ListItemText } from 'material-ui/List'
-import StarIcon from 'material-ui-icons/Star'
-import SettingsIcon from 'material-ui-icons/Settings'
-import VideocamIcon from 'material-ui-icons/Videocam';
+import StarIcon from '@material-ui/icons/Star'
+import SettingsIcon from '@material-ui/icons/Settings'
+import VideocamIcon from '@material-ui/icons/Videocam';
 
 const styles = {
 }

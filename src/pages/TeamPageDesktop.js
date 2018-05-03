@@ -6,13 +6,13 @@ import { withStyles } from 'material-ui/styles'
 // Components
 import Button from 'material-ui/Button'
 import { CircularProgress } from 'material-ui/Progress'
-import EventIcon from 'material-ui-icons/Event'
+import EventIcon from '@material-ui/icons/Event'
 import Grid from 'material-ui/Grid'
 import Icon from 'material-ui/Icon'
-import LocalMoviesIcon from 'material-ui-icons/LocalMovies'
+import LocalMoviesIcon from '@material-ui/icons/LocalMovies'
 import Menu, { MenuItem } from 'material-ui/Menu'
 import Paper from 'material-ui/Paper'
-import PhotoLibraryIcon from 'material-ui-icons/PhotoLibrary'
+import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import Typography from 'material-ui/Typography'
 
 // TBA Components
@@ -108,7 +108,7 @@ class TeamPageDesktop extends PureComponent {
               <div className={classes.sideNav}>
                 <Button
                   color='primary'
-                  raised
+                  variant="raised"
                   fullWidth
                   onClick={this.handleYearOpen}
                   className={classes.yearButton}
@@ -182,22 +182,22 @@ class TeamPageDesktop extends PureComponent {
               <div id='team-info'>
                 <h1>Team {teamNumber}{team && team.nickname && ` - ${team.nickname}`}</h1>
                 {team && team.getCityStateCountry() &&
-                  <Typography type='body1'>
+                  <Typography variant='body1'>
                     <Icon className={classes.infoIcon}>location_on</Icon> From <a target='_blank' href={`https://www.google.com/maps?q=${team.getCityStateCountry()}`}>{team.getCityStateCountry()}</a>
                   </Typography>
                 }
                 {team && team.name &&
-                  <Typography type='body1'>
+                  <Typography variant='body1'>
                     <Icon className={classes.infoIcon}>info</Icon> aka <i>{team.name}</i>
                   </Typography>
                 }
                 {team && team.rookie_year &&
-                  <Typography type='body1'>
+                  <Typography variant='body1'>
                     <Icon className={classes.infoIcon}>event</Icon> Rookie Year: {team.rookie_year}
                   </Typography>
                 }
                 {team && team.website &&
-                  <Typography type='body1'>
+                  <Typography variant='body1'>
                     <Icon className={classes.infoIcon}>public</Icon> <a target='_blank' href={team.website}>{team.website}</a>
                   </Typography>
                 }
@@ -211,7 +211,7 @@ class TeamPageDesktop extends PureComponent {
                       :
                       <EventIcon className={classes.zeroDataIcon} />
                     }
-                    <Typography type='subheading'>{isLoading ? 'Events loading' : 'No events found'}</Typography>
+                    <Typography variant='subheading'>{isLoading ? 'Events loading' : 'No events found'}</Typography>
                   </div>
                 }
 
@@ -232,7 +232,7 @@ class TeamPageDesktop extends PureComponent {
               <div id='media'>
                 <h2>Media</h2>
                 <div id='photos'>
-                  <Typography type='title' gutterBottom>Photos</Typography>
+                  <Typography variant='title' gutterBottom>Photos</Typography>
                   {true &&
                     <div className={classes.zeroDataContainer}>
                       {isLoading ?
@@ -240,12 +240,12 @@ class TeamPageDesktop extends PureComponent {
                         :
                         <PhotoLibraryIcon className={classes.zeroDataIcon} />
                       }
-                      <Typography type='subheading'>{isLoading ? 'Photos loading' : 'No photos found'}</Typography>
+                      <Typography variant='subheading'>{isLoading ? 'Photos loading' : 'No photos found'}</Typography>
                     </div>
                   }
                 </div>
                 <div id='videos'>
-                  <Typography type='title' gutterBottom>Videos</Typography>
+                  <Typography variant='title' gutterBottom>Videos</Typography>
                   {true &&
                     <div className={classes.zeroDataContainer}>
                       {isLoading ?
@@ -253,7 +253,7 @@ class TeamPageDesktop extends PureComponent {
                         :
                         <LocalMoviesIcon className={classes.zeroDataIcon} />
                       }
-                      <Typography type='subheading'>{isLoading ? 'Videos loading' : 'No videos found'}</Typography>
+                      <Typography variant='subheading'>{isLoading ? 'Videos loading' : 'No videos found'}</Typography>
                     </div>
                   }
                 </div>

@@ -54,16 +54,16 @@ class EventListCard extends PureComponent {
                     <Grid container spacing={24}>
                       <Grid item xs={9}>
                         <div className={classes.verticalCenter}>
-                          <Typography type='subheading' noWrap>
+                          <Typography variant='subheading' noWrap>
                             <Link to={`/event/${event.key}`}>{event.name}</Link>
                           </Typography>
-                          <Typography type='body1'>
+                          <Typography variant='body1'>
                             {event.getCityStateCountry()}
                           </Typography>
                         </div>
                       </Grid>
                       <Grid item xs={3}>
-                        <Typography type='body1' align='right' className={classes.verticalCenter}>
+                        <Typography variant='body1' align='right' className={classes.verticalCenter}>
                           {event.getDateString()}
                         </Typography>
                       </Grid>

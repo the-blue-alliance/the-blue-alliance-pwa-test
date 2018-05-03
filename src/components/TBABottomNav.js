@@ -4,10 +4,10 @@ import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
 import BottomNavigation, { BottomNavigationAction } from 'material-ui/BottomNavigation'
 import Paper from 'material-ui/Paper';
-import HomeIcon from 'material-ui-icons/Home'
-import EventIcon from 'material-ui-icons/Event'
-import PeopleIcon from 'material-ui-icons/People'
-import MoreHorizIcon from 'material-ui-icons/MoreHoriz'
+import HomeIcon from '@material-ui/icons/Home'
+import EventIcon from '@material-ui/icons/Event'
+import PeopleIcon from '@material-ui/icons/People'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 
 import TBANavMoreMenu from './TBANavMoreMenu'
 

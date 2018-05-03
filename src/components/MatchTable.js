@@ -259,7 +259,7 @@ class MatchTable extends PureComponent {
       return (
         <div className={classes.zeroDataContainer}>
           <CircularProgress color='secondary' size='15%' className={classes.zeroDataSpinner} />
-          <Typography type='subheading'>Matches loading</Typography>
+          <Typography variant='subheading'>Matches loading</Typography>
         </div>
       )
     } else if (this.props.matches.size === 0) {

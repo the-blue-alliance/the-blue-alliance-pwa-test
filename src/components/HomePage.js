@@ -38,7 +38,7 @@ class Home extends PureComponent {
           <Button
             color='default'
             className={classes.button}
-            raised
+            variant="raised"
             component={Link}
             to='/team/254/2017'
           >
@@ -47,7 +47,7 @@ class Home extends PureComponent {
           <Button
             color='default'
             className={classes.button}
-            raised
+            variant="raised"
             component={Link}
             to='/event/2017casj'
           >
@@ -56,7 +56,7 @@ class Home extends PureComponent {
           <Button
             color='default'
             className={classes.button}
-            raised
+            variant="raised"
             component={Link}
             to='/match/2017casj_f1m2'
           >

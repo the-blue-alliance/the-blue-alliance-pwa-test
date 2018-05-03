@@ -107,11 +107,11 @@ class TeamPageMobile extends PureComponent {
             onClick={this.handleYearOpen}
           >
             <div>
-              <Typography type='title' color='inherit' className={classes.titleTeam}>
+              <Typography variant='title' color='inherit' className={classes.titleTeam}>
                 Team {teamNumber}
               </Typography>
               <br/>
-              <Typography type='subheading' color='inherit' className={classes.titleYear}>
+              <Typography variant='subheading' color='inherit' className={classes.titleYear}>
                 {year} <Icon className={classes.arrowDropDown}>arrow_drop_down</Icon>
               </Typography>
             </div>
