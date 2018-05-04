@@ -80,7 +80,7 @@ class TBAToolbar extends PureComponent {
           <Typography variant="title" color="inherit" className={classes.appBarTitle}>
             {title ? title : 'The Blue Alliance'}
           </Typography>
-          <Hidden smDown>
+          <Hidden smDown implementation="css">
             <TBAAppBarSearch />
           </Hidden>
           {this.props.filterFunction && <IconButton color="inherit" onClick={this.props.filterFunction}>
@@ -101,7 +101,7 @@ class TBAToolbar extends PureComponent {
           {this.props.isLoading &&  <IconButton color="inherit" disabled>
             <CircularProgress color="secondary" size={20} thickness={5}/>
           </IconButton>}
-          <Hidden mdUp>
+          <Hidden mdUp implementation="css">
             <IconButton color="inherit">
               <SearchIcon />
             </IconButton>
