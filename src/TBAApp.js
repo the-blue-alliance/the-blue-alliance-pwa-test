@@ -174,7 +174,7 @@ class TBAApp extends Component {
         <CssBaseline />
         <TBASnackbarsContainer />
         <Hidden smDown implementation="css">
-          <Route path="/" component={TBASideNavContainer} />
+          <TBASideNavContainer />
         </Hidden>
         <Hidden mdUp implementation="css">
           <Route path="/" component={TBABottomNavContainer} />
