@@ -34,6 +34,9 @@ const styles = theme => ({
   titleYear: {
     float: 'left',
   },
+  nameText: {
+    overflowWrap: 'break-word',
+  },
   arrowDropDown: {
     fontSize: 'inherit',
   },
@@ -196,7 +199,7 @@ class TeamPageMobile extends PureComponent {
                       <ListItemIcon>
                         <Icon>info</Icon>
                       </ListItemIcon>
-                      <ListItemText primary={team.name} />
+                      <ListItemText primary={team.name} className={classes.nameText} />
                     </ListItem>
                   </React.Fragment>
                 }
