@@ -16,7 +16,7 @@ const styles = theme => ({
 class Home extends PureComponent {
   constructor(props) {
     super(props)
-    props.setBottomNav('home')
+    props.setNav('home')
     props.resetPage()
   }
 

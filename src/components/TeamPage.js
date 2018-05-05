@@ -40,7 +40,7 @@ class TeamPage extends PureComponent {
   constructor(props) {
     super(props)
     this.reset(props)
-    props.setBottomNav('teams')
+    props.setNav('teams')
   }
 
   refreshFunction = () => {

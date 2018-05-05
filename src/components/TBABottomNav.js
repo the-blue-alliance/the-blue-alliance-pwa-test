@@ -1,9 +1,9 @@
 import React from 'react'
-import { findDOMNode } from 'react-dom';
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
 import BottomNavigation, { BottomNavigationAction } from 'material-ui/BottomNavigation'
-import Paper from 'material-ui/Paper';
+import Paper from 'material-ui/Paper'
 import HomeIcon from '@material-ui/icons/Home'
 import EventIcon from '@material-ui/icons/Event'
 import PeopleIcon from '@material-ui/icons/People'
@@ -53,7 +53,7 @@ class TBABottomNav extends React.PureComponent {
     return (
       <Paper className={classes.root} elevation={4}>
         <BottomNavigation
-          value={this.props.bottomNavValue}
+          value={this.props.navValue}
           onChange={this.handleNavChange}
           showLabels
         >

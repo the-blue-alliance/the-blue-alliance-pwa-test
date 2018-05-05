@@ -43,7 +43,7 @@ class EventPage extends PureComponent {
   constructor(props) {
     super(props)
     this.reset(props)
-    props.setBottomNav('events')
+    props.setNav('events')
   }
 
   refreshFunction = () => {

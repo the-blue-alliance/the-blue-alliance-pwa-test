@@ -16,7 +16,7 @@ const appState = (state = Map({
   loadingCount: 0,
   apiEnabled: true,
   idbEnabled: true,
-  bottomNavValue: 'home',
+  navValue: 'home',
   snackbar: null,
 }), action) => {
   switch (action.type) {
@@ -30,9 +30,9 @@ const appState = (state = Map({
     case types.TOGGLE_IDB:
       return state
         .set('idbEnabled', !state.get('idbEnabled'))
-    case types.SET_BOTTOM_NAV_VALUE:
+    case types.SET_NAV_VALUE:
       return state
-        .set('bottomNavValue', action.value)
+        .set('navValue', action.value)
     case types.OPEN_SNACKBAR:
       return state
         .set('snackbar', action.value)

@@ -11,7 +11,7 @@ import MatchVideos from './MatchVideos'
 class MatchPage extends PureComponent {
   constructor(props) {
     super(props)
-    props.setBottomNav('matches')
+    props.setNav('matches')
     props.resetPage({})
   }
 

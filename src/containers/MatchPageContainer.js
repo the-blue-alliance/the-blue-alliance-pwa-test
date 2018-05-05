@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { resetPage, setBottomNav, fetchEventInfo, fetchMatchInfo } from '../actions'
+import { resetPage, setNav, fetchEventInfo, fetchMatchInfo } from '../actions'
 import MatchPage from '../components/MatchPage'
 import { getEventKey, getEvent, getMatchKey, getMatch } from '../selectors/MatchPageSelectors'
 
@@ -16,7 +16,7 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   resetPage: (defaultState) => dispatch(resetPage(defaultState)),
-  setBottomNav: (value) => dispatch(setBottomNav(value)),
+  setNav: (value) => dispatch(setNav(value)),
   fetchEventInfo: (eventKey) => dispatch(fetchEventInfo(eventKey)),
   fetchMatchInfo: (matchKey) => dispatch(fetchMatchInfo(matchKey)),
 });

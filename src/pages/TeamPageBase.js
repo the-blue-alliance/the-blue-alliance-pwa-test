@@ -7,7 +7,7 @@ import { push } from 'connected-react-router'
 import {
   resetPage,
   setPageState,
-  setBottomNav,
+  setNav,
   fetchTeamYears,
   fetchTeamInfo,
   fetchTeamYearAwards,
@@ -56,7 +56,7 @@ const mapDispatchToProps = (dispatch) => ({
   pushHistory: (path) => dispatch(push(path)),
   resetPage: (defaultState) => dispatch(resetPage(defaultState)),
   setPageState: (pageState) => dispatch(setPageState(pageState)),
-  setBottomNav: (value) => dispatch(setBottomNav(value)),
+  setNav: (value) => dispatch(setNav(value)),
   fetchTeamYears: (teamNumber) => dispatch(fetchTeamYears(teamNumber)),
   fetchTeamInfo: (teamNumber) => dispatch(fetchTeamInfo(teamNumber)),
   fetchTeamYearAwards: (teamNumber, year) => dispatch(fetchTeamYearAwards(teamNumber, year)),
@@ -79,7 +79,7 @@ class TeamPageBase extends PureComponent {
   constructor(props) {
     super(props)
     this.reset(props)
-    props.setBottomNav('teams')
+    props.setNav('teams')
   }
 
   refreshFunction = (props=this.props) => {

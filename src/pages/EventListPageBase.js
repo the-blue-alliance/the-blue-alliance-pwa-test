@@ -5,7 +5,7 @@ import { Set } from 'immutable'
 
 // Actions
 import { push } from 'connected-react-router'
-import { resetPage, setPageState, setBottomNav, fetchYearEvents } from '../actions'
+import { resetPage, setPageState, setNav, fetchYearEvents } from '../actions'
 
 // Selectors
 import { getCurrentPageState, getYear } from '../selectors/CommonPageSelectors'
@@ -33,7 +33,7 @@ const mapDispatchToProps = (dispatch) => ({
   pushHistory: (path) => dispatch(push(path)),
   resetPage: (defaultState) => dispatch(resetPage(defaultState)),
   setPageState: (pageState) => dispatch(setPageState(pageState)),
-  setBottomNav: (value) => dispatch(setBottomNav(value)),
+  setNav: (value) => dispatch(setNav(value)),
   fetchYearEvents: (year) => dispatch(fetchYearEvents(year)),
 })
 
@@ -52,7 +52,7 @@ class EventListPageBase extends PureComponent {
   constructor(props) {
     super(props)
     this.reset(props)
-    props.setBottomNav('events')
+    props.setNav('events')
   }
 
   componentWillUpdate(nextProps, nextState) {

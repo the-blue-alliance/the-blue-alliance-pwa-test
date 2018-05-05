@@ -31,7 +31,7 @@ const styles = {
 class TeamListPage extends PureComponent {
   constructor(props) {
     super(props)
-    props.setBottomNav('teams')
+    props.setNav('teams')
     props.resetPage({
       filter: '',
     })

@@ -4,6 +4,7 @@ import TBASideNavContent from '../components/TBASideNavContent'
 
 
 const mapStateToProps = (state, props) => ({
+  navValue: state.getIn(['appState', 'navValue']),
   apiEnabled: state.getIn(['appState', 'apiEnabled']),
   idbEnabled: state.getIn(['appState', 'idbEnabled']),
 });

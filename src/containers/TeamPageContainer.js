@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { resetPage, setPageState, setBottomNav, fetchTeamInfo, fetchTeamYearEvents, fetchTeamYearMatches } from '../actions'
+import { resetPage, setPageState, setNav, fetchTeamInfo, fetchTeamYearEvents, fetchTeamYearMatches } from '../actions'
 import { getYear } from '../selectors/CommonPageSelectors'
 import { getTeamNumber, getTeam, getSortedTeamYearEvents, getMatchesByEvent } from '../selectors/TeamPageSelectors'
 import TeamPage from '../components/TeamPage'
@@ -19,7 +19,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = (dispatch) => ({
   resetPage: () => dispatch(resetPage()),
   setPageState: (pageState) => dispatch(setPageState(pageState)),
-  setBottomNav: (value) => dispatch(setBottomNav(value)),
+  setNav: (value) => dispatch(setNav(value)),
   fetchTeamInfo: (teamNumber) => dispatch(fetchTeamInfo(teamNumber)),
   fetchTeamYearEvents: (teamNumber, year) => dispatch(fetchTeamYearEvents(teamNumber, year)),
   fetchTeamYearMatches: (teamNumber, year) => dispatch(fetchTeamYearMatches(teamNumber, year)),

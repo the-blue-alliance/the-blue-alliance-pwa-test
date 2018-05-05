@@ -3,14 +3,14 @@ import TBASideNav from '../components/TBASideNav'
 
 
 const mapStateToProps = (state, props) => ({
-});
+})
 
 const mapDispatchToProps = (dispatch) => ({
-});
+})
 
 const TBASideNavContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TBASideNav);
+)(TBASideNav)
 
-export default TBASideNavContainer;
+export default TBASideNavContainer

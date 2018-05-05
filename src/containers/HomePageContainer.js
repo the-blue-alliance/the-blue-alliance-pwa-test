@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { resetPage, setBottomNav } from '../actions'
+import { resetPage, setNav } from '../actions'
 import HomePage from '../components/HomePage.js'
 
 
@@ -8,7 +8,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   resetPage: (defaultState) => dispatch(resetPage(defaultState)),
-  setBottomNav: (value) => dispatch(setBottomNav(value)),
+  setNav: (value) => dispatch(setNav(value)),
 });
 
 const HomePageContainer = connect(

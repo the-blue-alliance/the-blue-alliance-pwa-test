@@ -37,8 +37,8 @@ export const toggleIDB = () => ({
   type: types.TOGGLE_IDB,
 })
 
-export const setBottomNav = (value) => ({
-  type: types.SET_BOTTOM_NAV_VALUE,
+export const setNav = (value) => ({
+  type: types.SET_NAV_VALUE,
   value,
 })
 
