@@ -58,11 +58,20 @@ class TBASideNavContent extends PureComponent {
         <Divider />
         <List>
           <ListItem>
-            <ListItemText primary="Offline Only" />
+            <ListItemText primary={this.props.apiEnabled ? "API Enabled" : "API Disabled"} />
             <ListItemSecondaryAction>
               <Switch
-                onClick={this.props.toggleOffline}
-                checked={this.props.offlineOnly}
+                onClick={this.props.toggleAPI}
+                checked={this.props.apiEnabled}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemText primary={this.props.idbEnabled ? "IDB Enabled" : "IDB Disabled"} />
+            <ListItemSecondaryAction>
+              <Switch
+                onClick={this.props.toggleIDB}
+                checked={this.props.idbEnabled}
               />
             </ListItemSecondaryAction>
           </ListItem>

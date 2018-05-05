@@ -29,8 +29,12 @@ export const decrementLoadingCount = () => ({
   type: types.DECREMENT_LOADING_COUNT,
 })
 
-export const toggleOffline = () => ({
-  type: types.TOGGLE_OFFLINE,
+export const toggleAPI = () => ({
+  type: types.TOGGLE_API,
+})
+
+export const toggleIDB = () => ({
+  type: types.TOGGLE_IDB,
 })
 
 export const setBottomNav = (value) => ({
@@ -122,15 +126,17 @@ export function fetchEventInfo(eventKey) {
   return (dispatch, getState) => {
     let dataSource = sources.DEFAULT
     // Update from IndexedDB
-    db.events.get(eventKey).then(event => {
-      if (dataSource < sources.IDB && event !== undefined) {
-        dataSource = sources.IDB
-        dispatch(receiveEventInfo(eventKey, event))
-      }
-    })
+    if (getState().getIn(['appState', 'idbEnabled'])) {
+      db.events.get(eventKey).then(event => {
+        if (dataSource < sources.IDB && event !== undefined) {
+          dataSource = sources.IDB
+          dispatch(receiveEventInfo(eventKey, event))
+        }
+      })
+    }
 
     // Update from API
-    if (!getState().getIn(['appState', 'offlineOnly'])) {
+    if (getState().getIn(['appState', 'apiEnabled'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -159,15 +165,17 @@ export function fetchEventAwards(eventKey) {
   return (dispatch, getState) => {
     let dataSource = sources.DEFAULT
     // Update from IndexedDB
-    db.awards.where('event_key').equals(eventKey).toArray().then(awards => {
-      if (dataSource < sources.IDB && awards !== undefined) {
-        dataSource = sources.IDB
-        dispatch(receiveEventAwards(eventKey, awards))
-      }
-    })
+    if (getState().getIn(['appState', 'idbEnabled'])) {
+      db.awards.where('event_key').equals(eventKey).toArray().then(awards => {
+        if (dataSource < sources.IDB && awards !== undefined) {
+          dataSource = sources.IDB
+          dispatch(receiveEventAwards(eventKey, awards))
+        }
+      })
+    }
 
     // Update from API
-    if (!getState().getIn(['appState', 'offlineOnly'])) {
+    if (getState().getIn(['appState', 'apiEnabled'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/awards`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -203,15 +211,17 @@ export function fetchEventMatches(eventKey) {
   return (dispatch, getState) => {
     let dataSource = sources.DEFAULT
     // Update from IndexedDB
-    db.matches.where('event_key').equals(eventKey).toArray().then(matches => {
-      if (dataSource < sources.IDB && matches !== undefined) {
-        dataSource = sources.IDB
-        dispatch(receiveEventMatches(eventKey, matches))
-      }
-    })
+    if (getState().getIn(['appState', 'idbEnabled'])) {
+      db.matches.where('event_key').equals(eventKey).toArray().then(matches => {
+        if (dataSource < sources.IDB && matches !== undefined) {
+          dataSource = sources.IDB
+          dispatch(receiveEventMatches(eventKey, matches))
+        }
+      })
+    }
 
     // Update from API
-    if (!getState().getIn(['appState', 'offlineOnly'])) {
+    if (getState().getIn(['appState', 'apiEnabled'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/matches`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -240,19 +250,21 @@ export function fetchEventTeams(eventKey) {
   return (dispatch, getState) => {
     let dataSource = sources.DEFAULT
     // Update from IndexedDB
-    db.eventTeams.where('eventKey').equals(eventKey).toArray().then(eventTeams => {
-      Promise.all(
-        eventTeams.map(eventTeam => db.teams.get(eventTeam.teamKey))
-      ).then(teams => {
-        if (dataSource < sources.IDB && teams !== undefined) {
-          dataSource = sources.IDB
-          dispatch(receiveEventTeams(eventKey, teams))
-        }
+    if (getState().getIn(['appState', 'idbEnabled'])) {
+      db.eventTeams.where('eventKey').equals(eventKey).toArray().then(eventTeams => {
+        Promise.all(
+          eventTeams.map(eventTeam => db.teams.get(eventTeam.teamKey))
+        ).then(teams => {
+          if (dataSource < sources.IDB && teams !== undefined) {
+            dataSource = sources.IDB
+            dispatch(receiveEventTeams(eventKey, teams))
+          }
+        })
       })
-    })
+    }
 
     // Update from API
-    if (!getState().getIn(['appState', 'offlineOnly'])) {
+    if (getState().getIn(['appState', 'apiEnabled'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/teams`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -282,15 +294,17 @@ export function fetchYearEvents(year) {
   return (dispatch, getState) => {
     let dataSource = sources.DEFAULT
     // Update from IndexedDB
-    db.events.where('year').equals(year).toArray().then(events => {
-      if (dataSource < sources.IDB && events !== undefined) {
-        dataSource = sources.IDB
-        dispatch(receiveYearEvents(year, events))
-      }
-    })
+    if (getState().getIn(['appState', 'idbEnabled'])) {
+      db.events.where('year').equals(year).toArray().then(events => {
+        if (dataSource < sources.IDB && events !== undefined) {
+          dataSource = sources.IDB
+          dispatch(receiveYearEvents(year, events))
+        }
+      })
+    }
 
     // Update from API
-    if (!getState().getIn(['appState', 'offlineOnly'])) {
+    if (getState().getIn(['appState', 'apiEnabled'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/events/${year}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -321,15 +335,17 @@ export function fetchTeamYears(teamNumber) {
     let dataSource = sources.DEFAULT
     const teamKey = `frc${teamNumber}`
     // Update from IndexedDB
-    db.teamYears.get(teamKey).then(teamYears => {
-      if (dataSource < sources.IDB && teamYears !== undefined) {
-        dataSource = sources.IDB
-        dispatch(receiveTeamYears(teamKey, teamYears))
-      }
-    })
+    if (getState().getIn(['appState', 'idbEnabled'])) {
+      db.teamYears.get(teamKey).then(teamYears => {
+        if (dataSource < sources.IDB && teamYears !== undefined) {
+          dataSource = sources.IDB
+          dispatch(receiveTeamYears(teamKey, teamYears))
+        }
+      })
+    }
 
     // Update from API
-    if (!getState().getIn(['appState', 'offlineOnly'])) {
+    if (getState().getIn(['appState', 'apiEnabled'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/years_participated`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -364,15 +380,17 @@ export function fetchTeamInfo(teamNumber) {
     let dataSource = sources.DEFAULT
     const teamKey = `frc${teamNumber}`
     // Update from IndexedDB
-    db.teams.get(teamKey).then(team => {
-      if (dataSource < sources.IDB && team !== undefined) {
-        dataSource = sources.IDB
-        dispatch(receiveTeamInfo(teamKey, team))
-      }
-    })
+    if (getState().getIn(['appState', 'idbEnabled'])) {
+      db.teams.get(teamKey).then(team => {
+        if (dataSource < sources.IDB && team !== undefined) {
+          dataSource = sources.IDB
+          dispatch(receiveTeamInfo(teamKey, team))
+        }
+      })
+    }
 
     // Update from API
-    if (!getState().getIn(['appState', 'offlineOnly'])) {
+    if (getState().getIn(['appState', 'apiEnabled'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -403,19 +421,21 @@ export function fetchTeamYearAwards(teamNumber, year) {
     let dataSource = sources.DEFAULT
     const teamKey = `frc${teamNumber}`
     // Update from IndexedDB
-    db.awardTeams.where('teamKey_year').equals(`${teamKey}_${year}`).toArray().then(awardTeams => {
-      Promise.all(
-        awardTeams.map(awardTeam => db.awards.get(awardTeam.awardKey))
-      ).then(awards => {
-        if (dataSource < sources.IDB && awards !== undefined) {
-          dataSource = sources.IDB
-          dispatch(receiveTeamYearAwards(teamKey, year, awards))
-        }
+    if (getState().getIn(['appState', 'idbEnabled'])) {
+      db.awardTeams.where('teamKey_year').equals(`${teamKey}_${year}`).toArray().then(awardTeams => {
+        Promise.all(
+          awardTeams.map(awardTeam => db.awards.get(awardTeam.awardKey))
+        ).then(awards => {
+          if (dataSource < sources.IDB && awards !== undefined) {
+            dataSource = sources.IDB
+            dispatch(receiveTeamYearAwards(teamKey, year, awards))
+          }
+        })
       })
-    })
+    }
 
     // Update from API
-    if (!getState().getIn(['appState', 'offlineOnly'])) {
+    if (getState().getIn(['appState', 'apiEnabled'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/awards/${year}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -453,19 +473,21 @@ export function fetchTeamYearEvents(teamNumber, year) {
     let dataSource = sources.DEFAULT
     const teamKey = `frc${teamNumber}`
     // Update from IndexedDB
-    db.eventTeams.where('teamKey_year').equals(`${teamKey}_${year}`).toArray().then(eventTeams => {
-      Promise.all(
-        eventTeams.map(eventTeam => db.events.get(eventTeam.eventKey))
-      ).then(events => {
-        if (dataSource < sources.IDB && events !== undefined) {
-          dataSource = sources.IDB
-          dispatch(receiveTeamYearEvents(teamKey, year, events))
-        }
+    if (getState().getIn(['appState', 'idbEnabled'])) {
+      db.eventTeams.where('teamKey_year').equals(`${teamKey}_${year}`).toArray().then(eventTeams => {
+        Promise.all(
+          eventTeams.map(eventTeam => db.events.get(eventTeam.eventKey))
+        ).then(events => {
+          if (dataSource < sources.IDB && events !== undefined) {
+            dataSource = sources.IDB
+            dispatch(receiveTeamYearEvents(teamKey, year, events))
+          }
+        })
       })
-    })
+    }
 
     // Update from API
-    if (!getState().getIn(['appState', 'offlineOnly'])) {
+    if (getState().getIn(['appState', 'apiEnabled'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/events/${year}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -496,19 +518,21 @@ export function fetchTeamYearMatches(teamNumber, year) {
     let dataSource = sources.DEFAULT
     const teamKey = `frc${teamNumber}`
     // Update from IndexedDB
-    db.matchTeams.where('teamKey_year').equals(`${teamKey}_${year}`).toArray().then(matchTeams => {
-      Promise.all(
-        matchTeams.map(matchTeam => db.matches.get(matchTeam.matchKey))
-      ).then(matches => {
-        if (dataSource < sources.IDB && matches !== undefined) {
-          dataSource = sources.IDB
-          dispatch(receiveTeamYearMatches(teamKey, year, matches))
-        }
+    if (getState().getIn(['appState', 'idbEnabled'])) {
+      db.matchTeams.where('teamKey_year').equals(`${teamKey}_${year}`).toArray().then(matchTeams => {
+        Promise.all(
+          matchTeams.map(matchTeam => db.matches.get(matchTeam.matchKey))
+        ).then(matches => {
+          if (dataSource < sources.IDB && matches !== undefined) {
+            dataSource = sources.IDB
+            dispatch(receiveTeamYearMatches(teamKey, year, matches))
+          }
+        })
       })
-    })
+    }
 
     // Update from API
-    if (!getState().getIn(['appState', 'offlineOnly'])) {
+    if (getState().getIn(['appState', 'apiEnabled'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/matches/${year}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -539,15 +563,17 @@ export function fetchTeamYearEventStatuses(teamNumber, year) {
     let dataSource = sources.DEFAULT
     const teamKey = `frc${teamNumber}`
     // Update from IndexedDB
-    db.teamEventStatus.where('teamKey_year').equals(`${teamKey}_${year}`).toArray().then(statuses => {
-      if (dataSource < sources.IDB && statuses !== undefined) {
-        dataSource = sources.IDB
-        dispatch(receiveTeamYearEventStatuses(teamKey, year, statuses))
-      }
-    })
+    if (getState().getIn(['appState', 'idbEnabled'])) {
+      db.teamEventStatus.where('teamKey_year').equals(`${teamKey}_${year}`).toArray().then(statuses => {
+        if (dataSource < sources.IDB && statuses !== undefined) {
+          dataSource = sources.IDB
+          dispatch(receiveTeamYearEventStatuses(teamKey, year, statuses))
+        }
+      })
+    }
 
     // Update from API
-    if (!getState().getIn(['appState', 'offlineOnly'])) {
+    if (getState().getIn(['appState', 'apiEnabled'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/events/${year}/statuses`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -589,26 +615,28 @@ export function fetchTeamListHelper(pageNum) {
   return (dispatch, getState) => {
     let dataSource = sources.DEFAULT
 
-    // Load partial first
-    if (pageNum === 0) {
-      db.teams.where('team_number').between(0, 20).toArray().then(teams => {
-        if (dataSource < sources.IDB_FAST) {
-          dataSource = sources.IDB_FAST
+    // Update from IndexedDB
+    if (getState().getIn(['appState', 'idbEnabled'])) {
+      // Load partial first
+      if (pageNum === 0) {
+        db.teams.where('team_number').between(0, 20).toArray().then(teams => {
+          if (dataSource < sources.IDB_FAST) {
+            dataSource = sources.IDB_FAST
+            dispatch(receiveTeamListPage(teams))
+          }
+        })
+      }
+
+      db.teams.where('team_number').between(pageNum * 500, pageNum * 500 + 500).toArray().then(teams => {
+        if (dataSource < sources.IDB && teams !== undefined) {
+          dataSource = sources.IDB
           dispatch(receiveTeamListPage(teams))
         }
       })
     }
 
-    // Update from IndexedDB
-    db.teams.where('team_number').between(pageNum * 500, pageNum * 500 + 500).toArray().then(teams => {
-      if (dataSource < sources.IDB && teams !== undefined) {
-        dataSource = sources.IDB
-        dispatch(receiveTeamListPage(teams))
-      }
-    })
-
     // Update from API
-    if (!getState().getIn(['appState', 'offlineOnly'])) {
+    if (getState().getIn(['appState', 'apiEnabled'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/teams/${pageNum}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
@@ -646,15 +674,17 @@ export function fetchMatchInfo(matchKey) {
   return (dispatch, getState) => {
     let dataSource = sources.DEFAULT
     // Update from IndexedDB
-    db.matches.get(matchKey).then(match => {
-      if (dataSource < sources.IDB && match !== undefined) {
-        dataSource = sources.IDB
-        dispatch(receiveMatchInfo(matchKey, match))
-      }
-    })
+    if (getState().getIn(['appState', 'idbEnabled'])) {
+      db.matches.get(matchKey).then(match => {
+        if (dataSource < sources.IDB && match !== undefined) {
+          dataSource = sources.IDB
+          dispatch(receiveMatchInfo(matchKey, match))
+        }
+      })
+    }
 
     // Update from API
-    if (!getState().getIn(['appState', 'offlineOnly'])) {
+    if (getState().getIn(['appState', 'apiEnabled'])) {
       dispatch(incrementLoadingCount())
       fetch(`https://www.thebluealliance.com/api/v3/match/${matchKey}`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}

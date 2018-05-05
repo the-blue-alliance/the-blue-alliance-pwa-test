@@ -1,14 +1,16 @@
 import { connect } from 'react-redux'
-import { toggleOffline } from '../actions'
+import { toggleAPI, toggleIDB } from '../actions'
 import TBASideNavContent from '../components/TBASideNavContent'
 
 
 const mapStateToProps = (state, props) => ({
-  offlineOnly: state.getIn(['appState', 'offlineOnly']),
+  apiEnabled: state.getIn(['appState', 'apiEnabled']),
+  idbEnabled: state.getIn(['appState', 'idbEnabled']),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  toggleOffline: () => dispatch(toggleOffline()),
+  toggleAPI: () => dispatch(toggleAPI()),
+  toggleIDB: () => dispatch(toggleIDB()),
 });
 
 const TBASideNavContentContainer = connect(

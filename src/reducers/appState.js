@@ -14,7 +14,8 @@ const updateLoadingCount = (state = 0, action) => {
 
 const appState = (state = Map({
   loadingCount: 0,
-  offlineOnly: false,
+  apiEnabled: true,
+  idbEnabled: true,
   bottomNavValue: 'home',
   snackbar: null,
 }), action) => {
@@ -23,9 +24,12 @@ const appState = (state = Map({
     case types.DECREMENT_LOADING_COUNT:
       return state
         .set('loadingCount', updateLoadingCount(state.get('loadingCount'), action))
-    case types.TOGGLE_OFFLINE:
+    case types.TOGGLE_API:
       return state
-        .set('offlineOnly', !state.get('offlineOnly'))
+        .set('apiEnabled', !state.get('apiEnabled'))
+    case types.TOGGLE_IDB:
+      return state
+        .set('idbEnabled', !state.get('idbEnabled'))
     case types.SET_BOTTOM_NAV_VALUE:
       return state
         .set('bottomNavValue', action.value)

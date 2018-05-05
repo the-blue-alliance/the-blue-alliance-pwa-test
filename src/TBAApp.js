@@ -119,7 +119,7 @@ class ModalSwitch extends React.Component {
 
     // Set key to force remount when route changes
     return (
-      <React.Fragment key={isModal ? this.previousLocation.pathname : location.pathname}>
+      <React.Fragment key={isModal ? this.previousLocation.key : location.key}>
         <Switch location={isModal ? this.previousLocation : location}>
           <Route exact path='/' component={HomePageContainer} />
           <Route path='/events/:year' component={EventListPageBase} />
