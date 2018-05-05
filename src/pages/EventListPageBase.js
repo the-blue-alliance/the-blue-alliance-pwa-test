@@ -55,12 +55,6 @@ class EventListPageBase extends PureComponent {
     props.setNav('events')
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (this.props.location.pathname !== nextProps.location.pathname) {
-      this.reset(nextProps)
-    }
-  }
-
   refreshFunction = (props=this.props) => {
     this.props.fetchYearEvents(props.year)
   }
