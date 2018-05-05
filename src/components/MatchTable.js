@@ -1,5 +1,6 @@
 // General
 import React, { PureComponent } from 'react'
+import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import { withStyles } from 'material-ui/styles'
 
@@ -244,11 +245,7 @@ class MatchTable extends PureComponent {
   }
 
   componentDidMount() {
-    requestAnimationFrame(() =>
-      requestAnimationFrame(() =>
-        this.setState({isFirstRender: false})
-      )
-    )
+    ReactDOM.unstable_deferredUpdates(() => this.setState({isFirstRender: false}))
   }
 
   render() {

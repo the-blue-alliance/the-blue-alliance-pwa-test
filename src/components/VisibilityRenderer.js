@@ -42,7 +42,7 @@ class VisibilityRenderer extends PureComponent {
     }
     if (Object.keys(newState).length > 0) {
       // Render without cascading
-      setTimeout(() => this.setState(newState))
+      ReactDOM.unstable_deferredUpdates(() => this.setState(newState))
     }
   }
 
