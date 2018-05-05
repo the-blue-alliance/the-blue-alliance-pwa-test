@@ -11,7 +11,7 @@ import db, {
   addTeam,
   addTeams,
   addTeamEvents,
-  addTeamEventStatus,
+  addTeamEventStatuses,
 } from '../database/db'
 import fetch from 'isomorphic-fetch'
 
@@ -527,35 +527,48 @@ export function fetchTeamYearMatches(teamNumber, year) {
   }
 }
 
-export const receiveTeamEventStatus = (teamKey, eventKey, status) => ({
-  type: types.RECEIVE_TEAM_EVENT_STATUS,
+export const receiveTeamYearEventStatuses = (teamKey, year, statuses) => ({
+  type: types.RECEIVE_TEAM_YEAR_EVENT_STATUSES,
   teamKey,
-  eventKey,
-  data: status,
+  year,
+  data: statuses,
 })
 
-export function fetchTeamEventStatus(teamNumber, eventKey) {
+export function fetchTeamYearEventStatuses(teamNumber, year) {
   return (dispatch, getState) => {
     let dataSource = sources.DEFAULT
     const teamKey = `frc${teamNumber}`
     // Update from IndexedDB
-    db.teamEventStatus.get(`${teamKey}_${eventKey}`).then(status => {
-      if (dataSource < sources.IDB && status !== undefined) {
+    db.teamEventStatus.where('teamKey_year').equals(`${teamKey}_${year}`).toArray().then(statuses => {
+      if (dataSource < sources.IDB && statuses !== undefined) {
         dataSource = sources.IDB
-        dispatch(receiveTeamEventStatus(teamKey, eventKey, status))
+        dispatch(receiveTeamYearEventStatuses(teamKey, year, statuses))
       }
     })
 
     // Update from API
     if (!getState().getIn(['appState', 'offlineOnly'])) {
       dispatch(incrementLoadingCount())
-      fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/event/${eventKey}/status`,
+      fetch(`https://www.thebluealliance.com/api/v3/team/${teamKey}/events/${year}/statuses`,
         {headers: {'X-TBA-Auth-Key': TBA_KEY}
-      }).then(handleErrors).then(status => {
-        if (dataSource < sources.API && status !== undefined) {
+      }).then(handleErrors).then(statuses => {
+        // Add keys to statuses
+        var newStatuses = []
+        for (var eventKey in statuses) {
+          var newStatus = Object.assign({}, statuses[eventKey])
+          newStatus.key = `${eventKey}_${teamKey}`
+          newStatus.eventKey = eventKey
+          newStatus.teamKey = teamKey
+          newStatus.year = year
+          newStatus.teamKey_year = `${teamKey}_${year}`
+          newStatuses.push(newStatus)
+        }
+        return newStatuses
+      }).then(statuses => {
+        if (dataSource < sources.API && statuses !== undefined) {
           dataSource = sources.API
-          dispatch(receiveTeamEventStatus(teamKey, eventKey, status))
-          addTeamEventStatus(teamKey, eventKey, status)
+          dispatch(receiveTeamYearEventStatuses(teamKey, year, statuses))
+          addTeamEventStatuses(statuses)
         }
         dispatch(decrementLoadingCount())
       }).catch(error => {

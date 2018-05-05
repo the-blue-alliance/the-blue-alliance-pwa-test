@@ -134,10 +134,10 @@ const page = (state = Map({
         state,
         ['matches', 'collections', 'byTeamYear', action.teamKey, action.year],
         action.data)
-    case types.RECEIVE_TEAM_EVENT_STATUS:
-      return updateSingle(
+    case types.RECEIVE_TEAM_YEAR_EVENT_STATUSES:
+      return updateMulti(
         state,
-        ['teamEventStatuses', 'byTeamEvent', action.teamKey, action.eventKey],
+        ['teamEventStatuses', 'byTeamYear', action.teamKey, action.year],
         action.data)
     case types.RECEIVE_EVENT_INFO:
       return updateSingle(

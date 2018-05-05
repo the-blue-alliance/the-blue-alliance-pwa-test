@@ -22,6 +22,9 @@ db.version(5).stores({
 db.version(6).stores({
   teamYears: '&key',
 })
+db.version(7).stores({
+  teamEventStatus: '&key, teamKey_year, eventKey',
+})
 
 export default db;
 
@@ -101,9 +104,6 @@ export const addTeamEvents = (teamKey, events) => {
   }))
 }
 
-export const addTeamEventStatus = (teamKey, eventKey, status) => {
-  if (status) {
-    status['key'] = `${teamKey}_${eventKey}`
-    db.teamEventStatus.put(status)
-  }
+export const addTeamEventStatuses = (statuses) => {
+  db.teamEventStatus.bulkPut(statuses)
 }

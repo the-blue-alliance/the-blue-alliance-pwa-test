@@ -13,7 +13,7 @@ import {
   fetchTeamYearAwards,
   fetchTeamYearEvents,
   fetchTeamYearMatches,
-  fetchTeamEventStatus,
+  fetchTeamYearEventStatuses,
 } from '../actions'
 
 // Selectors
@@ -62,7 +62,7 @@ const mapDispatchToProps = (dispatch) => ({
   fetchTeamYearAwards: (teamNumber, year) => dispatch(fetchTeamYearAwards(teamNumber, year)),
   fetchTeamYearEvents: (teamNumber, year) => dispatch(fetchTeamYearEvents(teamNumber, year)),
   fetchTeamYearMatches: (teamNumber, year) => dispatch(fetchTeamYearMatches(teamNumber, year)),
-  fetchTeamEventStatus: (teamNumber, eventKey) => dispatch(fetchTeamEventStatus(teamNumber, eventKey)),
+  fetchTeamYearEventStatuses: (teamNumber, year) => dispatch(fetchTeamYearEventStatuses(teamNumber, year)),
 })
 
 class TeamPageBase extends PureComponent {
@@ -82,24 +82,13 @@ class TeamPageBase extends PureComponent {
     props.setBottomNav('teams')
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (this.props.location.pathname !== nextProps.location.pathname) {
-      this.reset(nextProps)
-    }
-
-    // Temporary until API endpoint to fetch all team@event statuses for a year
-    // @fangeugene 2018-01-26
-    if (this.props.teamYearEvents !== nextProps.teamYearEvents) {
-      nextProps.teamYearEvents.forEach(event => this.props.fetchTeamEventStatus(this.props.teamNumber, event.key))
-    }
-  }
-
   refreshFunction = (props=this.props) => {
     this.props.fetchTeamYears(props.teamNumber)
     this.props.fetchTeamInfo(props.teamNumber)
     this.props.fetchTeamYearAwards(props.teamNumber, props.year)
     this.props.fetchTeamYearEvents(props.teamNumber, props.year)
     this.props.fetchTeamYearMatches(props.teamNumber, props.year)
+    this.props.fetchTeamYearEventStatuses(props.teamNumber, props.year)
   }
 
   setYearMenuOpen = (isOpen) => {
