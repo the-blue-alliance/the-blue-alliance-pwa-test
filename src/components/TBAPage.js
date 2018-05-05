@@ -52,7 +52,7 @@ class TBAPage extends PureComponent {
     console.log("Render TBAPage")
 
     return (
-      <div>
+      <React.Fragment>
         <TBAAppBarContainer
           title={this.props.title}
           refreshFunction={this.props.refreshFunction}
@@ -70,7 +70,7 @@ class TBAPage extends PureComponent {
         >
           {this.props.children}
         </ScrollRestoreContainer>
-      </div>
+      </React.Fragment>
     )
   }
 }
