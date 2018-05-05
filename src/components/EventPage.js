@@ -66,10 +66,12 @@ class EventPage extends PureComponent {
     const { classes, event, matches, teams } = this.props
 
     var name = null
+    var shortName = null
     var year = undefined
     if (event) {
       year = event.get('year')
       name = `${event.get('name')} ${year}`
+      shortName = `${event.get('short_name')} ${year}`
     }
 
     return (
@@ -122,7 +124,7 @@ class EventPage extends PureComponent {
           <TBAPageContainer
             history={this.props.history}
             documentTitle={name ? name : ''}
-            title={name}
+            title={shortName}
             refreshFunction={this.refreshFunction}
             tabs={
               <Tabs
