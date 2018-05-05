@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from 'material-ui/styles'
@@ -43,7 +44,7 @@ class GroupedEventTabContents extends PureComponent {
 
   componentDidMount() {
     // Render without cascading
-    setTimeout(() => this.setState({ fastRender: false }), 0)
+    ReactDOM.unstable_deferredUpdates(() => this.setState({ fastRender: false }))
   }
 
   componentWillReceiveProps(nextProps) {
@@ -61,7 +62,7 @@ class GroupedEventTabContents extends PureComponent {
 
   componentDidUpdate() {
     // Render without cascading
-    setTimeout(() => this.setState({ fastRender: false }), 0)
+    ReactDOM.unstable_deferredUpdates(() => this.setState({ fastRender: false }))
   }
 
   render() {

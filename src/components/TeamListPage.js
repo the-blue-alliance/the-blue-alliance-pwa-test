@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import ReactDOM from 'react-dom'
 import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
 import Hidden from 'material-ui/Hidden';
@@ -45,7 +46,7 @@ class TeamListPage extends PureComponent {
 
   componentDidUpdate() {
     // Rerender without cascading
-    setTimeout(() => this.setState({ restoreScroll: false }), 0)
+    ReactDOM.unstable_deferredUpdates(() => this.setState({ restoreScroll: false }))
   }
 
   refreshFunction = () => {
