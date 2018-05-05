@@ -125,7 +125,6 @@ class TeamPageMobile extends PureComponent {
           <Tabs
             value={this.props.activeTab}
             onChange={this.tabHandleChange}
-            indicatorColor='white'
             scrollable
             scrollButtons='auto'
             className='hide-scrollbar'

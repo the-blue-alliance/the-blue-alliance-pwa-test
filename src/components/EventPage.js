@@ -128,7 +128,6 @@ class EventPage extends PureComponent {
               <Tabs
                 value={this.props.tabIdx}
                 onChange={this.tabHandleChange}
-                indicatorColor="white"
                 scrollable
                 scrollButtons="auto"
               >

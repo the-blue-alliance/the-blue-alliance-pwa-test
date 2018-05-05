@@ -35,7 +35,6 @@ class GroupedEventTabs extends PureComponent {
       <Tabs
         value={this.props.activeGroup}
         onChange={this.tabHandleChange}
-        indicatorColor="white"
         scrollable
         scrollButtons="auto"
         className='hide-scrollbar'
