@@ -310,7 +310,7 @@ export function fetchEventTeamStatuses(eventKey) {
       }).then(handleErrors).then(statuses => {
         // Add keys to statuses
         var newStatuses = []
-        const year = parseInt(eventKey.substring(0, 4))
+        const year = parseInt(eventKey.substring(0, 4), 10)
         for (var teamKey in statuses) {
           var newStatus = Object.assign({}, statuses[teamKey])
           newStatus.key = `${eventKey}_${teamKey}`
