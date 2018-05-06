@@ -12,7 +12,6 @@ import Typography from 'material-ui/Typography'
 import { Link } from 'react-router-dom'
 
 // TBA Components
-import TeamAtEventPopover from './TeamAtEventPopover'
 
 const styles = theme => ({
   table: {
@@ -143,10 +142,8 @@ class MatchTable extends PureComponent {
               {teamNum}
             </td>
             :
-            <TeamAtEventPopover
+            <td
               key={teamKey}
-              wrapper='td'
-              teamKey={teamKey}
               className={classNames({
                   [classes.td]: true,
                   [classes.red]: true,
@@ -154,7 +151,7 @@ class MatchTable extends PureComponent {
               })}
             >
               <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>{teamNum}</Link>
-            </TeamAtEventPopover>
+            </td>
           )
         })}
         {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
@@ -172,10 +169,8 @@ class MatchTable extends PureComponent {
               {teamNum}
             </td>
             :
-            <TeamAtEventPopover
+            <td
               key={teamKey}
-              wrapper='td'
-              teamKey={teamKey}
               className={classNames({
                   [classes.td]: true,
                   [classes.blue]: true,
@@ -183,7 +178,7 @@ class MatchTable extends PureComponent {
               })}
             >
               <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>{teamNum}</Link>
-            </TeamAtEventPopover>
+            </td>
           )
         })}
         <td className={classNames({[classes.td]: true, [classes.redScore]: true, [classes.winner]: redWin})}>
