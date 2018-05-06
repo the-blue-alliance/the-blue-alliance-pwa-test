@@ -21,13 +21,14 @@ const styles = theme => ({
 class TeamAtEvent extends PureComponent {
   render() {
     console.log("Render TeamAtEvent")
-    const { classes, awards, event, matches, status, disableVisibilityRenderer } = this.props
+    const { classes, hideEventName, awards, event, matches, status, disableVisibilityRenderer } = this.props
     return (
       <Grid container spacing={24}>
         <Grid item xs={4}>
+          {!hideEventName &&
           <Typography variant='title' gutterBottom>
             <Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link>
-          </Typography>
+          </Typography>}
           {status && status.getIn(['qual', 'ranking', 'rank']) &&
             <Typography variant='subheading'>
               Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b>
@@ -69,6 +70,7 @@ class TeamAtEvent extends PureComponent {
 
 TeamAtEvent.propTypes = {
   classes: PropTypes.object.isRequired,
+  hideEventName: PropTypes.bool,
 }
 
 export default withStyles(styles)(TeamAtEvent)

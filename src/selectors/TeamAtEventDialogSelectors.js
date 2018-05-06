@@ -128,7 +128,7 @@ export const getSortedAwards = createSelector(
 
 export const getTeamEventStatus = (state, props) => {
   for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
-    const status = state.getIn(['page', 'modelHistory', key, 'teamEventStatuses', 'byTeamEvent', `frc${getTeamNumber(state, props)}`, getEventKey(state, props)])
+    const status = state.getIn(['page', 'modelHistory', key, 'teamEventStatuses', 'byEvent', getEventKey(state, props), `${getEventKey(state, props)}_frc${getTeamNumber(state, props)}`])
     if (status !== undefined) {
       return status
     }

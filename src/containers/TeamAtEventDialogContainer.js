@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { goBack } from 'connected-react-router'
-import { resetModal, setModalState, fetchEventAwards, fetchEventMatches, fetchEventTeams } from '../actions'
+import { resetModal, setModalState, fetchEventAwards, fetchEventMatches, fetchEventTeams, fetchEventTeamStatuses } from '../actions'
 import { getCurrentModalState } from '../selectors/CommonPageSelectors'
 import TeamAtEventDialog from '../components/TeamAtEventDialog'
 import { getTeamNumber, getEventKey, getTeam, getEvent, getSortedMatches, getSortedAwards, getTeamEventStatus } from '../selectors/TeamAtEventDialogSelectors'
@@ -27,7 +27,7 @@ const mapDispatchToProps = (dispatch) => ({
   fetchEventAwards: (eventKey) => dispatch(fetchEventAwards(eventKey)),
   fetchEventMatches: (eventKey) => dispatch(fetchEventMatches(eventKey)),
   fetchEventTeams: (eventKey) => dispatch(fetchEventTeams(eventKey)),
-  // fetchTeamEventStatus: (teamNumber, eventKey) => dispatch(fetchTeamEventStatus(teamNumber, eventKey)),
+  fetchEventTeamStatuses: (eventKey) => dispatch(fetchEventTeamStatuses(eventKey)),
 })
 
 const TeamAtEventDialogContainer = connect(

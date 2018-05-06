@@ -283,6 +283,59 @@ export function fetchEventTeams(eventKey) {
   }
 }
 
+export const receiveEventTeamStatuses = (eventKey, statuses) => ({
+  type: types.RECEIVE_EVENT_TEAM_STATUSES,
+  eventKey,
+  data: statuses,
+})
+
+export function fetchEventTeamStatuses(eventKey) {
+  return (dispatch, getState) => {
+    let dataSource = sources.DEFAULT
+    // Update from IndexedDB
+    if (getState().getIn(['appState', 'idbEnabled'])) {
+      db.teamEventStatus.where('eventKey').equals(eventKey).toArray().then(statuses => {
+        if (dataSource < sources.IDB && statuses !== undefined) {
+          dataSource = sources.IDB
+          dispatch(receiveEventTeamStatuses(eventKey, statuses))
+        }
+      })
+    }
+
+    // Update from API
+    if (getState().getIn(['appState', 'apiEnabled'])) {
+      dispatch(incrementLoadingCount())
+      fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/teams/statuses`,
+        {headers: {'X-TBA-Auth-Key': TBA_KEY}
+      }).then(handleErrors).then(statuses => {
+        // Add keys to statuses
+        var newStatuses = []
+        const year = parseInt(eventKey.substring(0, 4))
+        for (var teamKey in statuses) {
+          var newStatus = Object.assign({}, statuses[teamKey])
+          newStatus.key = `${eventKey}_${teamKey}`
+          newStatus.eventKey = eventKey
+          newStatus.teamKey = teamKey
+          newStatus.year = year
+          newStatus.teamKey_year = `${teamKey}_${year}`
+          newStatuses.push(newStatus)
+        }
+        return newStatuses
+      }).then(statuses => {
+        if (dataSource < sources.API && statuses !== undefined) {
+          dataSource = sources.API
+          dispatch(receiveEventTeamStatuses(eventKey, statuses))
+          addTeamEventStatuses(statuses)
+        }
+        dispatch(decrementLoadingCount())
+      }).catch(error => {
+        dispatch(decrementLoadingCount())
+        console.log(error)
+      })
+    }
+  }
+}
+
 // Event List Page
 export const receiveYearEvents = (year, events) => ({
   type: types.RECEIVE_YEAR_EVENTS,

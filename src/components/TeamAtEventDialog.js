@@ -77,8 +77,6 @@ class TeamAtEventDialog extends PureComponent {
   componentWillUpdate(nextProps, nextState) {
     if (this.props.location.pathname !== nextProps.location.pathname) {
       this.reset(nextProps)
-      // Needed because not all statuses for an event are loaded
-      // this.props.fetchTeamEventStatus(nextProps.teamNumber, nextProps.eventKey)
     }
   }
 
@@ -91,7 +89,7 @@ class TeamAtEventDialog extends PureComponent {
     this.props.fetchEventAwards(this.props.eventKey)
     this.props.fetchEventMatches(this.props.eventKey)
     this.props.fetchEventTeams(this.props.eventKey)
-    // this.props.fetchTeamEventStatus(this.props.teamNumber, this.props.eventKey)
+    this.props.fetchEventTeamStatuses(this.props.eventKey)
   }
 
   tabHandleChange = (event, value) => {
@@ -120,7 +118,7 @@ class TeamAtEventDialog extends PureComponent {
               <ChevronLeftIcon />
             </IconButton>
             <Typography variant="title" color="inherit" className={classes.flex}>
-              <Link to={{pathname: `/team/${teamNumber}/${event.get('year')}`, hash: eventKey.substring(4)}}>{teamTitle}</Link>
+              <Link to={{pathname: `/event/${eventKey}`}}>{event.get('short_name')}</Link> | <Link to={{pathname: `/team/${teamNumber}/${event.get('year')}`, hash: eventKey.substring(4)}}>{teamTitle}</Link>
             </Typography>
             <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
               <CloseIcon />
@@ -133,6 +131,7 @@ class TeamAtEventDialog extends PureComponent {
               event={event}
               matches={matches}
               status={status}
+              hideEventName={true}
             />
           </DialogContent>
         </Hidden>

@@ -164,6 +164,11 @@ const page = (state = Map({
         state,
         ['teams', 'collections', 'byEvent', action.eventKey],
         action.data)
+    case types.RECEIVE_EVENT_TEAM_STATUSES:
+      return updateMulti(
+        state,
+        ['teamEventStatuses', 'byEvent', action.eventKey],
+        action.data)
     case types.RECEIVE_TEAM_LIST_PAGE:
       return updateMulti(
         state,
