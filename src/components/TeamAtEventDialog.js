@@ -78,7 +78,7 @@ class TeamAtEventDialog extends PureComponent {
     if (this.props.location.pathname !== nextProps.location.pathname) {
       this.reset(nextProps)
       // Needed because not all statuses for an event are loaded
-      this.props.fetchTeamEventStatus(nextProps.teamNumber, nextProps.eventKey)
+      // this.props.fetchTeamEventStatus(nextProps.teamNumber, nextProps.eventKey)
     }
   }
 
@@ -91,7 +91,7 @@ class TeamAtEventDialog extends PureComponent {
     this.props.fetchEventAwards(this.props.eventKey)
     this.props.fetchEventMatches(this.props.eventKey)
     this.props.fetchEventTeams(this.props.eventKey)
-    this.props.fetchTeamEventStatus(this.props.teamNumber, this.props.eventKey)
+    // this.props.fetchTeamEventStatus(this.props.teamNumber, this.props.eventKey)
   }
 
   tabHandleChange = (event, value) => {

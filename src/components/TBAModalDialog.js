@@ -20,7 +20,7 @@ const ModalRoute = ({ component, ...rest }) => {
   )
 }
 
-class TBAModalDialog extends React.PureComponent {
+class TBAModalDialog extends React.Component {
   render() {
     const { isModal, open, fullScreen, handleClose } = this.props
     return (
