@@ -188,7 +188,7 @@ class TeamPageMobile extends PureComponent {
         </Paper>
       </ScrollRestoreContainer>
     )
-    {teamYearEvents.forEach(event => {
+    teamYearEvents.forEach(event => {
       if (statusByEvent && matchesByEvent) {
         const status = statusByEvent.get(`${event.key}_frc${teamNumber}`)
         const matches = matchesByEvent.get(event.key)
@@ -246,7 +246,7 @@ class TeamPageMobile extends PureComponent {
       } else {
         views.push(<div key={event.key}>TODO</div>)
       }
-    })}
+    })
 
     return (
       <TBAPageContainer
