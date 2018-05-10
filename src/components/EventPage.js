@@ -17,6 +17,7 @@ import MatchList from './MatchList'
 import TeamsList from './TeamsList'
 
 import TBAPageContainer from '../containers/TBAPageContainer'
+import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 
 const styles = theme => ({
   hidden: {
@@ -173,7 +174,12 @@ class EventPage extends PureComponent {
                   </React.Fragment>
                 }
               </div>
-              {matches ? <MatchList scrollId='matches' matches={matches} /> : <div>NO MATCHES</div>}
+              {matches ? <ScrollRestoreContainer
+                scrollId="matches"
+                className={classes.scrollContainer}
+              >
+                <MatchList matches={matches} />
+              </ScrollRestoreContainer> : <div>NO MATCHES</div>}
               <div ref={el => this.contentRef = el} className={classes.scrollContainer}>
                 <TeamsList scrollElement={this.contentRef} teams={teams} year={year}/>
               </div>

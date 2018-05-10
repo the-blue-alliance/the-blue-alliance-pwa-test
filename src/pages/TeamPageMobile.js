@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
+import { ordinal } from '../utils'
 
 // Components
 import ButtonBase from 'material-ui/ButtonBase'
@@ -12,11 +13,13 @@ import Menu, { MenuItem } from 'material-ui/Menu'
 import Paper from 'material-ui/Paper'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import Typography from 'material-ui/Typography'
+import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views'
 
 // TBA Components
 import TBAPageContainer from '../containers/TBAPageContainer'
-import EventsList3 from '../components/EventsList3'
+import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
+import MatchList from '../components/MatchList'
 
 const styles = theme => ({
   yearSelector: {
@@ -45,6 +48,19 @@ const styles = theme => ({
   },
   infoList: {
     padding: 0,
+  },
+  statusCard: {
+    margin: theme.spacing.unit,
+    padding: theme.spacing.unit,
+  },
+  matchesCard: {
+    margin: theme.spacing.unit,
+    padding: `${theme.spacing.unit/2}px 0px`,
+  },
+  scrollContainer: {
+    width: '100%',
+    height: '100%',
+    overflow: 'scroll',
   },
   zeroDataContainer: {
     height: '100%',
@@ -84,7 +100,8 @@ class TeamPageMobile extends PureComponent {
   tabHandleChange = (event, value) => {
     this.props.setPageState({activeTab: value})
   }
-    tabHandleChangeIndex = index => {
+
+  tabHandleChangeIndex = index => {
     this.props.setPageState({activeTab: index});
   }
 
@@ -99,6 +116,9 @@ class TeamPageMobile extends PureComponent {
       teamNumber,
       team,
       teamYearEvents,
+      awardsByEvent,
+      matchesByEvent,
+      statusByEvent,
     } = this.props
 
     return (
@@ -130,8 +150,9 @@ class TeamPageMobile extends PureComponent {
             className='hide-scrollbar'
           >
             <Tab value={0} label='Info' />
-            <Tab value={1} label='Events' />
-            <Tab value={2} label='Media' />
+            {teamYearEvents.map((event, idx) =>
+              <Tab key={event.key} value={idx + 1} label={event.short_name} />
+            )}
           </Tabs>
         }
       >
@@ -171,7 +192,10 @@ class TeamPageMobile extends PureComponent {
           index={this.props.activeTab}
           onChangeIndex={this.tabHandleChangeIndex}
         >
-          <div>
+          <ScrollRestoreContainer
+            scrollId="info"
+            className={classes.scrollContainer}
+          >
             <Paper className={classes.paper}>
               <List className={classes.infoList}>
                 <ListItem>
@@ -230,13 +254,65 @@ class TeamPageMobile extends PureComponent {
                 </ListItem>
               </List>
             </Paper>
-          </div>
-          {team ?
-            <EventsList3 scrollId='events' events={teamYearEvents} team={team}/>
-            :
-            <div>TODO Placeholder</div>
-          }
-          <div>Media</div>
+          </ScrollRestoreContainer>
+          {teamYearEvents.map(event => {
+            if (statusByEvent && matchesByEvent) {
+              const status = statusByEvent.get(`${event.key}_frc${teamNumber}`)
+              const matches = matchesByEvent.get(event.key)
+              const awards = awardsByEvent.get(event.key)
+              if (status && matches) {
+                return (
+                  <ScrollRestoreContainer
+                    key={event.key}
+                    scrollId={`${event.key}_matches`}
+                    className={classes.scrollContainer}
+                  >
+                    <Paper className={classes.statusCard}>
+                    <Typography variant='title'>
+                      <Link to={{pathname: `/event/${event.key}`}}>
+                        {event.name}
+                      </Link>
+                    </Typography>
+                    {status.getIn(['qual', 'ranking', 'rank']) &&
+                      <Typography variant='subheading'>
+                        Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b>
+                      </Typography>
+                    }
+                    {status.getIn(['qual', 'ranking', 'record']) &&
+                      <Typography variant='subheading'>
+                        Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b>
+                      </Typography>
+                    }
+                    {status.getIn(['alliance']) &&
+                      <Typography variant='subheading'>
+                        Alliance: <b>{status.getIn(['alliance', 'pick']) === 0 ? 'Captain' : `${ordinal(status.getIn(['alliance', 'pick']))} Pick`}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
+                      </Typography>
+                    }
+                    {status.getIn(['playoff', 'record']) &&
+                      <Typography variant='subheading'>
+                        Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
+                      </Typography>
+                    }
+                    {awards &&
+                      <React.Fragment>
+                        <Typography variant='subheading'>Awards:</Typography>
+                        <ul className={classes.awardList}>
+                          {awards.map(award =>
+                            <li key={award.key}>{award.name}</li>
+                          )}
+                        </ul>
+                      </React.Fragment>
+                    }
+                    </Paper>
+                    <Paper className={classes.matchesCard}>
+                      <MatchList matches={matches} awards={awards} status={status} />
+                    </Paper>
+                  </ScrollRestoreContainer>
+                )
+              }
+            }
+            return <div key={event.key}>TODO</div>
+          })}
         </SwipeableViews>
       </TBAPageContainer>
     )

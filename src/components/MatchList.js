@@ -8,14 +8,8 @@ import List from 'material-ui/List'
 // TBA Components
 import EventListSubheader from './EventListSubheader'
 import MatchListItem from './MatchListItem'
-import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 
 const styles = theme => ({
-  scrollContainer: {
-    width: '100%',
-    height: '100%',
-    overflow: 'scroll',
-  },
   list: {
     padding: 0,
   },
@@ -103,17 +97,12 @@ class MatchList extends PureComponent {
   render() {
     console.log("Render MatchList")
 
-    const { classes, scrollId } = this.props
+    const { classes } = this.props
 
     return (
-      <ScrollRestoreContainer
-        scrollId={scrollId}
-        className={classes.scrollContainer}
-      >
-        <List subheader={<div />} className={classes.list} >
-          {this.groupedMatches}
-        </List>
-      </ScrollRestoreContainer>
+      <List subheader={<div />} className={classes.list} >
+        {this.groupedMatches}
+      </List>
     )
   }
 }
