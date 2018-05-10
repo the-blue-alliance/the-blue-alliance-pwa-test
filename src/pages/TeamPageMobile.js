@@ -121,6 +121,133 @@ class TeamPageMobile extends PureComponent {
       statusByEvent,
     } = this.props
 
+    let views = []
+    views.push(
+      <ScrollRestoreContainer
+        key="info"
+        scrollId="info"
+        className={classes.scrollContainer}
+      >
+        <Paper className={classes.paper}>
+          <List className={classes.infoList}>
+            <ListItem>
+              <ListItemIcon>
+                <Icon>people</Icon>
+              </ListItemIcon>
+              <ListItemText primary={team && team.nickname ? team.nickname : `Team ${teamNumber}`} />
+            </ListItem>
+            {team && team.getCityStateCountry() &&
+              <React.Fragment>
+                <Divider inset />
+                <ListItem>
+                  <ListItemIcon>
+                    <Icon>location_on</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary={team.getCityStateCountry()} />
+                </ListItem>
+              </React.Fragment>
+            }
+            {team && team.name &&
+              <React.Fragment>
+                <Divider inset />
+                <ListItem>
+                  <ListItemIcon>
+                    <Icon>info</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary={team.name} className={classes.nameText} />
+                </ListItem>
+              </React.Fragment>
+            }
+          </List>
+        </Paper>
+
+        <Paper className={classes.paper}>
+          <List className={classes.infoList}>
+            <ListItem>
+              <ListItemText primary='Social media' />
+            </ListItem>
+            {team && team.website &&
+              <React.Fragment>
+                <Divider />
+                <ListItem>
+                  <ListItemIcon>
+                    <Icon>public</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary={team.website} />
+                </ListItem>
+              </React.Fragment>
+            }
+            <Divider inset />
+            <ListItem>
+              <ListItemIcon>
+                <Icon>public</Icon>
+              </ListItemIcon>
+              <ListItemText primary='Some other social media' />
+            </ListItem>
+          </List>
+        </Paper>
+      </ScrollRestoreContainer>
+    )
+    {teamYearEvents.forEach(event => {
+      if (statusByEvent && matchesByEvent) {
+        const status = statusByEvent.get(`${event.key}_frc${teamNumber}`)
+        const matches = matchesByEvent.get(event.key)
+        const awards = awardsByEvent.get(event.key)
+        if (status && matches) {
+          views.push(
+            <ScrollRestoreContainer
+              key={event.key}
+              scrollId={`${event.key}_matches`}
+              className={classes.scrollContainer}
+            >
+              <Paper className={classes.statusCard}>
+              <Typography variant='title'>
+                <Link to={{pathname: `/event/${event.key}`}}>
+                  {event.name}
+                </Link>
+              </Typography>
+              {status.getIn(['qual', 'ranking', 'rank']) &&
+                <Typography variant='subheading'>
+                  Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b>
+                </Typography>
+              }
+              {status.getIn(['qual', 'ranking', 'record']) &&
+                <Typography variant='subheading'>
+                  Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b>
+                </Typography>
+              }
+              {status.getIn(['alliance']) &&
+                <Typography variant='subheading'>
+                  Alliance: <b>{status.getIn(['alliance', 'pick']) === 0 ? 'Captain' : `${ordinal(status.getIn(['alliance', 'pick']))} Pick`}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
+                </Typography>
+              }
+              {status.getIn(['playoff', 'record']) &&
+                <Typography variant='subheading'>
+                  Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
+                </Typography>
+              }
+              {awards &&
+                <React.Fragment>
+                  <Typography variant='subheading'>Awards:</Typography>
+                  <ul className={classes.awardList}>
+                    {awards.map(award =>
+                      <li key={award.key}>{award.name}</li>
+                    )}
+                  </ul>
+                </React.Fragment>
+              }
+              </Paper>
+              <Paper className={classes.matchesCard}>
+                <MatchList matches={matches} awards={awards} status={status} />
+              </Paper>
+            </ScrollRestoreContainer>
+          )
+        }
+      } else {
+        views.push(<div key={event.key}>TODO</div>)
+      }
+    })}
+
     return (
       <TBAPageContainer
         documentTitle={this.props.documentTitle}
@@ -192,127 +319,7 @@ class TeamPageMobile extends PureComponent {
           index={this.props.activeTab}
           onChangeIndex={this.tabHandleChangeIndex}
         >
-          <ScrollRestoreContainer
-            scrollId="info"
-            className={classes.scrollContainer}
-          >
-            <Paper className={classes.paper}>
-              <List className={classes.infoList}>
-                <ListItem>
-                  <ListItemIcon>
-                    <Icon>people</Icon>
-                  </ListItemIcon>
-                  <ListItemText primary={team && team.nickname ? team.nickname : `Team ${teamNumber}`} />
-                </ListItem>
-                {team && team.getCityStateCountry() &&
-                  <React.Fragment>
-                    <Divider inset />
-                    <ListItem>
-                      <ListItemIcon>
-                        <Icon>location_on</Icon>
-                      </ListItemIcon>
-                      <ListItemText primary={team.getCityStateCountry()} />
-                    </ListItem>
-                  </React.Fragment>
-                }
-                {team && team.name &&
-                  <React.Fragment>
-                    <Divider inset />
-                    <ListItem>
-                      <ListItemIcon>
-                        <Icon>info</Icon>
-                      </ListItemIcon>
-                      <ListItemText primary={team.name} className={classes.nameText} />
-                    </ListItem>
-                  </React.Fragment>
-                }
-              </List>
-            </Paper>
-
-            <Paper className={classes.paper}>
-              <List className={classes.infoList}>
-                <ListItem>
-                  <ListItemText primary='Social media' />
-                </ListItem>
-                {team && team.website &&
-                  <React.Fragment>
-                    <Divider />
-                    <ListItem>
-                      <ListItemIcon>
-                        <Icon>public</Icon>
-                      </ListItemIcon>
-                      <ListItemText primary={team.website} />
-                    </ListItem>
-                  </React.Fragment>
-                }
-                <Divider inset />
-                <ListItem>
-                  <ListItemIcon>
-                    <Icon>public</Icon>
-                  </ListItemIcon>
-                  <ListItemText primary='Some other social media' />
-                </ListItem>
-              </List>
-            </Paper>
-          </ScrollRestoreContainer>
-          {teamYearEvents.map(event => {
-            if (statusByEvent && matchesByEvent) {
-              const status = statusByEvent.get(`${event.key}_frc${teamNumber}`)
-              const matches = matchesByEvent.get(event.key)
-              const awards = awardsByEvent.get(event.key)
-              if (status && matches) {
-                return (
-                  <ScrollRestoreContainer
-                    key={event.key}
-                    scrollId={`${event.key}_matches`}
-                    className={classes.scrollContainer}
-                  >
-                    <Paper className={classes.statusCard}>
-                    <Typography variant='title'>
-                      <Link to={{pathname: `/event/${event.key}`}}>
-                        {event.name}
-                      </Link>
-                    </Typography>
-                    {status.getIn(['qual', 'ranking', 'rank']) &&
-                      <Typography variant='subheading'>
-                        Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b>
-                      </Typography>
-                    }
-                    {status.getIn(['qual', 'ranking', 'record']) &&
-                      <Typography variant='subheading'>
-                        Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b>
-                      </Typography>
-                    }
-                    {status.getIn(['alliance']) &&
-                      <Typography variant='subheading'>
-                        Alliance: <b>{status.getIn(['alliance', 'pick']) === 0 ? 'Captain' : `${ordinal(status.getIn(['alliance', 'pick']))} Pick`}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
-                      </Typography>
-                    }
-                    {status.getIn(['playoff', 'record']) &&
-                      <Typography variant='subheading'>
-                        Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
-                      </Typography>
-                    }
-                    {awards &&
-                      <React.Fragment>
-                        <Typography variant='subheading'>Awards:</Typography>
-                        <ul className={classes.awardList}>
-                          {awards.map(award =>
-                            <li key={award.key}>{award.name}</li>
-                          )}
-                        </ul>
-                      </React.Fragment>
-                    }
-                    </Paper>
-                    <Paper className={classes.matchesCard}>
-                      <MatchList matches={matches} awards={awards} status={status} />
-                    </Paper>
-                  </ScrollRestoreContainer>
-                )
-              }
-            }
-            return <div key={event.key}>TODO</div>
-          })}
+          {views}
         </SwipeableViews>
       </TBAPageContainer>
     )
