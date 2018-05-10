@@ -1,14 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Route } from 'react-router-dom';
-import Dialog, { withMobileDialog } from 'material-ui/Dialog';
-import Slide from 'material-ui/transitions/Slide';
+import React from 'react'
+import { withStyles } from 'material-ui/styles'
+import PropTypes from 'prop-types'
+import { Route } from 'react-router-dom'
+import Dialog, { withMobileDialog } from 'material-ui/Dialog'
+import Slide from 'material-ui/transitions/Slide'
 
 import MatchDialogContainer from '../containers/MatchDialogContainer'
 import TeamAtEventDialogContainer from '../containers/TeamAtEventDialogContainer'
 
 function Transition(props) {
-  return <Slide direction="up" {...props} />;
+  return <Slide direction="up" {...props} />
 }
 
 const ModalRoute = ({ component, ...rest }) => {
@@ -20,9 +21,21 @@ const ModalRoute = ({ component, ...rest }) => {
   )
 }
 
+const styles = theme => ({
+  fullScreenRoot: {
+    top: 32,
+    bottom: 0,
+    height: 'auto',
+  },
+  paperFullScreen: {
+    borderTopLeftRadius: theme.spacing.unit * 2,
+    borderTopRightRadius: theme.spacing.unit * 2,
+  },
+})
+
 class TBAModalDialog extends React.Component {
   render() {
-    const { isModal, open, fullScreen, handleClose } = this.props
+    const { classes, isModal, open, fullScreen, handleClose } = this.props
     return (
       <Dialog
         open={open}
@@ -31,6 +44,10 @@ class TBAModalDialog extends React.Component {
         fullWidth
         fullScreen={fullScreen}
         transition={Transition}
+        classes={{
+          root: fullScreen ? classes.fullScreenRoot : null,
+          paperFullScreen: classes.paperFullScreen,
+        }}
       >
         {isModal &&
           <React.Fragment>
@@ -50,4 +67,4 @@ TBAModalDialog.propTypes = {
   handleClose: PropTypes.func.isRequired,
 }
 
-export default withMobileDialog()(TBAModalDialog)
+export default withMobileDialog()(withStyles(styles)(TBAModalDialog))
