@@ -11,22 +11,33 @@ import { ListItem } from 'material-ui/List'
 import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
 
 const styles = theme => ({
+  listItem: {
+    padding: theme.spacing.unit / 2,
+  },
+  matchName: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: theme.spacing.unit,
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+  },
   table: {
-    padding: '5px 0',
+    padding: `${theme.spacing.unit}px 0`,
     margin: 0,
     width: '100%',
     marginLeft: 'auto',
     backgroundColor: '#ffffff',
     borderCollapse: 'collapse',
-    fontSize: '14px',
+    fontSize: '16px',
     '& tr': {
-      padding: '5px 0',
+      padding: `${theme.spacing.unit}px 0`,
     },
     '& td': {
       position: 'relative',
       textAlign: 'center',
       verticalAlign: 'middle !important',
-      padding: '5px',
+      padding: theme.spacing.unit,
     },
   },
   red: {
@@ -57,33 +68,43 @@ class MatchListItem extends PureComponent {
     const redWin = match.winning_alliance === 'red'
     const blueWin = match.winning_alliance === 'blue'
     return (
-      <LinkContainer to={{pathname: `/match/${match.key}`, state: {modal: true}}}>
-        <ListItem button divider disableRipple>
-          <Grid container spacing={24} className={classes.matchGrid}>
-            <Grid item xs={3}>
-              {match.getDisplayName(true)}
+      <ListItem button divider disableRipple className={classes.listItem}>
+        <Grid container className={classes.matchGrid}>
+          <LinkContainer to={{pathname: `/match/${match.key}`, state: {modal: true}}}>
+            <Grid item xs={3} className={classes.matchName}>
+              {match.getCompLevel()}
+              <br/>
+              {match.getSetMatch(true)}
             </Grid>
-            <Grid item xs={8}>
-              <table className={classes.table}>
-                <tbody>
-                  <tr className={classNames({[classes.tr]: true, [classes.redWin]: redWin})}>
-                    {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
-                      return <td key={teamKey} className={classes.red}>{teamKey.substring(3)}</td>
-                    })}
-                    <td className={classes.redScore}>{match.alliances.getIn(['red', 'score'])}</td>
-                  </tr>
-                  <tr className={classNames({[classes.tr]: true, [classes.blueWin]: blueWin})}>
-                    {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
-                      return <td key={teamKey} className={classes.blue}>{teamKey.substring(3)}</td>
-                    })}
-                    <td className={classes.blueScore}>{match.alliances.getIn(['blue', 'score'])}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </Grid>
+          </LinkContainer>
+          <Grid item xs={9}>
+            <table className={classes.table}>
+              <tbody>
+                <tr className={classNames({[classes.tr]: true, [classes.redWin]: redWin})}>
+                  {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
+                    return (
+                      <LinkContainer key={teamKey} to={{pathname: `/team/${teamKey.substring(3)}#${match.event_key}`, state: {modal: true}}}>
+                        <td className={classes.red}>{teamKey.substring(3)}</td>
+                      </LinkContainer>
+                      )
+                  })}
+                  <td className={classes.redScore}>{match.alliances.getIn(['red', 'score'])}</td>
+                </tr>
+                <tr className={classNames({[classes.tr]: true, [classes.blueWin]: blueWin})}>
+                  {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
+                    return (
+                      <LinkContainer key={teamKey} to={{pathname: `/team/${teamKey.substring(3)}#${match.event_key}`, state: {modal: true}}}>
+                        <td className={classes.blue}>{teamKey.substring(3)}</td>
+                      </LinkContainer>
+                    )
+                  })}
+                  <td className={classes.blueScore}>{match.alliances.getIn(['blue', 'score'])}</td>
+                </tr>
+              </tbody>
+            </table>
           </Grid>
-        </ListItem>
-      </LinkContainer>
+        </Grid>
+      </ListItem>
     )
   }
 }

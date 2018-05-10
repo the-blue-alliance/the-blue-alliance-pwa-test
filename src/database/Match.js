@@ -34,6 +34,18 @@ export default class Match extends Record({
     }
   }
 
+  getCompLevel() {
+    return COMP_LEVELS[this.comp_level]
+  }
+
+  getSetMatch(short=false) {
+    if (this.comp_level === 'qm' || this.comp_level === 'f') {
+      return `${this.match_number}`
+    } else {
+      return `${this.set_number} ${short ? '-' : 'Match'} ${this.match_number}`
+    }
+  }
+
   getNaturalOrder() {
     return PLAY_ORDER[this.comp_level]*100000 + this.set_number*100 + this.match_number
   }
