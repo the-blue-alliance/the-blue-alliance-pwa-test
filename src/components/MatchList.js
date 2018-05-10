@@ -16,7 +16,9 @@ const styles = theme => ({
 })
 
 class MatchList extends PureComponent {
-  groupedMatches = []
+  state = {
+    groupedMatches: [],
+  }
 
   computeGroupedMatches = (matches) => {
     console.log("Computing match list!")
@@ -33,9 +35,9 @@ class MatchList extends PureComponent {
 
     // Combine everything in display order:
     // qual, ef, qf, sf, f
-    this.groupedMatches = []
+    let groupedMatches = []
     if (matchesByLevel['qm']) {
-      this.groupedMatches.push((
+      groupedMatches.push((
         <div key={'qm'}>
           <EventListSubheader text='Qualification Matches' />
           {matchesByLevel['qm'].map(match =>
@@ -45,7 +47,7 @@ class MatchList extends PureComponent {
       ))
     }
     if (matchesByLevel['ef']) {
-      this.groupedMatches.push((
+      groupedMatches.push((
         <div key={'ef'}>
           <EventListSubheader text='Octo-final Matches' />
           {matchesByLevel['ef'].map(match =>
@@ -55,7 +57,7 @@ class MatchList extends PureComponent {
       ))
     }
     if (matchesByLevel['qf']) {
-      this.groupedMatches.push((
+      groupedMatches.push((
         <div key={'qf'}>
           <EventListSubheader text='Quarterfinal Matches' />
           {matchesByLevel['qf'].map(match =>
@@ -65,7 +67,7 @@ class MatchList extends PureComponent {
       ))
     }
     if (matchesByLevel['sf']) {
-      this.groupedMatches.push((
+      groupedMatches.push((
         <div key={'sf'}>
           <EventListSubheader text='Semifinal Matches' />
           {matchesByLevel['sf'].map(match =>
@@ -75,7 +77,7 @@ class MatchList extends PureComponent {
       ))
     }
     if (matchesByLevel['f']) {
-      this.groupedMatches.push((
+      groupedMatches.push((
         <div key={'f'}>
           <EventListSubheader text='Finals Matches' />
           {matchesByLevel['f'].map(match =>
@@ -84,14 +86,19 @@ class MatchList extends PureComponent {
         </div>
       ))
     }
+    this.setState({groupedMatches})
   }
 
-  componentWillMount() {
-    this.computeGroupedMatches(this.props.matches)
+  componentDidMount() {
+    if (this.props.matches) {
+      this.computeGroupedMatches(this.props.matches)
+    }
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    this.computeGroupedMatches(nextProps.matches)
+  componentDidUpdate(nextProps, nextState) {
+    if (this.props.matches && this.props.matches !== nextProps.matches) {
+      this.computeGroupedMatches(this.props.matches)
+    }
   }
 
   render() {
@@ -101,7 +108,7 @@ class MatchList extends PureComponent {
 
     return (
       <List subheader={<div />} className={classes.list} >
-        {this.groupedMatches}
+        {this.state.groupedMatches}
       </List>
     )
   }

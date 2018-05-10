@@ -83,7 +83,7 @@ class MatchListItem extends PureComponent {
                 <tr className={classNames({[classes.tr]: true, [classes.redWin]: redWin})}>
                   {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
                     return (
-                      <LinkContainer key={teamKey} to={{pathname: `/team/${teamKey.substring(3)}#${match.event_key}`, state: {modal: true}}}>
+                      <LinkContainer key={teamKey} to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>
                         <td className={classes.red}>{teamKey.substring(3)}</td>
                       </LinkContainer>
                       )
@@ -93,7 +93,7 @@ class MatchListItem extends PureComponent {
                 <tr className={classNames({[classes.tr]: true, [classes.blueWin]: blueWin})}>
                   {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
                     return (
-                      <LinkContainer key={teamKey} to={{pathname: `/team/${teamKey.substring(3)}#${match.event_key}`, state: {modal: true}}}>
+                      <LinkContainer key={teamKey} to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>
                         <td className={classes.blue}>{teamKey.substring(3)}</td>
                       </LinkContainer>
                     )
