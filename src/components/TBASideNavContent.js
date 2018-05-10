@@ -8,6 +8,7 @@ import VideocamIcon from '@material-ui/icons/Videocam'
 import EventIcon from '@material-ui/icons/Event'
 import PeopleIcon from '@material-ui/icons/People'
 import SettingsIcon from '@material-ui/icons/Settings'
+import { LinearProgress } from 'material-ui/Progress'
 import List, { ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, ListSubheader } from 'material-ui/List'
 import Switch from 'material-ui/Switch'
 import Divider from 'material-ui/Divider'
@@ -93,6 +94,7 @@ class TBASideNavContent extends PureComponent {
               />
             </ListItemSecondaryAction>
           </ListItem>
+          <LinearProgress />
         </List>
         <Divider />
         <List>
