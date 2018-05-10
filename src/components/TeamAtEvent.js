@@ -24,7 +24,7 @@ class TeamAtEvent extends PureComponent {
     const { classes, hideEventName, awards, event, matches, status, disableVisibilityRenderer } = this.props
     return (
       <Grid container spacing={24}>
-        <Grid item xs={4}>
+        <Grid item xs={12} lg={4}>
           {!hideEventName &&
           <Typography variant='title' gutterBottom>
             <Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link>
@@ -60,7 +60,7 @@ class TeamAtEvent extends PureComponent {
             </React.Fragment>
           }
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={12} lg={8}>
           <MatchTable matches={matches} disableVisibilityRenderer={disableVisibilityRenderer}/>
         </Grid>
       </Grid>
