@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import ReactGA from 'react-ga'
@@ -120,16 +121,16 @@ class ModalSwitch extends React.Component {
       this.initialKey !== nextLocation.key
     )
     if (nextIsModal && !this.state.modalOpen) {
-      this.setState({modalOpen: true})
+      ReactDOM.unstable_deferredUpdates(() => this.setState({modalOpen: true}))
       this.props.setPageKey(this.basePageLocation.key)
     }
     if (!nextIsModal && this.state.modalOpen) {
-      this.setState({modalOpen: false})
+      ReactDOM.unstable_deferredUpdates(() => this.setState({modalOpen: false}))
     }
   }
 
   handleClose = () => {
-    this.setState({modalOpen: false})
+    ReactDOM.unstable_deferredUpdates(() => this.setState({modalOpen: false}))
     this.props.history.go(-this.modalKeyDepths[this.props.location.key])
   }
 
