@@ -12,7 +12,7 @@ import Hidden from 'material-ui/Hidden'
 import Icon from 'material-ui/Icon'
 import IconButton from 'material-ui/IconButton'
 import List, { ListItem } from 'material-ui/List'
-import Tabs, { Tab } from 'material-ui/Tabs'
+import Paper from 'material-ui/Paper'
 import Toolbar from 'material-ui/Toolbar'
 import Typography from 'material-ui/Typography'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
@@ -35,7 +35,7 @@ const styles = theme => ({
   },
   contentMobile: {
     position: 'fixed',
-    top: 64 + 48,
+    top: 64,
     right: 0,
     bottom: 0,
     left: 0,
@@ -53,15 +53,19 @@ const styles = theme => ({
   toolbar: {
     padding: 0,
   },
-  list: {
-    padding: 0,
+  statusCard: {
+    margin: theme.spacing.unit,
+    padding: theme.spacing.unit,
+  },
+  matchesCard: {
+    margin: theme.spacing.unit,
+    padding: `${theme.spacing.unit/2}px 0px`,
   },
 })
 
 class TeamAtEventDialog extends PureComponent {
   reset = props => {
     props.resetModal({
-      tabIdx: 0,
     })
   }
 
@@ -90,14 +94,6 @@ class TeamAtEventDialog extends PureComponent {
     this.props.fetchEventMatches(this.props.eventKey)
     this.props.fetchEventTeams(this.props.eventKey)
     this.props.fetchEventTeamStatuses(this.props.eventKey)
-  }
-
-  tabHandleChange = (event, value) => {
-    this.props.setModalState({tabIdx: value})
-  }
-
-  tabHandleChangeIndex = index => {
-    this.props.setModalState({tabIdx: index})
   }
 
   render() {
@@ -154,101 +150,54 @@ class TeamAtEventDialog extends PureComponent {
                 <CloseIcon />
               </IconButton>
             </Toolbar>
-            <Tabs
-              value={this.props.tabIdx}
-              onChange={this.tabHandleChange}
-              indicatorColor='primary'
-              scrollable
-              scrollButtons='auto'
-              className='hide-scrollbar'
-            >
-              <Tab value={0} label='Summary' />
-              <Tab value={1} label='Matches' />
-              <Tab value={2} label='Awards' />
-            </Tabs>
           </AppBar>
           <DialogContent className={classes.contentMobile}>
-            <SwipeableViews
-              containerStyle={{
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                bottom: 0,
-                left: 0,
-              }}
-              index={this.props.tabIdx}
-              onChangeIndex={this.tabHandleChangeIndex}
+            <ScrollRestoreContainer
+              key={eventKey}
+              scrollId={`${eventKey}_frc${teamNumber}`}
+              className={classes.scrollContainer}
             >
-              <ScrollRestoreContainer
-                scrollId='summary'
-                className={classes.scrollContainer}
-              >
-                <List className={classes.list}>
-                  {status && status.getIn(['qual', 'ranking', 'rank']) &&
-                    <React.Fragment>
-                      <ListItem>
-                        <Typography variant='subheading'>
-                          Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b>
-                        </Typography>
-                      </ListItem>
-                      <Divider />
-                    </React.Fragment>
-                  }
-                  {status && status.getIn(['qual', 'ranking', 'record']) &&
-                    <React.Fragment>
-                      <ListItem>
-                        <Typography variant='subheading'>
-                          Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b>
-                        </Typography>
-                      </ListItem>
-                      <Divider />
-                    </React.Fragment>
-                  }
-                  {status && status.getIn(['alliance']) &&
-                    <React.Fragment>
-                      <ListItem>
-                        <Typography variant='subheading'>
-                          Alliance: <b>{status.getIn(['alliance', 'pick']) === 0 ? 'Captain' : `${ordinal(status.getIn(['alliance', 'pick']))} Pick`}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
-                        </Typography>
-                      </ListItem>
-                        <Divider />
-                    </React.Fragment>
-                  }
-                  {status && status.getIn(['playoff', 'record']) &&
-                    <React.Fragment>
-                      <ListItem>
-                        <Typography variant='subheading'>
-                          Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
-                        </Typography>
-                      </ListItem>
-                      <Divider />
-                    </React.Fragment>
-                  }
-                </List>
-              </ScrollRestoreContainer>
-              <MatchList matches={matches} scrollId='matches' />
-              <ScrollRestoreContainer
-                scrollId='awards'
-                className={classes.scrollContainer}
-              >
-                {awards &&
-                  <List className={classes.list}>
-                  {awards.map(award => {
-                    return (
-                      <React.Fragment key={award.key}>
-                        <ListItem>
-                          <Typography variant='subheading'>
-                            {award.name}
-                          </Typography>
-                        </ListItem>
-                        <Divider />
-                      </React.Fragment>
-                    )
-                  })}
-                  </List>
+              <Paper className={classes.statusCard}>
+                <Typography variant='title'>
+                  <Link to={{pathname: `/event/${eventKey}`}}>
+                    {event.get('name')}
+                  </Link>
+                </Typography>
+                {status && status.getIn(['qual', 'ranking', 'rank']) &&
+                  <Typography variant='subheading'>
+                    Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b>
+                  </Typography>
                 }
-              </ScrollRestoreContainer>
-            </SwipeableViews>
+                {status && status.getIn(['qual', 'ranking', 'record']) &&
+                  <Typography variant='subheading'>
+                    Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b>
+                  </Typography>
+                }
+                {status && status.getIn(['alliance']) &&
+                  <Typography variant='subheading'>
+                    Alliance: <b>{status.getIn(['alliance', 'pick']) === 0 ? 'Captain' : `${ordinal(status.getIn(['alliance', 'pick']))} Pick`}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
+                  </Typography>
+                }
+                {status && status.getIn(['playoff', 'record']) &&
+                  <Typography variant='subheading'>
+                    Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
+                  </Typography>
+                }
+                {awards &&
+                  <React.Fragment>
+                    <Typography variant='subheading'>Awards:</Typography>
+                    <ul className={classes.awardList}>
+                      {awards.map(award =>
+                        <li key={award.key}>{award.name}</li>
+                      )}
+                    </ul>
+                  </React.Fragment>
+                }
+              </Paper>
+              <Paper className={classes.matchesCard}>
+                <MatchList matches={matches} awards={awards} status={status} />
+              </Paper>
+            </ScrollRestoreContainer>
           </DialogContent>
         </Hidden>
       </React.Fragment>
