@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
-import { withStyles } from 'material-ui/styles';
-import Grid from 'material-ui/Grid';
-import { CircularProgress } from 'material-ui/Progress';
-import fitvids from 'fitvids';
+import React, { PureComponent } from 'react'
+import { withStyles } from 'material-ui/styles'
+import Grid from 'material-ui/Grid'
+import { CircularProgress } from 'material-ui/Progress'
+import fitvids from 'fitvids'
 
 const styles = theme => ({
 })
@@ -22,7 +22,7 @@ class MatchVideos extends PureComponent {
     }
 
     return (
-      <Grid container spacing={24}>
+      <Grid container spacing={8}>
         {match.get('videos').map(video => {
           return (
             <Grid item xs={12} key={video.get('key')}>
@@ -35,4 +35,4 @@ class MatchVideos extends PureComponent {
   }
 }
 
-export default withStyles(styles)(MatchVideos);
+export default withStyles(styles)(MatchVideos)
