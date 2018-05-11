@@ -29,6 +29,13 @@ const styles = theme => ({
     height: '100%',
     overflowY: 'scroll',
   },
+  paper: {
+    margin: theme.spacing.unit,
+  },
+  matchesCard: {
+    margin: theme.spacing.unit,
+    padding: `${theme.spacing.unit/2}px 0px`,
+  },
 })
 
 class EventPage extends PureComponent {
@@ -151,7 +158,7 @@ class EventPage extends PureComponent {
               index={this.props.tabIdx}
               onChangeIndex={this.tabHandleChangeIndex}
             >
-              <div>
+              <Paper className={classes.paper}>
                 <List>
                   <ListItem>
                     <ListItemIcon>
@@ -173,12 +180,14 @@ class EventPage extends PureComponent {
                     </List>
                   </React.Fragment>
                 }
-              </div>
+              </Paper>
               {matches ? <ScrollRestoreContainer
                 scrollId="matches"
                 className={classes.scrollContainer}
               >
-                <MatchList matches={matches} />
+                <Paper className={classes.matchesCard}>
+                  <MatchList matches={matches} />
+                </Paper>
               </ScrollRestoreContainer> : <div>NO MATCHES</div>}
               <div ref={el => this.contentRef = el} className={classes.scrollContainer}>
                 <TeamsList scrollElement={this.contentRef} teams={teams} year={year}/>
