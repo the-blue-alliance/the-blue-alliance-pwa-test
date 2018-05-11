@@ -61,8 +61,9 @@ class ModalSwitch extends React.Component {
   state = {
     modalOpen: false,
   }
-  previousLocation = this.props.location
+  basePageLocation = this.props.location
   modalKeyDepths = {}
+  modalBaseLocations = {}  // Keeps track of what base page was showing for a given modal
   initialKey = null
 
   constructor(props) {
@@ -72,29 +73,48 @@ class ModalSwitch extends React.Component {
 
   componentWillUpdate(nextProps) {
     const { location } = this.props
+    const { location: nextLocation, history: nextHistory } = nextProps
+
+    // Restore base page location
     if (
-      nextProps.history.action !== 'POP' &&
+      nextHistory.action !== 'POP' &&
       (!location.state || !location.state.modal)
     ) {
-      this.previousLocation = this.props.location
-    }
-
-    if (nextProps.location.key !== location.key && nextProps.history.action === 'PUSH') {
-      if (location.state && location.state.modal) {
-        if (location.key in this.modalKeyDepths) {
-          this.modalKeyDepths[nextProps.location.key] = this.modalKeyDepths[location.key] + 1
-        } else {
-          this.modalKeyDepths[nextProps.location.key] = 1
-        }
-      } else {
-        this.modalKeyDepths[nextProps.location.key] = 1
+      this.basePageLocation = location
+    } else {
+      const loc = this.modalBaseLocations[nextLocation.key]
+      if (loc) {
+        this.basePageLocation = loc
       }
     }
 
+    if (nextLocation.key !== location.key && nextHistory.action === 'PUSH') {
+      // Keep track of modal depth
+      if (location.state && location.state.modal) {
+        if (location.key in this.modalKeyDepths) {
+          this.modalKeyDepths[nextLocation.key] = this.modalKeyDepths[location.key] + 1
+        } else {
+          this.modalKeyDepths[nextLocation.key] = 1
+        }
+      } else {
+        this.modalKeyDepths[nextLocation.key] = 1
+      }
+
+      // Keep track of base page location
+      if (nextLocation.state && nextLocation.state.modal) {
+        if (location.state && location.state.modal && this.modalBaseLocations[location.key]) {
+          this.modalBaseLocations[nextLocation.key] = this.modalBaseLocations[location.key]
+        } else {
+          this.modalBaseLocations[nextLocation.key] = location
+        }
+      }
+    }
+
+    // Set modalOpen state
     const nextIsModal = (
-      nextProps.location.state &&
-      nextProps.location.state.modal &&
-      this.initialKey !== nextProps.location.key
+      nextLocation.state &&
+      nextLocation.state.modal &&
+      this.initialKey !== nextLocation.key
     )
     if (nextIsModal && !this.state.modalOpen) {
       this.setState({modalOpen: true})
@@ -119,8 +139,8 @@ class ModalSwitch extends React.Component {
 
     // Set key to force remount when route changes
     return (
-      <React.Fragment key={isModal ? this.previousLocation.key : location.key}>
-        <Switch location={isModal ? this.previousLocation : location}>
+      <React.Fragment key={isModal ? this.basePageLocation.key : location.key}>
+        <Switch location={isModal ? this.basePageLocation : location}>
           <Route exact path='/' component={HomePageContainer} />
           <Route path='/events/:year' component={EventListPageBase} />
           <Route path='/events' component={EventListPageBase} />
