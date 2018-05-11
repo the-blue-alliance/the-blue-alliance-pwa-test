@@ -43,6 +43,15 @@ export const setNav = (value) => ({
 })
 
 // Resetting Page
+export function setPageKey(pageKey) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: types.SET_PAGE_KEY,
+      pageKey,
+    })
+  }
+}
+
 export function resetPage(defaultState) {
   return (dispatch, getState) => {
     dispatch({

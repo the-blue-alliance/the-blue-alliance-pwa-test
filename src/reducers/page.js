@@ -86,6 +86,9 @@ const page = (state = Map({
   }
 
   switch (action.type) {
+    case types.SET_PAGE_KEY:
+      state = state.set('currentKey', action.pageKey)
+      return state
     case types.RESET_PAGE:
       state = state.set('currentKey', action.pageKey)
       if (action.defaultState && state.getIn(['stateHistory', action.pageKey]) === undefined) {

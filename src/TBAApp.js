@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import ReactGA from 'react-ga'
 import indigo from 'material-ui/colors/indigo'
@@ -6,6 +7,8 @@ import amber from 'material-ui/colors/amber'
 import CssBaseline from 'material-ui/CssBaseline'
 import { withStyles, MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 import Hidden from 'material-ui/Hidden'
+
+import { setPageKey } from './actions'
 
 import TBASideNavContainer from './containers/TBASideNavContainer'
 import TBABottomNavContainer from './containers/TBABottomNavContainer'
@@ -118,6 +121,7 @@ class ModalSwitch extends React.Component {
     )
     if (nextIsModal && !this.state.modalOpen) {
       this.setState({modalOpen: true})
+      this.props.setPageKey(this.basePageLocation.key)
     }
     if (!nextIsModal && this.state.modalOpen) {
       this.setState({modalOpen: false})
@@ -154,6 +158,15 @@ class ModalSwitch extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state, props) => ({
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  setPageKey: basePageKey => dispatch(setPageKey(basePageKey)),
+})
+
+const ModalSwitchConainer = connect(mapStateToProps, mapDispatchToProps)(ModalSwitch)
 
 const styles = theme => ({
 })
@@ -200,7 +213,7 @@ class TBAApp extends Component {
         <Hidden mdUp implementation="css">
           <Route path="/" component={TBABottomNavContainer} />
         </Hidden>
-        <Route component={ModalSwitch} />
+        <Route component={ModalSwitchConainer} />
         <Route path="/" component={Analytics}/>
       </MuiThemeProvider>
     )

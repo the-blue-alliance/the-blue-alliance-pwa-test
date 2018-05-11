@@ -8,6 +8,7 @@ export const TOGGLE_IDB = 'TOGGLE_IDB'
 export const SET_NAV_VALUE = 'SET_NAV_VALUE'
 
 // Resetting Page
+export const SET_PAGE_KEY = 'SET_PAGE_KEY'
 export const RESET_PAGE = 'RESET_PAGE'
 
 // Set page state
