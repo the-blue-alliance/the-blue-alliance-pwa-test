@@ -125,7 +125,8 @@ class ModalSwitch extends React.Component {
       this.props.setPageKey(this.basePageLocation.key)
     }
     if (!nextIsModal && this.state.modalOpen) {
-      ReactDOM.unstable_deferredUpdates(() => this.setState({modalOpen: false}))
+      // Set synchronously to ensure modal is closed after navigation
+      this.setState({modalOpen: false})
     }
   }
 
