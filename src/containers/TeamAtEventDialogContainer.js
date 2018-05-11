@@ -3,7 +3,7 @@ import { goBack } from 'connected-react-router'
 import { resetModal, setModalState, fetchEventAwards, fetchEventMatches, fetchEventTeams, fetchEventTeamStatuses } from '../actions'
 import { getCurrentModalState } from '../selectors/CommonPageSelectors'
 import TeamAtEventDialog from '../components/TeamAtEventDialog'
-import { getTeamNumber, getEventKey, getTeam, getEvent, getSortedMatches, getSortedAwards, getTeamEventStatus } from '../selectors/TeamAtEventDialogSelectors'
+import { getTeamNumber, getEventKey, getTeamModel, getEventModel, getSortedMatches, getSortedAwards, getTeamEventStatus } from '../selectors/TeamAtEventDialogSelectors'
 
 
 const mapStateToProps = (state, props) => ({
@@ -13,8 +13,8 @@ const mapStateToProps = (state, props) => ({
   // Data
   teamNumber: getTeamNumber(state, props),
   eventKey: getEventKey(state, props),
-  team: getTeam(state, props),
-  event: getEvent(state, props),
+  team: getTeamModel(state, props),
+  event: getEventModel(state, props),
   matches: getSortedMatches(state, props),
   awards: getSortedAwards(state, props),
   status: getTeamEventStatus(state, props),

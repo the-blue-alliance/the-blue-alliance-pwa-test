@@ -1,7 +1,6 @@
 // General
 import React, { PureComponent } from 'react'
 import { withStyles } from 'material-ui/styles'
-import { ordinal } from '../utils'
 
 // Components
 import AppBar from 'material-ui/AppBar'
@@ -11,19 +10,16 @@ import Divider from 'material-ui/Divider'
 import Hidden from 'material-ui/Hidden'
 import Icon from 'material-ui/Icon'
 import IconButton from 'material-ui/IconButton'
-import List, { ListItem } from 'material-ui/List'
-import Paper from 'material-ui/Paper'
 import Toolbar from 'material-ui/Toolbar'
 import Typography from 'material-ui/Typography'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import CloseIcon from '@material-ui/icons/Close'
 import { Link } from 'react-router-dom'
-import SwipeableViews from 'react-swipeable-views'
 
 // TBA Components
-import MatchList from './MatchList'
 import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 import TeamAtEvent from '../components/TeamAtEvent'
+import TeamAtEventMobile from './TeamAtEventMobile'
 
 const styles = theme => ({
   button: {
@@ -52,14 +48,6 @@ const styles = theme => ({
   },
   toolbar: {
     padding: 0,
-  },
-  statusCard: {
-    margin: theme.spacing.unit,
-    padding: theme.spacing.unit,
-  },
-  matchesCard: {
-    margin: theme.spacing.unit,
-    padding: `${theme.spacing.unit/2}px 0px`,
   },
 })
 
@@ -157,46 +145,12 @@ class TeamAtEventDialog extends PureComponent {
               scrollId={`${eventKey}_frc${teamNumber}`}
               className={classes.scrollContainer}
             >
-              <Paper className={classes.statusCard}>
-                <Typography variant='title'>
-                  <Link to={{pathname: `/event/${eventKey}`}}>
-                    {event.get('name')}
-                  </Link>
-                </Typography>
-                {status && status.getIn(['qual', 'ranking', 'rank']) &&
-                  <Typography variant='subheading'>
-                    Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b>
-                  </Typography>
-                }
-                {status && status.getIn(['qual', 'ranking', 'record']) &&
-                  <Typography variant='subheading'>
-                    Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b>
-                  </Typography>
-                }
-                {status && status.getIn(['alliance']) &&
-                  <Typography variant='subheading'>
-                    Alliance: <b>{status.getIn(['alliance', 'pick']) === 0 ? 'Captain' : `${ordinal(status.getIn(['alliance', 'pick']))} Pick`}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
-                  </Typography>
-                }
-                {status && status.getIn(['playoff', 'record']) &&
-                  <Typography variant='subheading'>
-                    Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
-                  </Typography>
-                }
-                {awards &&
-                  <React.Fragment>
-                    <Typography variant='subheading'>Awards:</Typography>
-                    <ul className={classes.awardList}>
-                      {awards.map(award =>
-                        <li key={award.key}>{award.name}</li>
-                      )}
-                    </ul>
-                  </React.Fragment>
-                }
-              </Paper>
-              <Paper className={classes.matchesCard}>
-                <MatchList matches={matches} awards={awards} status={status} />
-              </Paper>
+              <TeamAtEventMobile
+                event={event}
+                matches={matches}
+                status={status}
+                awards={awards}
+              />
             </ScrollRestoreContainer>
           </DialogContent>
         </Hidden>
