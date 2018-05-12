@@ -20,11 +20,11 @@ class GroupedEventTabs extends PureComponent {
     this.props.setPageState({activeEventGroup: value})
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentDidUpdate() {
     // Select first tab if current tab is no longer present
-    if (nextProps.groupedEvents.size !== 0 &&
-        !nextProps.groupedEvents.map(group => group.get('slug')).includes(nextProps.activeGroup)) {
-      this.props.setPageState({activeEventGroup: nextProps.groupedEvents.getIn([0, 'slug'])})
+    if (this.props.groupedEvents.size !== 0 &&
+        !this.props.groupedEvents.map(group => group.get('slug')).includes(this.props.activeGroup)) {
+      this.props.setPageState({activeEventGroup: this.props.groupedEvents.getIn([0, 'slug'])})
     }
   }
 
