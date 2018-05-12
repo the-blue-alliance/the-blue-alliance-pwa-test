@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import { withStyles } from 'material-ui/styles'
 
 // Components
+import ButtonBase from 'material-ui/ButtonBase'
 import { ListItem } from 'material-ui/List'
 import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
 
@@ -95,61 +96,71 @@ class MatchListItem extends PureComponent {
     const blueWin = match.winning_alliance === 'blue'
 
     return (
-      <ListItem button divider disableRipple className={classes.listItem}>
-        <LinkContainer to={{pathname: `/match/${match.key}`, state: {modal: true}}}>
+      <LinkContainer to={{pathname: `/match/${match.key}`, state: {modal: true}}}>
+        <ListItem button divider disableRipple className={classes.listItem}>
           <div xs={3} className={classes.matchName}>
             {match.getCompLevel()}
             <br/>
             {match.getSetMatch(true)}
           </div>
-        </LinkContainer>
-        <div className={classes.match}>
-          <div className={classNames({[classes.alliance]: true, [classes.redAlliance]: true,  [classes.redWin]: redWin})}>
-            {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
-              return (
-                <LinkContainer key={teamKey} to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>
-                  <div className={classes.team}>{teamKey.substring(3)}</div>
-                </LinkContainer>
+          <div className={classes.match}>
+            <div className={classNames({[classes.alliance]: true, [classes.redAlliance]: true,  [classes.redWin]: redWin})}>
+              {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
+                return (
+                  <LinkContainer key={teamKey} to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>
+                    <ButtonBase
+                      className={classes.team}
+                      component="div"
+                    >
+                      <div>{teamKey.substring(3)}</div>
+                    </ButtonBase>
+                  </LinkContainer>
                 )
-            })}
-            <div className={classes.score}>
-              {match.rpEarnedA('red') &&
-                <svg className={classes.rpDotA}>
-                  <circle cx="2" cy="2" r="2"/>
-                </svg>
-              }
-              {match.rpEarnedB('red') &&
-                <svg className={classes.rpDotB}>
-                  <circle cx="2" cy="2" r="2"/>
-                </svg>
-              }
-              {redScore}
+              })}
+              <div className={classes.score}>
+                {match.rpEarnedA('red') &&
+                  <svg className={classes.rpDotA}>
+                    <circle cx="2" cy="2" r="2"/>
+                  </svg>
+                }
+                {match.rpEarnedB('red') &&
+                  <svg className={classes.rpDotB}>
+                    <circle cx="2" cy="2" r="2"/>
+                  </svg>
+                }
+                {redScore}
+              </div>
+            </div>
+            <div className={classNames({[classes.alliance]: true, [classes.blueAlliance]: true,  [classes.blueWin]: blueWin})}>
+              {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
+                return (
+                  <LinkContainer key={teamKey} to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>
+                    <ButtonBase
+                      className={classes.team}
+                      component="div"
+                    >
+                      {teamKey.substring(3)}
+                    </ButtonBase>
+                  </LinkContainer>
+                  )
+              })}
+              <div className={classes.score}>
+                {match.rpEarnedA('blue') &&
+                  <svg className={classes.rpDotA}>
+                    <circle cx="2" cy="2" r="2"/>
+                  </svg>
+                }
+                {match.rpEarnedB('blue') &&
+                  <svg className={classes.rpDotB}>
+                    <circle cx="2" cy="2" r="2"/>
+                  </svg>
+                }
+                {blueScore}
+              </div>
             </div>
           </div>
-          <div className={classNames({[classes.alliance]: true, [classes.blueAlliance]: true,  [classes.blueWin]: blueWin})}>
-            {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
-              return (
-                <LinkContainer key={teamKey} to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>
-                  <div className={classes.team}>{teamKey.substring(3)}</div>
-                </LinkContainer>
-                )
-            })}
-            <div className={classes.score}>
-              {match.rpEarnedA('blue') &&
-                <svg className={classes.rpDotA}>
-                  <circle cx="2" cy="2" r="2"/>
-                </svg>
-              }
-              {match.rpEarnedB('blue') &&
-                <svg className={classes.rpDotB}>
-                  <circle cx="2" cy="2" r="2"/>
-                </svg>
-              }
-              {blueScore}
-            </div>
-          </div>
-        </div>
-      </ListItem>
+        </ListItem>
+      </LinkContainer>
     )
   }
 }
