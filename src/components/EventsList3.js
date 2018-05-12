@@ -22,13 +22,9 @@ const styles = theme => ({
 })
 
 class EventsList extends PureComponent {
-  groupedEvents = []
-
   computeGroupedEvents = (events) => {
-    console.log("Computing event list!")
-
+    let groupedEvents = []
     const team = this.props.team
-
     let eventsByType = {}
     let eventsByDistrictLabel = {}
     let labelToDistrict = {}
@@ -59,10 +55,9 @@ class EventsList extends PureComponent {
     }
     sortedLabels.sort()
 
-    this.groupedEvents = []
     // Regionals
     if (eventsByType[Event.REGIONAL]) {
-      this.groupedEvents.push((
+      groupedEvents.push((
         <div key={'r'}>
           <EventListSubheader text='Regional Events' />
           {eventsByType[Event.REGIONAL].map(event =>
@@ -75,7 +70,7 @@ class EventsList extends PureComponent {
     // District Quals
     sortedLabels.forEach(label => {
       if (eventsByDistrictLabel[label]) {
-        this.groupedEvents.push((
+        groupedEvents.push((
           <div key={`d-${labelToDistrict[label]}`}>
             <EventListSubheader text={label} />
             {eventsByDistrictLabel[label].map(event =>
@@ -88,7 +83,7 @@ class EventsList extends PureComponent {
 
     // District CMP Divisions
     if (eventsByType[Event.DISTRICT_CMP_DIVISION]) {
-      this.groupedEvents.push((
+      groupedEvents.push((
         <div key={'dcd'}>
           <EventListSubheader text='District Championship Divisions' />
           {eventsByType[Event.DISTRICT_CMP_DIVISION].map(event =>
@@ -100,7 +95,7 @@ class EventsList extends PureComponent {
 
     // District CMP
     if (eventsByType[Event.DISTRICT_CMP]) {
-      this.groupedEvents.push((
+      groupedEvents.push((
         <div key={'dc'}>
           <EventListSubheader text='District Championships' />
           {eventsByType[Event.DISTRICT_CMP].map(event =>
@@ -112,7 +107,7 @@ class EventsList extends PureComponent {
 
     // CMP Divisions
     if (eventsByType[Event.CMP_DIVISION]) {
-      this.groupedEvents.push((
+      groupedEvents.push((
         <div key={'cd'}>
           <EventListSubheader text='Championship Divisions' />
           {eventsByType[Event.CMP_DIVISION].map(event =>
@@ -124,7 +119,7 @@ class EventsList extends PureComponent {
 
     // CMP Finals
     if (eventsByType[Event.CMP_FINALS]) {
-      this.groupedEvents.push((
+      groupedEvents.push((
         <div key={'cf'}>
           <EventListSubheader text='Championship Finals' />
           {eventsByType[Event.CMP_FINALS].map(event =>
@@ -136,7 +131,7 @@ class EventsList extends PureComponent {
 
     // FoC
     if (eventsByType[Event.FOC]) {
-      this.groupedEvents.push((
+      groupedEvents.push((
         <div key={'foc'}>
           <EventListSubheader text='Festival of Champions' />
           {eventsByType[Event.FOC].map(event =>
@@ -148,7 +143,7 @@ class EventsList extends PureComponent {
 
     // Preseason
     if (eventsByType[Event.PRESEASON]) {
-      this.groupedEvents.push((
+      groupedEvents.push((
         <div key={'pe'}>
           <EventListSubheader text='Preseason Events' />
           {eventsByType[Event.PRESEASON].map(event =>
@@ -160,7 +155,7 @@ class EventsList extends PureComponent {
 
     // Offseason
     if (eventsByType[Event.OFFSEASON]) {
-      this.groupedEvents.push((
+      groupedEvents.push((
         <div key={'oe'}>
           <EventListSubheader text='Offseason Events' />
           {eventsByType[Event.OFFSEASON].map(event =>
@@ -169,20 +164,14 @@ class EventsList extends PureComponent {
         </div>
       ))
     }
-  }
 
-  componentWillMount() {
-    this.computeGroupedEvents(this.props.events)
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    this.computeGroupedEvents(nextProps.events)
+    return groupedEvents
   }
 
   render() {
     console.log("Render EventsList")
 
-    const { classes, scrollId } = this.props
+    const { classes, scrollId, events } = this.props
 
     return (
       <ScrollRestoreContainer
@@ -190,7 +179,7 @@ class EventsList extends PureComponent {
         className={classes.scrollContainer}
       >
         <List subheader={<div />} className={classes.list} >
-          {this.groupedEvents}
+          {this.computeGroupedEvents(events)}
         </List>
       </ScrollRestoreContainer>
     )
