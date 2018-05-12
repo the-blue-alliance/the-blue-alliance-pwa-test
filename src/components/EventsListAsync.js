@@ -8,6 +8,14 @@ import EventsList3 from './EventsList3'
 class EventsListAsync extends PureComponent {
   state = {
     isFirstRender: true,
+    hasBeenRendered: false,
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.isVisible) {
+      return {hasBeenRendered: true}
+    }
+    return null
   }
 
   componentDidMount() {
@@ -19,7 +27,7 @@ class EventsListAsync extends PureComponent {
 
     const { isVisible, ...restProps } = this.props
 
-    if (isVisible || !this.state.isFirstRender) {
+    if (isVisible || !this.state.isFirstRender || this.state.hasBeenRendered) {
       return (
         <EventsList3 {...restProps} />
       )
