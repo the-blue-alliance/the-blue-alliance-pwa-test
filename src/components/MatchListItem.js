@@ -112,7 +112,7 @@ class MatchListItem extends PureComponent {
                       className={classes.team}
                       component="div"
                     >
-                      <div>{teamKey.substring(3)}</div>
+                      {teamKey.substring(3)}
                     </ButtonBase>
                   </LinkContainer>
                 )
