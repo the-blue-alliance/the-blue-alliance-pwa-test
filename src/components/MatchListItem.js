@@ -10,6 +10,7 @@ import ButtonBase from 'material-ui/ButtonBase'
 import { ListItem } from 'material-ui/List'
 import Tooltip from 'material-ui/Tooltip'
 import { Link } from 'react-router-dom'
+import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
 
 const styles = theme => ({
   listItem: {
@@ -119,7 +120,7 @@ class MatchListItem extends PureComponent {
         divider
         disableRipple
       >
-        <div xs={3} className={classes.matchName}>
+        <div className={classes.matchName}>
           {match.getCompLevel()}
           <br/>
           {match.getSetMatch(true)}
@@ -140,21 +141,25 @@ class MatchListItem extends PureComponent {
               }
 
               return (
-                <ButtonBase
-                  className={classes.team}
-                  component={Link}
+                <LinkContainer
+                  key={teamKey}
+                  component="div"
                   to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}
                 >
-                  <div
-                    className={classNames({
-                      [classes.selectedTeam]: teamKey === selectedTeamKey,
-                      [classes.dq]: dq,
-                      [classes.surrogate]: surrogate,
-                    })}
+                  <ButtonBase
+                    className={classes.team}
                   >
-                    {teamEl}
-                  </div>
-                </ButtonBase>
+                    <div
+                      className={classNames({
+                        [classes.selectedTeam]: teamKey === selectedTeamKey,
+                        [classes.dq]: dq,
+                        [classes.surrogate]: surrogate,
+                      })}
+                    >
+                      {teamEl}
+                    </div>
+                  </ButtonBase>
+                </LinkContainer>
               )
             })}
             <div className={classNames({
@@ -189,21 +194,25 @@ class MatchListItem extends PureComponent {
               }
 
               return (
-                <ButtonBase
-                  className={classes.team}
-                  component={Link}
+                <LinkContainer
+                  key={teamKey}
+                  component="div"
                   to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}
                 >
-                  <div
-                    className={classNames({
-                      [classes.selectedTeam]: teamKey === selectedTeamKey,
-                      [classes.dq]: dq,
-                      [classes.surrogate]: surrogate,
-                    })}
+                  <ButtonBase
+                    className={classes.team}
                   >
-                    {teamEl}
-                  </div>
-                </ButtonBase>
+                    <div
+                      className={classNames({
+                        [classes.selectedTeam]: teamKey === selectedTeamKey,
+                        [classes.dq]: dq,
+                        [classes.surrogate]: surrogate,
+                      })}
+                    >
+                      {teamEl}
+                    </div>
+                  </ButtonBase>
+                </LinkContainer>
               )
             })}
             <div className={classNames({
