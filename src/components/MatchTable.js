@@ -29,19 +29,21 @@ const styles = theme => ({
   },
   tr: {
     padding: '5px 0',
-    border: '1px solid #ddd',
   },
   th: {
     fontWeight: 'bold',
     textAlign: 'center',
     verticalAlign: 'middle !important',
     padding: '5px',
+    border: '1px solid #ddd',
   },
   td: {
     position: 'relative',
     textAlign: 'center',
     verticalAlign: 'middle !important',
     padding: '5px',
+    border: '1px solid #ddd',
+    backgroundClip: 'padding-box',
   },
   red: {
     backgroundColor: '#ffeeee',
@@ -331,7 +333,7 @@ class MatchTable extends PureComponent {
     const fMatches = this.props.matches.filter(match => match.get('comp_level') === 'f')
 
     return (
-      <table className={classes.table} border='1'>
+      <table className={classes.table}>
         <thead className={classes.thead}>
           <tr className={classNames({[classes.tr]: true, [classes.key]: true})}>
             <th className={classes.th}><Icon className={classes.playIcon}>play_circle_outline</Icon></th>
