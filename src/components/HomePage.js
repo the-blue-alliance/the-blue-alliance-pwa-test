@@ -49,6 +49,15 @@ class Home extends PureComponent {
             className={classes.button}
             variant="raised"
             component={Link}
+            to='/team/254/2017#2017casj'
+          >
+            254 @ 2017casj
+          </Button>
+          <Button
+            color='default'
+            className={classes.button}
+            variant="raised"
+            component={Link}
             to='/event/2017casj'
           >
             2017casj

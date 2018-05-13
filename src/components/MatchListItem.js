@@ -139,7 +139,7 @@ class MatchListItem extends PureComponent {
                 <LinkContainer
                   key={teamKey}
                   component="div"
-                  to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}
+                  to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key, state: {modal: true}}}
                 >
                   <ButtonBase
                     className={classes.team}
@@ -184,7 +184,7 @@ class MatchListItem extends PureComponent {
                 <LinkContainer
                   key={teamKey}
                   component="div"
-                  to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}
+                  to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key, state: {modal: true}}}
                 >
                   <ButtonBase
                     className={classes.team}

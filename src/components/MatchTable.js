@@ -183,7 +183,7 @@ class MatchTable extends PureComponent {
                   [classes.surrogate]: surrogate,
               })}
             >
-              <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>
+              <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key, state: {modal: true}}}>
                 {teamEl}
               </Link>
             </td>
@@ -231,7 +231,7 @@ class MatchTable extends PureComponent {
                   [classes.surrogate]: surrogate,
               })}
             >
-              <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>
+              <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key, state: {modal: true}}}>
                 {teamEl}
               </Link>
             </td>

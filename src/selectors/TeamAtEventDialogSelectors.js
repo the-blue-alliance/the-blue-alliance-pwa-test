@@ -29,7 +29,7 @@ export const getTeamModel = createSelector(
 )
 
 export const getEventKey = (state, props) => {
-  return `${props.match.params.year}${props.location.hash.substring(1)}`
+  return props.location.hash.substring(1)
 }
 
 export const getEvent = (state, props) => {
