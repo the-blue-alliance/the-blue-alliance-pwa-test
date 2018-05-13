@@ -20,10 +20,12 @@ const styles = theme => ({
   },
   matchName: {
     flexGrow: 1,
+    flexBasis: 0,
     textAlign: 'center',
   },
   match: {
     flexGrow: 4,
+    flexBasis: 0,
     textAlign: 'center',
   },
   alliance: {
