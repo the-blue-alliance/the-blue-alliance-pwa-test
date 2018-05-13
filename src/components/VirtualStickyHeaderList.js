@@ -1,5 +1,6 @@
 // General
 import React, { PureComponent } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
 import memoize from 'memoizee'
@@ -17,10 +18,16 @@ class VirtualStickyHeaderList extends PureComponent {
   state = {
     scrollTop: 0,
     height: 0,
+    offsetTop: 0,
   }
 
   handleScroll = () => {
-    this.setState({scrollTop: this.props.scrollElement.scrollTop})
+    this.setState({
+      scrollTop: this.props.scrollElement.scrollTop,
+      offsetTop: ReactDOM.findDOMNode(this).getBoundingClientRect().top -
+        this.props.scrollElement.getBoundingClientRect().top +
+        this.props.scrollElement.scrollTop,
+    })
   }
 
   handleResize = () => {
@@ -129,8 +136,8 @@ class VirtualStickyHeaderList extends PureComponent {
                 const top = headerOffsets[headerIndex] + headerHeight + itemHeight * itemIndex
                 const bottom = headerOffsets[headerIndex] + headerHeight + itemHeight * (itemIndex + 1)
                 const isVisible = (
-                  top <= this.state.scrollTop + this.state.height + itemHeight * overscanCount &&
-                  bottom >= this.state.scrollTop - itemHeight * overscanCount
+                  top <= this.state.scrollTop + this.state.height + itemHeight * overscanCount - this.state.offsetTop &&
+                  bottom >= this.state.scrollTop - itemHeight * overscanCount - this.state.offsetTop
                 )
                 if (!isVisible) {
                   return null

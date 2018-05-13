@@ -184,13 +184,20 @@ class TeamPageMobile extends PureComponent {
         const matches = matchesByEvent.get(event.key)
         const awards = awardsByEvent.get(event.key)
         if (status && matches) {
+          const scrollRefKey = `scrollRef_${event.key}`
           views.push(
             <ScrollRestoreContainer
               key={event.key}
               scrollId={`${event.key}_matches`}
               className={classes.scrollContainer}
+              contentRef={el => {
+                if (!this.state[scrollRefKey]) {
+                  this.setState({[scrollRefKey]: el})
+                }
+              }}
             >
               <TeamAtEventMobile
+                scrollElement={this.state[scrollRefKey]}
                 event={event}
                 matches={matches}
                 status={status}

@@ -89,7 +89,7 @@ class MatchList extends PureComponent {
         itemRenderer={this.itemRenderer}
         headerHeight={24}
         itemHeight={88}
-        overscanCount={10}
+        overscanCount={5}
       />
     )
   }

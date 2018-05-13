@@ -52,6 +52,10 @@ const styles = theme => ({
 })
 
 class TeamAtEventDialog extends PureComponent {
+  state = {
+    scrollRef: null,
+  }
+
   reset = props => {
     props.resetModal({
     })
@@ -144,8 +148,14 @@ class TeamAtEventDialog extends PureComponent {
               key={eventKey}
               scrollId={`${eventKey}_frc${teamNumber}`}
               className={classes.scrollContainer}
+              contentRef={el => {
+                if (!this.state.scrollRef) {
+                  this.setState({scrollRef: el})
+                }
+              }}
             >
               <TeamAtEventMobile
+                scrollElement={this.state.scrollRef}
                 event={event}
                 matches={matches}
                 status={status}
