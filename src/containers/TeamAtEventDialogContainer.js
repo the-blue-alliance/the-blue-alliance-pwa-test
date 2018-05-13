@@ -9,6 +9,7 @@ import { getTeamNumber, getEventKey, getTeamModel, getEventModel, getSortedMatch
 const mapStateToProps = (state, props) => ({
   // Params
   // States
+  isLoading: state.getIn(['appState', 'loadingCount']) > 0,
   tabIdx: getCurrentModalState(state, props).get('tabIdx'),
   // Data
   teamNumber: getTeamNumber(state, props),

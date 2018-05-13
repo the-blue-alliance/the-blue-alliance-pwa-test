@@ -101,6 +101,7 @@ class TeamPageMobile extends PureComponent {
 
     const {
       classes,
+      isLoading,
       year,
       validYears,
       yearMenuOpen,
@@ -184,30 +185,29 @@ class TeamPageMobile extends PureComponent {
         const status = statusByEvent.get(`${event.key}_frc${teamNumber}`)
         const matches = matchesByEvent.get(event.key)
         const awards = awardsByEvent.get(event.key)
-        if (status && matches) {
-          const scrollRefKey = `scrollRef_${event.key}`
-          views.push(
-            <ScrollRestoreContainer
-              key={event.key}
-              scrollId={`${event.key}_matches`}
-              className={classes.scrollContainer}
-              contentRef={el => {
-                if (!this.state[scrollRefKey]) {
-                  this.setState({[scrollRefKey]: el})
-                }
-              }}
-            >
-              <TeamAtEventMobile
-                scrollElement={this.state[scrollRefKey]}
-                event={event}
-                matches={matches}
-                status={status}
-                awards={awards}
-                teamKey={`frc${teamNumber}`}
-              />
-            </ScrollRestoreContainer>
-          )
-        }
+        const scrollRefKey = `scrollRef_${event.key}`
+        views.push(
+          <ScrollRestoreContainer
+            key={event.key}
+            scrollId={`${event.key}_matches`}
+            className={classes.scrollContainer}
+            contentRef={el => {
+              if (!this.state[scrollRefKey]) {
+                this.setState({[scrollRefKey]: el})
+              }
+            }}
+          >
+            <TeamAtEventMobile
+              scrollElement={this.state[scrollRefKey]}
+              isLoading={isLoading}
+              event={event}
+              matches={matches}
+              status={status}
+              awards={awards}
+              teamKey={`frc${teamNumber}`}
+            />
+          </ScrollRestoreContainer>
+        )
       } else {
         views.push(<div key={event.key}>TODO</div>)
       }
