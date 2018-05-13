@@ -1,12 +1,17 @@
-import React, { PureComponent } from 'react';
-import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
-import { withStyles } from 'material-ui/styles';
-import { ListItem, ListItemText } from 'material-ui/List';
-import { CircularProgress } from 'material-ui/Progress';
+import React, { PureComponent } from 'react'
+import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
+import { withStyles } from 'material-ui/styles'
+import { ListItem, ListItemText } from 'material-ui/List'
+import Paper from 'material-ui/Paper'
+import { CircularProgress } from 'material-ui/Progress'
 import WindowScrollerList from './WindowScrollerList'
 
-const styles = {
-}
+const styles = theme => ({
+  teamsCard: {
+    margin: theme.spacing.unit,
+    padding: `${theme.spacing.unit/2}px 0px`,
+  },
+})
 
 class TeamRow extends PureComponent {
   render() {
@@ -37,7 +42,9 @@ class TeamsList extends PureComponent {
   }
 
   render() {
-    console.log("Render TeamsList");
+    console.log("Render TeamsList")
+    const { classes } = this.props
+
     if (this.props.filter) {
       const filterLowerCase = this.props.filter.toLowerCase()
       this.filteredTeams = this.props.teams.filter(team => (
@@ -51,12 +58,14 @@ class TeamsList extends PureComponent {
 
     if (this.props.teams !== undefined) {
       return (
-        <WindowScrollerList
-          scrollElement={this.props.scrollElement}
-          rowCount={this.filteredTeams.size}
-          rowHeight={69}
-          rowRenderer={this.rowRenderer}
-        />
+        <Paper className={classes.teamsCard}>
+          <WindowScrollerList
+            scrollElement={this.props.scrollElement}
+            rowCount={this.filteredTeams.size}
+            rowHeight={69}
+            rowRenderer={this.rowRenderer}
+          />
+        </Paper>
       )
     } else {
       return <CircularProgress color="secondary" size={100} />
@@ -64,4 +73,4 @@ class TeamsList extends PureComponent {
   }
 }
 
-export default withStyles(styles)(TeamsList);
+export default withStyles(styles)(TeamsList)

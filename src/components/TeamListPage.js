@@ -1,15 +1,16 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent } from 'react'
 import ReactDOM from 'react-dom'
-import { withStyles } from 'material-ui/styles';
-import TextField from 'material-ui/TextField';
-import Hidden from 'material-ui/Hidden';
-import Grid from 'material-ui/Grid';
+import { withStyles } from 'material-ui/styles'
+import TextField from 'material-ui/TextField'
+import Hidden from 'material-ui/Hidden'
+import Grid from 'material-ui/Grid'
+import Paper from 'material-ui/Paper'
 
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ResponsiveLayout from './ResponsiveLayout'
 import TeamsList from './TeamsList'
 
-const styles = {
+const styles = theme => ({
   sideNav: {
     position: 'fixed',
   },
@@ -26,7 +27,11 @@ const styles = {
     height: '100%',
     overflowY: 'scroll',
   },
-}
+  inputCard: {
+    padding: theme.spacing.unit,
+    zIndex: 1,
+  },
+})
 
 class TeamListPage extends PureComponent {
   constructor(props) {
@@ -61,6 +66,7 @@ class TeamListPage extends PureComponent {
 
   render() {
     console.log("Render TeamListPage")
+    const { classes } = this.props
 
     return (
       <div>
@@ -75,7 +81,7 @@ class TeamListPage extends PureComponent {
             <ResponsiveLayout>
               <Grid container spacing={24}>
                 <Grid item xs={3} lg={2}>
-                  <div className={this.props.classes.sideNav}>
+                  <div className={classes.sideNav}>
                     <h1>Teams</h1>
                     <TextField
                       label="Filter by number, name, or location"
@@ -108,15 +114,17 @@ class TeamListPage extends PureComponent {
             title='Teams'
             refreshFunction={this.refreshFunction}
           >
-            <div className={this.props.classes.container}>
-              <TextField
-                label="Filter by number, name, or location"
-                fullWidth
-                margin="normal"
-                onChange={this.handleTextFieldChange}
-                defaultValue={this.props.pageState.get('filter')}
-              />
-              <div ref={el => this.contentRef = el} className={this.props.classes.scrollContainer}>
+            <div className={classes.container}>
+              <Paper className={classes.inputCard}>
+                <TextField
+                  label="Filter by number, name, or location"
+                  fullWidth
+                  margin="normal"
+                  onChange={this.handleTextFieldChange}
+                  defaultValue={this.props.pageState.get('filter')}
+                />
+              </Paper>
+              <div ref={el => this.contentRef = el} className={classes.scrollContainer}>
                 <TeamsList
                   scrollElement={this.contentRef}
                   teams={this.props.allTeams}
@@ -131,4 +139,4 @@ class TeamListPage extends PureComponent {
   }
 }
 
-export default withStyles(styles)(TeamListPage);
+export default withStyles(styles)(TeamListPage)

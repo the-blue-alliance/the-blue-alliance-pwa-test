@@ -4,6 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from 'material-ui/styles'
 
 import List from 'material-ui/List'
+import Paper from 'material-ui/Paper'
 
 import * as Event from '../database/Event'
 import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
@@ -18,6 +19,10 @@ const styles = theme => ({
   },
   list: {
     padding: 0,
+  },
+  eventsCard: {
+    margin: theme.spacing.unit,
+    padding: `${theme.spacing.unit/2}px 0px`,
   },
 })
 
@@ -178,9 +183,11 @@ class EventsList extends PureComponent {
         scrollId={scrollId}
         className={classes.scrollContainer}
       >
-        <List subheader={<div />} className={classes.list} >
-          {this.computeGroupedEvents(events)}
-        </List>
+        <Paper className={classes.eventsCard}>
+          <List subheader={<div />} className={classes.list} >
+            {this.computeGroupedEvents(events)}
+          </List>
+        </Paper>
       </ScrollRestoreContainer>
     )
   }
