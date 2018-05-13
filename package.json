@@ -12,7 +12,7 @@
     "fitvids": "^2.0.0",
     "immutable": "^3.8.1",
     "isomorphic-fetch": "^2.2.1",
-    "material-ui": "^1.0.0-beta.44",
+    "material-ui": "^1.0.0-beta.47",
     "memoizee": "^0.4.12",
     "npm": "^6.0.0",
     "react": "^16.3.2",

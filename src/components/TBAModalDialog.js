@@ -43,7 +43,7 @@ class TBAModalDialog extends React.Component {
         maxWidth='md'
         fullWidth
         fullScreen={fullScreen}
-        transition={Transition}
+        TransitionComponent={Transition}
         classes={{
           root: fullScreen ? classes.fullScreenRoot : null,
           paperFullScreen: classes.paperFullScreen,

@@ -115,9 +115,6 @@ class TBAToolbar extends PureComponent {
           open={this.state.snackbarOpen}
           onClose={this.handleClose}
           autoHideDuration={2000}
-          SnackbarContentProps={{
-            'aria-describedby': 'message-id',
-          }}
           message='Link copied!'
         />
       </React.Fragment>
