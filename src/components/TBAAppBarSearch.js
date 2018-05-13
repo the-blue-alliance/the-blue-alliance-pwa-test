@@ -64,6 +64,10 @@ const styles = theme => ({
       fontWeight: 300,
       color: fade(theme.palette.common.white, 0.75),
     },
+    '&::-ms-input-placeholder': {
+      fontWeight: 300,
+      color: fade(theme.palette.common.white, 0.75),
+    },
   },
   container: {
     position: 'relative',
