@@ -12,6 +12,7 @@ import Menu, { MenuItem } from 'material-ui/Menu'
 import Paper from 'material-ui/Paper'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import Typography from 'material-ui/Typography'
+import Skeleton from 'react-loading-skeleton'
 import SwipeableViews from 'react-swipeable-views'
 
 // TBA Components
@@ -124,27 +125,27 @@ class TeamPageMobile extends PureComponent {
               <ListItemIcon>
                 <Icon>people</Icon>
               </ListItemIcon>
-              <ListItemText primary={team && team.nickname ? team.nickname : `Team ${teamNumber}`} />
+              <ListItemText primary={!team ? <Skeleton /> : (team.nickname ? team.nickname : `Team ${teamNumber}`)} />
             </ListItem>
-            {team && team.getCityStateCountry() &&
+            {(!team || team.getCityStateCountry()) &&
               <React.Fragment>
                 <Divider inset />
                 <ListItem>
                   <ListItemIcon>
                     <Icon>location_on</Icon>
                   </ListItemIcon>
-                  <ListItemText primary={team.getCityStateCountry()} />
+                  <ListItemText primary={!team ? <Skeleton /> : team.getCityStateCountry()} />
                 </ListItem>
               </React.Fragment>
             }
-            {team && team.name &&
+            {(!team || team.name) &&
               <React.Fragment>
                 <Divider inset />
                 <ListItem>
                   <ListItemIcon>
                     <Icon>info</Icon>
                   </ListItemIcon>
-                  <ListItemText primary={team.name} className={classes.nameText} />
+                  <ListItemText primary={!team ? <Skeleton count={2}/> : team.name} className={classes.nameText} />
                 </ListItem>
               </React.Fragment>
             }
