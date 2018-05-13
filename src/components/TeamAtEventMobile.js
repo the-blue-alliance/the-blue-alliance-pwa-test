@@ -70,8 +70,6 @@ class TeamAtEventMobile extends PureComponent {
           <MatchList
             scrollElement={scrollElement}
             matches={matches}
-            awards={awards}
-            status={status}
             selectedTeamKey={teamKey}
           />
         </Paper>

@@ -8,7 +8,6 @@ import { withStyles } from 'material-ui/styles'
 // Components
 import ButtonBase from 'material-ui/ButtonBase'
 import { ListItem } from 'material-ui/List'
-import Tooltip from 'material-ui/Tooltip'
 import { Link } from 'react-router-dom'
 import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
 
@@ -131,15 +130,6 @@ class MatchListItem extends PureComponent {
               const teamNum = teamKey.substr(3)
               const dq = match.isDQ(teamKey)
               const surrogate = match.isSurrogate(teamKey)
-              let teamEl = teamNum
-              if (dq && surrogate) {
-                teamEl = <Tooltip title="DQ | Surrogate" placement="top"><span>{teamNum}</span></Tooltip>
-              } else if (dq) {
-                teamEl = <Tooltip title="DQ" placement="top"><span>{teamNum}</span></Tooltip>
-              } else if (surrogate) {
-                teamEl = <Tooltip title="Surrogate" placement="top"><span>{teamNum}</span></Tooltip>
-              }
-
               return (
                 <LinkContainer
                   key={teamKey}
@@ -156,7 +146,7 @@ class MatchListItem extends PureComponent {
                         [classes.surrogate]: surrogate,
                       })}
                     >
-                      {teamEl}
+                      {teamNum}
                     </div>
                   </ButtonBase>
                 </LinkContainer>
@@ -184,15 +174,6 @@ class MatchListItem extends PureComponent {
               const teamNum = teamKey.substr(3)
               const dq = match.isDQ(teamKey)
               const surrogate = match.isSurrogate(teamKey)
-              let teamEl = teamNum
-              if (dq && surrogate) {
-                teamEl = <Tooltip title="DQ | Surrogate" placement="top"><span>{teamNum}</span></Tooltip>
-              } else if (dq) {
-                teamEl = <Tooltip title="DQ" placement="top"><span>{teamNum}</span></Tooltip>
-              } else if (surrogate) {
-                teamEl = <Tooltip title="Surrogate" placement="top"><span>{teamNum}</span></Tooltip>
-              }
-
               return (
                 <LinkContainer
                   key={teamKey}
@@ -209,7 +190,7 @@ class MatchListItem extends PureComponent {
                         [classes.surrogate]: surrogate,
                       })}
                     >
-                      {teamEl}
+                      {teamNum}
                     </div>
                   </ButtonBase>
                 </LinkContainer>
