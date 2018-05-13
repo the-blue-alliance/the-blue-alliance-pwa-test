@@ -4,6 +4,7 @@ import { withStyles } from 'material-ui/styles'
 import { ListItem, ListItemText } from 'material-ui/List'
 import Paper from 'material-ui/Paper'
 import { CircularProgress } from 'material-ui/Progress'
+import Typography from 'material-ui/Typography'
 import WindowScrollerList from './WindowScrollerList'
 
 const styles = theme => ({
@@ -24,7 +25,14 @@ class TeamRow extends PureComponent {
     return (
       <LinkContainer to={to}>
         <ListItem button divider disableRipple>
-          <ListItemText primary={`${team.get('team_number')} | ${team.get('nickname')}`} secondary={cityStateCountry ? cityStateCountry : '--'} />
+          <ListItemText
+            primary={
+              <Typography noWrap>
+                {`${team.get('team_number')} | ${team.get('nickname')}`}
+              </Typography>
+            }
+            secondary={cityStateCountry ? cityStateCountry : '--'}
+          />
         </ListItem>
       </LinkContainer>
     )
