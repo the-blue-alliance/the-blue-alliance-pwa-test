@@ -8,7 +8,7 @@ import { withStyles } from 'material-ui/styles'
 // Components
 import ButtonBase from 'material-ui/ButtonBase'
 import { ListItem } from 'material-ui/List'
-import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
+import { Link } from 'react-router-dom'
 
 const styles = theme => ({
   listItem: {
@@ -52,6 +52,9 @@ const styles = theme => ({
     flexGrow: 3,
     flexBasis: 0,
     padding: theme.spacing.unit,
+    '&:hover': {
+      textDecoration: 'inherit',
+    },
   },
   score: {
     position: 'relative',
@@ -97,71 +100,75 @@ class MatchListItem extends PureComponent {
     const blueWin = match.winning_alliance === 'blue'
 
     return (
-      <LinkContainer to={{pathname: `/match/${match.key}`, state: {modal: true}}} style={style}>
-        <ListItem button divider disableRipple className={classes.listItem}>
-          <div xs={3} className={classes.matchName}>
-            {match.getCompLevel()}
-            <br/>
-            {match.getSetMatch(true)}
-          </div>
-          <div className={classes.match}>
-            <div className={classNames({[classes.alliance]: true, [classes.redAlliance]: true,  [classes.redWin]: redWin})}>
-              {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
-                return (
-                  <LinkContainer key={teamKey} to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>
-                    <ButtonBase
-                      className={classes.team}
-                      component="div"
-                    >
-                      {teamKey.substring(3)}
-                    </ButtonBase>
-                  </LinkContainer>
-                )
-              })}
-              <div className={classes.score}>
-                {match.rpEarnedA('red') &&
-                  <svg className={classes.rpDotA}>
-                    <circle cx="2" cy="2" r="2"/>
-                  </svg>
-                }
-                {match.rpEarnedB('red') &&
-                  <svg className={classes.rpDotB}>
-                    <circle cx="2" cy="2" r="2"/>
-                  </svg>
-                }
-                {redScore}
-              </div>
-            </div>
-            <div className={classNames({[classes.alliance]: true, [classes.blueAlliance]: true,  [classes.blueWin]: blueWin})}>
-              {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
-                return (
-                  <LinkContainer key={teamKey} to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>
-                    <ButtonBase
-                      className={classes.team}
-                      component="div"
-                    >
-                      {teamKey.substring(3)}
-                    </ButtonBase>
-                  </LinkContainer>
-                  )
-              })}
-              <div className={classes.score}>
-                {match.rpEarnedA('blue') &&
-                  <svg className={classes.rpDotA}>
-                    <circle cx="2" cy="2" r="2"/>
-                  </svg>
-                }
-                {match.rpEarnedB('blue') &&
-                  <svg className={classes.rpDotB}>
-                    <circle cx="2" cy="2" r="2"/>
-                  </svg>
-                }
-                {blueScore}
-              </div>
+      <ListItem
+        className={classes.listItem}
+        component={Link}
+        to={{pathname: `/match/${match.key}`, state: {modal: true}}}
+        style={style}
+        button
+        divider
+        disableRipple
+      >
+        <div xs={3} className={classes.matchName}>
+          {match.getCompLevel()}
+          <br/>
+          {match.getSetMatch(true)}
+        </div>
+        <div className={classes.match}>
+          <div className={classNames({[classes.alliance]: true, [classes.redAlliance]: true,  [classes.redWin]: redWin})}>
+            {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
+              return (
+                <ButtonBase
+                  className={classes.team}
+                  component={Link}
+                  to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}
+                >
+                  <div>{teamKey.substring(3)}</div>
+                </ButtonBase>
+              )
+            })}
+            <div className={classes.score}>
+              {match.rpEarnedA('red') &&
+                <svg className={classes.rpDotA}>
+                  <circle cx="2" cy="2" r="2"/>
+                </svg>
+              }
+              {match.rpEarnedB('red') &&
+                <svg className={classes.rpDotB}>
+                  <circle cx="2" cy="2" r="2"/>
+                </svg>
+              }
+              {redScore}
             </div>
           </div>
-        </ListItem>
-      </LinkContainer>
+          <div className={classNames({[classes.alliance]: true, [classes.blueAlliance]: true,  [classes.blueWin]: blueWin})}>
+            {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
+              return (
+                <ButtonBase
+                  className={classes.team}
+                  component={Link}
+                  to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}
+                >
+                  <div>{teamKey.substring(3)}</div>
+                </ButtonBase>
+              )
+            })}
+            <div className={classes.score}>
+              {match.rpEarnedA('blue') &&
+                <svg className={classes.rpDotA}>
+                  <circle cx="2" cy="2" r="2"/>
+                </svg>
+              }
+              {match.rpEarnedB('blue') &&
+                <svg className={classes.rpDotB}>
+                  <circle cx="2" cy="2" r="2"/>
+                </svg>
+              }
+              {blueScore}
+            </div>
+          </div>
+        </div>
+      </ListItem>
     )
   }
 }
