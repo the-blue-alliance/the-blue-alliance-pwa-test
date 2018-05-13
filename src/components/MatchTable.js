@@ -64,6 +64,9 @@ const styles = theme => ({
   dq: {
     textDecoration: 'line-through',
   },
+  selectedTeamDQ: {
+    textDecoration: 'underline line-through',
+  },
   surrogate: {
     '& a': {
       borderBottom: '1px dotted',
@@ -158,8 +161,9 @@ class MatchTable extends PureComponent {
                   [classes.td]: true,
                   [classes.red]: true,
                   [classes.winner]: redWin,
-                  [classes.selectedTeam]: teamKey === selectedTeamKey,
-                  [classes.dq]: dq,
+                  [classes.selectedTeam]: teamKey === selectedTeamKey && !dq,
+                  [classes.dq]: dq && teamKey !== selectedTeamKey,
+                  [classes.selectedTeamDQ]: teamKey === selectedTeamKey && dq,
                   [classes.surrogate]: surrogate,
                   [classes.fakeLink]: true,
               })}
@@ -173,8 +177,9 @@ class MatchTable extends PureComponent {
                   [classes.td]: true,
                   [classes.red]: true,
                   [classes.winner]: redWin,
-                  [classes.selectedTeam]: teamKey === selectedTeamKey,
-                  [classes.dq]: dq,
+                  [classes.selectedTeam]: teamKey === selectedTeamKey && !dq,
+                  [classes.dq]: dq && teamKey !== selectedTeamKey,
+                  [classes.selectedTeamDQ]: teamKey === selectedTeamKey && dq,
                   [classes.surrogate]: surrogate,
               })}
             >
@@ -204,8 +209,9 @@ class MatchTable extends PureComponent {
                   [classes.td]: true,
                   [classes.blue]: true,
                   [classes.winner]: blueWin,
-                  [classes.selectedTeam]: teamKey === selectedTeamKey,
-                  [classes.dq]: dq,
+                  [classes.selectedTeam]: teamKey === selectedTeamKey && !dq,
+                  [classes.dq]: dq && teamKey !== selectedTeamKey,
+                  [classes.selectedTeamDQ]: teamKey === selectedTeamKey && dq,
                   [classes.surrogate]: surrogate,
                   [classes.fakeLink]: true,
               })}
@@ -219,8 +225,9 @@ class MatchTable extends PureComponent {
                   [classes.td]: true,
                   [classes.blue]: true,
                   [classes.winner]: blueWin,
-                  [classes.selectedTeam]: teamKey === selectedTeamKey,
-                  [classes.dq]: dq,
+                  [classes.selectedTeam]: teamKey === selectedTeamKey && !dq,
+                  [classes.dq]: dq && teamKey !== selectedTeamKey,
+                  [classes.selectedTeamDQ]: teamKey === selectedTeamKey && dq,
                   [classes.surrogate]: surrogate,
               })}
             >

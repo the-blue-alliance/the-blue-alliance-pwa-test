@@ -76,6 +76,9 @@ const styles = theme => ({
   dq: {
     textDecoration: 'line-through',
   },
+  selectedTeamDQ: {
+    textDecoration: 'underline line-through',
+  },
   surrogate: {
     borderBottom: '1px dotted',
   },
@@ -141,8 +144,9 @@ class MatchListItem extends PureComponent {
                   >
                     <div
                       className={classNames({
-                        [classes.selectedTeam]: teamKey === selectedTeamKey,
-                        [classes.dq]: dq,
+                        [classes.selectedTeam]: teamKey === selectedTeamKey && !dq,
+                        [classes.dq]: dq && teamKey !== selectedTeamKey,
+                        [classes.selectedTeamDQ]: teamKey === selectedTeamKey && dq,
                         [classes.surrogate]: surrogate,
                       })}
                     >
@@ -185,8 +189,9 @@ class MatchListItem extends PureComponent {
                   >
                     <div
                       className={classNames({
-                        [classes.selectedTeam]: teamKey === selectedTeamKey,
-                        [classes.dq]: dq,
+                        [classes.selectedTeam]: teamKey === selectedTeamKey && !dq,
+                        [classes.dq]: dq && teamKey !== selectedTeamKey,
+                        [classes.selectedTeamDQ]: teamKey === selectedTeamKey && dq,
                         [classes.surrogate]: surrogate,
                       })}
                     >
