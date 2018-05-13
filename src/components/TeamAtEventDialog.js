@@ -119,6 +119,7 @@ class TeamAtEventDialog extends PureComponent {
               event={event}
               matches={matches}
               status={status}
+              teamKey={`frc${teamNumber}`}
               hideEventName={true}
             />
           </DialogContent>
@@ -160,6 +161,7 @@ class TeamAtEventDialog extends PureComponent {
                 matches={matches}
                 status={status}
                 awards={awards}
+                teamKey={`frc${teamNumber}`}
               />
             </ScrollRestoreContainer>
           </DialogContent>

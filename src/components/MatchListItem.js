@@ -70,6 +70,9 @@ const styles = theme => ({
   blueWin: {
     border: '2px solid blue',
   },
+  selectedTeam: {
+    textDecoration: 'underline',
+  },
   dq: {
     textDecoration: 'line-through',
   },
@@ -94,7 +97,7 @@ const styles = theme => ({
 
 class MatchListItem extends PureComponent {
   render() {
-    const { classes, style, match } = this.props
+    const { classes, style, match, selectedTeamKey } = this.props
     let redScore = match.alliances.getIn(['red', 'score'])
     let blueScore = match.alliances.getIn(['blue', 'score'])
     if (redScore === -1) {
@@ -144,6 +147,7 @@ class MatchListItem extends PureComponent {
                 >
                   <div
                     className={classNames({
+                      [classes.selectedTeam]: teamKey === selectedTeamKey,
                       [classes.dq]: dq,
                       [classes.surrogate]: surrogate,
                     })}
@@ -153,7 +157,10 @@ class MatchListItem extends PureComponent {
                 </ButtonBase>
               )
             })}
-            <div className={classes.score}>
+            <div className={classNames({
+              [classes.score]: true,
+              [classes.selectedTeam]: match.isOnAlliance(selectedTeamKey, 'red')
+            })}>
               {match.rpEarnedA('red') &&
                 <svg className={classes.rpDotA}>
                   <circle cx="2" cy="2" r="2"/>
@@ -189,6 +196,7 @@ class MatchListItem extends PureComponent {
                 >
                   <div
                     className={classNames({
+                      [classes.selectedTeam]: teamKey === selectedTeamKey,
                       [classes.dq]: dq,
                       [classes.surrogate]: surrogate,
                     })}
@@ -198,7 +206,10 @@ class MatchListItem extends PureComponent {
                 </ButtonBase>
               )
             })}
-            <div className={classes.score}>
+            <div className={classNames({
+              [classes.score]: true,
+              [classes.selectedTeam]: match.isOnAlliance(selectedTeamKey, 'blue')
+            })}>
               {match.rpEarnedA('blue') &&
                 <svg className={classes.rpDotA}>
                   <circle cx="2" cy="2" r="2"/>

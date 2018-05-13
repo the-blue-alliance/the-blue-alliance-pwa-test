@@ -58,6 +58,9 @@ const styles = theme => ({
   winner: {
     fontWeight: 'bold',
   },
+  selectedTeam: {
+    textDecoration: 'underline',
+  },
   dq: {
     textDecoration: 'line-through',
   },
@@ -117,7 +120,7 @@ class MatchTable extends PureComponent {
     const rpEarnedTextA = match.rpEarnedTextA()
     const rpEarnedTextB = match.rpEarnedTextB()
 
-    const { classes } = this.props
+    const { classes, selectedTeamKey } = this.props
     const isFirstRender = this.state.isFirstRender
 
     return (
@@ -155,6 +158,7 @@ class MatchTable extends PureComponent {
                   [classes.td]: true,
                   [classes.red]: true,
                   [classes.winner]: redWin,
+                  [classes.selectedTeam]: teamKey === selectedTeamKey,
                   [classes.dq]: dq,
                   [classes.surrogate]: surrogate,
                   [classes.fakeLink]: true,
@@ -169,8 +173,9 @@ class MatchTable extends PureComponent {
                   [classes.td]: true,
                   [classes.red]: true,
                   [classes.winner]: redWin,
-                  [classes.dq]: match.isDQ(teamKey),
-                  [classes.surrogate]: match.isSurrogate(teamKey),
+                  [classes.selectedTeam]: teamKey === selectedTeamKey,
+                  [classes.dq]: dq,
+                  [classes.surrogate]: surrogate,
               })}
             >
               <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>
@@ -199,6 +204,7 @@ class MatchTable extends PureComponent {
                   [classes.td]: true,
                   [classes.blue]: true,
                   [classes.winner]: blueWin,
+                  [classes.selectedTeam]: teamKey === selectedTeamKey,
                   [classes.dq]: dq,
                   [classes.surrogate]: surrogate,
                   [classes.fakeLink]: true,
@@ -213,8 +219,9 @@ class MatchTable extends PureComponent {
                   [classes.td]: true,
                   [classes.blue]: true,
                   [classes.winner]: blueWin,
-                  [classes.dq]: match.isDQ(teamKey),
-                  [classes.surrogate]: match.isSurrogate(teamKey),
+                  [classes.selectedTeam]: teamKey === selectedTeamKey,
+                  [classes.dq]: dq,
+                  [classes.surrogate]: surrogate,
               })}
             >
               <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>
@@ -223,7 +230,12 @@ class MatchTable extends PureComponent {
             </td>
           )
         })}
-        <td className={classNames({[classes.td]: true, [classes.redScore]: true, [classes.winner]: redWin})}>
+        <td className={classNames({
+          [classes.td]: true,
+          [classes.redScore]: true,
+          [classes.winner]: redWin,
+          [classes.selectedTeam]: match.isOnAlliance(selectedTeamKey, 'red'),
+        })}>
           {match.rpEarnedA('red') && (
             isFirstRender ?
             <svg className={classes.rpDotA}>
@@ -250,7 +262,12 @@ class MatchTable extends PureComponent {
           )}
           {redScore}
         </td>
-        <td className={classNames({[classes.td]: true, [classes.blueScore]: true, [classes.winner]: blueWin})}>
+        <td
+          className={classNames({[classes.td]: true,
+            [classes.blueScore]: true,
+            [classes.winner]: blueWin,
+            [classes.selectedTeam]: match.isOnAlliance(selectedTeamKey, 'blue')
+        })}>
           {match.rpEarnedA('blue') && (
             isFirstRender ?
             <svg className={classes.rpDotA}>

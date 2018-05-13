@@ -72,7 +72,7 @@ class MatchList extends PureComponent {
 
   itemRenderer = ({headerKey, itemIndex, style}) => {
     const match = this.state.items[headerKey][itemIndex]
-    return <MatchListItem key={match.key} match={match} style={style}/>
+    return <MatchListItem key={match.key} match={match} style={style} selectedTeamKey={this.props.selectedTeamKey}/>
   }
 
   render() {

@@ -26,7 +26,7 @@ const styles = theme => ({
 class TeamAtEventMobile extends PureComponent {
   render() {
     console.log("Render TeamAtEventMobile")
-    const { classes, scrollElement, event, matches, status, awards } = this.props
+    const { classes, scrollElement, event, matches, status, awards, teamKey } = this.props
     return (
       <React.Fragment>
         <Paper className={classes.statusCard}>
@@ -67,7 +67,13 @@ class TeamAtEventMobile extends PureComponent {
           }
         </Paper>
         <Paper className={classes.matchesCard}>
-          <MatchList scrollElement={scrollElement} matches={matches} awards={awards} status={status} />
+          <MatchList
+            scrollElement={scrollElement}
+            matches={matches}
+            awards={awards}
+            status={status}
+            selectedTeamKey={teamKey}
+          />
         </Paper>
       </React.Fragment>
     )

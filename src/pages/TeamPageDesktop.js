@@ -224,6 +224,7 @@ class TeamPageDesktop extends PureComponent {
                         event={event}
                         matches={matchesByEvent.get(eventKey)}
                         status={statusByEvent && statusByEvent.get(`${eventKey}_frc${teamNumber}`)}
+                        teamKey={`frc${teamNumber}`}
                       />
                     </Paper>
                   )

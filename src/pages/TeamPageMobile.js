@@ -202,6 +202,7 @@ class TeamPageMobile extends PureComponent {
                 matches={matches}
                 status={status}
                 awards={awards}
+                teamKey={`frc${teamNumber}`}
               />
             </ScrollRestoreContainer>
           )
