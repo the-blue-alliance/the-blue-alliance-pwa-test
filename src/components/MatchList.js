@@ -1,23 +1,17 @@
 // General
 import React, { PureComponent } from 'react'
-import { withStyles } from 'material-ui/styles'
 
 // Components
-import List from 'material-ui/List'
 
 // TBA Components
+import VirtualStickyHeaderList from './VirtualStickyHeaderList'
 import EventListSubheader from './EventListSubheader'
 import MatchListItem from './MatchListItem'
 
-const styles = theme => ({
-  list: {
-    padding: 0,
-  },
-})
-
 class MatchList extends PureComponent {
   state = {
-    groupedMatches: [],
+    headers: [], // [{key1, text1}, {key2, text2}, ...]
+    items: {}, // {key1: [item1, item2, ...]}
   }
 
   computeGroupedMatches = (matches) => {
@@ -35,58 +29,29 @@ class MatchList extends PureComponent {
 
     // Combine everything in display order:
     // qual, ef, qf, sf, f
-    let groupedMatches = []
+    let headers = []
+    let items = {}
     if (matchesByLevel['qm']) {
-      groupedMatches.push((
-        <div key={'qm'}>
-          <EventListSubheader text='Qualification Matches' />
-          {matchesByLevel['qm'].map(match =>
-            <MatchListItem key={match.key} match={match} />
-          )}
-        </div>
-      ))
+      headers.push({key: 'qm', text: 'Qualification Matches'})
+      items['qm'] = matchesByLevel['qm']
     }
     if (matchesByLevel['ef']) {
-      groupedMatches.push((
-        <div key={'ef'}>
-          <EventListSubheader text='Octo-final Matches' />
-          {matchesByLevel['ef'].map(match =>
-            <MatchListItem key={match.key} match={match} />
-          )}
-        </div>
-      ))
+      headers.push({key: 'ef', text: 'Octo-final Matches'})
+      items['ef'] = matchesByLevel['ef']
     }
     if (matchesByLevel['qf']) {
-      groupedMatches.push((
-        <div key={'qf'}>
-          <EventListSubheader text='Quarterfinal Matches' />
-          {matchesByLevel['qf'].map(match =>
-            <MatchListItem key={match.key} match={match} />
-          )}
-        </div>
-      ))
+      headers.push({key: 'qf', text: 'Quarterfinal Matches'})
+      items['qf'] = matchesByLevel['qf']
     }
     if (matchesByLevel['sf']) {
-      groupedMatches.push((
-        <div key={'sf'}>
-          <EventListSubheader text='Semifinal Matches' />
-          {matchesByLevel['sf'].map(match =>
-            <MatchListItem key={match.key} match={match} />
-          )}
-        </div>
-      ))
+      headers.push({key: 'sf', text: 'Semifinal Matches'})
+      items['sf'] = matchesByLevel['sf']
     }
     if (matchesByLevel['f']) {
-      groupedMatches.push((
-        <div key={'f'}>
-          <EventListSubheader text='Finals Matches' />
-          {matchesByLevel['f'].map(match =>
-            <MatchListItem key={match.key} match={match} />
-          )}
-        </div>
-      ))
+      headers.push({key: 'f', text: 'Finals Matches'})
+      items['f'] = matchesByLevel['f']
     }
-    this.setState({groupedMatches})
+    this.setState({headers, items})
   }
 
   componentDidMount() {
@@ -101,17 +66,33 @@ class MatchList extends PureComponent {
     }
   }
 
+  headerRenderer = ({headerIndex}) => {
+    return <EventListSubheader text={this.state.headers[headerIndex].text} />
+  }
+
+  itemRenderer = ({headerKey, itemIndex, style}) => {
+    const match = this.state.items[headerKey][itemIndex]
+    return <MatchListItem key={match.key} match={match} style={style}/>
+  }
+
   render() {
     console.log("Render MatchList")
 
-    const { classes } = this.props
+    const { scrollElement } = this.props
 
     return (
-      <List subheader={<div />} className={classes.list} >
-        {this.state.groupedMatches}
-      </List>
+      <VirtualStickyHeaderList
+        scrollElement={scrollElement}
+        headers={this.state.headers}
+        items={this.state.items}
+        headerRenderer={this.headerRenderer}
+        itemRenderer={this.itemRenderer}
+        headerHeight={24}
+        itemHeight={88}
+        overscanCount={10}
+      />
     )
   }
 }
 
-export default withStyles(styles)(MatchList)
+export default MatchList

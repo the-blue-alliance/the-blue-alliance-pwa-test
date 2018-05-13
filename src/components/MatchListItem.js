@@ -15,6 +15,7 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row',
     padding: theme.spacing.unit / 2,
+    height: 88,
   },
   matchName: {
     flexGrow: 1,
@@ -83,7 +84,7 @@ const styles = theme => ({
 
 class MatchListItem extends PureComponent {
   render() {
-    const { classes, match } = this.props
+    const { classes, style, match } = this.props
     let redScore = match.alliances.getIn(['red', 'score'])
     let blueScore = match.alliances.getIn(['blue', 'score'])
     if (redScore === -1) {
@@ -96,7 +97,7 @@ class MatchListItem extends PureComponent {
     const blueWin = match.winning_alliance === 'blue'
 
     return (
-      <LinkContainer to={{pathname: `/match/${match.key}`, state: {modal: true}}}>
+      <LinkContainer to={{pathname: `/match/${match.key}`, state: {modal: true}}} style={style}>
         <ListItem button divider disableRipple className={classes.listItem}>
           <div xs={3} className={classes.matchName}>
             {match.getCompLevel()}

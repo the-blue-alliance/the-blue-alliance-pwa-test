@@ -39,6 +39,10 @@ const styles = theme => ({
 })
 
 class EventPage extends PureComponent {
+  state = {
+    matchScrollRef: null,
+  }
+
   reset = props => {
      // Set without overriding
     props.resetPage({
@@ -181,14 +185,23 @@ class EventPage extends PureComponent {
                   </React.Fragment>
                 }
               </Paper>
-              {matches ? <ScrollRestoreContainer
-                scrollId="matches"
-                className={classes.scrollContainer}
-              >
-                <Paper className={classes.matchesCard}>
-                  <MatchList matches={matches} />
-                </Paper>
-              </ScrollRestoreContainer> : <div>NO MATCHES</div>}
+              {matches ?
+                <ScrollRestoreContainer
+                  scrollId="matches"
+                  className={classes.scrollContainer}
+                  contentRef={el => {
+                    if (!this.state.matchScrollRef) {
+                      this.setState({matchScrollRef: el})
+                    }
+                  }}
+                >
+                  <Paper className={classes.matchesCard}>
+                    <MatchList scrollElement={this.state.matchScrollRef} matches={matches}/>
+                  </Paper>
+                </ScrollRestoreContainer>
+                :
+                <div>NO MATCHES</div>
+              }
               <div ref={el => this.contentRef = el} className={classes.scrollContainer}>
                 <TeamsList scrollElement={this.contentRef} teams={teams} year={year}/>
               </div>
