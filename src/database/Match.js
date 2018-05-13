@@ -58,6 +58,14 @@ export default class Match extends Record({
     return parseInt(this.key.substr(0, 4), 10)
   }
 
+  isDQ(teamKey) {
+    return this.getIn(['alliances', 'red', 'dq_team_keys']).includes(teamKey) || this.getIn(['alliances', 'blue', 'dq_team_keys']).includes(teamKey)
+  }
+
+  isSurrogate(teamKey) {
+    return this.getIn(['alliances', 'red', 'surrogate_team_keys']).includes(teamKey) || this.getIn(['alliances', 'blue', 'surrogate_team_keys']).includes(teamKey)
+  }
+
   rpEarnedA(color) {
     const breakdown = this.getIn(['score_breakdown', color])
     if (breakdown && this.getYear() === 2017 && (breakdown.get('kPaRankingPointAchieved') || breakdown.get('kPaBonusPoints'))) {

@@ -58,6 +58,14 @@ const styles = theme => ({
   winner: {
     fontWeight: 'bold',
   },
+  dq: {
+    textDecoration: 'line-through',
+  },
+  surrogate: {
+    '& a': {
+      borderBottom: '1px dotted',
+    },
+  },
   fakeLink: {
     color: theme.palette.primary.main,
   },
@@ -129,6 +137,17 @@ class MatchTable extends PureComponent {
 
         {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
           const teamNum = teamKey.substr(3)
+          const dq = match.isDQ(teamKey)
+          const surrogate = match.isSurrogate(teamKey)
+          let teamEl = teamNum
+          if (dq && surrogate) {
+            teamEl = <Tooltip title="DQ | Surrogate" placement="top"><span>{teamNum}</span></Tooltip>
+          } else if (dq) {
+            teamEl = <Tooltip title="DQ" placement="top"><span>{teamNum}</span></Tooltip>
+          } else if (surrogate) {
+            teamEl = <Tooltip title="Surrogate" placement="top"><span>{teamNum}</span></Tooltip>
+          }
+
           return (isFirstRender ?
             <td
               key={teamKey}
@@ -136,6 +155,8 @@ class MatchTable extends PureComponent {
                   [classes.td]: true,
                   [classes.red]: true,
                   [classes.winner]: redWin,
+                  [classes.dq]: dq,
+                  [classes.surrogate]: surrogate,
                   [classes.fakeLink]: true,
               })}
             >
@@ -147,15 +168,30 @@ class MatchTable extends PureComponent {
               className={classNames({
                   [classes.td]: true,
                   [classes.red]: true,
-                  [classes.winner]: redWin
+                  [classes.winner]: redWin,
+                  [classes.dq]: match.isDQ(teamKey),
+                  [classes.surrogate]: match.isSurrogate(teamKey),
               })}
             >
-              <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>{teamNum}</Link>
+              <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>
+                {teamEl}
+              </Link>
             </td>
           )
         })}
         {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
           const teamNum = teamKey.substr(3)
+          const dq = match.isDQ(teamKey)
+          const surrogate = match.isSurrogate(teamKey)
+          let teamEl = teamNum
+          if (dq && surrogate) {
+            teamEl = <Tooltip title="DQ | Surrogate" placement="top"><span>{teamNum}</span></Tooltip>
+          } else if (dq) {
+            teamEl = <Tooltip title="DQ" placement="top"><span>{teamNum}</span></Tooltip>
+          } else if (surrogate) {
+            teamEl = <Tooltip title="Surrogate" placement="top"><span>{teamNum}</span></Tooltip>
+          }
+
           return (isFirstRender ?
             <td
               key={teamKey}
@@ -163,6 +199,8 @@ class MatchTable extends PureComponent {
                   [classes.td]: true,
                   [classes.blue]: true,
                   [classes.winner]: blueWin,
+                  [classes.dq]: dq,
+                  [classes.surrogate]: surrogate,
                   [classes.fakeLink]: true,
               })}
             >
@@ -174,10 +212,14 @@ class MatchTable extends PureComponent {
               className={classNames({
                   [classes.td]: true,
                   [classes.blue]: true,
-                  [classes.winner]: blueWin
+                  [classes.winner]: blueWin,
+                  [classes.dq]: match.isDQ(teamKey),
+                  [classes.surrogate]: match.isSurrogate(teamKey),
               })}
             >
-              <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>{teamNum}</Link>
+              <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}>
+                {teamEl}
+              </Link>
             </td>
           )
         })}

@@ -8,6 +8,7 @@ import { withStyles } from 'material-ui/styles'
 // Components
 import ButtonBase from 'material-ui/ButtonBase'
 import { ListItem } from 'material-ui/List'
+import Tooltip from 'material-ui/Tooltip'
 import { Link } from 'react-router-dom'
 
 const styles = theme => ({
@@ -69,6 +70,12 @@ const styles = theme => ({
   blueWin: {
     border: '2px solid blue',
   },
+  dq: {
+    textDecoration: 'line-through',
+  },
+  surrogate: {
+    borderBottom: '1px dotted',
+  },
   rpDotA: {
     position: 'absolute',
     top: '3px',
@@ -117,13 +124,32 @@ class MatchListItem extends PureComponent {
         <div className={classes.match}>
           <div className={classNames({[classes.alliance]: true, [classes.redAlliance]: true,  [classes.redWin]: redWin})}>
             {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
+              const teamNum = teamKey.substr(3)
+              const dq = match.isDQ(teamKey)
+              const surrogate = match.isSurrogate(teamKey)
+              let teamEl = teamNum
+              if (dq && surrogate) {
+                teamEl = <Tooltip title="DQ | Surrogate" placement="top"><span>{teamNum}</span></Tooltip>
+              } else if (dq) {
+                teamEl = <Tooltip title="DQ" placement="top"><span>{teamNum}</span></Tooltip>
+              } else if (surrogate) {
+                teamEl = <Tooltip title="Surrogate" placement="top"><span>{teamNum}</span></Tooltip>
+              }
+
               return (
                 <ButtonBase
                   className={classes.team}
                   component={Link}
                   to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}
                 >
-                  <div>{teamKey.substring(3)}</div>
+                  <div
+                    className={classNames({
+                      [classes.dq]: dq,
+                      [classes.surrogate]: surrogate,
+                    })}
+                  >
+                    {teamEl}
+                  </div>
                 </ButtonBase>
               )
             })}
@@ -143,13 +169,32 @@ class MatchListItem extends PureComponent {
           </div>
           <div className={classNames({[classes.alliance]: true, [classes.blueAlliance]: true,  [classes.blueWin]: blueWin})}>
             {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
+              const teamNum = teamKey.substr(3)
+              const dq = match.isDQ(teamKey)
+              const surrogate = match.isSurrogate(teamKey)
+              let teamEl = teamNum
+              if (dq && surrogate) {
+                teamEl = <Tooltip title="DQ | Surrogate" placement="top"><span>{teamNum}</span></Tooltip>
+              } else if (dq) {
+                teamEl = <Tooltip title="DQ" placement="top"><span>{teamNum}</span></Tooltip>
+              } else if (surrogate) {
+                teamEl = <Tooltip title="Surrogate" placement="top"><span>{teamNum}</span></Tooltip>
+              }
+
               return (
                 <ButtonBase
                   className={classes.team}
                   component={Link}
                   to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key.substring(4), state: {modal: true}}}
                 >
-                  <div>{teamKey.substring(3)}</div>
+                  <div
+                    className={classNames({
+                      [classes.dq]: dq,
+                      [classes.surrogate]: surrogate,
+                    })}
+                  >
+                    {teamEl}
+                  </div>
                 </ButtonBase>
               )
             })}
