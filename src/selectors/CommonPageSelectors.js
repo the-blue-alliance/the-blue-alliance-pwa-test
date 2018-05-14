@@ -6,6 +6,10 @@ const getCurrentPageKey = (state, props) => {
   return state.getIn(['page', 'currentKey'])
 }
 
+const getCurrentModalKey = (state, props) => {
+  return state.getIn(['page', 'currentModalKey'])
+}
+
 const getStateHistory = (state, props) => {
   return state.getIn(['page', 'stateHistory'])
 }
@@ -23,10 +27,11 @@ export const getCurrentPageState = createSelector(
 )
 
 export const getCurrentScrollStates = createSelector(
-  [getCurrentPageKey, getScrollHistory],
-  (pageKey, scrollHistory) => {
-    const scrollStates = scrollHistory.get(pageKey)
-    return scrollStates === undefined ? Map() : scrollStates
+  [getCurrentPageKey, getCurrentModalKey, getScrollHistory],
+  (pageKey, modalKey, scrollHistory) => {
+    const pageScrollStates = scrollHistory.get(pageKey) || Map()
+    const modalScrollStates = scrollHistory.get(modalKey) || Map()
+    return pageScrollStates.merge(modalScrollStates)
   }
 )
 
@@ -39,10 +44,6 @@ export const getYear = (state, props) => {
 }
 
 // Modals
-const getCurrentModalKey = (state, props) => {
-  return state.getIn(['page', 'currentModalKey'])
-}
-
 const getStateHistoryModal = (state, props) => {
   return state.getIn(['page', 'stateHistoryModal'])
 }
