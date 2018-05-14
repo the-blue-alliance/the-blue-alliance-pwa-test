@@ -4,16 +4,17 @@ import { withStyles } from '@material-ui/core/styles'
 
 // Components
 import AppBar from '@material-ui/core/AppBar'
-import Button from '@material-ui/core/Button'
 import DialogContent from '@material-ui/core/DialogContent'
 import Divider from '@material-ui/core/Divider'
 import Hidden from '@material-ui/core/Hidden'
-import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import CloseIcon from '@material-ui/icons/Close'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 import { Link } from 'react-router-dom'
 
 // TBA Components
@@ -22,9 +23,6 @@ import TeamAtEvent from '../components/TeamAtEvent'
 import TeamAtEventMobile from './TeamAtEventMobile'
 
 const styles = theme => ({
-  button: {
-    margin: theme.spacing.unit,
-  },
   content: {
     paddingTop: theme.spacing.unit*2,
     paddingBottom: theme.spacing.unit*2,
@@ -40,6 +38,7 @@ const styles = theme => ({
   flex: {
     flex: 1,
     textAlign: 'center',
+    overflow: 'hidden',
   },
   scrollContainer: {
     width: '100%',
@@ -54,6 +53,7 @@ const styles = theme => ({
 class TeamAtEventDialog extends PureComponent {
   state = {
     scrollRef: null,
+    menuAnchorEl: null,
   }
 
   reset = props => {
@@ -76,9 +76,17 @@ class TeamAtEventDialog extends PureComponent {
     }
   }
 
-  handleClose = (e) => {
+  handleCloseDialog = e => {
     e.stopPropagation()
     this.props.handleClose()
+  }
+
+  handleClickMenu = e => {
+    this.setState({ menuAnchorEl: e.currentTarget })
+  }
+
+  handleCloseMenu = () => {
+    this.setState({ menuAnchorEl: null })
   }
 
   refreshFunction = () => {
@@ -95,7 +103,7 @@ class TeamAtEventDialog extends PureComponent {
 
     let teamTitle = `Team ${teamNumber}`
     if (team) {
-      teamTitle = `Team ${team.get('team_number')} - ${team.get('nickname')}`
+      teamTitle = `${team.team_number} | ${team.nickname}`
     }
 
     return (
@@ -105,10 +113,15 @@ class TeamAtEventDialog extends PureComponent {
             <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
               <ChevronLeftIcon />
             </IconButton>
-            <Typography variant="title" color="inherit" className={classes.flex}>
-              <Link to={{pathname: `/event/${eventKey}`}}>{event.get('short_name')}</Link> | <Link to={{pathname: `/team/${teamNumber}/${event.get('year')}`, hash: eventKey}}>{teamTitle}</Link>
-            </Typography>
-            <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
+            <div className={classes.flex}>
+              <Typography variant='title' noWrap>
+                <Link to={{pathname: `/team/${teamNumber}/${event.year}`, hash: eventKey}}>{teamTitle}</Link>
+              </Typography>
+              <Typography variant='subheading' noWrap>
+                <Link to={{pathname: `/event/${eventKey}`}}>@ {event.year} {event.name}</Link>
+              </Typography>
+            </div>
+            <IconButton className={classes.button} aria-label="Close" onClick={this.handleCloseDialog}>
               <CloseIcon />
             </IconButton>
           </Toolbar>
@@ -120,7 +133,7 @@ class TeamAtEventDialog extends PureComponent {
               matches={matches}
               status={status}
               teamKey={`frc${teamNumber}`}
-              hideEventName={true}
+              hideEventName
             />
           </DialogContent>
         </Hidden>
@@ -130,16 +143,29 @@ class TeamAtEventDialog extends PureComponent {
               <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
                 <ChevronLeftIcon />
               </IconButton>
-              <Typography variant="title" color="inherit" className={classes.flex}>
-                  <Button
-                    color='primary'
-                    component={Link}
-                    to={{pathname: `/team/${teamNumber}/${event.get('year')}`, hash: eventKey}}
-                  >
-                    {teamTitle} <Icon>chevron_right</Icon>
-                  </Button>
-              </Typography>
-              <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
+              <div className={classes.flex}>
+                <Typography variant='title' noWrap>
+                  {teamTitle}
+                </Typography>
+                <Typography variant='subheading' noWrap>
+                  @ {event.year} {event.name}
+                </Typography>
+              </div>
+              <IconButton
+                className={classes.button}
+                onClick={this.handleClickMenu}
+              >
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                anchorEl={this.state.menuAnchorEl}
+                open={Boolean(this.state.menuAnchorEl)}
+                onClose={this.handleCloseMenu}
+              >
+                <MenuItem component={Link} to={{pathname: `/team/${teamNumber}/${event.year}`, hash: eventKey}}>View Team</MenuItem>
+                <MenuItem component={Link} to={{pathname: `/event/${eventKey}`}}>View Event</MenuItem>
+              </Menu>
+              <IconButton className={classes.button} aria-label="Close" onClick={this.handleCloseDialog}>
                 <CloseIcon />
               </IconButton>
             </Toolbar>
@@ -163,6 +189,7 @@ class TeamAtEventDialog extends PureComponent {
                 status={status}
                 awards={awards}
                 teamKey={`frc${teamNumber}`}
+                hideEventName
               />
             </ScrollRestoreContainer>
           </DialogContent>

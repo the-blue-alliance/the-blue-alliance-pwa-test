@@ -25,10 +25,14 @@ class TeamAtEvent extends PureComponent {
     return (
       <Grid container spacing={24}>
         <Grid item xs={12} lg={4}>
-          {!hideEventName &&
-          <Typography variant='title' gutterBottom>
-            <Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link>
-          </Typography>}
+          {!hideEventName && <React.Fragment>
+            <Typography variant='title' gutterBottom>
+              <Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link>
+            </Typography>
+            <Typography variant='caption' gutterBottom>
+              {event.getDateString()}
+            </Typography>
+          </React.Fragment>}
           {status && status.getIn(['qual', 'ranking', 'rank']) &&
             <Typography variant='subheading'>
               Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b>

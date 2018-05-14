@@ -5,8 +5,13 @@ import { withStyles } from '@material-ui/core/styles'
 import { ordinal } from '../utils'
 
 // Components
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardContent from '@material-ui/core/CardContent'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import IconButton from '@material-ui/core/IconButton'
 import InfoIcon from '@material-ui/icons/Info'
+import EventIcon from '@material-ui/icons/Event'
 import VideogameAssetIcon from '@material-ui/icons/VideogameAsset'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -19,7 +24,9 @@ import MatchList from '../components/MatchList'
 const styles = theme => ({
   statusCard: {
     margin: theme.spacing.unit,
-    padding: theme.spacing.unit,
+  },
+  eventLinkIcon: {
+    marginRight: theme.spacing.unit,
   },
   matchesCard: {
     margin: theme.spacing.unit,
@@ -45,59 +52,69 @@ const styles = theme => ({
 class TeamAtEventMobile extends PureComponent {
   render() {
     console.log("Render TeamAtEventMobile")
-    const { classes, scrollElement, isLoading, event, matches, status, awards, teamKey } = this.props
+    const { classes, hideEventName, scrollElement, isLoading, event, matches, status, awards, teamKey } = this.props
     return (
       <React.Fragment>
-        <Paper className={classes.statusCard}>
-          <Typography variant='title'>
-            <Link to={{pathname: `/event/${event.key}`}}>
-              {event.name}
-            </Link>
-          </Typography>
-          {(isLoading || (status && status.get('qual'))) ?
-            <React.Fragment>
-              <Typography variant='subheading'>
-                {status && status.getIn(['qual', 'ranking', 'rank']) ?
-                  <React.Fragment>Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b></React.Fragment>
-                  :
-                  <Skeleton />
-                }
-              </Typography>
-              <Typography variant='subheading'>
-                {status && status.getIn(['qual', 'ranking', 'record']) ?
-                  <React.Fragment>Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b></React.Fragment>
-                  :
-                  <Skeleton />
-                }
-              </Typography>
-              {status && status.getIn(['alliance']) &&
+        <Card className={classes.statusCard}>
+          {!hideEventName && <CardHeader
+            action={
+              <IconButton
+                className={classes.eventLinkIcon}
+                component={Link}
+                to={{pathname: `/event/${event.key}`}}
+              >
+                <EventIcon />
+              </IconButton>
+            }
+            title={event.name}
+            subheader={event.getDateString()}
+          />}
+          <CardContent>
+            {(isLoading || (status && status.get('qual'))) ?
+              <React.Fragment>
                 <Typography variant='subheading'>
-                  Alliance: <b>{status.getIn(['alliance', 'pick']) === 0 ? 'Captain' : `${ordinal(status.getIn(['alliance', 'pick']))} Pick`}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
+                  {status && status.getIn(['qual', 'ranking', 'rank']) ?
+                    <React.Fragment>Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b></React.Fragment>
+                    :
+                    <Skeleton />
+                  }
                 </Typography>
-              }
-              {status && status.getIn(['playoff', 'record']) &&
                 <Typography variant='subheading'>
-                  Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
+                  {status && status.getIn(['qual', 'ranking', 'record']) ?
+                    <React.Fragment>Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b></React.Fragment>
+                    :
+                    <Skeleton />
+                  }
                 </Typography>
-              }
-            </React.Fragment>
-            :
-            <div className={classes.zeroDataContainer}>
-              <InfoIcon className={classes.zeroDataIcon} />
-              <Typography variant='subheading'>No event results found</Typography>
-            </div>
-          }
-          {awards &&
-            <React.Fragment>
-              <Typography variant='subheading'>Awards:</Typography>
-              <ul>
-                {awards.map(award =>
-                  <li key={award.key}>{award.name}</li>
-                )}
-              </ul>
-            </React.Fragment>
-          }
-        </Paper>
+                {status && status.getIn(['alliance']) &&
+                  <Typography variant='subheading'>
+                    Alliance: <b>{status.getIn(['alliance', 'pick']) === 0 ? 'Captain' : `${ordinal(status.getIn(['alliance', 'pick']))} Pick`}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
+                  </Typography>
+                }
+                {status && status.getIn(['playoff', 'record']) &&
+                  <Typography variant='subheading'>
+                    Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
+                  </Typography>
+                }
+              </React.Fragment>
+              :
+              <div className={classes.zeroDataContainer}>
+                <InfoIcon className={classes.zeroDataIcon} />
+                <Typography variant='subheading'>No event results found</Typography>
+              </div>
+            }
+            {awards &&
+              <React.Fragment>
+                <Typography variant='subheading'>Awards:</Typography>
+                <ul>
+                  {awards.map(award =>
+                    <li key={award.key}>{award.name}</li>
+                  )}
+                </ul>
+              </React.Fragment>
+            }
+          </CardContent>
+        </Card>
         <Paper className={classes.matchesCard}>
           {matches ? <MatchList
               scrollElement={scrollElement}
