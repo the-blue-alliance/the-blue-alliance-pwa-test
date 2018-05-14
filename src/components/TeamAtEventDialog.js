@@ -29,7 +29,7 @@ const styles = theme => ({
   },
   contentMobile: {
     position: 'fixed',
-    top: 64,
+    top: 56,
     right: 0,
     bottom: 0,
     left: 0,
