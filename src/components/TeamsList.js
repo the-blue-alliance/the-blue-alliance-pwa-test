@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react'
 import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
-import { withStyles } from 'material-ui/styles'
-import { ListItem, ListItemText } from 'material-ui/List'
-import Paper from 'material-ui/Paper'
-import { CircularProgress } from 'material-ui/Progress'
-import Typography from 'material-ui/Typography'
+import { withStyles } from '@material-ui/core/styles'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Paper from '@material-ui/core/Paper'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Typography from '@material-ui/core/Typography'
 import WindowScrollerList from './WindowScrollerList'
 
 const styles = theme => ({

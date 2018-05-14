@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
-import Badge from 'material-ui/Badge'
+import Badge from '@material-ui/core/Badge'
 
 class HideableBadge extends PureComponent {
   render() {

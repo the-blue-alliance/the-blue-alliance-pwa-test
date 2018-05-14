@@ -29,7 +29,7 @@ import {
 } from '../selectors/TeamPageSelectors'
 
 // Components
-import Hidden from 'material-ui/Hidden'
+import Hidden from '@material-ui/core/Hidden'
 
 // TBA Components
 import TeamPageDesktop from './TeamPageDesktop'

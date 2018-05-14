@@ -1,14 +1,18 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 import { Map, Set } from 'immutable'
 
-import Button from 'material-ui/Button'
-import Checkbox from 'material-ui/Checkbox'
-import Dialog, { DialogTitle, DialogActions } from 'material-ui/Dialog'
-import Divider from 'material-ui/Divider'
-import List, { ListItem, ListItemText } from 'material-ui/List'
+import Button from '@material-ui/core/Button'
+import Checkbox from '@material-ui/core/Checkbox'
+import Dialog from '@material-ui/core/Dialog'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import DialogActions from '@material-ui/core/DialogActions'
+import Divider from '@material-ui/core/Divider'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 
 const styles = {
   listWrapper: {

@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
-import { withStyles } from 'material-ui/styles';
-import indigo from 'material-ui/colors/indigo';
-import { ListItem, ListItemText, ListSubheader } from 'material-ui/List';
+import { withStyles } from '@material-ui/core/styles';
+import indigo from '@material-ui/core/colors/indigo';
+import { ListItem, ListItemText, ListSubheader } from '@material-ui/core/List';
 import WindowScrollerList from './WindowScrollerList'
 
 

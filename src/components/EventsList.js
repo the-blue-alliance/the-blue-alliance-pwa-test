@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import LinkContainer from 'react-router-bootstrap/lib/LinkContainer';
 import { AutoSizer, List } from 'react-virtualized';
-import { withStyles } from 'material-ui/styles';
-import indigo from 'material-ui/colors/indigo';
-import { ListItem, ListItemText, ListSubheader } from 'material-ui/List';
-import Typography from 'material-ui/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import indigo from '@material-ui/core/colors/indigo';
+import { ListItem, ListItemText, ListSubheader } from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
 
 
 const styles = {

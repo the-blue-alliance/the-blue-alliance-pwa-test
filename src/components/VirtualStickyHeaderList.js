@@ -2,11 +2,11 @@
 import React, { PureComponent } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 import memoize from 'memoizee'
 
 // Components
-import List from 'material-ui/List'
+import List from '@material-ui/core/List'
 
 const styles = theme => ({
   list: {

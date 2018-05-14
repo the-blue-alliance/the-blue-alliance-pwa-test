@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import Grid from 'material-ui/Grid';
-import Paper from 'material-ui/Paper';
-import Select from 'material-ui/Select';
-import { MenuItem } from 'material-ui/Menu';
-import { CircularProgress } from 'material-ui/Progress';
-import Hidden from 'material-ui/Hidden';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Hidden from '@material-ui/core/Hidden';
 import Scrollspy from 'react-scrollspy'
 
 import TBAPageContainer from '../containers/TBAPageContainer'

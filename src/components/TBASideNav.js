@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
-import { withStyles } from 'material-ui/styles'
-import Drawer from 'material-ui/Drawer'
+import { withStyles } from '@material-ui/core/styles'
+import Drawer from '@material-ui/core/Drawer'
 
 import TBASideNavContentContainer from '../containers/TBASideNavContentContainer'
 

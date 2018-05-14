@@ -1,19 +1,20 @@
 // General
 import React, { PureComponent } from 'react'
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 
 // Components
-import AppBar from 'material-ui/AppBar'
+import AppBar from '@material-ui/core/AppBar'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import CloseIcon from '@material-ui/icons/Close'
-import { DialogContent } from 'material-ui/Dialog'
-import Divider from 'material-ui/Divider'
-import Grid from 'material-ui/Grid'
-import Hidden from 'material-ui/Hidden'
-import IconButton from 'material-ui/IconButton'
-import Tabs, { Tab } from 'material-ui/Tabs'
-import Toolbar from 'material-ui/Toolbar'
-import Typography from 'material-ui/Typography'
+import DialogContent from '@material-ui/core/DialogContent'
+import Divider from '@material-ui/core/Divider'
+import Grid from '@material-ui/core/Grid'
+import Hidden from '@material-ui/core/Hidden'
+import IconButton from '@material-ui/core/IconButton'
+import Tab from '@material-ui/core/Tab'
+import Tabs from '@material-ui/core/Tabs'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
 import SwipeableViews from 'react-swipeable-views'
 
 // TBA Components

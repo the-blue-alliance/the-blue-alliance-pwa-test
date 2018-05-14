@@ -1,9 +1,10 @@
 import React from 'react'
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import { Route } from 'react-router-dom'
-import Dialog, { withMobileDialog } from 'material-ui/Dialog'
-import Slide from 'material-ui/transitions/Slide'
+import Dialog from '@material-ui/core/Dialog'
+import Slide from '@material-ui/core/Slide'
+import withMobileDialog from '@material-ui/core/withMobileDialog'
 
 import MatchDialogContainer from '../containers/MatchDialogContainer'
 import TeamAtEventDialogContainer from '../containers/TeamAtEventDialogContainer'

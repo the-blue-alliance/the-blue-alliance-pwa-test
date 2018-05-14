@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 
-import List from 'material-ui/List'
-import Paper from 'material-ui/Paper'
+import List from '@material-ui/core/List'
+import Paper from '@material-ui/core/Paper'
 
 import * as Event from '../database/Event'
 import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'

@@ -3,11 +3,11 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import classNames from 'classnames'
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 
 // Components
-import ButtonBase from 'material-ui/ButtonBase'
-import { ListItem } from 'material-ui/List'
+import ButtonBase from '@material-ui/core/ButtonBase'
+import ListItem from '@material-ui/core/ListItem'
 import { Link } from 'react-router-dom'
 import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
 

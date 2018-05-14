@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Grid from 'material-ui/Grid';
+import Grid from '@material-ui/core/Grid';
 import { Link } from 'react-router-dom';
 
 import TBAPageContainer from '../containers/TBAPageContainer'

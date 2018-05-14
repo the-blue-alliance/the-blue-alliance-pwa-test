@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
-import { CircularProgress } from 'material-ui/Progress';
-import Icon from 'material-ui/Icon';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Icon from '@material-ui/core/Icon';
 
 
 const styles = theme => ({

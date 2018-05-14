@@ -1,7 +1,7 @@
 // General
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 
 // Components
 import ScrollLink from '../components/ScrollLink'

@@ -1,15 +1,15 @@
 // General
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 import { ordinal } from '../utils'
 
 // Components
-import { CircularProgress } from 'material-ui/Progress'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import InfoIcon from '@material-ui/icons/Info'
 import VideogameAssetIcon from '@material-ui/icons/VideogameAsset'
-import Paper from 'material-ui/Paper'
-import Typography from 'material-ui/Typography'
+import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
 import Skeleton from 'react-loading-skeleton'
 import { Link } from 'react-router-dom'
 

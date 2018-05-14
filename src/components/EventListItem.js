@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
 
-import { ListItem, ListItemText } from 'material-ui/List'
-import Typography from 'material-ui/Typography'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Typography from '@material-ui/core/Typography'
 
 const styles = theme => ({
   listItemText: {

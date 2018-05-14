@@ -2,13 +2,13 @@
 import React, { PureComponent } from 'react'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 
 // Components
-import { CircularProgress } from 'material-ui/Progress'
-import Icon from 'material-ui/Icon'
-import Tooltip from 'material-ui/Tooltip'
-import Typography from 'material-ui/Typography'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Icon from '@material-ui/core/Icon'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
 import { Link } from 'react-router-dom'
 
 // TBA Components

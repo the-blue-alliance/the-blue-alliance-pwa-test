@@ -1,15 +1,19 @@
-import React, { PureComponent } from 'react';
-import classNames from 'classnames';
-import SwipeableViews from 'react-swipeable-views';
-import { withStyles } from 'material-ui/styles';
-import Hidden from 'material-ui/Hidden';
-import Tabs, { Tab } from 'material-ui/Tabs';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import Divider from 'material-ui/Divider';
-import InfoOutlineIcon from '@material-ui/icons/InfoOutline';
-import EventIcon from '@material-ui/icons/Event';
-import Paper from 'material-ui/Paper';
-import Grid from 'material-ui/Grid';
+import React, { PureComponent } from 'react'
+import classNames from 'classnames'
+import SwipeableViews from 'react-swipeable-views'
+import { withStyles } from '@material-ui/core/styles'
+import Hidden from '@material-ui/core/Hidden'
+import Tab from '@material-ui/core/Tab'
+import Tabs from '@material-ui/core/Tabs'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import Divider from '@material-ui/core/Divider'
+import InfoOutlineIcon from '@material-ui/icons/InfoOutline'
+import EventIcon from '@material-ui/icons/Event'
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
 
 import ResponsiveLayout from './ResponsiveLayout'
 import MatchTable from './MatchTable'
@@ -65,11 +69,11 @@ class EventPage extends PureComponent {
   }
 
   tabHandleChangeIndex = tabIdx => {
-    this.props.setPageState({tabIdx, 'hash': tabIdx});
+    this.props.setPageState({tabIdx, 'hash': tabIdx})
   }
 
   tabHandleChange = (event, tabIdx) => {
-    this.props.setPageState({tabIdx, 'hash': tabIdx});
+    this.props.setPageState({tabIdx, 'hash': tabIdx})
   }
 
   render() {
@@ -214,4 +218,4 @@ class EventPage extends PureComponent {
   }
 }
 
-export default withStyles(styles)(EventPage);
+export default withStyles(styles)(EventPage)

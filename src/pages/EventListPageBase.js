@@ -12,7 +12,7 @@ import { getCurrentPageState, getYear } from '../selectors/CommonPageSelectors'
 import { getFilteredGroupedEvents } from '../selectors/EventListPageSelectors'
 
 // Components
-import Hidden from 'material-ui/Hidden'
+import Hidden from '@material-ui/core/Hidden'
 
 // TBA Components
 import EventListPageDesktop from './EventListPageDesktop'

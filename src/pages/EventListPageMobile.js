@@ -1,14 +1,16 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 
-import ButtonBase from 'material-ui/ButtonBase'
-import { CircularProgress } from 'material-ui/Progress'
+import ButtonBase from '@material-ui/core/ButtonBase'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import EventIcon from '@material-ui/icons/Event'
-import Icon from 'material-ui/Icon'
-import Menu, { MenuItem } from 'material-ui/Menu'
-import Typography from 'material-ui/Typography'
+import Icon from '@material-ui/core/Icon'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+
+import Typography from '@material-ui/core/Typography'
 
 import TBAPageContainer from '../containers/TBAPageContainer'
 import EventFilterDialogContainer from '../containers/EventFilterDialogContainer'

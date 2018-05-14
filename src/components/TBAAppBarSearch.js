@@ -2,8 +2,8 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { fade } from 'material-ui/styles/colorManipulator'
-import { withStyles } from 'material-ui/styles'
+import { fade } from '@material-ui/core/styles/colorManipulator'
+import { withStyles } from '@material-ui/core/styles'
 import match from 'autosuggest-highlight/match'
 import parse from 'autosuggest-highlight/parse'
 
@@ -11,9 +11,9 @@ import parse from 'autosuggest-highlight/parse'
 import { push } from 'connected-react-router'
 
 // Components
-import Paper from 'material-ui/Paper'
-import ListSubheader from 'material-ui/List/ListSubheader'
-import { MenuItem } from 'material-ui/Menu'
+import Paper from '@material-ui/core/Paper'
+import ListSubheader from '@material-ui/core/ListSubheader'
+import MenuItem from '@material-ui/core/MenuItem'
 import SearchIcon from '@material-ui/icons/Search'
 import Autosuggest from 'react-autosuggest'
 
