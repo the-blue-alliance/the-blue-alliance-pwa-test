@@ -36,6 +36,12 @@ const styles = theme => ({
     height: 48,
     width: 48,
   },
+  progress: {
+    width: 48,
+    height: 24,
+    padding: 2,
+    textAlign: 'center',
+  },
 })
 
 class TBAToolbar extends PureComponent {
@@ -98,9 +104,11 @@ class TBAToolbar extends PureComponent {
               <RefreshIcon />
             </IconButton>
           }
-          {this.props.isLoading &&  <IconButton color="inherit" disabled>
-            <CircularProgress color="secondary" size={20} thickness={5}/>
-          </IconButton>}
+          {this.props.isLoading &&
+            <div className={classes.progress}>
+              <CircularProgress color="secondary" size={20} thickness={5}/>
+            </div>
+          }
           <Hidden mdUp implementation="css">
             <IconButton color="inherit">
               <SearchIcon />
