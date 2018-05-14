@@ -34,6 +34,12 @@ const styles = theme => ({
     bottom: 0,
     left: 0,
     padding: 0,
+    [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
+      top: 48,
+    },
+    [theme.breakpoints.up('sm')]: {
+      top: 64,
+    },
   },
   flex: {
     flex: 1,

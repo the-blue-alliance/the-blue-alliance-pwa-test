@@ -15,6 +15,9 @@ const styles = theme => ({
     bottom: 56,
     left: 0,
     overflowX: 'hidden',
+    [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
+      top: 48,
+    },
     [theme.breakpoints.up('sm')]: {
       top: 64,
     },
