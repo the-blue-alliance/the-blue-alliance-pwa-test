@@ -8,6 +8,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import CloseIcon from '@material-ui/icons/Close'
 import DialogContent from '@material-ui/core/DialogContent'
 import Divider from '@material-ui/core/Divider'
+import EventIcon from '@material-ui/icons/Event'
 import Grid from '@material-ui/core/Grid'
 import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
@@ -16,15 +17,13 @@ import Tabs from '@material-ui/core/Tabs'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import SwipeableViews from 'react-swipeable-views'
+import { Link } from 'react-router-dom'
 
 // TBA Components
 import MatchBreakdownTable from './MatchBreakdownTable'
 import MatchVideos from './MatchVideos'
 
 const styles = theme => ({
-  button: {
-    margin: theme.spacing.unit,
-  },
   content: {
     paddingTop: theme.spacing.unit*2,
     paddingBottom: theme.spacing.unit*2,
@@ -43,6 +42,7 @@ const styles = theme => ({
   flex: {
     flex: 1,
     textAlign: 'center',
+    overflow: 'hidden',
   },
   toolbar: {
     padding: 0,
@@ -88,19 +88,24 @@ class MatchDialog extends PureComponent {
   render() {
     console.log("Render Match Dialog")
 
-    const { classes } = this.props
+    const { classes, matchObj, event } = this.props
 
     return (
       <React.Fragment>
         <Hidden smDown>
           <Toolbar>
-            <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
+            <IconButton aria-label="Back" onClick={() => this.props.goBack()}>
               <ChevronLeftIcon />
             </IconButton>
-            <Typography variant="title" color="inherit" className={classes.flex}>
-              {this.props.matchObj.getDisplayName()}
-            </Typography>
-            <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
+            <div className={classes.flex}>
+              <Typography variant="title" color="inherit" className={classes.flex}>
+                {matchObj.getDisplayName()}
+              </Typography>
+              <Typography variant='subheading' noWrap>
+                <Link to={{pathname: `/event/${event.key}`}}>@ {event.year} {event.name}</Link>
+              </Typography>
+            </div>
+            <IconButton aria-label="Close" onClick={this.handleClose}>
               <CloseIcon />
             </IconButton>
           </Toolbar>
@@ -108,10 +113,10 @@ class MatchDialog extends PureComponent {
           <DialogContent className={classes.content}>
             <Grid container spacing={24}>
               <Grid item xs={6}>
-                <MatchBreakdownTable match={this.props.matchObj}/>
+                <MatchBreakdownTable match={matchObj}/>
               </Grid>
               <Grid item xs={6}>
-                <MatchVideos match={this.props.matchObj}/>
+                <MatchVideos match={matchObj}/>
               </Grid>
             </Grid>
           </DialogContent>
@@ -119,13 +124,25 @@ class MatchDialog extends PureComponent {
         <Hidden mdUp>
           <AppBar color='default'>
             <Toolbar className={classes.toolbar}>
-              <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
+              <IconButton aria-label="Back" onClick={() => this.props.goBack()}>
                 <ChevronLeftIcon />
               </IconButton>
-              <Typography variant="title" color="inherit" className={classes.flex}>
-                {this.props.matchObj.getDisplayName()}
+              <div className={classes.flex}>
+                <Typography variant="title" color="inherit" className={classes.flex} noWrap>
+                {matchObj.getDisplayName()}
               </Typography>
-              <IconButton className={classes.button} aria-label="Close" onClick={this.handleClose}>
+                <Typography variant='subheading' noWrap>
+                  @ {event.year} {event.name}
+                </Typography>
+              </div>
+              <IconButton
+                className={classes.button}
+                component={Link}
+                to={{pathname: `/event/${event.key}`}}
+              >
+                <EventIcon />
+              </IconButton>
+              <IconButton aria-label="Close" onClick={this.handleClose}>
                 <CloseIcon />
               </IconButton>
             </Toolbar>
@@ -154,10 +171,10 @@ class MatchDialog extends PureComponent {
               onChangeIndex={this.tabHandleChangeIndex}
             >
               <div className={classes.tabContent}>
-                <MatchBreakdownTable match={this.props.matchObj}/>
+                <MatchBreakdownTable match={matchObj}/>
               </div>
               <div className={classes.tabContent}>
-                <MatchVideos match={this.props.matchObj}/>
+                <MatchVideos match={matchObj}/>
               </div>
             </SwipeableViews>
           </DialogContent>

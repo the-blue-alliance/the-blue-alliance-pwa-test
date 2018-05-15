@@ -116,7 +116,7 @@ class TeamAtEventDialog extends PureComponent {
       <React.Fragment>
         <Hidden smDown>
           <Toolbar className={classes.toolbar}>
-            <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
+            <IconButton aria-label="Back" onClick={() => this.props.goBack()}>
               <ChevronLeftIcon />
             </IconButton>
             <div className={classes.flex}>
@@ -127,7 +127,7 @@ class TeamAtEventDialog extends PureComponent {
                 <Link to={{pathname: `/event/${eventKey}`}}>@ {event.year} {event.name}</Link>
               </Typography>
             </div>
-            <IconButton className={classes.button} aria-label="Close" onClick={this.handleCloseDialog}>
+            <IconButton aria-label="Close" onClick={this.handleCloseDialog}>
               <CloseIcon />
             </IconButton>
           </Toolbar>
@@ -146,7 +146,7 @@ class TeamAtEventDialog extends PureComponent {
         <Hidden mdUp>
           <AppBar color='default'>
             <Toolbar className={classes.toolbar}>
-              <IconButton className={classes.button} aria-label="Back" onClick={() => this.props.goBack()}>
+              <IconButton aria-label="Back" onClick={() => this.props.goBack()}>
                 <ChevronLeftIcon />
               </IconButton>
               <div className={classes.flex}>
@@ -171,7 +171,7 @@ class TeamAtEventDialog extends PureComponent {
                 <MenuItem component={Link} to={{pathname: `/team/${teamNumber}/${event.year}`, hash: eventKey}}>View Team</MenuItem>
                 <MenuItem component={Link} to={{pathname: `/event/${eventKey}`}}>View Event</MenuItem>
               </Menu>
-              <IconButton className={classes.button} aria-label="Close" onClick={this.handleCloseDialog}>
+              <IconButton aria-label="Close" onClick={this.handleCloseDialog}>
                 <CloseIcon />
               </IconButton>
             </Toolbar>

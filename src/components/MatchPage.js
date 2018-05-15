@@ -32,7 +32,7 @@ class MatchPage extends PureComponent {
       eventName = this.props.matchObj.event_key
     }
     if (this.props.event) {
-      eventName = this.props.event.get('name')
+      eventName = this.props.event.name
     }
 
     return (
