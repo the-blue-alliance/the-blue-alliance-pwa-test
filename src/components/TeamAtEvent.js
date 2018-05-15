@@ -18,10 +18,33 @@ const styles = theme => ({
   },
 })
 
+const levelMap = {
+  ef: 'Octofinals',
+  qf: 'Quarterfinals',
+  sf: 'Semifinals',
+  f: 'Finals',
+}
+
 class TeamAtEvent extends PureComponent {
   render() {
     console.log("Render TeamAtEvent")
     const { classes, hideEventName, awards, event, matches, status, teamKey, disableVisibilityRenderer } = this.props
+
+    let playoffStatusStr = null
+    if (status) {
+      const playoffLevel = status.getIn(['playoff', 'level'])
+      const playoffStatus = status.getIn(['playoff', 'status'])
+      if (playoffLevel && playoffStatus) {
+        if (playoffStatus === 'won') {
+          playoffStatusStr = <React.Fragment><b>Won</b> the <b>{playoffLevel === 'f' ? 'Event' : levelMap[playoffLevel]}</b></React.Fragment>
+        } else if (playoffStatus === 'playing') {
+          playoffStatusStr = <React.Fragment><b>Playing</b> in the <b>{levelMap[playoffLevel]}</b></React.Fragment>
+        } else if (playoffStatus === 'eliminated') {
+          playoffStatusStr = <React.Fragment><b>Eliminated</b> in the <b>{levelMap[playoffLevel]}</b></React.Fragment>
+        }
+      }
+    }
+
     return (
       <Grid container spacing={24}>
         <Grid item xs={12} lg={4}>
@@ -51,6 +74,11 @@ class TeamAtEvent extends PureComponent {
           {status && status.getIn(['playoff', 'record']) &&
             <Typography variant='subheading'>
               Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
+            </Typography>
+          }
+          {playoffStatusStr &&
+            <Typography variant='subheading'>
+              Status: {playoffStatusStr}
             </Typography>
           }
           {awards &&

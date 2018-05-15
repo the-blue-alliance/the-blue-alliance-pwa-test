@@ -49,10 +49,33 @@ const styles = theme => ({
   },
 })
 
+const levelMap = {
+  ef: 'Octofinals',
+  qf: 'Quarterfinals',
+  sf: 'Semifinals',
+  f: 'Finals',
+}
+
 class TeamAtEventMobile extends PureComponent {
   render() {
     console.log("Render TeamAtEventMobile")
     const { classes, hideEventName, scrollElement, isLoading, event, matches, status, awards, teamKey } = this.props
+
+    let playoffStatusStr = null
+    if (status) {
+      const playoffLevel = status.getIn(['playoff', 'level'])
+      const playoffStatus = status.getIn(['playoff', 'status'])
+      if (playoffLevel && playoffStatus) {
+        if (playoffStatus === 'won') {
+          playoffStatusStr = <React.Fragment><b>Won</b> the <b>{playoffLevel === 'f' ? 'Event' : levelMap[playoffLevel]}</b></React.Fragment>
+        } else if (playoffStatus === 'playing') {
+          playoffStatusStr = <React.Fragment><b>Playing</b> in the <b>{levelMap[playoffLevel]}</b></React.Fragment>
+        } else if (playoffStatus === 'eliminated') {
+          playoffStatusStr = <React.Fragment><b>Eliminated</b> in the <b>{levelMap[playoffLevel]}</b></React.Fragment>
+        }
+      }
+    }
+
     return (
       <React.Fragment>
         <Card className={classes.statusCard}>
@@ -70,20 +93,20 @@ class TeamAtEventMobile extends PureComponent {
             subheader={event.getDateString()}
           />}
           <CardContent>
-            {(isLoading || (status && status.get('qual'))) ?
+            {(isLoading || (status && (status.get('qual') || status.get('playoff')))) ?
               <React.Fragment>
                 <Typography variant='subheading'>
                   {status && status.getIn(['qual', 'ranking', 'rank']) ?
                     <React.Fragment>Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b></React.Fragment>
                     :
-                    <Skeleton />
+                    (!status && <Skeleton />)
                   }
                 </Typography>
                 <Typography variant='subheading'>
                   {status && status.getIn(['qual', 'ranking', 'record']) ?
                     <React.Fragment>Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b></React.Fragment>
                     :
-                    <Skeleton />
+                    (!status && <Skeleton />)
                   }
                 </Typography>
                 {status && status.getIn(['alliance']) &&
@@ -94,6 +117,11 @@ class TeamAtEventMobile extends PureComponent {
                 {status && status.getIn(['playoff', 'record']) &&
                   <Typography variant='subheading'>
                     Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
+                  </Typography>
+                }
+                {playoffStatusStr &&
+                  <Typography variant='subheading'>
+                    Status: {playoffStatusStr}
                   </Typography>
                 }
               </React.Fragment>
