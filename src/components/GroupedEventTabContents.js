@@ -16,10 +16,39 @@ class GroupedEventTabContents extends PureComponent {
     this.props.setPageState({activeEventGroup: this.props.groupedEvents.get(index).get('slug')});
   }
 
+  componentDidMount() {
+    const { activeEventGroup, groupedEvents, setPageState } = this.props
+
+    // Find current group by finding the first group with at least one event that isn't over
+    if (activeEventGroup === null && groupedEvents) {
+      let currentGroup = null
+      for (let group of groupedEvents) {
+        for (let event of group.get('events')) {
+          if (!event.isPast()) {
+            currentGroup = group.get('slug')
+            break
+          }
+        }
+        if (currentGroup) {
+          break
+        }
+      }
+      if (currentGroup) {
+        setPageState({activeEventGroup: currentGroup})
+      } else {
+        setPageState({activeEventGroup: 'week-1'})
+      }
+    }
+  }
+
   render() {
     console.log("Render GroupedEventTabContents")
 
     const { activeEventGroup, groupedEvents } = this.props
+
+    if (activeEventGroup === null) {
+      return null
+    }
 
     let groupToIndex = {}
     groupedEvents.forEach((group, index) => {
@@ -58,7 +87,7 @@ GroupedEventTabContents.propTypes = {
   classes: PropTypes.object.isRequired,
   setPageState: PropTypes.func.isRequired,
   groupedEvents: ImmutablePropTypes.list,
-  activeEventGroup: PropTypes.string.isRequired,
+  activeEventGroup: PropTypes.string,
 }
 
 export default withStyles(styles)(GroupedEventTabContents)

@@ -40,7 +40,7 @@ const mapDispatchToProps = (dispatch) => ({
 class EventListPageBase extends PureComponent {
   reset = props => {
     props.resetPage({
-      activeEventGroup: 'week-1',
+      activeEventGroup: null,
       filterDialogOpen: false,
       districtFilters: Set(),
       yearMenuOpen: false,

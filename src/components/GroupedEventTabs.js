@@ -31,7 +31,9 @@ class GroupedEventTabs extends PureComponent {
 
   render() {
     console.log("Render GroupedEventTabs")
-
+    if (this.props.activeGroup === null) {
+      return null
+    }
     return (
       <Tabs
         value={this.props.activeGroup}
@@ -52,7 +54,7 @@ GroupedEventTabs.propTypes = {
   classes: PropTypes.object.isRequired,
   setPageState: PropTypes.func.isRequired,
   groupedEvents: ImmutablePropTypes.list,
-  activeGroup: PropTypes.string.isRequired,
+  activeGroup: PropTypes.string,
 }
 
 export default withStyles(styles)(GroupedEventTabs)

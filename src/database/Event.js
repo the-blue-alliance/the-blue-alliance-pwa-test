@@ -1,4 +1,5 @@
-import { Record } from 'immutable';
+import { Record } from 'immutable'
+import moment from 'moment-timezone'
 
 export const REGIONAL = 0
 export const DISTRICT = 1
@@ -36,6 +37,7 @@ export default class Event extends Record({
   district: undefined,
   start_date: undefined,
   end_date: undefined,
+  timezone: undefined,
   city: undefined,
   state_prov: undefined,
   country: undefined,
@@ -79,6 +81,10 @@ export default class Event extends Record({
       }
     }
     return this.dateStr
+  }
+
+  isPast() {
+    return moment.tz(this.end_date, this.timezone) < moment.now()
   }
 
   isCMP() {
