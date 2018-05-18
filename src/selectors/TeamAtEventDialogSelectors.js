@@ -26,10 +26,6 @@ export const getTeamModel = createSelector(
   }
 )
 
-const getEventsByKey = (state, props) => {
-  return state.getIn(['models', 'events', 'byKey'])
-}
-
 export const getEventKey = (state, props) => {
   return props.location.hash.substring(1)
 }
@@ -61,20 +57,6 @@ const getEventMatches = createSelector(
   (matchesByKey, keys) => {
     if (keys) {
       return keys.toSeq().map(key => matchesByKey.get(key))
-    }
-  }
-)
-
-const getTeamYearEventKeys = (state, props) => {
-  return state.getIn(['models', 'events', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, getYear(state, props)])
-}
-
-const getTeamYearEvents = createSelector(
-  getEventsByKey,
-  getTeamYearEventKeys,
-  (eventsByKey, keys) => {
-    if (keys) {
-      return keys.toSeq().map(key => eventsByKey.get(key))
     }
   }
 )
