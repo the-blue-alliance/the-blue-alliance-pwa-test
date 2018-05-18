@@ -14,7 +14,7 @@ const updateSingle = (state, modelType, modelKey, newModel) => {
   return state.setIn(modelPath, mergeDeep(currentModel, newModel))
 }
 
-const updateMulti = (state, modelType, partialPath, newModels, mergeByKey=false) => {
+const updateMulti = (state, modelType, partialPath, newModels, merge=false) => {
   let newModelsByKey = Map()
   fromJS(newModels).forEach(o => newModelsByKey = newModelsByKey.set(o.get('key'), o))
 
@@ -26,9 +26,8 @@ const updateMulti = (state, modelType, partialPath, newModels, mergeByKey=false)
   const collectionPath = [modelType, 'collections'].concat(partialPath)
   const mergedCollection = updateCollection(
     state.getIn(collectionPath),
-    mergedModelsByKey,
     newModelsByKey,
-    mergeByKey
+    merge
   )
   return state.setIn(
     byKeyPath,
@@ -39,15 +38,14 @@ const updateMulti = (state, modelType, partialPath, newModels, mergeByKey=false)
   )
 }
 
-const updateCollection = (state = Map(), allModelsByKey, newModelsByKey, mergeByKey) => {
-  // Helper to merge collection into current collection using the same objects in allModelsBykey
-  const oldKeys = Set(state.keys())
+const updateCollection = (state = Set(), newModelsByKey, merge) => {
+  // Helper to merge collection into current collection
   const newKeys = Set(newModelsByKey.keys())
-  if (!mergeByKey) { // Whether to merge or overwrite the collection
-    const toRemove = oldKeys.subtract(newKeys)
+  if (!merge) { // Whether to merge or overwrite the collection
+    const toRemove = state.subtract(newKeys)
     toRemove.forEach(key => state = state.remove(key))
   }
-  newKeys.forEach(key => state = state.set(key, mergeDeep(state.get(key), allModelsByKey.get(key))))
+  state = state.union(newKeys)
   return state
 }
 
