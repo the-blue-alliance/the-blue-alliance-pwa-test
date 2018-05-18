@@ -4,14 +4,23 @@ import { getCurrentPageState, getYear } from '../selectors/CommonPageSelectors'
 import Event from '../database/Event'
 import { slugify } from '../utils'
 
-const getEvents = (state, props) => {
-  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
-    const events = state.getIn(['page', 'modelHistory', key, 'events', 'collections', 'byYear', getYear(state, props)])
-    if (events !== undefined) {
-      return events
+const getEventsByKey = (state, props) => {
+  return state.getIn(['models', 'events', 'byKey'])
+}
+
+const getYearEventKeys = (state, props) => {
+  return state.getIn(['models', 'events', 'collections', 'byYear', getYear(state, props)])
+}
+
+const getYearEvents = createSelector(
+  getEventsByKey,
+  getYearEventKeys,
+  (eventsByKey, keys) => {
+    if (keys) {
+      return keys.toSeq().map(key => eventsByKey.get(key))
     }
   }
-}
+)
 
 const getDistrictFilters = (state, props) => {
   return getCurrentPageState(state, props).get('districtFilters')
@@ -19,7 +28,7 @@ const getDistrictFilters = (state, props) => {
 
 // Sort by start date, then end date, then short name
 export const getSortedEvents = createSelector(
-  [getEvents],
+  [getYearEvents],
   (events) => {
     if (events) {
       events = events.map(e => new Event(e)).sort((a, b) => {

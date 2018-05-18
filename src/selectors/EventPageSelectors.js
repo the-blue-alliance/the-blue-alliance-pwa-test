@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect'
-import { List } from 'immutable'
 import Event from '../database/Event'
 import Match from '../database/Match'
 import Team from '../database/Team'
@@ -8,14 +7,8 @@ export const getEventKey = (state, props) => {
   return props.match.params.eventKey
 }
 
-
 export const getEvent = (state, props) => {
-  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
-    const event = state.getIn(['page', 'modelHistory', key, 'events', 'byKey', getEventKey(state, props)])
-    if (event !== undefined) {
-      return event
-    }
-  }
+  return state.getIn(['models', 'events', 'byKey', getEventKey(state, props)])
 }
 
 export const getEventModel = createSelector(
@@ -28,14 +21,23 @@ export const getEventModel = createSelector(
   }
 )
 
-const getEventMatches = (state, props) => {
-  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
-    const matches = state.getIn(['page', 'modelHistory', key, 'matches', 'collections', 'byEvent', getEventKey(state, props)])
-    if (matches !== undefined) {
-      return matches
+const getMatchesByKey = (state, props) => {
+  return state.getIn(['models', 'matches', 'byKey'])
+}
+
+const getEventMatchKeys = (state, props) => {
+  return state.getIn(['models', 'matches', 'collections', 'byEvent', getEventKey(state, props)])
+}
+
+const getEventMatches = createSelector(
+  getMatchesByKey,
+  getEventMatchKeys,
+  (matchesByKey, keys) => {
+    if (keys) {
+      return keys.toSeq().map(key => matchesByKey.get(key))
     }
   }
-}
+)
 
 export const getSortedEventMatches = createSelector(
   [getEventMatches],
@@ -100,14 +102,22 @@ export const getSortedEventPlayoffMatches = createSelector(
   }
 )
 
-const getEventTeams = (state, props) => {
-  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
-    const teams = state.getIn(['page', 'modelHistory', key, 'teams', 'collections', 'byEvent', getEventKey(state, props)])
-    if (teams !== undefined) {
-      return teams
+const getTeamsByKey = (state, props) => {
+  return state.getIn(['models', 'teams', 'byKey'])
+}
+const getEventTeamKeys = (state, props) => {
+  return state.getIn(['models', 'teams', 'collections', 'byEvent', getEventKey(state, props)])
+}
+
+const getEventTeams = createSelector(
+  getTeamsByKey,
+  getEventTeamKeys,
+  (teamsByKey, keys) => {
+    if (keys) {
+      return keys.toSeq().map(key => teamsByKey.get(key))
     }
   }
-}
+)
 
 export const getSortedEventTeams = createSelector(
   [getEventTeams],
@@ -124,6 +134,6 @@ export const getSortedEventTeams = createSelector(
         return 0
       }).toList()
     }
-    return List()
+    return undefined
   }
 )

@@ -1,14 +1,22 @@
 import { createSelector } from 'reselect'
 import Team from '../database/Team'
 
-const getAllTeams = (state) => {
-  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
-    const teams = state.getIn(['page', 'modelHistory', key, 'teams', 'collections', 'all'])
-    if (teams !== undefined) {
-      return teams
+const getTeamsByKey = (state, props) => {
+  return state.getIn(['models', 'teams', 'byKey'])
+}
+const getAllTeamKeys = (state, props) => {
+  return state.getIn(['models', 'teams', 'collections', 'all'])
+}
+
+const getAllTeams = createSelector(
+  getTeamsByKey,
+  getAllTeamKeys,
+  (teamsByKey, keys) => {
+    if (keys) {
+      return keys.toSeq().map(key => teamsByKey.get(key))
     }
   }
-}
+)
 
 export const getSortedTeams = createSelector(
   [getAllTeams],

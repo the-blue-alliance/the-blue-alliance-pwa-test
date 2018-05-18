@@ -11,21 +11,11 @@ export const getTeamNumber = (state, props) => {
 }
 
 export const getTeamYears = (state, props) => {
-  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
-    const teamYears = state.getIn(['page', 'modelHistory', key, 'teamYears', 'byKey', `frc${getTeamNumber(state, props)}`, 'years'])
-    if (teamYears !== undefined) {
-      return teamYears
-    }
-  }
+  return state.getIn(['models', 'teamYears', 'byKey', `frc${getTeamNumber(state, props)}`, 'years'])
 }
 
 export const getTeam = (state, props) => {
-  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
-    const team = state.getIn(['page', 'modelHistory', key, 'teams', 'byKey', `frc${getTeamNumber(state, props)}`])
-    if (team !== undefined) {
-      return team
-    }
-  }
+  return state.getIn(['models', 'teams', 'byKey', `frc${getTeamNumber(state, props)}`])
 }
 
 export const getTeamModel = createSelector(
@@ -38,14 +28,23 @@ export const getTeamModel = createSelector(
   }
 )
 
-export const getTeamYearAwards = (state, props) => {
-  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
-    const teamYearAwards = state.getIn(['page', 'modelHistory', key, 'awards', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, getYear(state, props)])
-    if (teamYearAwards !== undefined) {
-      return teamYearAwards
+const getAwardsByKey = (state, props) => {
+  return state.getIn(['models', 'awards', 'byKey'])
+}
+
+const getTeamYearAwardKeys = (state, props) => {
+  return state.getIn(['models', 'awards', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, getYear(state, props)])
+}
+
+const getTeamYearAwards = createSelector(
+  getAwardsByKey,
+  getTeamYearAwardKeys,
+  (awardsByKey, keys) => {
+    if (keys) {
+      return keys.toSeq().map(key => awardsByKey.get(key))
     }
   }
-}
+)
 
 export const getAwardsByEvent = createSelector(
   [getTeamYearAwards],
@@ -82,14 +81,23 @@ export const getAwardsByEvent = createSelector(
   }
 )
 
-export const getTeamYearEvents = (state, props) => {
-  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
-    const teamYearEvents = state.getIn(['page', 'modelHistory', key, 'events', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, getYear(state, props)])
-    if (teamYearEvents !== undefined) {
-      return teamYearEvents
+const getEventsByKey = (state, props) => {
+  return state.getIn(['models', 'events', 'byKey'])
+}
+
+const getTeamYearEventKeys = (state, props) => {
+  return state.getIn(['models', 'events', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, getYear(state, props)])
+}
+
+const getTeamYearEvents = createSelector(
+  getEventsByKey,
+  getTeamYearEventKeys,
+  (eventsByKey, keys) => {
+    if (keys) {
+      return keys.toSeq().map(key => eventsByKey.get(key))
     }
   }
-}
+)
 
 export const getSortedTeamYearEvents = createSelector(
   [getTeamYearEvents],
@@ -110,14 +118,23 @@ export const getSortedTeamYearEvents = createSelector(
   }
 )
 
-export const getTeamYearMatches = (state, props) => {
-  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
-    const teamYearMatches = state.getIn(['page', 'modelHistory', key, 'matches', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, getYear(state, props)])
-    if (teamYearMatches !== undefined) {
-      return teamYearMatches
+const getMatchesByKey = (state, props) => {
+  return state.getIn(['models', 'matches', 'byKey'])
+}
+
+const getTeamYearMatchKeys = (state, props) => {
+  return state.getIn(['models', 'matches', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, getYear(state, props)])
+}
+
+const getTeamYearMatches = createSelector(
+  getMatchesByKey,
+  getTeamYearMatchKeys,
+  (matchesByKey, keys) => {
+    if (keys) {
+      return keys.toSeq().map(key => matchesByKey.get(key))
     }
   }
-}
+)
 
 export const getMatchesByEvent = createSelector(
   [getTeamYearMatches],
@@ -153,11 +170,20 @@ export const getMatchesByEvent = createSelector(
   }
 )
 
-export const getStatusByEvent = (state, props) => {
-  for (let key of state.getIn(['page', 'historyOrder']).reverse().toList()) {
-    const teamEventStatuses = state.getIn(['page', 'modelHistory', key, 'teamEventStatuses', 'byTeamYear', `frc${getTeamNumber(state, props)}`, getYear(state, props)])
-    if (teamEventStatuses !== undefined) {
-      return teamEventStatuses
+const getEventStatusesByKey = (state, props) => {
+  return state.getIn(['models', 'teamEventStatuses', 'byKey'])
+}
+
+const getTeamYearEventStatusKeys = (state, props) => {
+  return state.getIn(['models', 'teamEventStatuses', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, getYear(state, props)])
+}
+
+export const getStatusByEvent = createSelector(
+  getEventStatusesByKey,
+  getTeamYearEventStatusKeys,
+  (statusesByKey, keys) => {
+    if (keys) {
+      return keys.toSeq().map(key => statusesByKey.get(key))
     }
   }
-}
+)
