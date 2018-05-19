@@ -8,6 +8,7 @@ import { ordinal } from '../utils'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { Link } from 'react-router-dom'
+import Skeleton from 'react-loading-skeleton'
 
 // TBA Components
 import MatchTable from '../components/MatchTable'
@@ -56,39 +57,64 @@ class TeamAtEvent extends PureComponent {
               {event.getDateString()}
             </Typography>
           </React.Fragment>}
-          {status && status.getIn(['qual', 'ranking', 'rank']) &&
-            <Typography variant='subheading'>
-              Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b>
-            </Typography>
-          }
-          {status && status.getIn(['qual', 'ranking', 'record']) &&
-            <Typography variant='subheading'>
-              Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b>
-            </Typography>
-          }
-          {status && status.getIn(['alliance']) &&
-            <Typography variant='subheading'>
-              Alliance: <b>{status.getIn(['alliance', 'pick']) === 0 ? 'Captain' : `${ordinal(status.getIn(['alliance', 'pick']))} Pick`}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
-            </Typography>
-          }
-          {status && status.getIn(['playoff', 'record']) &&
-            <Typography variant='subheading'>
-              Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
-            </Typography>
-          }
-          {playoffStatusStr &&
-            <Typography variant='subheading'>
-              Status: {playoffStatusStr}
-            </Typography>
-          }
-          {awards &&
+
+          {!(status && !status.get('qual') && !status.get('playoff') && awards && awards.size === 0) &&
             <React.Fragment>
-              <Typography variant='subheading'>Awards:</Typography>
-              <ul className={classes.awardList}>
-                {awards.map(award =>
-                  <li key={award.key}>{award.name}</li>
-                )}
-              </ul>
+              {status ?
+                <React.Fragment>
+                  {status.getIn(['qual', 'ranking', 'rank']) &&
+                    <Typography variant='subheading'>
+                      Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b>
+                    </Typography>
+                  }
+                  {status.getIn(['qual', 'ranking', 'record']) &&
+                    <Typography variant='subheading'>
+                      Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b>
+                    </Typography>
+                  }
+                  {status.getIn(['alliance']) &&
+                    <Typography variant='subheading'>
+                      Alliance: <b>{status.getIn(['alliance', 'pick']) === 0 ? 'Captain' : `${ordinal(status.getIn(['alliance', 'pick']))} Pick`}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
+                    </Typography>
+                  }
+                  {status.getIn(['playoff', 'record']) &&
+                    <Typography variant='subheading'>
+                      Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
+                    </Typography>
+                  }
+                  {playoffStatusStr &&
+                    <Typography variant='subheading'>
+                      Status: {playoffStatusStr}
+                    </Typography>
+                  }
+                </React.Fragment>
+                :
+                <React.Fragment>
+                  <Typography variant='subheading'>
+                    <Skeleton />
+                  </Typography>
+                  <Typography variant='subheading'>
+                    <Skeleton />
+                  </Typography>
+                </React.Fragment>
+              }
+
+              {awards ?
+                (awards.size > 0 &&
+                  <React.Fragment>
+                    <Typography variant='subheading'>Awards:</Typography>
+                    <ul className={classes.awardList}>
+                      {awards.map(award =>
+                        <li key={award.key}>{award.name}</li>
+                      )}
+                    </ul>
+                  </React.Fragment>
+                )
+              :
+                <Typography variant='subheading'>
+                  <Skeleton />
+                </Typography>
+              }
             </React.Fragment>
           }
         </Grid>

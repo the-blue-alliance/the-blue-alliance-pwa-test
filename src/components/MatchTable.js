@@ -9,6 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Icon from '@material-ui/core/Icon'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
+import VideogameAssetIcon from '@material-ui/icons/VideogameAsset'
 import { Link } from 'react-router-dom'
 
 // TBA Components
@@ -101,6 +102,11 @@ const styles = theme => ({
     justifyContent: 'center',
     flexDirection: 'column',
     textAlign: 'center',
+  },
+  zeroDataIcon: {
+    width: 40,
+    height: 40,
+    margin: '0 auto',
   },
   zeroDataSpinner: {
     margin: '0 auto',
@@ -330,12 +336,17 @@ class MatchTable extends PureComponent {
     if (this.props.matches === undefined) {
       return (
         <div className={classes.zeroDataContainer}>
-          <CircularProgress color='secondary' size='15%' className={classes.zeroDataSpinner} />
+          <CircularProgress color='secondary' size={100} className={classes.zeroDataSpinner} />
           <Typography variant='subheading'>Matches loading</Typography>
         </div>
       )
     } else if (this.props.matches.size === 0) {
-      return <div>NO MATCHES</div>
+      return (
+        <div className={classes.zeroDataContainer}>
+          <VideogameAssetIcon className={classes.zeroDataIcon} />
+          <Typography variant='subheading'>No match results</Typography>
+        </div>
+      )
     }
 
     const qmMatches = this.props.matches.filter(match => match.get('comp_level') === 'qm')

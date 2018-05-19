@@ -36,6 +36,10 @@ const getTeamYearAwardKeys = (state, props) => {
   return state.getIn(['models', 'awards', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, getYear(state, props)])
 }
 
+const getTeamYearEventKeys = (state, props) => {
+  return state.getIn(['models', 'events', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, getYear(state, props)])
+}
+
 const getTeamYearAwards = createSelector(
   getAwardsByKey,
   getTeamYearAwardKeys,
@@ -47,16 +51,18 @@ const getTeamYearAwards = createSelector(
 )
 
 export const getAwardsByEvent = createSelector(
-  [getTeamYearAwards],
-  (awards) => {
+  [getTeamYearAwards, getTeamYearEventKeys],
+  (awards, eventKeys) => {
     let awardsByEvent = Map()
-    if (awards) {
+    if (awards && eventKeys) {
+      // Fill with events
+      eventKeys.toSeq().forEach(eventKey =>
+        awardsByEvent = awardsByEvent.set(eventKey, List())
+      )
+
       // Group by event
       awards.map(a => new Award(a)).forEach(a => {
         let oldList = awardsByEvent.get(a.event_key)
-        if (oldList ===  undefined) {
-          oldList = List()
-        }
         awardsByEvent = awardsByEvent.set(a.event_key, oldList.push(a))
       })
     }
@@ -83,10 +89,6 @@ export const getAwardsByEvent = createSelector(
 
 const getEventsByKey = (state, props) => {
   return state.getIn(['models', 'events', 'byKey'])
-}
-
-const getTeamYearEventKeys = (state, props) => {
-  return state.getIn(['models', 'events', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, getYear(state, props)])
 }
 
 const getTeamYearEvents = createSelector(
@@ -137,16 +139,18 @@ const getTeamYearMatches = createSelector(
 )
 
 export const getMatchesByEvent = createSelector(
-  [getTeamYearMatches],
-  (matches) => {
+  [getTeamYearMatches, getTeamYearEventKeys],
+  (matches, eventKeys) => {
     let matchesByEvent = Map()
-    if (matches) {
+    if (matches && eventKeys) {
+      // Fill with events
+      eventKeys.toSeq().forEach(eventKey =>
+        matchesByEvent = matchesByEvent.set(eventKey, List())
+      )
+
       // Group by event
       matches.map(m => new Match(m)).forEach(m => {
         let oldList = matchesByEvent.get(m.event_key)
-        if (oldList ===  undefined) {
-          oldList = List()
-        }
         matchesByEvent = matchesByEvent.set(m.event_key, oldList.push(m))
       })
     }
