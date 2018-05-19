@@ -160,9 +160,7 @@ export const getSortedAwards = createSelector(
         return 0
       })
 
-      if (awards.size > 0) {
-        return awards
-      }
+      return awards
     }
     return undefined
   }
