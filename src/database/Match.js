@@ -1,4 +1,5 @@
-import { Record } from 'immutable';
+import { Record } from 'immutable'
+import moment from 'moment'
 
 const COMP_LEVELS = {
   'qm': 'Quals',
@@ -22,6 +23,8 @@ export default class Match extends Record({
   set_number: undefined,
   match_number: undefined,
   alliances: undefined,
+  time: undefined,
+  predicted_time: undefined,
   winning_alliance: undefined,
   score_breakdown: undefined,
   videos: undefined,
@@ -56,6 +59,18 @@ export default class Match extends Record({
 
   getYear() {
     return parseInt(this.key.substr(0, 4), 10)
+  }
+
+  getTimeStr() {
+    return moment.unix(this.time).format('ddd h:mm A')
+  }
+
+  getPredictedTimeStr() {
+    return moment.unix(this.predicted_time).format('ddd h:mm A')
+  }
+
+  hasBeenPlayed() {
+    return this.alliances.getIn(['red', 'score']) !== -1 && this.alliances.getIn(['blue', 'score']) !== -1
   }
 
   isDQ(teamKey) {

@@ -114,10 +114,8 @@ class MatchTable extends PureComponent {
   renderRow(match) {
     let redScore = match.alliances.getIn(['red', 'score'])
     let blueScore = match.alliances.getIn(['blue', 'score'])
-    if (redScore === -1) {
+    if (!match.hasBeenPlayed()) {
       redScore = '?'
-    }
-    if (blueScore === -1) {
       blueScore = '?'
     }
     const redWin = match.winning_alliance === 'red'
@@ -239,70 +237,84 @@ class MatchTable extends PureComponent {
             </td>
           )
         })}
-        <td className={classNames({
-          [classes.td]: true,
-          [classes.redScore]: true,
-          [classes.winner]: redWin,
-          [classes.selectedTeam]: match.isOnAlliance(selectedTeamKey, 'red'),
-        })}>
-          {match.rpEarnedA('red') && (
-            isFirstRender ?
-            <svg className={classes.rpDotA}>
-              <circle cx="2" cy="2" r="2"/>
-            </svg>
+        {(!match.hasBeenPlayed() && (match.time || match.predicted_time)) ?
+          <td colSpan='2' className={classes.td}>
+            {match.predicted_time ?
+              <Tooltip title={`Scheduled at ${match.getTimeStr()}`} placement="top">
+                <i>{match.getPredictedTimeStr()}*</i>
+              </Tooltip>
             :
-            <Tooltip title={rpEarnedTextA} placement="top">
-              <svg className={classes.rpDotA}>
-                <circle cx="2" cy="2" r="2"/>
-              </svg>
-            </Tooltip>
-          )}
-          {match.rpEarnedB('red') && (
-            isFirstRender ?
-              <svg className={classes.rpDotB}>
-                <circle cx="2" cy="2" r="2"/>
-              </svg>
-              :
-             <Tooltip title={rpEarnedTextB} placement="top">
-              <svg className={classes.rpDotB}>
-                <circle cx="2" cy="2" r="2"/>
-              </svg>
-            </Tooltip>
-          )}
-          {redScore}
-        </td>
-        <td
-          className={classNames({[classes.td]: true,
-            [classes.blueScore]: true,
-            [classes.winner]: blueWin,
-            [classes.selectedTeam]: match.isOnAlliance(selectedTeamKey, 'blue')
-        })}>
-          {match.rpEarnedA('blue') && (
-            isFirstRender ?
-            <svg className={classes.rpDotA}>
-              <circle cx="2" cy="2" r="2"/>
-            </svg>
-            :
-            <Tooltip title={rpEarnedTextA} placement="top">
-              <svg className={classes.rpDotA}>
-                <circle cx="2" cy="2" r="2"/>
-              </svg>
-            </Tooltip>
-          )}
-          {match.rpEarnedB('blue') && (
-            isFirstRender ?
-              <svg className={classes.rpDotB}>
-                <circle cx="2" cy="2" r="2"/>
-              </svg>
-              :
-             <Tooltip title={rpEarnedTextB} placement="top">
-              <svg className={classes.rpDotB}>
-                <circle cx="2" cy="2" r="2"/>
-              </svg>
-            </Tooltip>
-          )}
-          {blueScore}
-        </td>
+              match.getTimeStr()
+            }
+          </td>
+        : (
+          <React.Fragment>
+            <td className={classNames({
+              [classes.td]: true,
+              [classes.redScore]: true,
+              [classes.winner]: redWin,
+              [classes.selectedTeam]: match.isOnAlliance(selectedTeamKey, 'red'),
+            })}>
+              {match.rpEarnedA('red') && (
+                isFirstRender ?
+                <svg className={classes.rpDotA}>
+                  <circle cx="2" cy="2" r="2"/>
+                </svg>
+                :
+                <Tooltip title={rpEarnedTextA} placement="top">
+                  <svg className={classes.rpDotA}>
+                    <circle cx="2" cy="2" r="2"/>
+                  </svg>
+                </Tooltip>
+              )}
+              {match.rpEarnedB('red') && (
+                isFirstRender ?
+                  <svg className={classes.rpDotB}>
+                    <circle cx="2" cy="2" r="2"/>
+                  </svg>
+                  :
+                 <Tooltip title={rpEarnedTextB} placement="top">
+                  <svg className={classes.rpDotB}>
+                    <circle cx="2" cy="2" r="2"/>
+                  </svg>
+                </Tooltip>
+              )}
+              {redScore}
+            </td>
+            <td
+              className={classNames({[classes.td]: true,
+                [classes.blueScore]: true,
+                [classes.winner]: blueWin,
+                [classes.selectedTeam]: match.isOnAlliance(selectedTeamKey, 'blue')
+            })}>
+              {match.rpEarnedA('blue') && (
+                isFirstRender ?
+                <svg className={classes.rpDotA}>
+                  <circle cx="2" cy="2" r="2"/>
+                </svg>
+                :
+                <Tooltip title={rpEarnedTextA} placement="top">
+                  <svg className={classes.rpDotA}>
+                    <circle cx="2" cy="2" r="2"/>
+                  </svg>
+                </Tooltip>
+              )}
+              {match.rpEarnedB('blue') && (
+                isFirstRender ?
+                  <svg className={classes.rpDotB}>
+                    <circle cx="2" cy="2" r="2"/>
+                  </svg>
+                  :
+                 <Tooltip title={rpEarnedTextB} placement="top">
+                  <svg className={classes.rpDotB}>
+                    <circle cx="2" cy="2" r="2"/>
+                  </svg>
+                </Tooltip>
+              )}
+              {blueScore}
+            </td>
+          </React.Fragment>
+        )}
       </tr>
     )
   }

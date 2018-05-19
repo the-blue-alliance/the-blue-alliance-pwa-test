@@ -8,6 +8,7 @@ import { withStyles } from '@material-ui/core/styles'
 // Components
 import ButtonBase from '@material-ui/core/ButtonBase'
 import ListItem from '@material-ui/core/ListItem'
+import Tooltip from '@material-ui/core/Tooltip'
 import { Link } from 'react-router-dom'
 import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
 
@@ -27,6 +28,17 @@ const styles = theme => ({
     flexGrow: 4,
     flexBasis: 0,
     textAlign: 'center',
+  },
+  matchWithTime: {
+    flexGrow: 3,
+    flexBasis: 0,
+    textAlign: 'center',
+  },
+  time: {
+    flexGrow: 1,
+    flexBasis: 0,
+    textAlign: 'center',
+    fontSize: 14,
   },
   alliance: {
     display: 'flex',
@@ -52,7 +64,7 @@ const styles = theme => ({
     },
   },
   team: {
-    flexGrow: 3,
+    flexGrow: 1,
     flexBasis: 0,
     padding: theme.spacing.unit,
     '&:hover': {
@@ -61,7 +73,7 @@ const styles = theme => ({
   },
   score: {
     position: 'relative',
-    flexGrow: 2,
+    flexGrow: 1,
     flexBasis: 0,
     padding: theme.spacing.unit,
     fontWeight: 'bold',
@@ -105,12 +117,11 @@ class MatchListItem extends PureComponent {
     const { classes, style, match, selectedTeamKey } = this.props
     let redScore = match.alliances.getIn(['red', 'score'])
     let blueScore = match.alliances.getIn(['blue', 'score'])
-    if (redScore === -1) {
+    if (!match.hasBeenPlayed()) {
       redScore = '?'
-    }
-    if (blueScore === -1) {
       blueScore = '?'
     }
+    const showTime = !match.hasBeenPlayed() && (match.time || match.predicted_time)
     const redWin = match.winning_alliance === 'red'
     const blueWin = match.winning_alliance === 'blue'
 
@@ -129,7 +140,7 @@ class MatchListItem extends PureComponent {
           <br/>
           {match.getSetMatch(true)}
         </div>
-        <div className={classes.match}>
+        <div className={showTime ? classes.matchWithTime : classes.match}>
           <div className={classNames({[classes.alliance]: true, [classes.redAlliance]: true,  [classes.redWin]: redWin})}>
             {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
               const teamNum = teamKey.substr(3)
@@ -158,7 +169,7 @@ class MatchListItem extends PureComponent {
                 </LinkContainer>
               )
             })}
-            <div className={classNames({
+            {!showTime && <div className={classNames({
               [classes.score]: true,
               [classes.selectedTeam]: match.isOnAlliance(selectedTeamKey, 'red')
             })}>
@@ -173,7 +184,7 @@ class MatchListItem extends PureComponent {
                 </svg>
               }
               {redScore}
-            </div>
+            </div>}
           </div>
           <div className={classNames({[classes.alliance]: true, [classes.blueAlliance]: true,  [classes.blueWin]: blueWin})}>
             {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
@@ -203,7 +214,7 @@ class MatchListItem extends PureComponent {
                 </LinkContainer>
               )
             })}
-            <div className={classNames({
+            {!showTime && <div className={classNames({
               [classes.score]: true,
               [classes.selectedTeam]: match.isOnAlliance(selectedTeamKey, 'blue')
             })}>
@@ -218,9 +229,20 @@ class MatchListItem extends PureComponent {
                 </svg>
               }
               {blueScore}
-            </div>
+            </div>}
           </div>
         </div>
+        {showTime &&
+          <div className={classes.time}>
+            {match.predicted_time ?
+              <Tooltip title={`Scheduled at ${match.getTimeStr()}`} placement="top">
+                <i>{match.getPredictedTimeStr()}*</i>
+              </Tooltip>
+            :
+              match.getTimeStr()
+            }
+          </div>
+        }
       </ListItem>
     )
   }
