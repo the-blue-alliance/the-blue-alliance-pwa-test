@@ -331,16 +331,16 @@ class MatchTable extends PureComponent {
 
   render() {
     console.log('Render MatchTable')
-    const { classes } = this.props
+    const { classes, matches } = this.props
 
-    if (this.props.matches === undefined) {
+    if (matches === undefined) {
       return (
         <div className={classes.zeroDataContainer}>
           <CircularProgress color='secondary' size={100} className={classes.zeroDataSpinner} />
           <Typography variant='subheading'>Matches loading</Typography>
         </div>
       )
-    } else if (this.props.matches.size === 0) {
+    } else if (matches.size === 0) {
       return (
         <div className={classes.zeroDataContainer}>
           <VideogameAssetIcon className={classes.zeroDataIcon} />

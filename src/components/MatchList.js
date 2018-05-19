@@ -1,12 +1,35 @@
 // General
 import React, { PureComponent } from 'react'
+import { withStyles } from '@material-ui/core/styles'
 
 // Components
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Typography from '@material-ui/core/Typography'
+import VideogameAssetIcon from '@material-ui/icons/VideogameAsset'
 
 // TBA Components
 import VirtualStickyHeaderList from './VirtualStickyHeaderList'
 import EventListSubheader from './EventListSubheader'
 import MatchListItem from './MatchListItem'
+
+
+const styles = theme => ({
+  zeroDataContainer: {
+    padding: theme.spacing.unit*2,
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    textAlign: 'center',
+  },
+  zeroDataIcon: {
+    width: 40,
+    height: 40,
+    margin: '0 auto',
+  },
+  zeroDataSpinner: {
+    margin: '0 auto',
+  },
+})
 
 class MatchList extends PureComponent {
   state = {
@@ -78,7 +101,23 @@ class MatchList extends PureComponent {
   render() {
     console.log("Render MatchList")
 
-    const { scrollElement } = this.props
+    const { classes, scrollElement, matches } = this.props
+
+    if (matches === undefined) {
+      return (
+        <div className={classes.zeroDataContainer}>
+          <CircularProgress color='secondary' size={60} className={classes.zeroDataSpinner} />
+          <Typography variant='subheading'>Matches loading</Typography>
+        </div>
+      )
+    } else if (matches.size === 0) {
+      return (
+        <div className={classes.zeroDataContainer}>
+          <VideogameAssetIcon className={classes.zeroDataIcon} />
+          <Typography variant='subheading'>No match results</Typography>
+        </div>
+      )
+    }
 
     return (
       <VirtualStickyHeaderList
@@ -95,4 +134,4 @@ class MatchList extends PureComponent {
   }
 }
 
-export default MatchList
+export default withStyles(styles)(MatchList)
