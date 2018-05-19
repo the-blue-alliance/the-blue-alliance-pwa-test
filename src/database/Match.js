@@ -95,10 +95,10 @@ export default class Match extends Record({
 
   rpEarnedA(color) {
     const breakdown = this.getIn(['score_breakdown', color])
-    if (breakdown &&
+    if (breakdown && (
       (this.getYear() === 2017 && (breakdown.get('kPaRankingPointAchieved') || breakdown.get('kPaBonusPoints'))) ||
       (this.getYear() === 2018 && (breakdown.get('autoQuestRankingPoint')))
-    ) {
+    )) {
       return true
     }
     return false
@@ -106,10 +106,10 @@ export default class Match extends Record({
 
   rpEarnedB(color) {
     const breakdown = this.getIn(['score_breakdown', color])
-    if (breakdown &&
+    if (breakdown && (
       (this.getYear() === 2017 && (breakdown.get('rotorRankingPointAchieved') || breakdown.get('rotorBonusPoints'))) ||
       (this.getYear() === 2018 && (breakdown.get('faceTheBossRankingPoint')))
-    ) {
+    )) {
       return true
     }
     return false
