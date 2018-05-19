@@ -15,6 +15,14 @@ const PLAY_ORDER = {
   sf: 4,
   f: 5,
 }
+const rpAText = {
+  2017: 'Pressure Reached',
+  2018: 'Auto Quest',
+}
+const rpBText = {
+  2017: 'All Rotors Engaged',
+  2018: 'Face the Boss',
+}
 
 export default class Match extends Record({
   key: undefined,
@@ -87,7 +95,10 @@ export default class Match extends Record({
 
   rpEarnedA(color) {
     const breakdown = this.getIn(['score_breakdown', color])
-    if (breakdown && this.getYear() === 2017 && (breakdown.get('kPaRankingPointAchieved') || breakdown.get('kPaBonusPoints'))) {
+    if (breakdown &&
+      (this.getYear() === 2017 && (breakdown.get('kPaRankingPointAchieved') || breakdown.get('kPaBonusPoints'))) ||
+      (this.getYear() === 2018 && (breakdown.get('autoQuestRankingPoint')))
+    ) {
       return true
     }
     return false
@@ -95,21 +106,20 @@ export default class Match extends Record({
 
   rpEarnedB(color) {
     const breakdown = this.getIn(['score_breakdown', color])
-    if (breakdown && this.getYear() === 2017 && (breakdown.get('rotorRankingPointAchieved') || breakdown.get('rotorBonusPoints'))) {
+    if (breakdown &&
+      (this.getYear() === 2017 && (breakdown.get('rotorRankingPointAchieved') || breakdown.get('rotorBonusPoints'))) ||
+      (this.getYear() === 2018 && (breakdown.get('faceTheBossRankingPoint')))
+    ) {
       return true
     }
     return false
   }
 
   rpEarnedTextA() {
-    if (this.getYear() === 2017) {
-      return 'Pressure Reached'
-    }
+    return rpAText[this.getYear()]
   }
 
   rpEarnedTextB() {
-    if (this.getYear() === 2017) {
-      return 'All Rotors Engaged'
-    }
+    return rpBText[this.getYear()]
   }
 }
