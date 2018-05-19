@@ -63,7 +63,9 @@ export const getAwardsByEvent = createSelector(
       // Group by event
       awards.map(a => new Award(a)).forEach(a => {
         let oldList = awardsByEvent.get(a.event_key)
-        awardsByEvent = awardsByEvent.set(a.event_key, oldList.push(a))
+        if (oldList) {
+          awardsByEvent = awardsByEvent.set(a.event_key, oldList.push(a))
+        }
       })
     }
 
@@ -151,7 +153,9 @@ export const getMatchesByEvent = createSelector(
       // Group by event
       matches.map(m => new Match(m)).forEach(m => {
         let oldList = matchesByEvent.get(m.event_key)
-        matchesByEvent = matchesByEvent.set(m.event_key, oldList.push(m))
+        if (oldList) {
+          matchesByEvent = matchesByEvent.set(m.event_key, oldList.push(m))
+        }
       })
     }
 
