@@ -80,9 +80,15 @@ class TBAToolbar extends PureComponent {
             :
             <TBALamp className={classes.logo} />
           }
-          <Typography variant="title" color="inherit" className={classes.appBarTitle} noWrap>
-            {title ? title : 'The Blue Alliance'}
-          </Typography>
+          {typeof(title) === 'object' ?
+            <div className={classes.appBarTitle}>
+              {title}
+            </div>
+            :
+            <Typography variant="title" color="inherit" className={classes.appBarTitle} noWrap>
+              {title ? title : 'The Blue Alliance'}
+            </Typography>
+          }
           <Hidden smDown implementation="css">
             <TBAAppBarSearch />
           </Hidden>
