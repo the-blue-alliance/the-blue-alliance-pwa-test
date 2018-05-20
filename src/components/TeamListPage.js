@@ -13,6 +13,7 @@ import TeamsList from './TeamsList'
 const styles = theme => ({
   sideNav: {
     position: 'fixed',
+    width: 250,
   },
   container: {
     display: 'flex',
@@ -79,8 +80,8 @@ class TeamListPage extends PureComponent {
             restoreScroll={this.state.restoreScroll}
           >
             <ResponsiveLayout>
-              <Grid container spacing={24}>
-                <Grid item xs={3} lg={2}>
+              <Grid container spacing={16}>
+                <Grid item xs={4} lg={3}>
                   <div className={classes.sideNav}>
                     <h1>Teams</h1>
                     <TextField
@@ -96,7 +97,7 @@ class TeamListPage extends PureComponent {
                     />
                   </div>
                 </Grid>
-                <Grid item xs={9} lg={10}>
+                <Grid item xs={8} lg={9}>
                   <TeamsList
                     scrollElement={this.contentRef}
                     teams={this.props.allTeams}

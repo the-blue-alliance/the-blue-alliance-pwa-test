@@ -11,7 +11,6 @@ import WindowScrollerList from './WindowScrollerList'
 const styles = theme => ({
   teamsCard: {
     margin: theme.spacing.unit,
-    padding: `${theme.spacing.unit/2}px 0px`,
   },
 })
 
@@ -71,7 +70,7 @@ class TeamsList extends PureComponent {
           <WindowScrollerList
             scrollElement={this.props.scrollElement}
             rowCount={this.filteredTeams.size}
-            rowHeight={69}
+            rowHeight={65}
             rowRenderer={this.rowRenderer}
           />
         </Paper>
