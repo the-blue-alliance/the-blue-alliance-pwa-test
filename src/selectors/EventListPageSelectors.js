@@ -44,10 +44,10 @@ export const getSortedEvents = createSelector(
         if (a.end_date > b.end_date) {
           return 1
         }
-        if (a.short_name < b.short_name) {
+        if (a.safeShortName() < b.safeShortName()) {
           return -1
         }
-        if (a.short_name > b.short_name) {
+        if (a.safeShortName() > b.safeShortName()) {
           return 1
         }
         return 0

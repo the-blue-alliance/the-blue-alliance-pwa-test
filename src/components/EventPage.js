@@ -85,9 +85,9 @@ class EventPage extends PureComponent {
     var shortName = null
     var year = undefined
     if (event) {
-      year = event.get('year')
-      name = `${event.get('name')} ${year}`
-      shortName = `${event.get('short_name')} ${year}`
+      year = event.year
+      name = `${event.name} ${year}`
+      shortName = `${event.safeShortName()} ${year}`
     }
 
     return (

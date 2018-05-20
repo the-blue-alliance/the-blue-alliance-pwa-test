@@ -83,7 +83,7 @@ class TBAToolbar extends PureComponent {
             :
             <TBALamp className={classes.logo} />
           }
-          <Typography variant="title" color="inherit" className={classes.appBarTitle}>
+          <Typography variant="title" color="inherit" className={classes.appBarTitle} noWrap>
             {title ? title : 'The Blue Alliance'}
           </Typography>
           <Hidden smDown implementation="css">

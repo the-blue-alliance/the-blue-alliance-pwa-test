@@ -42,6 +42,10 @@ export default class Event extends Record({
   state_prov: undefined,
   country: undefined,
 }) {
+  safeShortName() {
+    return this.short_name ? this.short_name : this.name
+  }
+
   getCityStateCountry() {
     if (this.cityStateCountry === undefined) {
       this.cityStateCountry = ''

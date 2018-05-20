@@ -39,7 +39,7 @@ class EventListItem extends PureComponent {
           <ListItemText
             className={classes.listItemText}
             disableTypography
-            primary={event.short_name}
+            primary={event.safeShortName()}
             secondary={
               <Typography>
                 <span className={classes.locationContainer}>

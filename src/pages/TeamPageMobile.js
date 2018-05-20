@@ -246,7 +246,7 @@ class TeamPageMobile extends PureComponent {
           >
             <Tab value={0} label='Info' />
             {teamYearEvents && teamYearEvents.map((event, idx) =>
-              <Tab key={event.key} value={idx + 1} label={event.short_name} />
+              <Tab key={event.key} value={idx + 1} label={event.safeShortName()} />
             )}
           </Tabs>
         }

@@ -160,8 +160,8 @@ class TeamPageDesktop extends PureComponent {
                     sectionItems={{
                       'event-results': teamYearEvents && teamYearEvents.map(event => {
                         return ({
-                          'id': event.get('event_code'),
-                          'label': event.get('short_name'),
+                          'id': event.event_code,
+                          'label': event.safeShortName(),
                         })
                       }).toJS(),
                       'media': [
