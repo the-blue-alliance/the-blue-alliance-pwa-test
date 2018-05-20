@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import clipboard from 'clipboard-polyfill'
+import { Link } from 'react-router-dom'
 
 import AppBar from '@material-ui/core/AppBar'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
@@ -110,7 +111,7 @@ class TBAToolbar extends PureComponent {
             </div>
           }
           <Hidden mdUp implementation="css">
-            <IconButton color="inherit">
+            <IconButton color="inherit" component={Link} to={{pathname: '/search', state: {modal: true, searchModal: true}}}>
               <SearchIcon />
             </IconButton>
           </Hidden>

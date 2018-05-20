@@ -3,14 +3,13 @@ import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import { Route } from 'react-router-dom'
 import Dialog from '@material-ui/core/Dialog'
-import Slide from '@material-ui/core/Slide'
+import Fade from '@material-ui/core/Fade'
 import withMobileDialog from '@material-ui/core/withMobileDialog'
 
-import MatchDialogContainer from '../containers/MatchDialogContainer'
-import TeamAtEventDialogContainer from '../containers/TeamAtEventDialogContainer'
+import SearchPageMobileContainer from '../containers/SearchPageMobileContainer'
 
 function Transition(props) {
-  return <Slide direction="up" {...props} />
+  return <Fade {...props} />
 }
 
 const ModalRoute = ({ component, ...rest }) => {
@@ -23,18 +22,9 @@ const ModalRoute = ({ component, ...rest }) => {
 }
 
 const styles = theme => ({
-  fullScreenRoot: {
-    top: 32,
-    bottom: 0,
-    height: 'auto',
-  },
-  paperFullScreen: {
-    borderTopLeftRadius: theme.spacing.unit * 2,
-    borderTopRightRadius: theme.spacing.unit * 2,
-  },
 })
 
-class TBAModalDialog extends React.Component {
+class SearchModal extends React.Component {
   render() {
     const { classes, isModal, open, fullScreen, handleClose } = this.props
     return (
@@ -45,15 +35,10 @@ class TBAModalDialog extends React.Component {
         fullWidth
         fullScreen={fullScreen}
         TransitionComponent={Transition}
-        classes={{
-          root: fullScreen ? classes.fullScreenRoot : null,
-          paperFullScreen: classes.paperFullScreen,
-        }}
       >
         {isModal &&
           <React.Fragment>
-            <ModalRoute path='/match/:matchKey' component={MatchDialogContainer} handleClose={handleClose} />
-            <ModalRoute path='/team/:teamNumber/:year?' component={TeamAtEventDialogContainer} handleClose={handleClose} />
+            <ModalRoute path='/search' component={SearchPageMobileContainer} handleClose={handleClose} />
           </React.Fragment>
         }
       </Dialog>
@@ -61,11 +46,11 @@ class TBAModalDialog extends React.Component {
   }
 }
 
-TBAModalDialog.propTypes = {
+SearchModal.propTypes = {
   isModal: PropTypes.bool.isRequired,
   open: PropTypes.bool.isRequired,
   fullScreen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
 }
 
-export default withMobileDialog()(withStyles(styles)(TBAModalDialog))
+export default withMobileDialog()(withStyles(styles)(SearchModal))

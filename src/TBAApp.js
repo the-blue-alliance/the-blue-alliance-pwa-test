@@ -15,6 +15,7 @@ import TBASideNavContainer from './containers/TBASideNavContainer'
 import TBABottomNavContainer from './containers/TBABottomNavContainer'
 import TBASnackbarsContainer from './containers/TBASnackbarsContainer'
 import TBAModalDialog from './components/TBAModalDialog'
+import SearchModal from './components/SearchModal'
 
 import HomePageContainer from './containers/HomePageContainer'
 import EventListPageBase from './pages/EventListPageBase'
@@ -155,7 +156,8 @@ class ModalSwitch extends React.Component {
           <Route path='/teams' component={TeamListPageContainer} />
           <Route path='/team/:teamNumber/:year?' component={TeamPageBase} />
         </Switch>
-        <TBAModalDialog isModal={isModal} open={this.state.modalOpen} handleClose={this.handleClose} />
+        <TBAModalDialog isModal={isModal && !Boolean(location.state.searchModal)} open={this.state.modalOpen} handleClose={this.handleClose} />
+        <SearchModal isModal={isModal && Boolean(location.state.searchModal)} open={this.state.modalOpen} handleClose={this.handleClose} />
       </React.Fragment>
     )
   }
