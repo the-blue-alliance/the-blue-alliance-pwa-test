@@ -6,6 +6,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator'
 import { withStyles } from '@material-ui/core/styles'
 import match from 'autosuggest-highlight/match'
 import parse from 'autosuggest-highlight/parse'
+import db from '../database/db'
 
 // Actions
 import { push } from 'connected-react-router'
@@ -89,76 +90,71 @@ const styles = theme => ({
   },
 })
 
-const sections = [
-  {
+// Temp hacky solution to populate sections from db -fangeugene 2018-05-19
+let sections = []
+db.teams.toArray().then(teams => {
+  let items = []
+  teams.sort((a, b) => {
+    const orderA = a.team_number
+    const orderB = b.team_number
+    if (orderA < orderB) {
+      return -1
+    }
+    if (orderA > orderB) {
+      return 1
+    }
+    return 0
+  }).forEach(team => {
+    let tokens = [String(team.team_number)]
+    if (team.nickname) {
+      tokens = tokens.concat(team.nickname.toLowerCase().split(' '))
+    }
+    items.push({
+      label: `${team.team_number} | ${team.nickname ? team.nickname : `Team ${team.team_number}`}`,
+      searchTokens: tokens,
+      url: `/team/${team.team_number}`,
+    })
+  })
+  sections.push({
     title: 'Teams',
-    items: [
-      {
-        label: '254 | The Cheesy Poofs',
-        searchTokens: [
-          '254',
-          'the',
-          'cheesy',
-          'poofs',
-        ],
-        url: '/team/254',
-      },
-      {
-        label: '604 | Quixilver',
-        searchTokens: [
-          '604',
-          'quixilver',
-        ],
-        url: '/team/604',
-      },
-      {
-        label: '1114 | Simbotics',
-        searchTokens: [
-          '1114',
-          'simbotics',
-        ],
-        url: '/team/1114',
-      },
-    ],
-  },
-  {
+    items: items,
+  })
+})
+db.events.toArray().then(events => {
+  let items = []
+  events.sort((a, b) => {
+    const orderA = a.year
+    const orderB = b.year
+    if (orderA < orderB) {
+      return 1
+    }
+    if (orderA > orderB) {
+      return -1
+    }
+    const orderA2 = a.name
+    const orderB2 = b.name
+    if (orderA2 < orderB2) {
+      return -1
+    }
+    if (orderA2 > orderB2) {
+      return 1
+    }
+    return 0
+  }).forEach(event => {
+    const eventCode = event.key.substring(4)
+    let tokens = [String(event.year), eventCode]
+    tokens = tokens.concat(event.name.toLowerCase().split(' '))
+    items.push({
+      label: `${event.year} | ${event.name} [${eventCode.toUpperCase()}]`,
+      searchTokens: tokens,
+      url: `/event/${event.key}`,
+    })
+  })
+  sections.push({
     title: 'Events',
-    items: [
-      {
-        label: '2018 Silicon Valley Regional [CASJ]',
-        searchTokens: [
-          '2018',
-          'silicon',
-          'valley',
-          'regional',
-          'casj',
-        ],
-        url: '/event/2018casj',
-      },
-      {
-        label: '2018 Sacramento Regional [CASA]',
-        searchTokens: [
-          '2018',
-          'sacramento',
-          'regional',
-          'casa',
-        ],
-        url: '/event/2018casa',
-      },
-      {
-        label: '2018 San Fransisco Regional [CASF]',
-        searchTokens: [
-          '2018',
-          'san',
-          'fransisco',
-          'regional',
-          'casf',
-        ],
-        url: '/event/2018casf',
-      },
-    ],
-  },
-]
+    items: items,
+  })
+})
 
 function renderInput(inputProps) {
   const { classes, value, ref, onChange, ...other } = inputProps
@@ -253,7 +249,7 @@ function getSuggestions(value) {
             }
           }
           return true
-        }),
+        }).slice(0, 5),  // Limit to 5 results per section
       }
     })
     .filter(section => section.items.length > 0)
