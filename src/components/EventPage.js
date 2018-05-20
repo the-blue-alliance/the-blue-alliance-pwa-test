@@ -14,6 +14,7 @@ import InfoOutlineIcon from '@material-ui/icons/InfoOutline'
 import EventIcon from '@material-ui/icons/Event'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
 
 import ResponsiveLayout from './ResponsiveLayout'
 import MatchTable from './MatchTable'
@@ -26,6 +27,13 @@ import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 const styles = theme => ({
   hidden: {
     display: 'none',
+  },
+  titleName: {
+    float: 'left',
+    width: '100%',
+  },
+  titleYear: {
+    float: 'left',
   },
   scrollContainer: {
     display: 'flex',
@@ -87,7 +95,7 @@ class EventPage extends PureComponent {
     if (event) {
       year = event.year
       name = `${event.name} ${year}`
-      shortName = `${event.safeShortName()} ${year}`
+      shortName = event.safeShortName()
     }
 
     return (
@@ -140,7 +148,17 @@ class EventPage extends PureComponent {
           <TBAPageContainer
             history={this.props.history}
             documentTitle={name ? name : ''}
-            title={shortName}
+            title={
+              <React.Fragment>
+                <Typography variant='title' color='inherit' className={classes.titleName} noWrap>
+                  {shortName}
+                </Typography>
+                <br/>
+                <Typography variant='subheading' color='inherit' className={classes.titleYear}>
+                  {year}
+                </Typography>
+              </React.Fragment>
+            }
             refreshFunction={this.refreshFunction}
             tabs={
               <Tabs
