@@ -88,7 +88,7 @@ export default class Event extends Record({
   }
 
   isPast() {
-    return moment.tz(this.end_date, this.timezone) < moment.now()
+    return moment.tz(this.end_date, this.timezone).add(1, 'days') < moment.now()
   }
 
   isCMP() {
