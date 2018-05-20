@@ -30,9 +30,6 @@ const styles = theme => ({
       padding: 0,
     },
   },
-  backButton: {
-    marginRight: 8,
-  },
   logo: {
     height: 48,
     width: 48,
@@ -74,7 +71,6 @@ class TBAToolbar extends PureComponent {
         <Toolbar className={classes.toolbar}>
           {title ?
             <IconButton
-              className={classes.backButton}
               color="inherit"
               aria-label="Back"
               onClick={this.props.goBack}
