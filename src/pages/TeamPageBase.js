@@ -1,5 +1,6 @@
 // General
 import React, { PureComponent } from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 
 // Actions
@@ -65,33 +66,28 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 class TeamPageBase extends PureComponent {
-  reset = props => {
-     // Set without overriding
-    props.resetPage({
-      activeTab: 0,
-      yearMenuOpen: false,
-    })
-    // Fetch data
-    this.refreshFunction(props)
-  }
-
-  constructor(props) {
-    super(props)
-    this.reset(props)
-    props.setNav('teams')
-  }
-
-  refreshFunction = (props=this.props) => {
-    this.props.fetchTeamYears(props.teamNumber)
-    this.props.fetchTeamInfo(props.teamNumber)
-    this.props.fetchTeamYearAwards(props.teamNumber, props.year)
-    this.props.fetchTeamYearEvents(props.teamNumber, props.year)
-    this.props.fetchTeamYearMatches(props.teamNumber, props.year)
-    this.props.fetchTeamYearEventStatuses(props.teamNumber, props.year)
+  refreshFunction = () => {
+    this.props.fetchTeamYears(this.props.teamNumber)
+    this.props.fetchTeamInfo(this.props.teamNumber)
+    this.props.fetchTeamYearAwards(this.props.teamNumber, this.props.year)
+    this.props.fetchTeamYearEvents(this.props.teamNumber, this.props.year)
+    this.props.fetchTeamYearMatches(this.props.teamNumber, this.props.year)
+    this.props.fetchTeamYearEventStatuses(this.props.teamNumber, this.props.year)
   }
 
   setYearMenuOpen = (isOpen) => {
     this.props.setPageState({ yearMenuOpen: isOpen })
+  }
+
+  componentDidMount() {
+    this.props.resetPage({
+      activeTab: 0,
+      yearMenuOpen: false,
+    })
+    this.props.setNav('teams')
+
+    // Fetch data async
+    ReactDOM.unstable_deferredUpdates(() => this.refreshFunction())
   }
 
   render() {

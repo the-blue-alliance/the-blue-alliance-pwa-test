@@ -1,5 +1,6 @@
 // General
 import React, { PureComponent } from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { Set } from 'immutable'
 
@@ -37,25 +38,8 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 class EventListPageBase extends PureComponent {
-  reset = props => {
-    props.resetPage({
-      activeEventGroup: null,
-      filterDialogOpen: false,
-      districtFilters: Set(),
-      yearMenuOpen: false,
-    })
-    // Fetch data
-    this.refreshFunction(props)
-  }
-
-  constructor(props) {
-    super(props)
-    this.reset(props)
-    props.setNav('events')
-  }
-
-  refreshFunction = (props=this.props) => {
-    this.props.fetchYearEvents(props.year)
+  refreshFunction = () => {
+    this.props.fetchYearEvents(this.props.year)
   }
 
   filterFunction = () => {
@@ -64,6 +48,19 @@ class EventListPageBase extends PureComponent {
 
   setYearMenuOpen = (isOpen) => {
     this.props.setPageState({ yearMenuOpen: isOpen })
+  }
+
+  componentDidMount() {
+    this.props.resetPage({
+      activeEventGroup: null,
+      filterDialogOpen: false,
+      districtFilters: Set(),
+      yearMenuOpen: false,
+    })
+    this.props.setNav('events')
+
+    // Fetch data async
+    ReactDOM.unstable_deferredUpdates(() => this.refreshFunction())
   }
 
   render() {
