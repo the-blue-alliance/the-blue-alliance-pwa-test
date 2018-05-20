@@ -67,9 +67,9 @@ class EventListPageMobile extends PureComponent {
   render() {
     console.log("Render EventListPageMobile")
 
-    const { classes, year, validYears, groupedEvents, isLoading, yearMenuOpen, filterCount } = this.props
+    const { classes, year, validYears, groupedEvents, yearMenuOpen, filterCount } = this.props
 
-    const hasEvents = groupedEvents.size !== 0
+    const hasEvents = groupedEvents && groupedEvents.size !== 0
 
     return (
       <TBAPageContainer
@@ -93,14 +93,19 @@ class EventListPageMobile extends PureComponent {
         {hasEvents ?
           <GroupedEventTabContentsContainer groupedEvents={groupedEvents}/>
           :
-          <div className={classes.zeroDataContainer}>
-            {isLoading ?
-              <CircularProgress color='secondary' size='25%' className={classes.zeroDataSpinner} />
+          <React.Fragment>
+            {groupedEvents ?
+              <div className={classes.zeroDataContainer}>
+                <EventIcon className={classes.zeroDataIcon} />
+                <Typography variant='subheading'>No events</Typography>
+              </div>
               :
-              <EventIcon className={classes.zeroDataIcon} />
+              <div className={classes.zeroDataContainer}>
+                <CircularProgress color='secondary' size={120} className={classes.zeroDataSpinner} />
+                <Typography variant='subheading'>Events loading'</Typography>
+              </div>
             }
-            <Typography variant='subheading'>{isLoading ? 'Events loading' : 'No events found'}</Typography>
-          </div>
+          </React.Fragment>
         }
         <EventFilterDialogContainer year={year} />
         <Menu
@@ -126,7 +131,6 @@ class EventListPageMobile extends PureComponent {
 EventListPageMobile.propTypes = {
   classes: PropTypes.object.isRequired,
   documentTitle: PropTypes.string.isRequired,
-  isLoading: PropTypes.bool.isRequired,
   refreshFunction: PropTypes.func.isRequired,
   filterFunction: PropTypes.func.isRequired,
   setYearMenuOpen: PropTypes.func.isRequired,
@@ -134,7 +138,7 @@ EventListPageMobile.propTypes = {
   filterCount: PropTypes.number.isRequired,
   yearMenuOpen: PropTypes.bool.isRequired,
   year: PropTypes.number.isRequired,
-  groupedEvents: ImmutablePropTypes.list.isRequired,
+  groupedEvents: ImmutablePropTypes.list,
 }
 
 export default withStyles(styles)(EventListPageMobile)

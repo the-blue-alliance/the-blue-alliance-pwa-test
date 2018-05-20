@@ -207,7 +207,7 @@ class TeamPageDesktop extends PureComponent {
                 <h2>Event Results</h2>
                 {!teamYearEvents &&
                   <div className={classes.zeroDataContainer}>
-                    <CircularProgress color='secondary' size='15%' className={classes.zeroDataSpinner} />
+                    <CircularProgress color='secondary' size={120} className={classes.zeroDataSpinner} />
                     <Typography variant='subheading'>Events loading</Typography>
                   </div>
                 }

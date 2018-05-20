@@ -86,15 +86,15 @@ class EventListPageDesktop extends PureComponent {
   render() {
     console.log("Render EventListPageDesktop")
 
-    const { classes, year, validYears, groupedEvents, isLoading, yearMenuOpen, filterCount } = this.props
-    const officialEventsGrouped = groupedEvents.filter(group => group.get('isOfficial'))
-    const unofficialEventsGrouped = groupedEvents.filter(group => !group.get('isOfficial'))
+    const { classes, year, validYears, groupedEvents, yearMenuOpen, filterCount } = this.props
+    const officialEventsGrouped = groupedEvents && groupedEvents.filter(group => group.get('isOfficial'))
+    const unofficialEventsGrouped = groupedEvents && groupedEvents.filter(group => !group.get('isOfficial'))
 
     let sections = []
-    if (officialEventsGrouped.size > 0) {
+    if (officialEventsGrouped && officialEventsGrouped.size > 0) {
       sections.push('official')
     }
-    if (unofficialEventsGrouped.size > 0) {
+    if (unofficialEventsGrouped && unofficialEventsGrouped.size > 0) {
       sections.push('unofficial')
     }
 
@@ -138,7 +138,7 @@ class EventListPageDesktop extends PureComponent {
                   )}
                 </Menu>
 
-                {groupedEvents.size !== 0 &&
+                {groupedEvents && groupedEvents.size !== 0 &&
                   <div className={classes.buttonContainer}>
                     <HideableBadge
                       badgeContent={filterCount}
@@ -156,7 +156,7 @@ class EventListPageDesktop extends PureComponent {
                     </HideableBadge>
                   </div>
                 }
-                {this.state.contentRef &&
+                {this.state.contentRef && officialEventsGrouped && unofficialEventsGrouped &&
                   <NestedScrollspy
                     collapseSections
                     contentRef={this.state.contentRef}
@@ -186,19 +186,19 @@ class EventListPageDesktop extends PureComponent {
             </Grid>
             <Grid item xs={9} lg={10}>
               <h1>{year} <em>FIRST</em> Robotics Competition Events</h1>
-
-              {groupedEvents.size === 0 &&
+              {!groupedEvents &&
                 <div className={classes.zeroDataContainer}>
-                  {isLoading ?
-                    <CircularProgress color='secondary' size='15%' className={classes.zeroDataSpinner} />
-                    :
-                    <EventIcon className={classes.zeroDataIcon} />
-                  }
-                  <Typography variant='subheading'>{isLoading ? 'Events loading' : 'No events found'}</Typography>
+                  <CircularProgress color='secondary' size={120} className={classes.zeroDataSpinner} />
+                  <Typography variant='subheading'>Events loading</Typography>
                 </div>
               }
-
-              {officialEventsGrouped.size !== 0 &&
+              {groupedEvents && groupedEvents.size === 0 &&
+                <div className={classes.zeroDataContainer}>
+                  <EventIcon className={classes.zeroDataIcon} />
+                  <Typography variant='subheading'>No events found</Typography>
+                </div>
+              }
+              {officialEventsGrouped && officialEventsGrouped.size !== 0 &&
                 <div id='official'>
                   <h2>Official Events</h2>
                   {officialEventsGrouped.map(group => {
@@ -211,7 +211,7 @@ class EventListPageDesktop extends PureComponent {
                   })}
                 </div>
               }
-              {unofficialEventsGrouped.size !== 0 &&
+              {unofficialEventsGrouped && unofficialEventsGrouped.size !== 0 &&
                 <div id='unofficial'>
                   <h2>Unofficial Events</h2>
                   {unofficialEventsGrouped.map(group => {
@@ -236,7 +236,6 @@ class EventListPageDesktop extends PureComponent {
 EventListPageDesktop.propTypes = {
   classes: PropTypes.object.isRequired,
   documentTitle: PropTypes.string.isRequired,
-  isLoading: PropTypes.bool.isRequired,
   refreshFunction: PropTypes.func.isRequired,
   filterFunction: PropTypes.func.isRequired,
   setYearMenuOpen: PropTypes.func.isRequired,
@@ -244,7 +243,7 @@ EventListPageDesktop.propTypes = {
   filterCount: PropTypes.number.isRequired,
   yearMenuOpen: PropTypes.bool.isRequired,
   year: PropTypes.number.isRequired,
-  groupedEvents: ImmutablePropTypes.list.isRequired,
+  groupedEvents: ImmutablePropTypes.list,
 }
 
 export default withStyles(styles)(EventListPageDesktop)

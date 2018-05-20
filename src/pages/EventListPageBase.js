@@ -22,7 +22,6 @@ const mapStateToProps = (state, props) => ({
   // Params
   year: getYear(state, props),
   // States
-  isLoading: state.getIn(['appState', 'loadingCount']) > 0,
   districtFilters: getCurrentPageState(state, props).get('districtFilters'),
   yearMenuOpen: getCurrentPageState(state, props).get('yearMenuOpen'),
   // Data
@@ -92,7 +91,6 @@ class EventListPageBase extends PureComponent {
             setYearMenuOpen={this.setYearMenuOpen}
             setPageState={this.props.setPageState}
             pushHistory={this.props.pushHistory}
-            isLoading={this.props.isLoading}
             groupedEvents={this.props.groupedEvents}
             filterCount={filterCount}
             yearMenuOpen={this.props.yearMenuOpen}
@@ -108,7 +106,6 @@ class EventListPageBase extends PureComponent {
             setYearMenuOpen={this.setYearMenuOpen}
             setPageState={this.props.setPageState}
             pushHistory={this.props.pushHistory}
-            isLoading={this.props.isLoading}
             groupedEvents={this.props.groupedEvents}
             filterCount={filterCount}
             yearMenuOpen={this.props.yearMenuOpen}

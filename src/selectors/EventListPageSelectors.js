@@ -62,8 +62,8 @@ export const getSortedEvents = createSelector(
 export const getFilteredGroupedEvents = createSelector(
   [getSortedEvents, getDistrictFilters],
   (events, districtFilters) => {
-    let groupedEvents = List()
     if (events) {
+      let groupedEvents = List()
       let preseasonEvents = List()
       let weekEvents = List()
       let cmpEvents = List()
@@ -169,8 +169,8 @@ export const getFilteredGroupedEvents = createSelector(
           isOfficial: false,
         }))
       }
+      return groupedEvents
     }
-    return groupedEvents
   }
 )
 
