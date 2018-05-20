@@ -13,10 +13,11 @@ import { push } from 'connected-react-router'
 
 // Components
 import Paper from '@material-ui/core/Paper'
-import ListSubheader from '@material-ui/core/ListSubheader'
 import MenuItem from '@material-ui/core/MenuItem'
 import SearchIcon from '@material-ui/icons/Search'
 import Autosuggest from 'react-autosuggest'
+
+import SearchSectionTitle from './SearchSectionTitle'
 
 const styles = theme => ({
   wrapper: {
@@ -200,9 +201,7 @@ function renderSuggestion(suggestion, { query, isHighlighted }) {
 
 function renderSectionTitle(section) {
   return (
-    <ListSubheader>
-      {section.title}
-    </ListSubheader>
+    <SearchSectionTitle text={section.title} />
   )
 }
 
