@@ -106,7 +106,6 @@ class TeamPageMobile extends PureComponent {
 
     const {
       classes,
-      isLoading,
       year,
       validYears,
       yearMenuOpen,
@@ -185,7 +184,7 @@ class TeamPageMobile extends PureComponent {
         </Paper>
       </ScrollRestoreContainer>
     )
-    teamYearEvents.forEach(event => {
+    teamYearEvents && teamYearEvents.forEach(event => {
       if (statusByEvent && matchesByEvent) {
         const status = statusByEvent.get(`${event.key}_frc${teamNumber}`)
         const matches = matchesByEvent.get(event.key)
@@ -204,7 +203,6 @@ class TeamPageMobile extends PureComponent {
           >
             <TeamAtEventMobile
               scrollElement={this.state[scrollRefKey]}
-              isLoading={isLoading}
               event={event}
               matches={matches}
               status={status}
@@ -247,7 +245,7 @@ class TeamPageMobile extends PureComponent {
             className='hide-scrollbar'
           >
             <Tab value={0} label='Info' />
-            {teamYearEvents.map((event, idx) =>
+            {teamYearEvents && teamYearEvents.map((event, idx) =>
               <Tab key={event.key} value={idx + 1} label={event.short_name} />
             )}
           </Tabs>
@@ -299,7 +297,6 @@ class TeamPageMobile extends PureComponent {
 TeamPageMobile.propTypes = {
   classes: PropTypes.object.isRequired,
   documentTitle: PropTypes.string.isRequired,
-  isLoading: PropTypes.bool.isRequired,
   refreshFunction: PropTypes.func.isRequired,
   setYearMenuOpen: PropTypes.func.isRequired,
   setPageState: PropTypes.func.isRequired,

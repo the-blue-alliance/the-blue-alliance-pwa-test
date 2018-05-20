@@ -118,7 +118,6 @@ export const getSortedTeamYearEvents = createSelector(
         return 0
       }).toList()
     }
-    return List()
   }
 )
 

@@ -40,7 +40,6 @@ const mapStateToProps = (state, props) => ({
   teamNumber: getTeamNumber(state, props),
   year: getYear(state, props),
   // States
-  isLoading: state.getIn(['appState', 'loadingCount']) > 0,
   activeTab: getCurrentPageState(state, props).get('activeTab'),
   yearMenuOpen: getCurrentPageState(state, props).get('yearMenuOpen'),
   // Data
@@ -125,7 +124,6 @@ class TeamPageBase extends PureComponent {
             setYearMenuOpen={this.setYearMenuOpen}
             setPageState={this.props.setPageState}
             pushHistory={this.props.pushHistory}
-            isLoading={this.props.isLoading}
             yearMenuOpen={this.props.yearMenuOpen}
             teamNumber={teamNumber}
             team={team}
@@ -144,7 +142,6 @@ class TeamPageBase extends PureComponent {
             setYearMenuOpen={this.setYearMenuOpen}
             setPageState={this.props.setPageState}
             pushHistory={this.props.pushHistory}
-            isLoading={this.props.isLoading}
             activeTab={this.props.activeTab}
             yearMenuOpen={this.props.yearMenuOpen}
             teamNumber={teamNumber}

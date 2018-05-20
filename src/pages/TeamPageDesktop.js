@@ -88,7 +88,6 @@ class TeamPageDesktop extends PureComponent {
       classes,
       year,
       validYears,
-      isLoading,
       yearMenuOpen,
       teamNumber,
       team,
@@ -159,7 +158,7 @@ class TeamPageDesktop extends PureComponent {
                       'robot-profile': 'Robot Profile',
                     }}
                     sectionItems={{
-                      'event-results': teamYearEvents.map(event => {
+                      'event-results': teamYearEvents && teamYearEvents.map(event => {
                         return ({
                           'id': event.get('event_code'),
                           'label': event.get('short_name'),
@@ -206,18 +205,19 @@ class TeamPageDesktop extends PureComponent {
               </div>
               <div id='event-results'>
                 <h2>Event Results</h2>
-                {teamYearEvents.size === 0 &&
+                {!teamYearEvents &&
                   <div className={classes.zeroDataContainer}>
-                    {isLoading ?
-                      <CircularProgress color='secondary' size='15%' className={classes.zeroDataSpinner} />
-                      :
-                      <EventIcon className={classes.zeroDataIcon} />
-                    }
-                    <Typography variant='subheading'>{isLoading ? 'Events loading' : 'No events found'}</Typography>
+                    <CircularProgress color='secondary' size='15%' className={classes.zeroDataSpinner} />
+                    <Typography variant='subheading'>Events loading</Typography>
                   </div>
                 }
-
-                {teamYearEvents.valueSeq().map(function(event) {
+                {teamYearEvents && teamYearEvents.size === 0 &&
+                  <div className={classes.zeroDataContainer}>
+                    <EventIcon className={classes.zeroDataIcon} />
+                    <Typography variant='subheading'>No events</Typography>
+                  </div>
+                }
+                {teamYearEvents && teamYearEvents.valueSeq().map(function(event) {
                   const eventKey = event.key
                   return (
                     <Paper key={event.key} id={event.get('event_code')} className={classes.eventCard} elevation={4}>
@@ -238,12 +238,8 @@ class TeamPageDesktop extends PureComponent {
                   <Typography variant='title' gutterBottom>Photos</Typography>
                   {true &&
                     <div className={classes.zeroDataContainer}>
-                      {isLoading ?
-                        <CircularProgress color='secondary' size='15%' className={classes.zeroDataSpinner} />
-                        :
-                        <PhotoLibraryIcon className={classes.zeroDataIcon} />
-                      }
-                      <Typography variant='subheading'>{isLoading ? 'Photos loading' : 'No photos found'}</Typography>
+                      <PhotoLibraryIcon className={classes.zeroDataIcon} />
+                      <Typography variant='subheading'>No photos</Typography>
                     </div>
                   }
                 </div>
@@ -251,12 +247,8 @@ class TeamPageDesktop extends PureComponent {
                   <Typography variant='title' gutterBottom>Videos</Typography>
                   {true &&
                     <div className={classes.zeroDataContainer}>
-                      {isLoading ?
-                        <CircularProgress color='secondary' size='15%' className={classes.zeroDataSpinner} />
-                        :
-                        <LocalMoviesIcon className={classes.zeroDataIcon} />
-                      }
-                      <Typography variant='subheading'>{isLoading ? 'Videos loading' : 'No videos found'}</Typography>
+                      <LocalMoviesIcon className={classes.zeroDataIcon} />
+                      <Typography variant='subheading'>No videos</Typography>
                     </div>
                   }
                 </div>
@@ -275,7 +267,6 @@ class TeamPageDesktop extends PureComponent {
 TeamPageDesktop.propTypes = {
   classes: PropTypes.object.isRequired,
   documentTitle: PropTypes.string.isRequired,
-  isLoading: PropTypes.bool.isRequired,
   refreshFunction: PropTypes.func.isRequired,
   setYearMenuOpen: PropTypes.func.isRequired,
   setPageState: PropTypes.func.isRequired,
