@@ -6,7 +6,9 @@ import { ordinal } from '../utils'
 
 // Components
 import Typography from '@material-ui/core/Typography'
-import Skeleton from 'react-loading-skeleton'
+// import Skeleton from 'react-loading-skeleton'
+
+const Skeleton = () => null
 
 const styles = theme => ({
   awardList: {

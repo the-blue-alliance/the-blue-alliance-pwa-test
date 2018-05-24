@@ -17,13 +17,15 @@ import Paper from '@material-ui/core/Paper'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 import Typography from '@material-ui/core/Typography'
-import Skeleton from 'react-loading-skeleton'
+// import Skeleton from 'react-loading-skeleton'
 import SwipeableViews from 'react-swipeable-views'
 
 // TBA Components
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 import TeamAtEventMobile from '../components/TeamAtEventMobile'
+
+const Skeleton = () => null
 
 const styles = theme => ({
   yearSelector: {

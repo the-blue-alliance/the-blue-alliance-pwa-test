@@ -194,6 +194,14 @@ class TBAApp extends Component {
     this.state = { hasError: false }
   }
 
+  componentDidMount() {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.getElementById('jss-server-side')
+    if (jssStyles && jssStyles.parentNode) {
+      jssStyles.parentNode.removeChild(jssStyles)
+    }
+  }
+
   componentDidCatch(error, info) {
     this.setState({ hasError: true })
   }
