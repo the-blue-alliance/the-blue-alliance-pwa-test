@@ -6,6 +6,7 @@ import Hidden from '@material-ui/core/Hidden'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 
+import TBAHelmet from '../components/TBAHelmet'
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ResponsiveLayout from './ResponsiveLayout'
 import TeamsList from './TeamsList'
@@ -71,10 +72,13 @@ class TeamListPage extends PureComponent {
 
     return (
       <div>
+        <TBAHelmet>
+          <title>Teams</title>
+          <meta name='description' content='TODO' />
+        </TBAHelmet>
         <Hidden smDown>
           <TBAPageContainer
             history={this.props.history}
-            documentTitle='Teams'
             refreshFunction={this.refreshFunction}
             contentRef={el => this.contentRef = el}
             restoreScroll={this.state.restoreScroll}
@@ -111,7 +115,6 @@ class TeamListPage extends PureComponent {
         <Hidden mdUp>
           <TBAPageContainer
             history={this.props.history}
-            documentTitle='Teams'
             title='Teams'
             refreshFunction={this.refreshFunction}
           >

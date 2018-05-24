@@ -11,6 +11,7 @@ import Hidden from '@material-ui/core/Hidden'
 
 import { setPageKey } from './actions'
 
+import TBAHelmet from './components/TBAHelmet'
 import TBASideNavContainer from './containers/TBASideNavContainer'
 import TBABottomNavContainer from './containers/TBABottomNavContainer'
 import TBASnackbarsContainer from './containers/TBASnackbarsContainer'
@@ -209,6 +210,9 @@ class TBAApp extends Component {
     }
     return (
       <MuiThemeProvider theme={theme}>
+        <TBAHelmet>
+          <meta name='description' content='The best way to scout, watch, and relive the FIRST Robotics Competition.' />
+        </TBAHelmet>
         <CssBaseline />
         <TBASnackbarsContainer />
         <Hidden smDown implementation="css">

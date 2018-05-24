@@ -218,7 +218,6 @@ class TeamPageMobile extends PureComponent {
 
     return (
       <TBAPageContainer
-        documentTitle={this.props.documentTitle}
         title={
           <ButtonBase
             className={classes.yearSelector}
@@ -296,7 +295,6 @@ class TeamPageMobile extends PureComponent {
 
 TeamPageMobile.propTypes = {
   classes: PropTypes.object.isRequired,
-  documentTitle: PropTypes.string.isRequired,
   refreshFunction: PropTypes.func.isRequired,
   setYearMenuOpen: PropTypes.func.isRequired,
   setPageState: PropTypes.func.isRequired,

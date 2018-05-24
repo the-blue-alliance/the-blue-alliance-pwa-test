@@ -73,7 +73,6 @@ class EventListPageMobile extends PureComponent {
 
     return (
       <TBAPageContainer
-        documentTitle={this.props.documentTitle}
         title={
           <ButtonBase
             className={classes.yearSelector}
@@ -130,7 +129,6 @@ class EventListPageMobile extends PureComponent {
 
 EventListPageMobile.propTypes = {
   classes: PropTypes.object.isRequired,
-  documentTitle: PropTypes.string.isRequired,
   refreshFunction: PropTypes.func.isRequired,
   filterFunction: PropTypes.func.isRequired,
   setYearMenuOpen: PropTypes.func.isRequired,

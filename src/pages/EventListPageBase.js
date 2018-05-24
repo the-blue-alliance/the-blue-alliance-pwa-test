@@ -16,6 +16,7 @@ import { getFilteredGroupedEvents } from '../selectors/EventListPageSelectors'
 import Hidden from '@material-ui/core/Hidden'
 
 // TBA Components
+import TBAHelmet from '../components/TBAHelmet'
 import EventListPageDesktop from './EventListPageDesktop'
 import EventListPageMobile from './EventListPageMobile'
 
@@ -78,9 +79,12 @@ class EventListPageBase extends PureComponent {
 
     return (
       <React.Fragment>
+        <TBAHelmet>
+          <title>{`${year} Events`}</title>
+          <meta name='description' content='TODO' />
+        </TBAHelmet>
         <Hidden smDown>
           <EventListPageDesktop
-            documentTitle={`${year} Events`}
             year={year}
             validYears={validYears}
             refreshFunction={this.refreshFunction}
@@ -95,7 +99,6 @@ class EventListPageBase extends PureComponent {
         </Hidden>
         <Hidden mdUp>
           <EventListPageMobile
-            documentTitle={`${year} Events`}
             year={year}
             validYears={validYears}
             refreshFunction={this.refreshFunction}

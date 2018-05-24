@@ -28,7 +28,6 @@ class Home extends PureComponent {
     return (
       <TBAPageContainer
         history={this.props.history}
-        documentTitle=''
       >
         <ResponsiveLayout>
           <p>The Blue Alliance is the best way to scout, watch, and relive the <em>FIRST</em> Robotics Competition.</p>

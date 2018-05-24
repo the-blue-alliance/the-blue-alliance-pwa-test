@@ -100,7 +100,6 @@ class EventListPageDesktop extends PureComponent {
 
     return (
       <TBAPageContainer
-        documentTitle={this.props.documentTitle}
         contentRef={el => this.setState({contentRef: el})}
         refreshFunction={this.props.refreshFunction}
       >
@@ -235,7 +234,6 @@ class EventListPageDesktop extends PureComponent {
 
 EventListPageDesktop.propTypes = {
   classes: PropTypes.object.isRequired,
-  documentTitle: PropTypes.string.isRequired,
   refreshFunction: PropTypes.func.isRequired,
   filterFunction: PropTypes.func.isRequired,
   setYearMenuOpen: PropTypes.func.isRequired,

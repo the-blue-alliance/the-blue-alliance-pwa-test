@@ -21,6 +21,7 @@ import MatchTable from './MatchTable'
 import MatchList from './MatchList'
 import TeamsList from './TeamsList'
 
+import TBAHelmet from '../components/TBAHelmet'
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 
@@ -100,10 +101,13 @@ class EventPage extends PureComponent {
 
     return (
       <div>
+        <TBAHelmet>
+          <title>{name}</title>
+          <meta name='description' content='TODO' />
+        </TBAHelmet>
         <Hidden smDown>
           <TBAPageContainer
             history={this.props.history}
-            documentTitle={name ? name : ''}
             refreshFunction={this.refreshFunction}
             contentRef={el => this.contentRef = el}
           >
@@ -147,7 +151,6 @@ class EventPage extends PureComponent {
         <Hidden mdUp>
           <TBAPageContainer
             history={this.props.history}
-            documentTitle={name ? name : ''}
             title={
               <React.Fragment>
                 <Typography variant='title' color='inherit' className={classes.titleName} noWrap>

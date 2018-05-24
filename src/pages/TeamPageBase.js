@@ -33,6 +33,7 @@ import {
 import Hidden from '@material-ui/core/Hidden'
 
 // TBA Components
+import TBAHelmet from '../components/TBAHelmet'
 import TeamPageDesktop from './TeamPageDesktop'
 import TeamPageMobile from './TeamPageMobile'
 
@@ -111,9 +112,12 @@ class TeamPageBase extends PureComponent {
 
     return (
       <React.Fragment>
+        <TBAHelmet>
+          <title>{documentTitle}</title>
+          <meta name='description' content='TODO' />
+        </TBAHelmet>
         <Hidden smDown>
           <TeamPageDesktop
-            documentTitle={documentTitle}
             year={year}
             validYears={validYears}
             refreshFunction={this.refreshFunction}
@@ -131,7 +135,6 @@ class TeamPageBase extends PureComponent {
         </Hidden>
         <Hidden mdUp>
           <TeamPageMobile
-            documentTitle={documentTitle}
             year={year}
             validYears={validYears}
             refreshFunction={this.refreshFunction}

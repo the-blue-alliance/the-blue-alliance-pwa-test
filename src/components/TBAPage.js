@@ -35,22 +35,6 @@ const styles = theme => ({
 })
 
 class TBAPage extends PureComponent {
-  getDocumentTitle = () => {
-    if (this.props.documentTitle) {
-      return `${this.props.documentTitle} - The Blue Alliance`
-    } else {
-      return 'The Blue Alliance'
-    }
-  }
-
-  componentDidMount() {
-    document.title = this.getDocumentTitle()
-  }
-
-  componentDidUpdate() {
-    document.title = this.getDocumentTitle()
-  }
-
   render() {
     console.log("Render TBAPage")
 
@@ -80,7 +64,6 @@ class TBAPage extends PureComponent {
 
 TBAPage.propTypes = {
   classes: PropTypes.object.isRequired,
-  documentTitle: PropTypes.string.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   filterCount: PropTypes.number,
 }
