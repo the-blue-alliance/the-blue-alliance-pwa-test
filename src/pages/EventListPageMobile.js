@@ -101,7 +101,7 @@ class EventListPageMobile extends PureComponent {
               :
               <div className={classes.zeroDataContainer}>
                 <CircularProgress color='secondary' size={120} className={classes.zeroDataSpinner} />
-                <Typography variant='subheading'>Events loading'</Typography>
+                <Typography variant='subheading'>Events loading</Typography>
               </div>
             }
           </React.Fragment>
