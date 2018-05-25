@@ -1,5 +1,5 @@
 import * as types from '../constants/ActionTypes'
-import { fromJS, Map, Set } from 'immutable'
+import { fromJS, List, Map, Set } from 'immutable'
 
 const mergeDeep = (state = Map(), data) => {
   // Wrapper for Map.mergeDeep that handles undefined state
@@ -40,6 +40,9 @@ const updateMulti = (state, modelType, partialPath, newModels, merge=false) => {
 
 const updateCollection = (state = Set(), newModelsByKey, merge) => {
   // Helper to merge collection into current collection
+  if (state instanceof List) {  // Might get a list due to SSR
+    state = Set(state)
+  }
   const newKeys = Set(newModelsByKey.keys())
   if (!merge) { // Whether to merge or overwrite the collection
     const toRemove = state.subtract(newKeys)

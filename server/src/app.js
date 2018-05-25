@@ -22,6 +22,7 @@ const clientBuildPath = path.resolve(__dirname, 'client');
 
 const sheetsRegistry = new SheetsRegistry();
 const generateClassName = createGenerateClassName();
+let preloadedState;
 const app = createReactAppExpress({
   clientBuildPath,
   handleRender: stringRenderer,
@@ -32,9 +33,10 @@ const app = createReactAppExpress({
     const tags = helmet.title.toString() +
         helmet.meta.toString() +
         helmet.link.toString()
-    res.set('Cache-Control', 'public, max-age=60, s-maxage=120');
+    // res.set('Cache-Control', 'public, max-age=60, s-maxage=120');
     res.send(html.replace(
-      '</head>', `<style id="jss-server-side">${css}</style>${tags}</head>`)
+      '</head>', `<style id="jss-server-side">${css}</style>${tags}</head>
+      <script>window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}</script>`)
     );
   },
 });
@@ -66,6 +68,9 @@ function handleUniversalRender(req, res) {
       console.time(req.url)
       const html = ReactDOMServer.renderToString(app);
       console.timeEnd(req.url)
+      // Remove parts of state we don't care about
+      preloadedState = store.getState().delete('page').delete('appState').toJS()
+      console.log(preloadedState)
       return html
     })
     .catch(err => {
