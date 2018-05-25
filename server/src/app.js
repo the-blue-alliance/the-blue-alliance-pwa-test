@@ -63,7 +63,10 @@ function handleUniversalRender(req, res) {
       //   tag = loadableState.getScriptTag();
       //   return ReactDOMServer.renderToNodeStream(app);
       // });
-      return ReactDOMServer.renderToString(app);
+      console.time(req.url)
+      const html = ReactDOMServer.renderToString(app);
+      console.timeEnd(req.url)
+      return html
     })
     .catch(err => {
       console.error(err);
