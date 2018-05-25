@@ -1,0 +1,34 @@
+{
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "@cra-express/core": "^2.2.4-0",
+    "@cra-express/redux-prefetcher": "^2.2.4-0",
+    "@cra-express/universal-loader": "^2.2.4-0",
+    "babel-plugin-dynamic-import-node": "^1.2.0",
+    "babel-runtime": "^6.26.0",
+    "core-js": "^2.5.6",
+    "dotenv": "^5.0.1",
+    "fbjs": "^0.8.16",
+    "firebase-admin": "~5.12.1",
+    "firebase-functions": "^1.0.3",
+    "invariant": "^2.2.4",
+    "isomorphic-fetch": "^2.2.1",
+    "lodash": "^4.17.10",
+    "object-assign": "^4.1.1",
+    "path-to-regexp": "^2.2.1",
+    "prop-types": "^15.6.1",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "react-router": "^4.2.0",
+    "symbol-observable": "^1.2.0"
+  },
+  "private": true
+}

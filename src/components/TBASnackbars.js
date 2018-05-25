@@ -21,6 +21,7 @@ const styles = theme => ({
 class TBASnackbars extends React.PureComponent {
   state = {
     dialog: null,
+    triggeredOnce: false,
   }
 
   handleSnackbarClose = (event, reason) => {
@@ -39,10 +40,20 @@ class TBASnackbars extends React.PureComponent {
     this.setState({dialog: null})
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (props.snackbar !== null) {
+      return {triggeredOnce: true}
+    }
+    return null
+  }
+
   render() {
     const { classes } = this.props
+    if (!this.state.triggeredOnce) {
+      return null
+    }
     return (
-      <div>
+      <React.Fragment>
         <Snackbar
           anchorOrigin={{
             vertical: 'bottom',
@@ -103,7 +114,7 @@ class TBASnackbars extends React.PureComponent {
             </IconButton>,
           ]}
         />
-      </div>
+      </React.Fragment>
     )
   }
 }

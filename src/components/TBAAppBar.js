@@ -45,6 +45,7 @@ const styles = theme => ({
 class TBAToolbar extends PureComponent {
   state = {
     snackbarOpen: false,
+    snackbarOpenedOnce: false,
   }
 
   handleClose = () => {
@@ -59,7 +60,7 @@ class TBAToolbar extends PureComponent {
       })
     } else {
       clipboard.writeText(document.URL)
-      this.setState({ snackbarOpen: true })
+      this.setState({ snackbarOpen: true, snackbarOpenedOnce: true })
     }
   }
 
@@ -121,13 +122,13 @@ class TBAToolbar extends PureComponent {
             <ShareIcon />
           </IconButton>
         </Toolbar>
-        <Snackbar
+        {this.state.snackbarOpenedOnce && <Snackbar
           anchorOrigin={{vertical: 'top', horizontal: 'right'}}
           open={this.state.snackbarOpen}
           onClose={this.handleClose}
           autoHideDuration={2000}
           message='Link copied!'
-        />
+        />}
       </React.Fragment>
     )
   }

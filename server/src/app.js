@@ -33,8 +33,7 @@ const app = createReactAppExpress({
         helmet.meta.toString() +
         helmet.link.toString()
     res.send(html.replace(
-      '<!--{{SERVER_STYLES}}-->', `<style id="jss-server-side">${css}</style>`).replace(
-      '<!--{{HELMET_TAGS}}-->', tags)
+      '</head>', `<style id="jss-server-side">${css}</style>${tags}</head>`)
     );
   },
 });

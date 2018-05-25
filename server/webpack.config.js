@@ -8,7 +8,7 @@ function isProd(valProd, valDev) {
 
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  entry: './src/index.js',
+  entry: isProd('./src/app.js', './src/index.js'),
   resolve: {
     extensions: ['.js', '.jsx']
   },
@@ -16,6 +16,7 @@ module.exports = {
     path: __dirname + '/build',
     filename: 'bundle.js',
     chunkFilename: isProd('[id].[hash].chunk.js', '[id].chunk.js'),
+    libraryTarget: 'commonjs2',
   },
   target: 'node',
   externals: [
