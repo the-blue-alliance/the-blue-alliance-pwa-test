@@ -71,6 +71,10 @@ function handleUniversalRender(req, res) {
     console.time(`${req.url} RENDER`)
     const html = ReactDOMServer.renderToString(app);
     console.timeEnd(`${req.url} RENDER`)
+    // Set status code
+    if (context.statusCode) {
+      res.status(context.statusCode)
+    }
     // Remove parts of state we don't care about
     preloadedState = store.getState().delete('page').delete('appState').toJS()
     return html
