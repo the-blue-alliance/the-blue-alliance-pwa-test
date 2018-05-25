@@ -51,13 +51,13 @@ function handleUniversalRender(req, res) {
     applyMiddleware(thunk),
   )
   const expressCtx = { req, res };
-  // return getInitialData(expressCtx, store, [])  // TODO
+  return getInitialData(expressCtx, store, []).then(() => {  // TODO
 
-  console.time(`${req.url} FETCH`)
-  return fetch('https://www.thebluealliance.com/api/v3/event/2017casj/matches',
-    {headers: {'X-TBA-Auth-Key': '61bdelekzYp5TY5MueT8OokJsgT1ewwLjywZnTKCAYPCLDeoNnURu1O61DeNy8z3'}
-  }).then(response => response.json()).then(data => {
-    store.dispatch(receiveEventMatches('2017casj', data))
+  // console.time(`${req.url} FETCH`)
+  // return fetch('https://www.thebluealliance.com/api/v3/event/2017casj/matches',
+  //   {headers: {'X-TBA-Auth-Key': '61bdelekzYp5TY5MueT8OokJsgT1ewwLjywZnTKCAYPCLDeoNnURu1O61DeNy8z3'}
+  // }).then(response => response.json()).then(data => {
+  //   store.dispatch(receiveEventMatches('2017casj', data))
     const app = (
       <Provider store={store}>
         <StaticRouter location={req.url} context={context}>
@@ -67,7 +67,7 @@ function handleUniversalRender(req, res) {
         </StaticRouter>
       </Provider>
     );
-    console.timeEnd(`${req.url} FETCH`)
+    // console.timeEnd(`${req.url} FETCH`)
     console.time(`${req.url} RENDER`)
     const html = ReactDOMServer.renderToString(app);
     console.timeEnd(`${req.url} RENDER`)
