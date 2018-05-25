@@ -18,6 +18,7 @@ import stringRenderer from '@cra-express/universal-loader/lib/renderer/string-re
 
 const {default: TBAApp} = require('../../src/TBAApp');
 const {default: reducer} = require('../../src/reducers');
+import {receiveEventMatches} from '../../src/actions';
 const clientBuildPath = path.resolve(__dirname, 'client');
 
 const sheetsRegistry = new SheetsRegistry();
@@ -50,33 +51,34 @@ function handleUniversalRender(req, res) {
     applyMiddleware(thunk),
   )
   const expressCtx = { req, res };
-  return getInitialData(expressCtx, store, [])  // TODO
-    .then(result => {
-      const app = (
-        <Provider store={store}>
-          <StaticRouter location={req.url} context={context}>
-            <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-              <TBAApp />
-            </JssProvider>
-          </StaticRouter>
-        </Provider>
-      );
-      // return getLoadableState(app).then(loadableState => {
-      //   tag = loadableState.getScriptTag();
-      //   return ReactDOMServer.renderToNodeStream(app);
-      // });
-      console.time(req.url)
-      const html = ReactDOMServer.renderToString(app);
-      console.timeEnd(req.url)
-      // Remove parts of state we don't care about
-      preloadedState = store.getState().delete('page').delete('appState').toJS()
-      console.log(preloadedState)
-      return html
-    })
-    .catch(err => {
-      console.error(err);
-      res.send(500);
-    });
+  // return getInitialData(expressCtx, store, [])  // TODO
+
+  console.time(`${req.url} FETCH`)
+  return fetch('https://www.thebluealliance.com/api/v3/event/2017casj/matches',
+    {headers: {'X-TBA-Auth-Key': '61bdelekzYp5TY5MueT8OokJsgT1ewwLjywZnTKCAYPCLDeoNnURu1O61DeNy8z3'}
+  }).then(response => response.json()).then(data => {
+    store.dispatch(receiveEventMatches('2017casj', data))
+    const app = (
+      <Provider store={store}>
+        <StaticRouter location={req.url} context={context}>
+          <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
+            <TBAApp />
+          </JssProvider>
+        </StaticRouter>
+      </Provider>
+    );
+    console.timeEnd(`${req.url} FETCH`)
+    console.time(`${req.url} RENDER`)
+    const html = ReactDOMServer.renderToString(app);
+    console.timeEnd(`${req.url} RENDER`)
+    // Remove parts of state we don't care about
+    preloadedState = store.getState().delete('page').delete('appState').toJS()
+    return html
+  })
+  .catch(err => {
+    console.error(err);
+    res.send(500);
+  });
 }
 
 module.exports = app;
