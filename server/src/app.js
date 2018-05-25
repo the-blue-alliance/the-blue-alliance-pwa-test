@@ -32,6 +32,7 @@ const app = createReactAppExpress({
     const tags = helmet.title.toString() +
         helmet.meta.toString() +
         helmet.link.toString()
+    res.set('Cache-Control', 'public, max-age=60, s-maxage=120');
     res.send(html.replace(
       '</head>', `<style id="jss-server-side">${css}</style>${tags}</head>`)
     );
