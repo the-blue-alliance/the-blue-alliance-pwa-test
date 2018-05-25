@@ -40,11 +40,14 @@
     "why-did-you-update": "^0.1.1"
   },
   "devDependencies": {
-    "react-scripts": "1.1.4"
+    "cra-universal": "^2.1.0",
+    "react-scripts": "1.1.4",
+    "rimraf": "^2.6.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "buildprod": "echo Y | cra-universal clean && cra-universal build && rimraf ./build/index.html && rimraf ./functions/server && cp -a ./dist ./functions/server",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }

@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /server/node_modules
+/functions/node_modules
 
 # testing
 /coverage
@@ -10,6 +11,8 @@
 # production
 /build
 /server/build
+/dist
+/functions/server
 
 # misc
 .DS_Store
