@@ -6,6 +6,7 @@ import { StaticRouter } from 'react-router'
 import ReactDOMServer from 'react-dom/server'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
+import uglifycss from 'uglifycss'
 
 import { createReactAppExpress } from '@cra-express/core';
 import { getInitialData } from '@cra-express/redux-prefetcher'
@@ -33,8 +34,8 @@ const app = createReactAppExpress({
         helmet.link.toString()
     res.set('Cache-Control', 'public, max-age=60, s-maxage=60');
     res.send(html.replace(
-      '</head>', `<style id="jss-server-side">${css}</style>${tags}</head>
-      <script>window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}</script>`)
+      '</head>', `<style id="jss-server-side">${css}</style>${tags}</head>` +
+      `<script>window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}</script>`)
     );
   },
 });
@@ -78,7 +79,7 @@ function handleUniversalRender(req, res) {
 
     // Remove parts of state we don't care about
     preloadedState = store.getState().delete('page').delete('appState').toJS()
-    css = sheetsRegistry.toString()
+    css = uglifycss.processString(sheetsRegistry.toString())
     return html
   })
   .catch(err => {

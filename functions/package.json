@@ -28,7 +28,8 @@
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-router": "^4.2.0",
-    "symbol-observable": "^1.2.0"
+    "symbol-observable": "^1.2.0",
+    "uglifycss": "0.0.29"
   },
   "private": true
 }
