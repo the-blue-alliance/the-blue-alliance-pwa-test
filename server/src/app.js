@@ -10,7 +10,6 @@ import uglifycss from 'uglifycss'
 
 import { createReactAppExpress } from '@cra-express/core';
 import { getInitialData } from '@cra-express/redux-prefetcher'
-import stringRenderer from '@cra-express/universal-loader/lib/renderer/string-renderer';
 import JssProvider from 'react-jss/lib/JssProvider';
 import { createGenerateClassName } from '@material-ui/core/styles';
 import { SheetsRegistry } from 'react-jss/lib/jss';
@@ -21,24 +20,33 @@ import reducer from '../../src/reducers'
 import {receiveEventMatches} from '../../src/actions';
 
 const clientBuildPath = path.resolve(__dirname, 'client');
-let preloadedState;
-let css;
 const app = createReactAppExpress({
   clientBuildPath,
-  handleRender: stringRenderer,
+  handleRender: renderPage,
   universalRender: handleUniversalRender,
-  onFinish(req, res, html) {
-    const helmet = Helmet.renderStatic();
-    const tags = helmet.title.toString() +
-        helmet.meta.toString() +
-        helmet.link.toString()
-    res.set('Cache-Control', 'public, max-age=60, s-maxage=60');
-    res.send(html.replace(
-      '</head>', `<style id="jss-server-side">${css}</style>${tags}</head>` +
-      `<script>window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}</script>`)
-    );
-  },
 });
+
+let preloadedState;
+let css;
+function renderPage(req, res, str, htmlData, options) {
+  const helmet = Helmet.renderStatic();
+  const tags = helmet.title.toString() +
+      helmet.meta.toString() +
+      helmet.link.toString()
+  res.set('Cache-Control', 'public, max-age=60, s-maxage=60');
+  res.send(
+    htmlData.replace(
+      '<style id="jss-server-side"></style>',
+      `<style id="jss-server-side">${css}</style>${tags}`
+    ).replace( // Be careful of XSS
+      '<script id="preloaded-state-server-side"></script>',
+      `<script id="preloaded-state-server-side">window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}</script>`
+    ).replace(
+      '<div id="root"></div>',
+      `<div id="root">${str}</div>`
+    )
+  )
+}
 
 function handleUniversalRender(req, res) {
   const initialState = Map()

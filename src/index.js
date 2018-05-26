@@ -26,11 +26,17 @@ const history = createBrowserHistory()
 // })
 
 // Grab the state from a global variable injected into the server-generated HTML
+// https://redux.js.org/recipes/server-rendering#the-client-side
 const preloadedState = window.__PRELOADED_STATE__
-delete window.__PRELOADED_STATE__
+delete window.__PRELOADED_STATE__  // Allow garbage collection
 let initialState = Map()
 if (preloadedState) {
   initialState = fromJS(preloadedState)
+  // Remove the script tag
+  const preload = document.getElementById('preloaded-state-server-side')
+  if (preload && preload.parentNode) {
+    preload.parentNode.removeChild(preload)
+  }
 }
 const store = createStore(
   connectRouter(history)(reducer),
