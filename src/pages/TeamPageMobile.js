@@ -17,15 +17,13 @@ import Paper from '@material-ui/core/Paper'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 import Typography from '@material-ui/core/Typography'
-// import Skeleton from 'react-loading-skeleton'
 import SwipeableViews from 'react-swipeable-views'
 
 // TBA Components
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 import TeamAtEventMobile from '../components/TeamAtEventMobile'
-
-const Skeleton = () => null
+import Skeleton from '../components/Skeleton'
 
 const styles = theme => ({
   yearSelector: {
@@ -141,7 +139,7 @@ class TeamPageMobile extends PureComponent {
                   <ListItemIcon>
                     <Icon>location_on</Icon>
                   </ListItemIcon>
-                  <ListItemText primary={!team ? <Skeleton /> : team.getCityStateCountry()} />
+                  <ListItemText primary={!team ? <Skeleton width='50%'/> : team.getCityStateCountry()} />
                 </ListItem>
               </React.Fragment>
             }
@@ -152,7 +150,7 @@ class TeamPageMobile extends PureComponent {
                   <ListItemIcon>
                     <Icon>info</Icon>
                   </ListItemIcon>
-                  <ListItemText primary={!team ? <Skeleton count={2}/> : team.name} className={classes.nameText} />
+                  <ListItemText primary={!team ? <Skeleton rows={2}/> : team.name} className={classes.nameText} />
                 </ListItem>
               </React.Fragment>
             }

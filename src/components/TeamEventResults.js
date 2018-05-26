@@ -6,9 +6,9 @@ import { ordinal } from '../utils'
 
 // Components
 import Typography from '@material-ui/core/Typography'
-// import Skeleton from 'react-loading-skeleton'
 
-const Skeleton = () => null
+// TBA Components
+import Skeleton from '../components/Skeleton'
 
 const styles = theme => ({
   awardList: {
@@ -79,10 +79,10 @@ class TeamEventResults extends PureComponent {
             :
             <React.Fragment>
               <Typography variant='subheading'>
-                <Skeleton />
+                <Skeleton width='50%'/>
               </Typography>
               <Typography variant='subheading'>
-                <Skeleton />
+                <Skeleton width='80%'/>
               </Typography>
             </React.Fragment>
           }
@@ -99,9 +99,14 @@ class TeamEventResults extends PureComponent {
               </React.Fragment>
             )
           :
-            <Typography variant='subheading'>
-              <Skeleton />
-            </Typography>
+            <React.Fragment>
+              <Typography variant='subheading'>
+                <Skeleton width='50%'/>
+              </Typography>
+              <Typography variant='subheading'>
+                <Skeleton width='80%'/>
+              </Typography>
+            </React.Fragment>
           }
         </ContainerComponent>
       )
