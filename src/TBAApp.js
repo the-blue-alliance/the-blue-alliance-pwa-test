@@ -219,7 +219,7 @@ class TBAApp extends Component {
       )
     }
     return (
-      <MuiThemeProvider theme={theme}>
+      <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
         <TBAHelmet>
           <meta name='description' content='The best way to scout, watch, and relive the FIRST Robotics Competition.' />
         </TBAHelmet>

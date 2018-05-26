@@ -21,16 +21,14 @@ const {default: reducer} = require('../../src/reducers');
 import {receiveEventMatches} from '../../src/actions';
 const clientBuildPath = path.resolve(__dirname, 'client');
 
-const sheetsRegistry = new SheetsRegistry();
-const generateClassName = createGenerateClassName();
 let preloadedState;
+let css;
 const app = createReactAppExpress({
   clientBuildPath,
   handleRender: stringRenderer,
   universalRender: handleUniversalRender,
   onFinish(req, res, html) {
     const helmet = Helmet.renderStatic();
-    const css = sheetsRegistry.toString()
     const tags = helmet.title.toString() +
         helmet.meta.toString() +
         helmet.link.toString()
@@ -58,7 +56,12 @@ function handleUniversalRender(req, res) {
   //   {headers: {'X-TBA-Auth-Key': '61bdelekzYp5TY5MueT8OokJsgT1ewwLjywZnTKCAYPCLDeoNnURu1O61DeNy8z3'}
   // }).then(response => response.json()).then(data => {
   //   store.dispatch(receiveEventMatches('2017casj', data))
-    const app = (
+
+    // console.timeEnd(`${req.url} FETCH`)
+    const sheetsRegistry = new SheetsRegistry();
+    const generateClassName = createGenerateClassName();
+    console.time(`${req.url} RENDER`)
+    const html = ReactDOMServer.renderToString(
       <Provider store={store}>
         <StaticRouter location={req.url} context={context}>
           <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
@@ -67,16 +70,16 @@ function handleUniversalRender(req, res) {
         </StaticRouter>
       </Provider>
     );
-    // console.timeEnd(`${req.url} FETCH`)
-    console.time(`${req.url} RENDER`)
-    const html = ReactDOMServer.renderToString(app);
     console.timeEnd(`${req.url} RENDER`)
+
     // Set status code
     if (context.statusCode) {
       res.status(context.statusCode)
     }
+
     // Remove parts of state we don't care about
     preloadedState = store.getState().delete('page').delete('appState').toJS()
+    css = sheetsRegistry.toString()
     return html
   })
   .catch(err => {
