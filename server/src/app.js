@@ -26,26 +26,41 @@ const app = createReactAppExpress({
   universalRender: handleUniversalRender,
 });
 
+let context;
+let sheetsRegistry;
 let preloadedState;
-let css;
-function renderPage(req, res, str, htmlData, options) {
-  const helmet = Helmet.renderStatic();
-  const tags = helmet.title.toString() +
+function renderPage(req, res, stream, htmlData, options) {
+  // Reduce TTFB by streaming HTML to client as it becomes available
+  // Currently not as optimal as it could be due to render blocking
+  const segments1 = htmlData.split('<style id="jss-server-side">')
+  const segments2 = segments1[1].split('<div id="root">')
+  const lastSegment = segments2[1].replace( // Be careful of XSS
+    '<script id="preloaded-state-server-side"></script>',
+    `<script id="preloaded-state-server-side">window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}</script>`
+  )
+
+  let string = ''
+  stream.on('data', chunk => string += chunk.toString())
+  stream.on('end', () => {
+    console.timeEnd(`${req.url} RENDER`)
+
+    // TODO: Determine status code early in render and this whole chunk can move up
+    if (context.statusCode) {
+      res.writeHead(context.statusCode, {'Cache-Control': 'public, max-age=60, s-maxage=60'})
+    }
+    res.write(segments1[0]) // Doesn't depend on render but needs to be after status code
+
+    // Fill in the rest
+    const helmet = Helmet.renderStatic()
+    const tags = helmet.title.toString() +
       helmet.meta.toString() +
       helmet.link.toString()
-  res.set('Cache-Control', 'public, max-age=60, s-maxage=60');
-  res.send(
-    htmlData.replace(
-      '<style id="jss-server-side"></style>',
-      `<style id="jss-server-side">${css}</style>${tags}`
-    ).replace( // Be careful of XSS
-      '<script id="preloaded-state-server-side"></script>',
-      `<script id="preloaded-state-server-side">window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}</script>`
-    ).replace(
-      '<div id="root"></div>',
-      `<div id="root">${str}</div>`
+    res.write(tags + '<style id="jss-server-side">' +
+      uglifycss.processString(sheetsRegistry.toString()) +
+      segments2[0] + '<div id="root">' + string + lastSegment
     )
-  )
+    res.end()
+  })
 }
 
 function handleUniversalRender(req, res) {
@@ -65,11 +80,15 @@ function handleUniversalRender(req, res) {
   //   store.dispatch(receiveEventMatches('2017casj', data))
 
     // console.timeEnd(`${req.url} FETCH`)
-    const context = {};
-    const sheetsRegistry = new SheetsRegistry();
+
+    // Remove parts of state we don't care about
+    preloadedState = store.getState().delete('page').delete('appState').toJS()
+
+    context = {};
+    sheetsRegistry = new SheetsRegistry();
     const generateClassName = createGenerateClassName();
     console.time(`${req.url} RENDER`)
-    const html = ReactDOMServer.renderToString(
+    return ReactDOMServer.renderToNodeStream(
       <Provider store={store}>
         <StaticRouter location={req.url} context={context}>
           <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
@@ -78,17 +97,6 @@ function handleUniversalRender(req, res) {
         </StaticRouter>
       </Provider>
     );
-    console.timeEnd(`${req.url} RENDER`)
-
-    // Set status code
-    if (context.statusCode) {
-      res.status(context.statusCode)
-    }
-
-    // Remove parts of state we don't care about
-    preloadedState = store.getState().delete('page').delete('appState').toJS()
-    css = uglifycss.processString(sheetsRegistry.toString())
-    return html
   })
   .catch(err => {
     console.error(err);
