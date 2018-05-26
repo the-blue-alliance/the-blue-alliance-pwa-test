@@ -1,26 +1,25 @@
-const path = require('path');
-const React = require('react');
-const { Provider } = require('react-redux');
-const { StaticRouter } = require('react-router');
-const ReactDOMServer = require('react-dom/server');
 import { Map } from 'immutable'
-import JssProvider from 'react-jss/lib/JssProvider';
-import { SheetsRegistry } from 'react-jss/lib/jss';
-import { createGenerateClassName } from '@material-ui/core/styles';
-import Helmet from 'react-helmet';
-
-const { createStore, applyMiddleware } = require('redux');
-
+import path from 'path';
+import { createStore, applyMiddleware } from 'redux'
+import React from 'react';
+import { StaticRouter } from 'react-router'
+import ReactDOMServer from 'react-dom/server'
+import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
+
 import { createReactAppExpress } from '@cra-express/core';
 import { getInitialData } from '@cra-express/redux-prefetcher'
 import stringRenderer from '@cra-express/universal-loader/lib/renderer/string-renderer';
+import JssProvider from 'react-jss/lib/JssProvider';
+import { createGenerateClassName } from '@material-ui/core/styles';
+import { SheetsRegistry } from 'react-jss/lib/jss';
+import Helmet from 'react-helmet';
 
-const {default: TBAApp} = require('../../src/TBAApp');
-const {default: reducer} = require('../../src/reducers');
+import TBAApp from '../../src/TBAApp'
+import reducer from '../../src/reducers'
 import {receiveEventMatches} from '../../src/actions';
-const clientBuildPath = path.resolve(__dirname, 'client');
 
+const clientBuildPath = path.resolve(__dirname, 'client');
 let preloadedState;
 let css;
 const app = createReactAppExpress({
@@ -41,7 +40,6 @@ const app = createReactAppExpress({
 });
 
 function handleUniversalRender(req, res) {
-  const context = {};
   const initialState = Map()
   const store = createStore(
     reducer,
@@ -58,6 +56,7 @@ function handleUniversalRender(req, res) {
   //   store.dispatch(receiveEventMatches('2017casj', data))
 
     // console.timeEnd(`${req.url} FETCH`)
+    const context = {};
     const sheetsRegistry = new SheetsRegistry();
     const generateClassName = createGenerateClassName();
     console.time(`${req.url} RENDER`)
