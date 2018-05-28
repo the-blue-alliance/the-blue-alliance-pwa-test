@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { toggleAPI, toggleIDB } from '../actions'
-import { firebaseConnect } from 'react-redux-firebase'
+import { withFirebase } from 'react-redux-firebase'
 import TBASideNavContent from '../components/TBASideNavContent'
 
 
@@ -21,4 +21,4 @@ const TBASideNavContentContainer = connect(
   mapDispatchToProps
 )(TBASideNavContent);
 
-export default firebaseConnect()(TBASideNavContentContainer);
+export default withFirebase(TBASideNavContentContainer);
