@@ -67,6 +67,13 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 class TeamPageBase extends PureComponent {
+  static fetchData({ store, params }) {
+    return Promise.all([
+      store.dispatch(fetchTeamYears(params.teamNumber)),
+      store.dispatch(fetchTeamInfo(params.teamNumber)),
+    ])
+  }
+
   refreshFunction = () => {
     this.props.fetchTeamYears(this.props.teamNumber)
     this.props.fetchTeamInfo(this.props.teamNumber)

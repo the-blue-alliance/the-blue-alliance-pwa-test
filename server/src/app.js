@@ -2,20 +2,20 @@ import { Map } from 'immutable'
 import path from 'path';
 import { createStore, applyMiddleware } from 'redux'
 import React from 'react';
-import { StaticRouter } from 'react-router'
+import { StaticRouter, matchPath } from 'react-router'
 import ReactDOMServer from 'react-dom/server'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import uglifycss from 'uglifycss'
 
 import { createReactAppExpress } from '@cra-express/core';
-import { getInitialData } from '@cra-express/redux-prefetcher'
 import JssProvider from 'react-jss/lib/JssProvider';
 import { createGenerateClassName } from '@material-ui/core/styles';
 import { SheetsRegistry } from 'react-jss/lib/jss';
 import Helmet from 'react-helmet';
 
 import TBAApp from '../../src/TBAApp'
+import routes from '../../src/routes'
 import reducer from '../../src/reducers'
 import {receiveEventMatches} from '../../src/actions';
 
@@ -70,16 +70,30 @@ function handleUniversalRender(req, res) {
     initialState,
     applyMiddleware(thunk),
   )
-  const expressCtx = { req, res };
-  return getInitialData(expressCtx, store, []).then(() => {  // TODO
 
-  // console.time(`${req.url} FETCH`)
-  // return fetch('https://www.thebluealliance.com/api/v3/event/2017casj/matches',
-  //   {headers: {'X-TBA-Auth-Key': '61bdelekzYp5TY5MueT8OokJsgT1ewwLjywZnTKCAYPCLDeoNnURu1O61DeNy8z3'}
-  // }).then(response => response.json()).then(data => {
-  //   store.dispatch(receiveEventMatches('2017casj', data))
+  let foundPath = null
+  // Get matching component
+  let { path, component } = routes.find(
+    ({ path, exact }) => {
+      foundPath = matchPath(req.url,
+        {
+          path,
+          exact,
+          strict: false
+        }
+      )
+      return foundPath
+    }
+  ) || {}
 
-    // console.timeEnd(`${req.url} FETCH`)
+  // Set fetchData if it doesn't exist to be safe
+  if (!component || !component.fetchData) {
+    component.fetchData = () => new Promise(resolve => resolve())
+  }
+
+  console.time(`${req.url} FETCH`)
+  return component.fetchData({ store, params: (foundPath ? foundPath.params : {}) }).then(() => {
+    console.timeEnd(`${req.url} FETCH`)
 
     // Remove parts of state we don't care about
     preloadedState = store.getState().delete('page').delete('appState').toJS()
