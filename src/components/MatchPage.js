@@ -50,15 +50,15 @@ class MatchPage extends PureComponent {
       <TBAPageContainer
         refreshFunction={this.refreshFunction}
       >
-        <TBAHelmet>
-          <title>{`${match.getDisplayName()} - ${event.year} ${event.name}`}</title>
-          {match && event &&
+        {match && event &&
+          <TBAHelmet>
+            <title>{`${match.getDisplayName()} - ${event.year} ${event.name}`}</title>
             <meta
               name='description'
               content={`Match results and video for ${match.getDisplayName()} at the ${event.year} ${event.name} FIRST Robotics Competition in ${event.getCityStateCountry()}.`}
             />
-          }
-        </TBAHelmet>
+          </TBAHelmet>
+        }
         <ResponsiveLayout>
           <h1>
             {match && match.getDisplayName()}
