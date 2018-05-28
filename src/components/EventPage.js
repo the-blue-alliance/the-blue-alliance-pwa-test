@@ -25,6 +25,8 @@ import TBAHelmet from '../components/TBAHelmet'
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 
+import { fetchEventInfo } from '../actions'
+
 const styles = theme => ({
   hidden: {
     display: 'none',
@@ -52,6 +54,10 @@ const styles = theme => ({
 })
 
 class EventPage extends PureComponent {
+  static fetchData({ store, params }) {
+    return store.dispatch(fetchEventInfo(params.eventKey))
+  }
+
   state = {
     matchScrollRef: null,
   }

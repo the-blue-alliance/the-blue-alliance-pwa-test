@@ -8,7 +8,16 @@ import ResponsiveLayout from './ResponsiveLayout'
 import MatchBreakdownTable from './MatchBreakdownTable'
 import MatchVideos from './MatchVideos'
 
+import { fetchEventInfo, fetchMatchInfo } from '../actions'
+
 class MatchPage extends PureComponent {
+  static fetchData({ store, params }) {
+    return Promise.all([
+      store.dispatch(fetchEventInfo(params.matchKey.split('_')[0])),
+      store.dispatch(fetchMatchInfo(params.matchKey)),
+    ])
+  }
+
   constructor(props) {
     super(props)
     props.setNav('matches')
