@@ -60,10 +60,13 @@ function renderPage(req, res, stream, htmlData, options) {
       segments2[0] + '<div id="root">' + string + lastSegment
     )
     res.end()
+    console.log(`${req.url} END`)
   })
 }
 
 function handleUniversalRender(req, res) {
+  console.log(`${req.url} START`)
+
   const initialState = Map()
   const store = createStore(
     reducer,
