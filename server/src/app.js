@@ -47,6 +47,8 @@ function renderPage(req, res, stream, htmlData, options) {
     // TODO: Determine status code early in render and this whole chunk can move up
     if (context.statusCode) {
       res.writeHead(context.statusCode, {'Cache-Control': 'public, max-age=60, s-maxage=60'})
+    } else {
+      res.writeHead(200, {'Cache-Control': 'public, max-age=60, s-maxage=60'})
     }
     res.write(segments1[0]) // Doesn't depend on render but needs to be after status code
 
