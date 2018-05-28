@@ -112,16 +112,21 @@ class TeamPageBase extends PureComponent {
       statusByEvent,
     } = this.props
 
-    let documentTitle = `Team ${teamNumber} (${year})`
+    let teamTitle = `Team ${teamNumber}`
     if (team && team.get('nickname')) {
-      documentTitle = `${team.get('nickname')} - Team ${teamNumber} (${year})`
+      teamTitle = `${team.get('nickname')} - Team ${teamNumber}`
     }
 
     return (
       <React.Fragment>
         <TBAHelmet>
-          <title>{documentTitle}</title>
-          <meta name='description' content='TODO' />
+          <title>{`${teamTitle} (${year})`}</title>
+          {team &&
+            <meta
+              name='description'
+              content={`Team information and competition results for ${teamTitle}` + (team.getCityStateCountry() ? ` from ${team.getCityStateCountry()}.` : '.')}
+            />
+          }
         </TBAHelmet>
         <Hidden smDown>
           <TeamPageDesktop

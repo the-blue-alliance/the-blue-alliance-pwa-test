@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import { Link } from 'react-router-dom';
 
 import TBAPageContainer from '../containers/TBAPageContainer'
+import TBAHelmet from '../components/TBAHelmet'
 import ResponsiveLayout from './ResponsiveLayout'
 
 import MatchBreakdownTable from './MatchBreakdownTable'
@@ -36,29 +37,39 @@ class MatchPage extends PureComponent {
   render() {
     console.log("Render Match Page")
 
-    let eventName
-    if (this.props.matchObj) {
-      eventName = this.props.matchObj.event_key
-    }
-    if (this.props.event) {
-      eventName = this.props.event.name
-    }
+    const { matchObj: match, event } = this.props
 
+    let eventName
+    if (match) {
+      eventName = match.event_key
+    }
+    if (event) {
+      eventName = event.name
+    }
     return (
       <TBAPageContainer
         refreshFunction={this.refreshFunction}
       >
+        <TBAHelmet>
+          <title>{`${match.getDisplayName()} - ${event.year} ${event.name}`}</title>
+          {match && event &&
+            <meta
+              name='description'
+              content={`Match results and video for ${match.getDisplayName()} at the ${event.year} ${event.name} FIRST Robotics Competition in ${event.getCityStateCountry()}.`}
+            />
+          }
+        </TBAHelmet>
         <ResponsiveLayout>
           <h1>
-            {this.props.matchObj && this.props.matchObj.getDisplayName()}
-            <small>{this.props.matchObj && <Link to={{pathname: `/event/${this.props.matchObj.event_key}`}}>@ {eventName}</Link>}</small>
+            {match && match.getDisplayName()}
+            <small>{match && <Link to={{pathname: `/event/${match.event_key}`}}>@ {eventName}</Link>}</small>
           </h1>
           <Grid container spacing={24}>
             <Grid item xs={6}>
-              <MatchBreakdownTable match={this.props.matchObj}/>
+              <MatchBreakdownTable match={match}/>
             </Grid>
             <Grid item xs={6}>
-              <MatchVideos match={this.props.matchObj}/>
+              <MatchVideos match={match}/>
             </Grid>
           </Grid>
         </ResponsiveLayout>

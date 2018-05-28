@@ -109,7 +109,12 @@ class EventPage extends PureComponent {
       <div>
         <TBAHelmet>
           <title>{name}</title>
-          <meta name='description' content='TODO' />
+          {event &&
+            <meta
+              name='description'
+              content={`Videos and match results for the ${year} ${event.name} FIRST Robotics Competition in ${event.getCityStateCountry()}.`}
+            />
+          }
         </TBAHelmet>
         <Hidden smDown>
           <TBAPageContainer

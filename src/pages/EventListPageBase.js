@@ -85,7 +85,10 @@ class EventListPageBase extends PureComponent {
       <React.Fragment>
         <TBAHelmet>
           <title>{`${year} Events`}</title>
-          <meta name='description' content='TODO' />
+          <meta
+            name='description'
+            content={`Event list for the ${year} FIRST Robotics Competition.`}
+          />
         </TBAHelmet>
         <Hidden smDown>
           <EventListPageDesktop

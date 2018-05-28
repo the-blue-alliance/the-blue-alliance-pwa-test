@@ -74,7 +74,7 @@ class TeamListPage extends PureComponent {
       <div>
         <TBAHelmet>
           <title>Teams</title>
-          <meta name='description' content='TODO' />
+          <meta name='description' content='List of teams in the FIRST Robotics Competition.' />
         </TBAHelmet>
         <Hidden smDown>
           <TBAPageContainer
