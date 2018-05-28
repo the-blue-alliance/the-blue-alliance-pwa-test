@@ -10,6 +10,7 @@ import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/
 import Hidden from '@material-ui/core/Hidden'
 
 import { setPageKey } from './actions'
+import routes from './routes'
 
 import TBAHelmet from './components/TBAHelmet'
 import TBASideNavContainer from './containers/TBASideNavContainer'
@@ -17,14 +18,6 @@ import TBABottomNavContainer from './containers/TBABottomNavContainer'
 import TBASnackbarsContainer from './containers/TBASnackbarsContainer'
 import TBAModalDialog from './components/TBAModalDialog'
 import SearchModal from './components/SearchModal'
-
-import HomePageContainer from './containers/HomePageContainer'
-import EventListPageBase from './pages/EventListPageBase'
-import EventPageContainer from './containers/EventPageContainer'
-import MatchPageContainer from './containers/MatchPageContainer'
-import TeamListPageContainer from './containers/TeamListPageContainer'
-import TeamPageBase from './pages/TeamPageBase'
-import PageNotFoundContainer from './containers/PageNotFoundContainer'
 
 // For Google Analytics tracking
 ReactGA.initialize('UA-3251931-11') // TODO: Change to real tracking number
@@ -150,14 +143,9 @@ class ModalSwitch extends React.Component {
     return (
       <React.Fragment key={isModal ? this.basePageLocation.key : location.key}>
         <Switch location={isModal ? this.basePageLocation : location}>
-          <Route exact path='/' component={HomePageContainer} />
-          <Route path='/events/:year' component={EventListPageBase} />
-          <Route path='/events' component={EventListPageBase} />
-          <Route path='/event/:eventKey' component={EventPageContainer} />
-          <Route path='/match/:matchKey' component={MatchPageContainer} />
-          <Route path='/teams' component={TeamListPageContainer} />
-          <Route path='/team/:teamNumber/:year?' component={TeamPageBase} />
-          <Route component={PageNotFoundContainer} />
+          {routes.map(({ path, component, exact }, i) =>
+            <Route key={i} exact={exact} path={path} component={component} />
+          )}
         </Switch>
         <TBAModalDialog isModal={isModal && !Boolean(location.state.searchModal)} open={this.state.modalOpen} handleClose={this.handleClose} />
         <SearchModal isModal={isModal && Boolean(location.state.searchModal)} open={this.state.modalOpen} handleClose={this.handleClose} />
