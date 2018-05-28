@@ -89,8 +89,13 @@ function handleUniversalRender(req, res) {
     }
   ) || {}
 
+  // Make empty component to be safe
+  if (!component) {
+    component = {}
+  }
+
   // Set fetchData if it doesn't exist to be safe
-  if (!component || !component.fetchData) {
+  if (!component.fetchData) {
     component.fetchData = () => new Promise(resolve => resolve())
   }
 
