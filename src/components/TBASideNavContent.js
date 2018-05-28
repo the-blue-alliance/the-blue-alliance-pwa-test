@@ -7,10 +7,13 @@ import StarIcon from '@material-ui/icons/Star'
 import VideocamIcon from '@material-ui/icons/Videocam'
 import EventIcon from '@material-ui/icons/Event'
 import PeopleIcon from '@material-ui/icons/People'
+import PersonIcon from '@material-ui/icons/Person'
 import SettingsIcon from '@material-ui/icons/Settings'
+import Avatar from '@material-ui/core/Avatar'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -37,6 +40,8 @@ class TBASideNavContent extends PureComponent {
 
     const {
       classes,
+      auth,
+      firebase,
       navValue,
       apiEnabled,
       idbEnabled,
@@ -109,6 +114,36 @@ class TBASideNavContent extends PureComponent {
             </ListItemIcon>
             <ListItemText primary="Settings" />
           </ListItem>
+          {auth.isEmpty ?
+            <ListItem
+              button
+              onClick={() => {
+                firebase.login({
+                  provider: 'google',
+                  type: 'popup',
+                })
+              }}
+            >
+              <ListItemAvatar>
+                <Avatar>
+                  <PersonIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Sign In" />
+            </ListItem>
+            :
+            <ListItem
+              button
+              onClick={firebase.logout}
+            >
+              <ListItemAvatar>
+                <Avatar alt={auth.displayName} src={auth.photoURL} />
+              </ListItemAvatar>
+              <ListItemText
+                primary="Account"
+              />
+            </ListItem>
+          }
         </List>
       </div>
     )

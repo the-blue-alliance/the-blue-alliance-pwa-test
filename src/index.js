@@ -4,20 +4,35 @@ import ReactDOM from 'react-dom'
 import { fromJS, Map } from 'immutable'
 import registerServiceWorker from './registerServiceWorker'
 
-import { applyMiddleware, createStore } from 'redux'
+import { applyMiddleware, createStore, compose } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import { createBrowserHistory } from 'history'
 import { ConnectedRouter, connectRouter, routerMiddleware } from 'connected-react-router/immutable'
-import reducer from './reducers'
+import firebase from 'firebase'
+import { reactReduxFirebase } from 'react-redux-firebase'
 
+import reducer from './reducers'
 import TBAApp from './TBAApp'
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
 //   whyDidYouUpdate(React);
 // }
+
+// Init Firebase
+firebase.initializeApp({
+  apiKey: "AIzaSyDBlFwtAgb2i7hMCQ5vBv44UEKVsA543hs",
+  authDomain: "tbatv-prod-hrd.firebaseapp.com",
+  databaseURL: "https://tbatv-prod-hrd.firebaseio.com",
+  projectId: "tbatv-prod-hrd",
+  storageBucket: "tbatv-prod-hrd.appspot.com",
+  messagingSenderId: "836511118694"
+})
+const createStoreWithFirebase = compose(
+  reactReduxFirebase(firebase, {})
+)(createStore)
 
 const history = createBrowserHistory()
 // const loggerMiddleware = createLogger({
@@ -38,7 +53,7 @@ if (preloadedState) {
     preload.parentNode.removeChild(preload)
   }
 }
-const store = createStore(
+const store = createStoreWithFirebase(
   connectRouter(history)(reducer),
   initialState,
   applyMiddleware(thunk, routerMiddleware(history)),
