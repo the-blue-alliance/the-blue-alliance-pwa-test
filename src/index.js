@@ -25,7 +25,7 @@ import TBAApp from './TBAApp'
 // Init Firebase
 firebase.initializeApp({
   apiKey: "AIzaSyDBlFwtAgb2i7hMCQ5vBv44UEKVsA543hs",
-  authDomain: "tbatv-prod-hrd.firebaseapp.com",
+  authDomain: "pwa.thebluealliance.com",
   databaseURL: "https://tbatv-prod-hrd.firebaseio.com",
   projectId: "tbatv-prod-hrd",
   storageBucket: "tbatv-prod-hrd.appspot.com",
