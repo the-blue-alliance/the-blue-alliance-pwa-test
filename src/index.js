@@ -14,6 +14,7 @@ import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import { reactReduxFirebase } from 'react-redux-firebase'
 
+import { manageFavoritesMiddleware } from './middleware'
 import reducer from './reducers'
 import TBAApp from './TBAApp'
 
@@ -57,7 +58,11 @@ if (preloadedState) {
 const store = createStoreWithFirebase(
   connectRouter(history)(reducer),
   initialState,
-  applyMiddleware(thunk, routerMiddleware(history)),
+  applyMiddleware(
+    thunk,
+    routerMiddleware(history),
+    manageFavoritesMiddleware,
+  ),
 )
 
 // Subscribe to the store to keep the url hash in sync
