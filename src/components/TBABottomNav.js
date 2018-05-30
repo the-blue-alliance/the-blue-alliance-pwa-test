@@ -10,7 +10,7 @@ import EventIcon from '@material-ui/icons/Event'
 import PeopleIcon from '@material-ui/icons/People'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 
-import TBANavMoreMenu from './TBANavMoreMenu'
+import TBANavMoreMenuContainer from '../containers/TBANavMoreMenuContainer'
 
 const styles = {
   root: {
@@ -64,7 +64,7 @@ class TBABottomNav extends React.PureComponent {
           <BottomNavigationAction label="More" value="more" icon={<MoreHorizIcon />}
             onClick={this.handleOpen} ref={el => this.moreRef = el} />
         </BottomNavigation>
-        <TBANavMoreMenu open={this.state.moreMenuOpen} handleClose={this.handleClose} anchorEl={this.state.anchorEl} />
+        <TBANavMoreMenuContainer open={this.state.moreMenuOpen} handleClose={this.handleClose} anchorEl={this.state.anchorEl} />
       </Paper>
     )
   }
