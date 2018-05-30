@@ -111,13 +111,23 @@ const styles = theme => ({
   zeroDataSpinner: {
     margin: '0 auto',
   },
+  favoriteDot: {
+    position: 'absolute',
+    top: 3,
+    right: 3,
+    height: 5,
+    width: 5,
+    '& circle': {
+      fill: theme.palette.secondary.main,
+    },
+  },
 })
 
 class MatchTable extends PureComponent {
   state = {
     isFirstRender: true,
   }
-  renderRow(match) {
+  renderRow(match, favoriteTeamKeys) {
     let redScore = match.alliances.getIn(['red', 'score'])
     let blueScore = match.alliances.getIn(['blue', 'score'])
     if (!match.hasBeenPlayed()) {
@@ -175,6 +185,11 @@ class MatchTable extends PureComponent {
               })}
             >
               {teamNum}
+              {favoriteTeamKeys.has(teamKey) &&
+                <svg className={classes.favoriteDot}>
+                  <circle cx="2.5" cy="2.5" r="2.5"/>
+                </svg>
+              }
             </td>
             :
             <td
@@ -192,6 +207,11 @@ class MatchTable extends PureComponent {
               <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key, state: {modal: true}}}>
                 {teamEl}
               </Link>
+              {favoriteTeamKeys.has(teamKey) &&
+                <svg className={classes.favoriteDot}>
+                  <circle cx="2.5" cy="2.5" r="2.5"/>
+                </svg>
+              }
             </td>
           )
         })}
@@ -223,6 +243,11 @@ class MatchTable extends PureComponent {
               })}
             >
               {teamNum}
+              {favoriteTeamKeys.has(teamKey) &&
+                <svg className={classes.favoriteDot}>
+                  <circle cx="2.5" cy="2.5" r="2.5"/>
+                </svg>
+              }
             </td>
             :
             <td
@@ -240,6 +265,11 @@ class MatchTable extends PureComponent {
               <Link to={{pathname: `/team/${teamNum}/${match.getYear()}`, hash: match.event_key, state: {modal: true}}}>
                 {teamEl}
               </Link>
+              {favoriteTeamKeys.has(teamKey) &&
+                <svg className={classes.favoriteDot}>
+                  <circle cx="2.5" cy="2.5" r="2.5"/>
+                </svg>
+              }
             </td>
           )
         })}
@@ -331,7 +361,7 @@ class MatchTable extends PureComponent {
 
   render() {
     console.log('Render MatchTable')
-    const { classes, matches } = this.props
+    const { classes, matches, favoriteTeamKeys } = this.props
 
     if (matches === undefined) {
       return (
@@ -372,31 +402,31 @@ class MatchTable extends PureComponent {
               <th className={classes.th} colSpan='10'>Qualifications</th>
             </tr>
           }
-          {qmMatches.size > 0 && qmMatches.map(match => this.renderRow(match))}
+          {qmMatches.size > 0 && qmMatches.map(match => this.renderRow(match, favoriteTeamKeys))}
           {efMatches.size > 0 &&
             <tr className={classNames({[classes.tr]: true, [classes.key]: true})}>
               <th className={classes.th} colSpan='10'>Octo-Finals</th>
             </tr>
           }
-          {efMatches.size > 0 && efMatches.map(match => this.renderRow(match))}
+          {efMatches.size > 0 && efMatches.map(match => this.renderRow(match, favoriteTeamKeys))}
           {qfMatches.size > 0 &&
             <tr className={classNames({[classes.tr]: true, [classes.key]: true})}>
               <th className={classes.th} colSpan='10'>Quarterfinals</th>
             </tr>
           }
-          {qfMatches.size > 0 && qfMatches.map(match => this.renderRow(match))}
+          {qfMatches.size > 0 && qfMatches.map(match => this.renderRow(match, favoriteTeamKeys))}
           {sfMatches.size > 0 &&
             <tr className={classNames({[classes.tr]: true, [classes.key]: true})}>
               <th className={classes.th} colSpan='10'>Semifinals</th>
             </tr>
           }
-          {sfMatches.size > 0 && sfMatches.map(match => this.renderRow(match))}
+          {sfMatches.size > 0 && sfMatches.map(match => this.renderRow(match, favoriteTeamKeys))}
           {fMatches.size > 0 &&
             <tr className={classNames({[classes.tr]: true, [classes.key]: true})}>
               <th className={classes.th} colSpan='10'>Finals</th>
             </tr>
           }
-          {fMatches.size > 0 && fMatches.map(match => this.renderRow(match))}
+          {fMatches.size > 0 && fMatches.map(match => this.renderRow(match, favoriteTeamKeys))}
         </tbody>
       </table>
     )

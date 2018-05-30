@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import { Link } from 'react-router-dom'
 
 // TBA Components
-import MatchTable from '../components/MatchTable'
+import MatchTableContainer from '../containers/MatchTableContainer'
 import TeamEventResults from '../components/TeamEventResults'
 
 const styles = theme => ({
@@ -37,7 +37,7 @@ class TeamAtEvent extends PureComponent {
           />
         </Grid>
         <Grid item xs={12} lg={8}>
-          <MatchTable
+          <MatchTableContainer
             matches={matches}
             selectedTeamKey={teamKey}
             disableVisibilityRenderer={disableVisibilityRenderer}

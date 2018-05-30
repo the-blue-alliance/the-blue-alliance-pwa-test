@@ -100,21 +100,31 @@ const styles = theme => ({
     position: 'absolute',
     top: '3px',
     left: '3px',
-    height: '4px',
-    width: '4px',
+    height: '6px',
+    width: '6px',
   },
   rpDotB: {
     position: 'absolute',
     top: '3px',
     left: '10px',
-    height: '4px',
-    width: '4px',
+    height: '6px',
+    width: '6px',
+  },
+  favoriteDot: {
+    position: 'absolute',
+    top: 3,
+    right: 3,
+    height: 8,
+    width: 8,
+    '& circle': {
+      fill: theme.palette.secondary.main,
+    },
   },
 })
 
 class MatchListItem extends PureComponent {
   render() {
-    const { classes, style, match, selectedTeamKey } = this.props
+    const { classes, style, match, selectedTeamKey, favoriteTeamKeys } = this.props
     let redScore = match.alliances.getIn(['red', 'score'])
     let blueScore = match.alliances.getIn(['blue', 'score'])
     if (!match.hasBeenPlayed()) {
@@ -164,6 +174,11 @@ class MatchListItem extends PureComponent {
                       })}
                     >
                       {teamNum}
+                      {favoriteTeamKeys.has(teamKey) &&
+                        <svg className={classes.favoriteDot}>
+                          <circle cx="2.5" cy="2.5" r="2.5"/>
+                        </svg>
+                      }
                     </div>
                   </ButtonBase>
                 </LinkContainer>
@@ -209,6 +224,11 @@ class MatchListItem extends PureComponent {
                       })}
                     >
                       {teamNum}
+                      {favoriteTeamKeys.has(teamKey) &&
+                        <svg className={classes.favoriteDot}>
+                          <circle cx="2.5" cy="2.5" r="2.5"/>
+                        </svg>
+                      }
                     </div>
                   </ButtonBase>
                 </LinkContainer>

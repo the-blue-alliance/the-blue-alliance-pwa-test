@@ -17,7 +17,7 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
 import ResponsiveLayout from './ResponsiveLayout'
-import MatchTable from './MatchTable'
+import MatchTableContainer from '../containers/MatchTableContainer'
 import MatchList from './MatchList'
 import TeamsList from './TeamsList'
 
@@ -142,11 +142,11 @@ class EventPage extends PureComponent {
                     <Grid container spacing={24}>
                       <Grid item xs={6}>
                         <h3>Qualification Results</h3>
-                        <MatchTable matches={this.props.qualMatches} />
+                        <MatchTableContainer matches={this.props.qualMatches} />
                       </Grid>
                       <Grid item xs={6}>
                         <h3>Playoff Results</h3>
-                        <MatchTable matches={this.props.playoffMatches} />
+                        <MatchTableContainer matches={this.props.playoffMatches} />
                       </Grid>
                     </Grid>
                   </div>

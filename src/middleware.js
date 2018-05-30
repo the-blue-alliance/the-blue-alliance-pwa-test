@@ -12,7 +12,7 @@ export const manageFavoritesMiddleware = store => next => action => {
     }).then(response => response.json()).then(favorites => {
       store.dispatch({
         type: types.SET_USER_FAVORITES,
-        favorites: favorites,
+        favorites: favorites['favorites'],
       })
     })
   } else if (action.type === actionTypes.LOGOUT) {
