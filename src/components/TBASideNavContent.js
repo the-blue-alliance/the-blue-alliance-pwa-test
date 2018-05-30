@@ -120,7 +120,7 @@ class TBASideNavContent extends PureComponent {
               onClick={() => {
                 firebase.login({
                   provider: 'google',
-                  type: 'popup',
+                  type: 'redirect',
                 })
               }}
             >

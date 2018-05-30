@@ -50,7 +50,7 @@ class TBANavMoreMenu extends React.PureComponent {
             onClick={() => {
               firebase.login({
                 provider: 'google',
-                type: 'popup',
+                type: 'redirect',
               })
             }}
           >
