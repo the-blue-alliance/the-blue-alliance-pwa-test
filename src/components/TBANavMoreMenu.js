@@ -16,8 +16,13 @@ const styles = {
 }
 
 class TBANavMoreMenu extends React.PureComponent {
+  handleSignInClick = () => {
+    this.props.handleClose()
+    this.props.promptSignInOpen()
+  }
+
   render() {
-    const { anchorEl, open, handleClose, auth, promptSignInOpen } = this.props
+    const { anchorEl, open, handleClose, auth } = this.props
     return (
       <Menu
         anchorEl={anchorEl}
@@ -40,7 +45,7 @@ class TBANavMoreMenu extends React.PureComponent {
         {auth.isEmpty ?
           <MenuItem
             button
-            onClick={promptSignInOpen}
+            onClick={this.handleSignInClick}
           >
             <Avatar>
               <PersonIcon />
