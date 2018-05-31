@@ -8,7 +8,7 @@ const user = (state = Map({
   switch (action.type) {
     case types.SET_USER_FAVORITES:
       return state.set('favorites', action.favorites)
-    case types.CLEAR_USER_FAVORITES:
+    case types.CLEAR_USER_DATA:
       return state.set('favorites', undefined)
     default:
       return state

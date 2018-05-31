@@ -25,6 +25,9 @@ db.version(6).stores({
 db.version(7).stores({
   teamEventStatus: '&key, teamKey_year, eventKey',
 })
+db.version(8).stores({
+  userFavorites: '&key, model_key, model_type',
+})
 
 export default db;
 
@@ -106,4 +109,12 @@ export const addTeamEvents = (teamKey, events) => {
 
 export const addTeamEventStatuses = (statuses) => {
   db.teamEventStatus.bulkPut(statuses)
+}
+
+export const addUserFavorites = (favorites) => {
+  db.userFavorites.bulkPut(favorites)
+}
+
+export const clearUserData = () => {
+  db.userFavorites.clear()
 }

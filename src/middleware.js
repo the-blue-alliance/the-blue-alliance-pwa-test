@@ -1,23 +1,16 @@
 import { actionTypes } from 'react-redux-firebase'
-import fetch from 'isomorphic-fetch'
 import * as types from './constants/ActionTypes'
+import { fetchUserFavorites } from './actions'
+import { clearUserData } from './database/db'
 
-export const manageFavoritesMiddleware = store => next => action => {
+export const userManagerMiddleware = store => next => action => {
   next(action)
   if (action.type === actionTypes.LOGIN) {
-    const token = store.getState().get('firebase').auth.stsTokenManager.accessToken
-    fetch('https://www.thebluealliance.com/_ah/api/tbaMobile/v9/favorites/list', {
-      headers: {'Authorization': 'Bearer ' + token},
-      method: 'POST',
-    }).then(response => response.json()).then(favorites => {
-      store.dispatch({
-        type: types.SET_USER_FAVORITES,
-        favorites: favorites['favorites'],
-      })
-    })
-  } else if (action.type === actionTypes.LOGOUT) {
+    store.dispatch(fetchUserFavorites())
+  } else if (action.type === actionTypes.AUTH_EMPTY_CHANGE) {
     store.dispatch({
-      type: types.CLEAR_USER_FAVORITES,
+      type: types.CLEAR_USER_DATA,
     })
+    clearUserData()
   }
 }

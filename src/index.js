@@ -14,7 +14,7 @@ import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import { reactReduxFirebase } from 'react-redux-firebase'
 
-import { manageFavoritesMiddleware } from './middleware'
+import { userManagerMiddleware } from './middleware'
 import reducer from './reducers'
 import TBAApp from './TBAApp'
 
@@ -61,7 +61,8 @@ const store = createStoreWithFirebase(
   applyMiddleware(
     thunk,
     routerMiddleware(history),
-    manageFavoritesMiddleware,
+    userManagerMiddleware,
+    // loggerMiddleware,
   ),
 )
 

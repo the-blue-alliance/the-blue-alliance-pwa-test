@@ -12,6 +12,7 @@ import db, {
   addTeams,
   addTeamEvents,
   addTeamEventStatuses,
+  addUserFavorites,
 } from '../database/db'
 import fetch from 'isomorphic-fetch'
 
@@ -759,6 +760,48 @@ export function fetchMatchInfo(matchKey) {
         dispatch(decrementLoadingCount())
       }).catch(error => {
         dispatch(decrementLoadingCount())
+        console.log(error)
+      })
+    }
+  }
+}
+
+// User
+export const receiveUserFavorites = (data) => ({
+  type: types.SET_USER_FAVORITES,
+  favorites: data,
+})
+
+export function fetchUserFavorites() {
+  return (dispatch, getState) => {
+    let dataSource = sources.DEFAULT
+    // Update from IndexedDB
+    if (getState().getIn(['appState', 'idbEnabled'])) {
+      db.userFavorites.toArray().then(favorites => {
+        if (dataSource < sources.IDB && favorites !== undefined) {
+          dataSource = sources.IDB
+          dispatch(receiveUserFavorites(favorites))
+        }
+      })
+    }
+
+    // Update from API
+    if (getState().getIn(['appState', 'apiEnabled'])) {
+      return fetch('https://www.thebluealliance.com/_ah/api/tbaMobile/v9/favorites/list', {
+        headers: {'Authorization': 'Bearer ' + getState().get('firebase').auth.stsTokenManager.accessToken},
+        method: 'POST',
+      }).then(handleErrors).then(data => {
+        if (dataSource < sources.API && data && data['favorites']) {
+          dataSource = sources.API
+          let favorites = data['favorites']
+          for (let favorite of favorites) {
+            favorite.key = `${favorite.model_type}_${favorite.model_key}` // Add key
+            favorite.model_type = parseInt(favorite.model_type, 10) // For some reason we're getting strings back
+          }
+          dispatch(receiveUserFavorites(favorites))
+          addUserFavorites(favorites)
+        }
+      }).catch(error => {
         console.log(error)
       })
     }

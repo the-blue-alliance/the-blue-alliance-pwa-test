@@ -10,7 +10,7 @@ export const getFavoriteTeamKeys = createSelector(
     const ret = new Set()
     if (favorites) {
       for (let fav of favorites) {
-        if (fav.model_type === '1') {
+        if (fav.model_type === 1) {
           ret.add(fav.model_key)
         }
       }
