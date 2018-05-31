@@ -61,10 +61,10 @@ class TBANav extends PureComponent {
         >
           {auth.isEmpty ?
             <React.Fragment>
-              <DialogTitle>Please log in to your The Blue Alliance account</DialogTitle>
+              <DialogTitle>Please sign in to your The Blue Alliance account</DialogTitle>
               <DialogContent>
                 <Typography variant='body1'>
-                  Your account settings will be accessible whenever you are logged into The Blue Alliance.
+                  Your account settings will be accessible whenever you are signed into The Blue Alliance.
                 </Typography>
                 <br />
                 <Typography variant='title'>
@@ -99,8 +99,8 @@ class TBANav extends PureComponent {
               <DialogTitle>Sign out?</DialogTitle>
               <DialogContent>
                 <Typography variant='body1'>
-                  You are currently logged in as {auth.displayName} ({auth.email}).
-                  Are you sure you want to log out of The Blue Alliance?
+                  You are currently signed in as {auth.displayName} ({auth.email}).
+                  Are you sure you want to sign out of The Blue Alliance?
                 </Typography>
               </DialogContent>
               <DialogActions>
