@@ -30,11 +30,17 @@ const styles = theme => ({
   },
   contentMobile: {
     position: 'fixed',
-    top: 64 + 48,
+    top: 56 + 48,
     right: 0,
     bottom: 0,
     left: 0,
     padding: 0,
+    [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
+      top: 48 + 48,
+    },
+    [theme.breakpoints.up('sm')]: {
+      top: 64 + 48,
+    },
   },
   tabContent: {
     padding: theme.spacing.unit,
