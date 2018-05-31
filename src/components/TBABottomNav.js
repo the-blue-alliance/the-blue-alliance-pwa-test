@@ -31,9 +31,9 @@ class TBABottomNav extends React.PureComponent {
   handleNavChange = (event, value) => {
     if (value !== 'more') {
       if (value === 'home') {
-        this.props.history.push('/')
+        this.props.push('/')
       } else {
-        this.props.history.push(`/${value}`)
+        this.props.push(`/${value}`)
       }
     }
   }
