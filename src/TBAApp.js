@@ -7,14 +7,12 @@ import indigo from '@material-ui/core/colors/indigo'
 import amber from '@material-ui/core/colors/amber'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import Hidden from '@material-ui/core/Hidden'
 
 import { setPageKey } from './actions'
 import routes from './routes'
 
 import TBAHelmet from './components/TBAHelmet'
-import TBASideNavContainer from './containers/TBASideNavContainer'
-import TBABottomNavContainer from './containers/TBABottomNavContainer'
+import TBANavContainer from './containers/TBANavContainer'
 import TBASnackbarsContainer from './containers/TBASnackbarsContainer'
 import TBAModalDialog from './components/TBAModalDialog'
 import SearchModal from './components/SearchModal'
@@ -213,12 +211,7 @@ class TBAApp extends Component {
         </TBAHelmet>
         <CssBaseline />
         <TBASnackbarsContainer />
-        <Hidden smDown implementation="css">
-          <TBASideNavContainer />
-        </Hidden>
-        <Hidden mdUp implementation="css">
-          <Route path="/" component={TBABottomNavContainer} />
-        </Hidden>
+        <TBANavContainer />
         <Route component={ModalSwitchConainer} />
         <Route path="/" component={Analytics}/>
       </MuiThemeProvider>

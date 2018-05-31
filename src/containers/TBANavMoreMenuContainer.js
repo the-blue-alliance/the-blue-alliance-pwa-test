@@ -1,5 +1,4 @@
 import { connect } from 'react-redux'
-import { withFirebase } from 'react-redux-firebase'
 import TBANavMoreMenu from '../components/TBANavMoreMenu'
 
 const mapStateToProps = (state, props) => ({
@@ -15,4 +14,4 @@ const TBANavMoreMenuContainer = connect(
   mapDispatchToProps
 )(TBANavMoreMenu);
 
-export default withFirebase(TBANavMoreMenuContainer);
+export default TBANavMoreMenuContainer;

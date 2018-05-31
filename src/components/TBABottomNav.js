@@ -49,7 +49,7 @@ class TBABottomNav extends React.PureComponent {
   render() {
     console.log("Render TBABottomNav")
 
-    const { classes } = this.props
+    const { classes, promptSignInOutOpen } = this.props
 
     return (
       <Paper className={classes.root} elevation={4}>
@@ -64,7 +64,12 @@ class TBABottomNav extends React.PureComponent {
           <BottomNavigationAction label="More" value="more" icon={<MoreHorizIcon />}
             onClick={this.handleOpen} ref={el => this.moreRef = el} />
         </BottomNavigation>
-        <TBANavMoreMenuContainer open={this.state.moreMenuOpen} handleClose={this.handleClose} anchorEl={this.state.anchorEl} />
+        <TBANavMoreMenuContainer
+          open={this.state.moreMenuOpen}
+          handleClose={this.handleClose}
+          anchorEl={this.state.anchorEl}
+          promptSignInOutOpen={promptSignInOutOpen}
+        />
       </Paper>
     )
   }

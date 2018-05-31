@@ -18,7 +18,7 @@ const styles = {
 
 class TBANavMoreMenu extends React.PureComponent {
   render() {
-    const { anchorEl, open, handleClose, firebase, auth } = this.props
+    const { anchorEl, open, handleClose, auth, promptSignInOutOpen } = this.props
     return (
       <Menu
         anchorEl={anchorEl}
@@ -44,32 +44,15 @@ class TBANavMoreMenu extends React.PureComponent {
           </ListItemIcon>
           <ListItemText inset primary="Settings" />
         </MenuItem>
-        {auth.isEmpty ?
-          <MenuItem
-            button
-            onClick={() => {
-              firebase.login({
-                provider: 'google',
-                type: 'popup',
-              })
-            }}
-          >
-            <Avatar>
-              <PersonIcon />
-            </Avatar>
-            <ListItemText primary="Sign In" />
-          </MenuItem>
-          :
-          <MenuItem
-            button
-            onClick={firebase.logout}
-          >
-            <Avatar alt={auth.displayName} src={auth.photoURL} />
-            <ListItemText
-              primary="Account"
-            />
-          </MenuItem>
-        }
+        <MenuItem
+          button
+          onClick={promptSignInOutOpen}
+        >
+          <Avatar>
+            {auth.isEmpty ? <PersonIcon /> : <Avatar alt={auth.displayName} src={auth.photoURL} />}
+          </Avatar>
+          <ListItemText primary={`Sign ${auth.isEmpty ? 'In' : 'Out'}`} />
+        </MenuItem>
       </Menu>
     )
   }
