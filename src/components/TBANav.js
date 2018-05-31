@@ -33,7 +33,7 @@ class TBANav extends PureComponent {
     this.promptSignInOutClose()
     this.props.firebase.login({
       provider: 'google',
-      type: 'popup',
+      type: window.matchMedia('(display-mode: standalone)').matches ? 'redirect' : 'popup',
     })
   }
 
