@@ -2,6 +2,8 @@ import HomePageContainer from './containers/HomePageContainer'
 import EventListPageBase from './pages/EventListPageBase'
 import EventPageContainer from './containers/EventPageContainer'
 import MatchPageContainer from './containers/MatchPageContainer'
+import AccountPageBase from './pages/AccountPageBase'
+import SigninRequiredPageBase from './pages/SigninRequiredPageBase'
 import TeamListPageContainer from './containers/TeamListPageContainer'
 import TeamPageBase from './pages/TeamPageBase'
 import PageNotFoundContainer from './containers/PageNotFoundContainer'
@@ -13,6 +15,11 @@ export default [
       exact: true,
   },
   {
+      path: '/account',
+      component: AccountPageBase,
+      exact: true,
+  },
+  {
       path: '/events/:year?',
       component: EventListPageBase,
       exact: true,
@@ -20,6 +27,11 @@ export default [
   {
       path: '/event/:eventKey',
       component: EventPageContainer,
+      exact: true,
+  },
+  {
+      path: '/signin_required',
+      component: SigninRequiredPageBase,
       exact: true,
   },
   {

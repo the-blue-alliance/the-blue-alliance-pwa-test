@@ -9,7 +9,6 @@ import VideocamIcon from '@material-ui/icons/Videocam'
 import EventIcon from '@material-ui/icons/Event'
 import PeopleIcon from '@material-ui/icons/People'
 import PersonIcon from '@material-ui/icons/Person'
-import SettingsIcon from '@material-ui/icons/Settings'
 
 import Avatar from '@material-ui/core/Avatar'
 import Drawer from '@material-ui/core/Drawer'
@@ -53,7 +52,7 @@ class TBASideNavContent extends PureComponent {
       idbEnabled,
       toggleAPI,
       toggleIDB,
-      promptSignInOutOpen,
+      promptSignInOpen,
     } = this.props
 
     return (
@@ -116,23 +115,32 @@ class TBASideNavContent extends PureComponent {
         </List>
         <Divider />
         <List>
-          <ListItem>
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Settings" />
-          </ListItem>
-          <ListItem
-            button
-            onClick={promptSignInOutOpen}
-          >
-            <ListItemAvatar>
-              <Avatar>
-                {auth.isEmpty ? <PersonIcon /> : <Avatar alt={auth.displayName} src={auth.photoURL} />}
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={`Sign ${auth.isEmpty ? 'In' : 'Out'}`} />
-          </ListItem>
+          {auth.isEmpty ?
+            <ListItem
+              button
+              onClick={promptSignInOpen}
+            >
+              <ListItemAvatar>
+                <Avatar>
+                  <PersonIcon />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary='Sign In' />
+            </ListItem>
+            :
+            <ListItem
+              button
+              component={Link}
+              to='/account'
+            >
+              <ListItemAvatar>
+                <Avatar>
+                  {auth.isEmpty ? <PersonIcon /> : <Avatar alt={auth.displayName} src={auth.photoURL} />}
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary='Account' classes={{primary: classNames({[classes.activeText]: navValue === 'account'})}} />
+            </ListItem>
+          }
         </List>
       </div>
     </Drawer>

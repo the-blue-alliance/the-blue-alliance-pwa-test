@@ -4,7 +4,6 @@ import TBANav from '../components/TBANav'
 
 
 const mapStateToProps = (state, props) => ({
-  auth: state.get('firebase').auth,
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -10,7 +10,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import PersonIcon from '@material-ui/icons/Person'
 import StarIcon from '@material-ui/icons/Star'
-import SettingsIcon from '@material-ui/icons/Settings'
 import VideocamIcon from '@material-ui/icons/Videocam'
 
 const styles = {
@@ -18,7 +17,7 @@ const styles = {
 
 class TBANavMoreMenu extends React.PureComponent {
   render() {
-    const { anchorEl, open, handleClose, auth, promptSignInOutOpen } = this.props
+    const { anchorEl, open, handleClose, auth, promptSignInOpen } = this.props
     return (
       <Menu
         anchorEl={anchorEl}
@@ -38,21 +37,29 @@ class TBANavMoreMenu extends React.PureComponent {
           </ListItemIcon>
           <ListItemText inset primary="GameDay" />
         </MenuItem>
-        <MenuItem onClick={handleClose} component={Link} to='/settings'>
-          <ListItemIcon>
-            <SettingsIcon />
-          </ListItemIcon>
-          <ListItemText inset primary="Settings" />
-        </MenuItem>
-        <MenuItem
-          button
-          onClick={promptSignInOutOpen}
-        >
-          <Avatar>
-            {auth.isEmpty ? <PersonIcon /> : <Avatar alt={auth.displayName} src={auth.photoURL} />}
-          </Avatar>
-          <ListItemText primary={`Sign ${auth.isEmpty ? 'In' : 'Out'}`} />
-        </MenuItem>
+        {auth.isEmpty ?
+          <MenuItem
+            button
+            onClick={promptSignInOpen}
+          >
+            <Avatar>
+              <PersonIcon />
+            </Avatar>
+            <ListItemText primary='Sign In' />
+          </MenuItem>
+          :
+          <MenuItem
+            button
+            onClick={handleClose}
+            component={Link}
+            to='/account'
+          >
+            <Avatar>
+              <Avatar alt={auth.displayName} src={auth.photoURL} />
+            </Avatar>
+            <ListItemText primary='Account' />
+          </MenuItem>
+        }
       </Menu>
     )
   }

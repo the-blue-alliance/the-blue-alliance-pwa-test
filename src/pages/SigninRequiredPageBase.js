@@ -1,0 +1,92 @@
+// General
+import React, { PureComponent } from 'react'
+import ReactDOM from 'react-dom'
+import { goBack } from 'connected-react-router'
+import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { withFirebase } from 'react-redux-firebase'
+import queryString from 'query-string'
+
+// Actions
+import {
+  resetPage,
+  setNav,
+} from '../actions'
+
+// Selectors
+
+// Components
+import Button from '@material-ui/core/Button'
+import DialogActions from '@material-ui/core/DialogActions'
+
+// TBA Components
+import TBAUniversalPage from '../components/TBAUniversalPage'
+import SigninInfo from '../components/SigninInfo'
+
+const mapStateToProps = (state, props) => ({
+  auth: state.get('firebase').auth,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  resetPage: (defaultState) => dispatch(resetPage(defaultState)),
+  setNav: (value) => dispatch(setNav(value)),
+  goBack: () => dispatch(goBack()),
+})
+
+class SigninRequiredPageBase extends PureComponent {
+  signIn = () => {
+    this.props.firebase.login({
+      provider: 'google',
+      type: window.matchMedia('(display-mode: standalone)').matches ? 'redirect' : 'popup',
+    })
+  }
+
+  refreshFunction = () => {
+  }
+
+  componentDidMount() {
+    this.props.resetPage()
+    this.props.setNav('account')
+
+    // Fetch data async
+    ReactDOM.unstable_deferredUpdates(() => this.refreshFunction())
+  }
+
+  render() {
+    console.log("Render SigninRequiredPageBase")
+
+    const {
+      auth,
+      location,
+    } = this.props
+
+    if (auth.isLoaded && !auth.isEmpty) {
+      const parsed = queryString.parse(location.search)
+      return <Redirect to={parsed.redirect ? parsed.redirect : 'account'} />
+    }
+
+    return (
+      <TBAUniversalPage
+        title='Sign In'
+        metaDescription='The Blue Alliance account sign in'
+        refreshFunction={this.refreshFunction}
+      >
+        {auth.isLoaded &&
+          <React.Fragment>
+            <SigninInfo />
+            <DialogActions>
+              <Button onClick={this.props.goBack} color='default' variant='raised'>
+                No thanks, take me back
+              </Button>
+              <Button onClick={this.signIn} color='primary' variant='raised' autoFocus>
+                Sign in
+              </Button>
+            </DialogActions>
+          </React.Fragment>
+        }
+      </TBAUniversalPage>
+    )
+  }
+}
+
+export default withFirebase(connect(mapStateToProps, mapDispatchToProps)(SigninRequiredPageBase))

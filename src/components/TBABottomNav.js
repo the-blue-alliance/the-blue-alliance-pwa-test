@@ -49,7 +49,7 @@ class TBABottomNav extends React.PureComponent {
   render() {
     console.log("Render TBABottomNav")
 
-    const { classes, promptSignInOutOpen } = this.props
+    const { classes, promptSignInOpen } = this.props
 
     return (
       <Paper className={classes.root} elevation={4}>
@@ -68,7 +68,7 @@ class TBABottomNav extends React.PureComponent {
           open={this.state.moreMenuOpen}
           handleClose={this.handleClose}
           anchorEl={this.state.anchorEl}
-          promptSignInOutOpen={promptSignInOutOpen}
+          promptSignInOpen={promptSignInOpen}
         />
       </Paper>
     )
