@@ -27,6 +27,7 @@ import Typography from '@material-ui/core/Typography'
 
 // TBA Components
 import TBAUniversalPage from '../components/TBAUniversalPage'
+import MyTBASettingsContainer from '../containers/MyTBASettingsContainer'
 
 const mapStateToProps = (state, props) => ({
   auth: state.get('firebase').auth,
@@ -114,7 +115,7 @@ class AccountPageBase extends PureComponent {
             <h2>myTBA</h2>
             <Card>
               <CardContent>
-                <p>TODO</p>
+                <MyTBASettingsContainer />
               </CardContent>
             </Card>
             <Dialog
