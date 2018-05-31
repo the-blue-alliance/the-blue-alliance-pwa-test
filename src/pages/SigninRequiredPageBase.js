@@ -5,7 +5,7 @@ import { goBack } from 'connected-react-router'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { withFirebase } from 'react-redux-firebase'
-import queryString from 'query-string'
+import qs from 'qs'
 
 // Actions
 import {
@@ -61,7 +61,7 @@ class SigninRequiredPageBase extends PureComponent {
     } = this.props
 
     if (auth.isLoaded && !auth.isEmpty) {
-      const parsed = queryString.parse(location.search)
+      const parsed = qs.parse(location.search, { ignoreQueryPrefix: true })
       return <Redirect to={parsed.redirect ? parsed.redirect : 'account'} />
     }
 

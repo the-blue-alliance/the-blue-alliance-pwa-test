@@ -19,7 +19,7 @@
     "moment": "^2.22.1",
     "moment-timezone": "^0.5.17",
     "npm": "^6.0.0",
-    "query-string": "^6.1.0",
+    "qs": "^6.5.2",
     "react": "^16.3.2",
     "react-autosuggest": "^9.3.2",
     "react-dom": "^16.3.2",

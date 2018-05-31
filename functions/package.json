@@ -25,6 +25,7 @@
     "object-assign": "^4.1.1",
     "path-to-regexp": "^2.2.1",
     "prop-types": "^15.6.1",
+    "qs": "^6.5.2",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-router": "^4.2.0",
