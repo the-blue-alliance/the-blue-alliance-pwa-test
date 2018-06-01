@@ -28,10 +28,13 @@ db.version(7).stores({
 db.version(8).stores({
   userFavorites: '&key, model_key, model_type',
 })
+db.version(9).stores({
+  apiCalls: '&url',
+})
 
 export default db;
 
-// Write helpers. TODO: needs to handle deletion
+// Write helpers
 export const addAwards = (awards) => {
   db.awards.bulkPut(awards)
   let awardTeams = []
@@ -117,4 +120,26 @@ export const addUserFavorites = (favorites) => {
 
 export const clearUserData = () => {
   db.userFavorites.clear()
+}
+
+// Data transformers
+export const augmentAward = (award) => {
+  var newAward = Object.assign({}, award)
+  newAward.key = `${award.event_key}_${award.award_type}`
+  return newAward
+}
+
+export const augmentTeamEventStatus = (
+  status,
+  teamKey,
+  eventKey,
+  year,
+) => {
+  var newStatus = Object.assign({}, status)
+  newStatus.key = `${eventKey}_${teamKey}`
+  newStatus.eventKey = eventKey
+  newStatus.teamKey = teamKey
+  newStatus.year = year
+  newStatus.teamKey_year = `${teamKey}_${year}`
+  return newStatus
 }
