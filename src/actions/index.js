@@ -154,8 +154,8 @@ const createFetcher = ({
       const fullQueryFast = join ? fastQuery.toArray().then(join) : fastQuery.toArray()
       Promise.all([fullQueryFast, db.apiCalls.get(endpointUrl)]).then(values => {
         const [data, apiCall] = values
-        // Make sure we've hit this endpoint before
-        if (apiCall && dataSource < sources.IDB_FAST && data !== undefined) {
+        // If isCollection, make sure we've hit this endpoint before
+        if ((!isCollection || apiCall) && dataSource < sources.IDB_FAST && data !== undefined) {
           dataSource = sources.IDB_FAST
           dispatch(createAction(isCollection ? data : data[0]))
         }
@@ -167,8 +167,8 @@ const createFetcher = ({
     const fullQuery = join ? query.toArray().then(join) : query.toArray()
     Promise.all([fullQuery, db.apiCalls.get(endpointUrl)]).then(values => {
       const [data, apiCall] = values
-      // Make sure we've hit this endpoint before
-      if (apiCall && dataSource < sources.IDB && data !== undefined) {
+      // If isCollection, make sure we've hit this endpoint before
+      if ((!isCollection || apiCall) && dataSource < sources.IDB && data !== undefined) {
         dataSource = sources.IDB
         dispatch(createAction(isCollection ? data : data[0]))
       }
