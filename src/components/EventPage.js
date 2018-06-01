@@ -25,7 +25,7 @@ import TBAHelmet from '../components/TBAHelmet'
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 
-import { fetchEventInfo } from '../actions'
+import { fetchEventInfo, fetchEventMatches, fetchEventTeams } from '../actions'
 
 const styles = theme => ({
   hidden: {
@@ -55,7 +55,11 @@ const styles = theme => ({
 
 class EventPage extends PureComponent {
   static fetchData({ store, params }) {
-    return store.dispatch(fetchEventInfo(params.eventKey))
+    return Promise.all([
+      store.dispatch(fetchEventInfo(params.eventKey)),
+      store.dispatch(fetchEventMatches(params.eventKey)),
+      store.dispatch(fetchEventTeams(params.eventKey)),
+    ])
   }
 
   state = {

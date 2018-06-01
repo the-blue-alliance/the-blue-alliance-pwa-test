@@ -149,8 +149,7 @@ const createFetcher = ({
   let dataSource = sources.DEFAULT
 
   // Update from IndexedDB
-  if (getState().getIn(['appState', 'idbEnabled'])) {
-
+  if (typeof window !== 'undefined' && 'indexedDB' in window && getState().getIn(['appState', 'idbEnabled'])) {
     if (fastQuery) {
       const fullQueryFast = join ? fastQuery.toArray().then(join) : fastQuery.toArray()
       Promise.all([fullQueryFast, db.apiCalls.get(endpointUrl)]).then(values => {
@@ -160,6 +159,8 @@ const createFetcher = ({
           dataSource = sources.IDB_FAST
           dispatch(createAction(isCollection ? data : data[0]))
         }
+      }).catch(error => {
+        console.log(error)
       })
     }
 
@@ -171,6 +172,8 @@ const createFetcher = ({
         dataSource = sources.IDB
         dispatch(createAction(isCollection ? data : data[0]))
       }
+    }).catch(error => {
+      console.log(error)
     })
   }
 
