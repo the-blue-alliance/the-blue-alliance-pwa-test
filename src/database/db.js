@@ -31,6 +31,11 @@ db.version(8).stores({
 db.version(9).stores({
   apiCalls: '&url',
 })
+db.version(10).stores({  // Rename table
+  teamEventStatuses: '&key, teamKey_year, eventKey',
+}).upgrade(function (t) {
+  t.teamEventStatus.clear()
+})
 
 export default db;
 
@@ -111,7 +116,7 @@ export const addTeamEvents = (teamKey, events) => {
 }
 
 export const addTeamEventStatuses = (statuses) => {
-  db.teamEventStatus.bulkPut(statuses)
+  db.teamEventStatuses.bulkPut(statuses)
 }
 
 export const addUserFavorites = (favorites) => {

@@ -303,7 +303,7 @@ export function fetchEventTeamStatuses(eventKey) {
       dispatch,
       getState,
       endpointUrl: `/api/v3/event/${eventKey}/teams/statuses`,
-      query: db.teamEventStatus.where('eventKey').equals(eventKey),
+      query: db.teamEventStatuses.where('eventKey').equals(eventKey),
       isCollection: true,
       transformData: (statuses) => {
         var newStatuses = []
@@ -492,7 +492,7 @@ export function fetchTeamYearEventStatuses(teamNumber, year) {
       dispatch,
       getState,
       endpointUrl: `/api/v3/team/${teamKey}/events/${year}/statuses`,
-      query: db.teamEventStatus.where('teamKey_year').equals(`${teamKey}_${year}`),
+      query: db.teamEventStatuses.where('teamKey_year').equals(`${teamKey}_${year}`),
       isCollection: true,
       transformData: (statuses) => {
         var newStatuses = []
