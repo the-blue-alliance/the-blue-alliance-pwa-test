@@ -52,7 +52,7 @@ class TBABottomNav extends React.PureComponent {
     const { classes, promptSignInOpen } = this.props
 
     return (
-      <Paper className={classes.root} elevation={4}>
+      <Paper className={classes.root} elevation={12}>
         <BottomNavigation
           value={this.props.navValue}
           onChange={this.handleNavChange}
