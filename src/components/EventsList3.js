@@ -22,7 +22,7 @@ const styles = theme => ({
   },
   eventsCard: {
     margin: theme.spacing.unit,
-    padding: `${theme.spacing.unit/2}px 0px`,
+    padding: `${theme.spacing.unit/2}px 0px 0px`,
   },
 })
 
