@@ -18,7 +18,7 @@
     "memoizee": "^0.4.12",
     "moment": "^2.22.1",
     "moment-timezone": "^0.5.17",
-    "npm": "^6.0.0",
+    "npm": "^6.1.0",
     "qs": "^6.5.2",
     "react": "^16.4.0",
     "react-autosuggest": "^9.3.2",
