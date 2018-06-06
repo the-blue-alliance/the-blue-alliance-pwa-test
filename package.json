@@ -38,6 +38,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1",
+    "stackdriver-errors-js": "^0.4.0",
     "sweet-scroll": "^3.0.0",
     "why-did-you-update": "^0.1.1"
   },

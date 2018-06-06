@@ -7,6 +7,7 @@ import indigo from '@material-ui/core/colors/indigo'
 import amber from '@material-ui/core/colors/amber'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import errorReporter from './errorReporter'
 
 import { setPageKey } from './actions'
 import routes from './routes'
@@ -191,6 +192,7 @@ class TBAApp extends Component {
   }
 
   componentDidCatch(error, info) {
+    errorReporter.report(error)
     this.setState({ hasError: true })
   }
 
