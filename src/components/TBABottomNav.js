@@ -14,7 +14,7 @@ import TBANavMoreMenuContainer from '../containers/TBANavMoreMenuContainer'
 
 const styles = {
   root: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: 0,
     left: 0,
     width: '100%',
