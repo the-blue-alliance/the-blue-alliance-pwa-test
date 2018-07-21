@@ -3,11 +3,12 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from '@material-ui/core/styles'
 
-import List from '@material-ui/core/List'
 import Paper from '@material-ui/core/Paper'
 
 import * as Event from '../database/Event'
 import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
+
+import VirtualStickyHeaderList from './VirtualStickyHeaderList'
 import EventListItem from './EventListItem'
 import EventListSubheader from './EventListSubheader'
 
@@ -28,9 +29,13 @@ const styles = theme => ({
 })
 
 class EventsList extends PureComponent {
+  state = {
+    headers: [], // [{key1, text1}, {key2, text2}, ...]
+    items: {}, // {key1: [item1, item2, ...]}
+    scrollRef: null,
+  }
+
   computeGroupedEvents = (events) => {
-    let groupedEvents = []
-    const team = this.props.team
     let eventsByType = {}
     let eventsByDistrictLabel = {}
     let labelToDistrict = {}
@@ -55,139 +60,121 @@ class EventsList extends PureComponent {
 
     // Combine everything in display order:
     // Regional, District Qualifier (alphabetical), District Div, District CMP, CMP DIV, CMP, FOC, Preseason, Offseason
+    let headers = []
+    let items = {}
+
+    // Regionals
+    if (eventsByType[Event.REGIONAL]) {
+      headers.push({key: 'regionals', text: 'Regional Events'})
+      items['regionals'] = eventsByType[Event.REGIONAL]
+    }
+
+    // District Quals
     let sortedLabels = []
     for (let label in eventsByDistrictLabel) {
       sortedLabels.push(label)
     }
     sortedLabels.sort()
-
-    // Regionals
-    if (eventsByType[Event.REGIONAL]) {
-      groupedEvents.push((
-        <div key={'r'}>
-          <EventListSubheader text='Regional Events' />
-          {eventsByType[Event.REGIONAL].map(event =>
-            <EventListItem key={event.get('key')} event={event} team={team}/>
-          )}
-        </div>
-      ))
-    }
-
-    // District Quals
     sortedLabels.forEach(label => {
       if (eventsByDistrictLabel[label]) {
-        groupedEvents.push((
-          <div key={`d-${labelToDistrict[label]}`}>
-            <EventListSubheader text={label} />
-            {eventsByDistrictLabel[label].map(event =>
-              <EventListItem key={event.get('key')} event={event} team={team}/>
-            )}
-          </div>
-        ))
+        const key = `d-${labelToDistrict[label]}`
+        headers.push({key: key, text: label})
+        items[key] = eventsByDistrictLabel[label]
       }
     })
 
     // District CMP Divisions
     if (eventsByType[Event.DISTRICT_CMP_DIVISION]) {
-      groupedEvents.push((
-        <div key={'dcd'}>
-          <EventListSubheader text='District Championship Divisions' />
-          {eventsByType[Event.DISTRICT_CMP_DIVISION].map(event =>
-            <EventListItem key={event.get('key')} event={event} team={team}/>
-          )}
-        </div>
-      ))
+      headers.push({key: 'dcd', text: 'District Championship Division'})
+      items['dcd'] = eventsByType[Event.DISTRICT_CMP_DIVISION]
     }
 
     // District CMP
     if (eventsByType[Event.DISTRICT_CMP]) {
-      groupedEvents.push((
-        <div key={'dc'}>
-          <EventListSubheader text='District Championships' />
-          {eventsByType[Event.DISTRICT_CMP].map(event =>
-            <EventListItem key={event.get('key')} event={event} team={team}/>
-          )}
-        </div>
-      ))
+      headers.push({key: 'dc', text: 'District Championships'})
+      items['dc'] = eventsByType[Event.DISTRICT_CMP]
     }
 
     // CMP Divisions
     if (eventsByType[Event.CMP_DIVISION]) {
-      groupedEvents.push((
-        <div key={'cd'}>
-          <EventListSubheader text='Championship Divisions' />
-          {eventsByType[Event.CMP_DIVISION].map(event =>
-            <EventListItem key={event.get('key')} event={event} team={team}/>
-          )}
-        </div>
-      ))
+      headers.push({key: 'cd', text: 'Championship Divisions'})
+      items['cd'] = eventsByType[Event.CMP_DIVISION]
     }
 
     // CMP Finals
     if (eventsByType[Event.CMP_FINALS]) {
-      groupedEvents.push((
-        <div key={'cf'}>
-          <EventListSubheader text='Championship Finals' />
-          {eventsByType[Event.CMP_FINALS].map(event =>
-            <EventListItem key={event.get('key')} event={event} team={team}/>
-          )}
-        </div>
-      ))
+      headers.push({key: 'cf', text: 'Championship Finals'})
+      items['cf'] = eventsByType[Event.CMP_FINALS]
     }
 
     // FoC
     if (eventsByType[Event.FOC]) {
-      groupedEvents.push((
-        <div key={'foc'}>
-          <EventListSubheader text='Festival of Champions' />
-          {eventsByType[Event.FOC].map(event =>
-            <EventListItem key={event.get('key')} event={event} team={team}/>
-          )}
-        </div>
-      ))
+      headers.push({key: 'foc', text: 'Festival of Champions'})
+      items['foc'] = eventsByType[Event.FOC]
     }
 
     // Preseason
     if (eventsByType[Event.PRESEASON]) {
-      groupedEvents.push((
-        <div key={'pe'}>
-          <EventListSubheader text='Preseason Events' />
-          {eventsByType[Event.PRESEASON].map(event =>
-            <EventListItem key={event.get('key')} event={event} team={team}/>
-          )}
-        </div>
-      ))
+      headers.push({key: 'pe', text: 'Preseason Events'})
+      items['pe'] = eventsByType[Event.PRESEASON]
     }
 
     // Offseason
     if (eventsByType[Event.OFFSEASON]) {
-      groupedEvents.push((
-        <div key={'oe'}>
-          <EventListSubheader text='Offseason Events' />
-          {eventsByType[Event.OFFSEASON].map(event =>
-            <EventListItem key={event.get('key')} event={event} team={team}/>
-          )}
-        </div>
-      ))
+      headers.push({key: 'oe', text: 'Offseason Events'})
+      items['oe'] = eventsByType[Event.OFFSEASON]
     }
 
-    return groupedEvents
+    this.setState({headers, items})
+  }
+
+  componentDidMount() {
+    if (this.props.events) {
+      this.computeGroupedEvents(this.props.events)
+    }
+  }
+
+  componentDidUpdate(nextProps, nextState) {
+    if (this.props.events && this.props.events !== nextProps.events) {
+      this.computeGroupedEvents(this.props.events)
+    }
+  }
+
+  headerRenderer = ({headerIndex}) => {
+    return <EventListSubheader text={this.state.headers[headerIndex].text} />
+  }
+
+  itemRenderer = ({headerKey, itemIndex, style}) => {
+    const event = this.state.items[headerKey][itemIndex]
+    return <EventListItem key={event.key} event={event} style={style} team={this.props.team} />
   }
 
   render() {
     console.log("Render EventsList")
 
-    const { classes, scrollId, events } = this.props
+    const { classes, scrollId } = this.props
 
     return (
       <ScrollRestoreContainer
         scrollId={scrollId}
         className={classes.scrollContainer}
+        contentRef={el => {
+          if (!this.state.scrollRef) {
+            this.setState({scrollRef: el})
+          }
+        }}
       >
         <Paper className={classes.eventsCard}>
-          <List subheader={<div />} className={classes.list} >
-            {this.computeGroupedEvents(events)}
-          </List>
+          <VirtualStickyHeaderList
+            scrollElement={this.state.scrollRef}
+            headers={this.state.headers}
+            items={this.state.items}
+            headerRenderer={this.headerRenderer}
+            itemRenderer={this.itemRenderer}
+            headerHeight={24}
+            itemHeight={64}
+            overscanCount={5}
+          />
         </Paper>
       </ScrollRestoreContainer>
     )
