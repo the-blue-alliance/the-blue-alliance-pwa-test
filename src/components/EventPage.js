@@ -43,6 +43,7 @@ const styles = theme => ({
     flexDirection: 'column',
     height: '100%',
     overflowY: 'scroll',
+    ['-webkit-overflow-scrolling']: 'touch', // Smooth scrolling on iOS
   },
   paper: {
     margin: theme.spacing.unit,

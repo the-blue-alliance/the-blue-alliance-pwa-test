@@ -16,6 +16,7 @@ const styles = theme => ({
     width: '100%',
     height: '100%',
     overflow: 'scroll',
+    ['-webkit-overflow-scrolling']: 'touch', // Smooth scrolling on iOS
   },
   list: {
     padding: 0,
