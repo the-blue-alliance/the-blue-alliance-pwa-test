@@ -12,8 +12,8 @@ import Grid from '@material-ui/core/Grid'
 import Icon from '@material-ui/core/Icon'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-
 import Typography from '@material-ui/core/Typography'
+import Zoom from '@material-ui/core/Zoom'
 
 // TBA Components
 import TBAPageContainer from '../containers/TBAPageContainer'
@@ -21,6 +21,7 @@ import ResponsiveLayout from '../components/ResponsiveLayout'
 import EventFilterDialogContainer from '../containers/EventFilterDialogContainer'
 import EventListCard from '../components/EventListCard'
 import HideableBadge from '../components/HideableBadge'
+import ScrollLink from '../components/ScrollLink'
 import NestedScrollspy from '../components/NestedScrollspy'
 
 const sideNavWidth = 160
@@ -43,6 +44,11 @@ const styles = theme => ({
   },
   rightIcon: {
     marginLeft: theme.spacing.unit,
+  },
+  fab: {
+    position: 'fixed',
+    bottom: theme.spacing.unit * 4,
+    right: theme.spacing.unit * 4,
   },
   zeroDataContainer: {
     paddingTop: theme.spacing.unit*3,
@@ -86,7 +92,7 @@ class EventListPageDesktop extends PureComponent {
   render() {
     console.log("Render EventListPageDesktop")
 
-    const { classes, year, validYears, groupedEvents, yearMenuOpen, filterCount } = this.props
+    const { classes, theme, year, validYears, groupedEvents, yearMenuOpen, filterCount } = this.props
     const officialEventsGrouped = groupedEvents && groupedEvents.filter(group => group.get('isOfficial'))
     const unofficialEventsGrouped = groupedEvents && groupedEvents.filter(group => !group.get('isOfficial'))
 
@@ -98,11 +104,53 @@ class EventListPageDesktop extends PureComponent {
       sections.push('unofficial')
     }
 
+    // Find current group by finding the first group with at least one event that isn't over
+    let currentGroup = null
+    if (groupedEvents) {
+      for (let group of groupedEvents) {
+        for (let event of group.get('events')) {
+          if (!event.isPast()) {
+            currentGroup = group.get('slug')
+            break
+          }
+        }
+        if (currentGroup) {
+          break
+        }
+      }
+    }
+
+    const transitionDuration = {
+      enter: theme.transitions.duration.enteringScreen,
+      exit: theme.transitions.duration.leavingScreen,
+    }
+
     return (
       <TBAPageContainer
         contentRef={el => this.setState({contentRef: el})}
         refreshFunction={this.props.refreshFunction}
       >
+        {this.state.contentRef &&
+          <Zoom
+            in={currentGroup}
+            timeout={transitionDuration}
+            style={{
+              transitionDelay: currentGroup ? transitionDuration.exit : 0,
+            }}
+            unmountOnExit
+          >
+            <ScrollLink
+              scrollEl={this.state.contentRef}
+              to={currentGroup}
+              component={Button}
+              variant='fab'
+              className={classes.fab}
+              color='secondary'
+            >
+              <EventIcon/>
+            </ScrollLink>
+          </Zoom>
+        }
         <ResponsiveLayout>
           <Grid container spacing={24}>
             <Grid item xs={3} lg={2}>
@@ -244,4 +292,4 @@ EventListPageDesktop.propTypes = {
   groupedEvents: ImmutablePropTypes.list,
 }
 
-export default withStyles(styles)(EventListPageDesktop)
+export default withStyles(styles, { withTheme: true })(EventListPageDesktop)

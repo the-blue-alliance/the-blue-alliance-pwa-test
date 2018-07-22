@@ -31,13 +31,21 @@ class ScrollLink extends PureComponent {
   }
 
   render() {
+    const { component, className, scrollEl, ...restProps } = this.props
+
+    let Component = component
+    if (!Component) {
+      Component = 'a'
+    }
+
     return (
-      <a
+      <Component
         onClick={this.handleClick}
-        className={this.props.classes.root}
+        className={className ? className : this.props.classes.root}
+        {...restProps}
       >
         {this.props.children}
-      </a>
+      </Component>
     )
   }
 }
