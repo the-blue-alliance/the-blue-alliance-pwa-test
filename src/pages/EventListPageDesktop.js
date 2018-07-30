@@ -132,7 +132,7 @@ class EventListPageDesktop extends PureComponent {
       >
         {this.state.contentRef &&
           <Zoom
-            in={currentGroup}
+            in={currentGroup !== null}
             timeout={transitionDuration}
             style={{
               transitionDelay: currentGroup ? transitionDuration.exit : 0,
