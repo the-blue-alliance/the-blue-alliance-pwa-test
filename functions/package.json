@@ -18,7 +18,7 @@
     "dotenv": "^5.0.1",
     "fbjs": "^0.8.16",
     "firebase-admin": "~5.12.1",
-    "firebase-functions": "^1.0.3",
+    "firebase-functions": "^2.0.2",
     "invariant": "^2.2.4",
     "is-plain-object": "^2.0.4",
     "isomorphic-fetch": "^2.2.1",
