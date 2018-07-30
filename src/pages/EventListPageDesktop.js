@@ -251,8 +251,10 @@ class EventListPageDesktop extends PureComponent {
                   {officialEventsGrouped.map(group => {
                     return (
                       <div key={group.get('slug')} id={group.get('slug')}>
-                        <Typography variant='title' gutterBottom>{group.get('label')}</Typography>
-                        <EventListCard events={group.get('events')}/>
+                        <EventListCard
+                          events={group.get('events')}
+                          label={group.get('label')}
+                        />
                       </div>
                     )
                   })}
@@ -264,8 +266,10 @@ class EventListPageDesktop extends PureComponent {
                   {unofficialEventsGrouped.map(group => {
                     return (
                       <div key={group.get('slug')} id={group.get('slug')}>
-                        <Typography variant='title' gutterBottom>{group.get('label')}</Typography>
-                        <EventListCard events={group.get('events')}/>
+                        <EventListCard
+                          events={group.get('events')}
+                          label={group.get('label')}
+                        />
                       </div>
                     )
                   })}

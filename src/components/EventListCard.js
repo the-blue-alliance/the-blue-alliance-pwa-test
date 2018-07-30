@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
+import EventListCardHeader from './EventListCardHeader'
 import VisibilityRenderer from './VisibilityRenderer'
 
 const styles = theme => ({
@@ -40,10 +41,11 @@ class EventListCard extends PureComponent {
   render() {
     console.log("Render EventListCard")
 
-    const { classes, events } = this.props
+    const { classes, events, label } = this.props
 
     return (
       <Paper className={classes.eventListCard} elevation={4}>
+        <EventListCardHeader label={label}/>
         {events.map((event, i) => {
           return (
             <VisibilityRenderer
@@ -96,6 +98,7 @@ class EventListCard extends PureComponent {
 EventListCard.propTypes = {
   classes: PropTypes.object.isRequired,
   events: ImmutablePropTypes.list,
+  label: PropTypes.string.isRequired,
 }
 
 export default withStyles(styles)(EventListCard)
