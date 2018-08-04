@@ -40,6 +40,7 @@ class EventListCard extends PureComponent {
           itemRenderer={this.itemRenderer}
           itemHeight={61}
           overscanCount={5}
+          renderAll
         />
       </Paper>
     )

@@ -16,6 +16,7 @@ const styles = theme => ({
 
 class VirtualList extends PureComponent {
   state = {
+    renderAll: false,
     scrollTop: 0,
     height: 0,
     offsetTop: null,
@@ -67,6 +68,13 @@ class VirtualList extends PureComponent {
       this.updatePosition(scrollElement)
       this.registerEventListeners(scrollElement)
     }
+
+    if (this.props.renderAll) {
+      ReactDOM.unstable_deferredUpdates(() => this.setState({renderAll: true}))
+      if (scrollElement) {
+        this.unregisterEventListeners(scrollElement)
+      }
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -98,6 +106,7 @@ class VirtualList extends PureComponent {
       itemRenderer,
       itemHeight,
       overscanCount,
+      renderAll,
     } = this.props
 
     return (
@@ -113,7 +122,7 @@ class VirtualList extends PureComponent {
             top <= this.state.scrollTop + this.state.height + itemHeight * overscanCount - this.state.offsetTop &&
             bottom >= this.state.scrollTop - itemHeight * overscanCount - this.state.offsetTop
           )
-          if (!isVisible) {
+          if (!isVisible && !this.state.renderAll) {
             return null
           }
           return itemRenderer({
@@ -133,6 +142,7 @@ VirtualList.propTypes = {
   itemRenderer: PropTypes.func.isRequired,
   itemHeight: PropTypes.number.isRequired,
   overscanCount: PropTypes.number.isRequired,
+  renderAll: PropTypes.bool.isRequired,
 }
 
 export default withStyles(styles)(VirtualList)
