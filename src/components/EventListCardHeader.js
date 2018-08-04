@@ -38,7 +38,7 @@ class EventListCardHeader extends PureComponent {
           tag="div"
           onChange={this.observerChange}
         />
-        <Paper className={classes.headerLabel} elevation={this.state.isRaised ? 4 : 0}>
+        <Paper className={classes.headerLabel} elevation={this.state.isRaised ? 4 : 0} square={this.state.isRaised}>
           <Typography variant='title'>{label}</Typography>
         </Paper>
         <Divider />
