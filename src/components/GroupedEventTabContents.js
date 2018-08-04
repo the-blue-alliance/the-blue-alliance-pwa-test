@@ -113,6 +113,7 @@ class GroupedEventTabContents extends PureComponent {
                 scrollId={slug}
                 events={group.get('events')}
                 isVisible={slug === activeEventGroup}
+                hasFAB={slug !== currentGroup}
               />
             )
           })}

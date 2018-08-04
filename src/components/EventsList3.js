@@ -26,6 +26,10 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     padding: `${theme.spacing.unit/2}px 0px 0px`,
   },
+  eventsCardWithFAB: {
+    margin: `${theme.spacing.unit}px ${theme.spacing.unit}px ${theme.spacing.unit*3 + 56}px `,
+    padding: `${theme.spacing.unit/2}px 0px 0px`,
+  },
 })
 
 class EventsList extends PureComponent {
@@ -152,7 +156,7 @@ class EventsList extends PureComponent {
   render() {
     console.log("Render EventsList")
 
-    const { classes, scrollId } = this.props
+    const { classes, scrollId, hasFAB } = this.props
 
     return (
       <ScrollRestoreContainer
@@ -164,7 +168,7 @@ class EventsList extends PureComponent {
           }
         }}
       >
-        <Paper className={classes.eventsCard}>
+        <Paper className={hasFAB ? classes.eventsCardWithFAB : classes.eventsCard}>
           <VirtualStickyHeaderList
             scrollElement={this.state.scrollRef}
             headers={this.state.headers}
@@ -186,6 +190,7 @@ EventsList.propTypes = {
   scrollId: PropTypes.string.isRequired,
   events: ImmutablePropTypes.list.isRequired,
   team: ImmutablePropTypes.record,
+  hasFAB: PropTypes.bool,
 }
 
 export default withStyles(styles)(EventsList)
