@@ -21,34 +21,32 @@ const styles = theme => ({
 
 
 class GroupedEventTabContents extends PureComponent {
+  currentGroup = null
+
   tabHandleChangeIndex = index => {
     this.props.setPageState({activeEventGroup: this.props.groupedEvents.get(index).get('slug')});
-  }
-
-  getCurrentGroup = () => {
-    let currentGroup = null
-    for (let group of this.props.groupedEvents) {
-      for (let event of group.get('events')) {
-        if (!event.isPast()) {
-          currentGroup = group.get('slug')
-          break
-        }
-      }
-      if (currentGroup) {
-        break
-      }
-    }
-    return currentGroup
   }
 
   componentDidMount() {
     const { activeEventGroup, groupedEvents, setPageState } = this.props
 
+    // Calculate currentGroup
+    for (let group of this.props.groupedEvents) {
+      for (let event of group.get('events')) {
+        if (!event.isPast()) {
+          this.currentGroup = group.get('slug')
+          break
+        }
+      }
+      if (this.currentGroup) {
+        break
+      }
+    }
+
     // Find current group by finding the first group with at least one event that isn't over
     if (activeEventGroup === null && groupedEvents) {
-      const currentGroup = this.getCurrentGroup()
-      if (currentGroup) {
-        setPageState({activeEventGroup: currentGroup})
+      if (this.currentGroup) {
+        setPageState({activeEventGroup: this.currentGroup})
       } else {
         setPageState({activeEventGroup: 'week-1'})
       }
@@ -74,12 +72,10 @@ class GroupedEventTabContents extends PureComponent {
       exit: theme.transitions.duration.leavingScreen,
     }
 
-    const currentGroup = this.getCurrentGroup()
-
     return (
       <React.Fragment>
         <Zoom
-          in={currentGroup !== null && activeEventGroup !== currentGroup}
+          in={this.currentGroup !== null && activeEventGroup !== this.currentGroup}
           timeout={transitionDuration}
           style={{
             transitionDelay: activeEventGroup ? transitionDuration.exit : 0,
@@ -89,7 +85,7 @@ class GroupedEventTabContents extends PureComponent {
             variant='fab'
             className={classes.fab}
             color='secondary'
-            onClick={() => this.props.setPageState({activeEventGroup: currentGroup})}
+            onClick={() => this.props.setPageState({activeEventGroup: this.currentGroup})}
           >
             <EventIcon/>
           </Button>
@@ -113,7 +109,7 @@ class GroupedEventTabContents extends PureComponent {
                 scrollId={slug}
                 events={group.get('events')}
                 isVisible={slug === activeEventGroup}
-                hasFAB={currentGroup !== null && slug !== currentGroup}
+                hasFAB={this.currentGroup !== null && slug !== this.currentGroup}
               />
             )
           })}
