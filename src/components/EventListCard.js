@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
+import classNames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 
+import green from '@material-ui/core/colors/green'
 import Divider from '@material-ui/core/Divider'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
@@ -19,6 +21,10 @@ const styles = theme => ({
   eventListItem: {
     height: 60,
     padding: `${theme.spacing.unit}px ${theme.spacing.unit*3}px`,
+  },
+  eventListItemLive: {
+    borderLeft: `${theme.spacing.unit}px solid ${green[500]}`,
+    paddingLeft: theme.spacing.unit*2,
   },
   eventListItemInvisibleWithoutDivider: {
     height: 60,
@@ -52,7 +58,7 @@ class EventListCard extends PureComponent {
               key={event.key}
               render={
                 <React.Fragment>
-                  <div className={classes.eventListItem}>
+                  <div className={classNames({[classes.eventListItem]: true, [classes.eventListItemLive]: event.isNow()})}>
                     <Grid container spacing={24}>
                       <Grid item xs={9}>
                         <div className={classes.verticalCenter}>

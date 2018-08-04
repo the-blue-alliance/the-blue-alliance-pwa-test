@@ -91,6 +91,14 @@ export default class Event extends Record({
     return moment.tz(this.end_date, this.timezone).add(1, 'days') < moment.now()
   }
 
+  isFuture() {
+    return moment.tz(this.start_date, this.timezone) > moment.now()
+  }
+
+  isNow() {
+    return !this.isPast() && !this.isFuture()
+  }
+
   isCMP() {
     return CMP_TYPES.has(this.event_type)
   }
