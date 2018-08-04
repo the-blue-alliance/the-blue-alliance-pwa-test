@@ -79,7 +79,7 @@ class GroupedEventTabContents extends PureComponent {
     return (
       <React.Fragment>
         <Zoom
-          in={activeEventGroup !== currentGroup}
+          in={currentGroup !== null && activeEventGroup !== currentGroup}
           timeout={transitionDuration}
           style={{
             transitionDelay: activeEventGroup ? transitionDuration.exit : 0,
@@ -113,7 +113,7 @@ class GroupedEventTabContents extends PureComponent {
                 scrollId={slug}
                 events={group.get('events')}
                 isVisible={slug === activeEventGroup}
-                hasFAB={slug !== currentGroup}
+                hasFAB={currentGroup !== null && slug !== currentGroup}
               />
             )
           })}
