@@ -18,7 +18,7 @@ class VirtualList extends PureComponent {
   state = {
     scrollTop: 0,
     height: 0,
-    offsetTop: 0,
+    offsetTop: null,
   }
 
   handleScroll = () => {
@@ -103,6 +103,10 @@ class VirtualList extends PureComponent {
     return (
       <List className={classes.list} style={{height: itemCount * itemHeight}}>
         {items.map((item, itemIndex) => {
+          if(this.state.offsetTop === null) {
+            return null
+          }
+
           const top = itemHeight * itemIndex
           const bottom = itemHeight * (itemIndex + 1)
           const isVisible = (
