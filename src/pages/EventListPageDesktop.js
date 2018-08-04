@@ -55,6 +55,7 @@ const styles = theme => ({
     position: 'fixed',
     bottom: theme.spacing.unit * 4,
     right: theme.spacing.unit * 4,
+    zIndex: theme.zIndex.appBar,
   },
   zeroDataContainer: {
     paddingTop: theme.spacing.unit*3,
@@ -252,13 +253,14 @@ class EventListPageDesktop extends PureComponent {
                   <Typography variant='subheading'>No events found</Typography>
                 </div>
               }
-              {officialEventsGrouped && officialEventsGrouped.size !== 0 &&
+              {this.state.contentRef && officialEventsGrouped && officialEventsGrouped.size !== 0 &&
                 <div id='official'>
                   <h2>Official Events</h2>
                   {officialEventsGrouped.map(group => {
                     return (
                       <div key={group.get('slug')} id={group.get('slug')}>
                         <EventListCard
+                          scrollRef={this.state.contentRef}
                           events={group.get('events')}
                           label={group.get('label')}
                         />
@@ -267,13 +269,14 @@ class EventListPageDesktop extends PureComponent {
                   })}
                 </div>
               }
-              {unofficialEventsGrouped && unofficialEventsGrouped.size !== 0 &&
+              {this.state.contentRef && unofficialEventsGrouped && unofficialEventsGrouped.size !== 0 &&
                 <div id='unofficial'>
                   <h2>Unofficial Events</h2>
                   {unofficialEventsGrouped.map(group => {
                     return (
                       <div key={group.get('slug')} id={group.get('slug')}>
                         <EventListCard
+                          scrollRef={this.state.contentRef}
                           events={group.get('events')}
                           label={group.get('label')}
                         />

@@ -1,107 +1,53 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import classNames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
-import { Link } from 'react-router-dom'
 
-import green from '@material-ui/core/colors/green'
-import Divider from '@material-ui/core/Divider'
-import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
-import Typography from '@material-ui/core/Typography'
 
+import EventListItemDesktop from './EventListItemDesktop'
 import EventListCardHeader from './EventListCardHeader'
-import VisibilityRenderer from './VisibilityRenderer'
+import VirtualList from './VirtualList'
 
 const styles = theme => ({
   eventListCard: {
     marginBottom: theme.spacing.unit*3,
   },
-  eventListItem: {
-    height: 60,
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit*3}px`,
-  },
-  eventListItemLive: {
-    borderLeft: `${theme.spacing.unit}px solid ${green[500]}`,
-    paddingLeft: theme.spacing.unit*2,
-  },
-  eventListItemInvisibleWithoutDivider: {
-    height: 60,
-  },
-  eventListItemInvisible: {
-    height: 61,
-  },
-  hiddenDivider: {
-    display: 'none',
-  },
-  verticalCenter: {
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
-  },
 })
 
 class EventListCard extends PureComponent {
+  itemRenderer = ({itemIndex, style}) => {
+    const event = this.props.events.get(itemIndex)
+    return (
+      <div key={event.key} style={style}>
+        <EventListItemDesktop style={style} event={event} hasDivider={this.props.events.size === itemIndex + 1} />
+      </div>
+    )
+  }
+
   render() {
     console.log("Render EventListCard")
 
-    const { classes, events, label } = this.props
+    const { classes, scrollRef, events, label } = this.props
 
     return (
       <Paper className={classes.eventListCard} elevation={4}>
         <EventListCardHeader label={label}/>
-        {events.map((event, i) => {
-          return (
-            <VisibilityRenderer
-              key={event.key}
-              render={
-                <React.Fragment>
-                  <div className={classNames({[classes.eventListItem]: true, [classes.eventListItemLive]: event.isNow()})}>
-                    <Grid container spacing={24}>
-                      <Grid item xs={9}>
-                        <div className={classes.verticalCenter}>
-                          <Typography variant='subheading' noWrap>
-                            <Link to={`/event/${event.key}`}>{event.name}</Link>
-                          </Typography>
-                          <Typography variant='body1'>
-                            {event.getCityStateCountry()}
-                          </Typography>
-                        </div>
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Typography variant='body1' align='right' className={classes.verticalCenter}>
-                          {event.getDateString()}
-                        </Typography>
-                      </Grid>
-                      {/*<Grid item xs={1}>
-                        <Tooltip title='Event webcast is offline' placement='right'>
-                          <IconButton color='default' disabled>
-                            <Icon>videocam_off</Icon>
-                          </IconButton>
-                        </Tooltip>
-                      </Grid>*/}
-                    </Grid>
-                  </div>
-                  <Divider className={events.size === i + 1 ? classes.hiddenDivider : null}/>
-                </React.Fragment>
-              }
-              fastRender={
-                events.size ===  i + 1 ?
-                <div className={classes.eventListItemInvisibleWithoutDivider} />
-                :
-                <div className={classes.eventListItemInvisible} />
-              }
-            />
-          )
-        })}
+        <VirtualList
+          scrollElement={scrollRef}
+          items={events}
+          itemCount={events.size}
+          itemRenderer={this.itemRenderer}
+          itemHeight={61}
+          overscanCount={5}
+        />
       </Paper>
     )
   }
 }
 
 EventListCard.propTypes = {
+  scrollRef: PropTypes.any.isRequired,
   classes: PropTypes.object.isRequired,
   events: ImmutablePropTypes.list,
   label: PropTypes.string.isRequired,

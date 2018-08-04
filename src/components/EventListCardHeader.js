@@ -15,6 +15,7 @@ const styles = theme => ({
     padding: `${theme.spacing.unit}px ${theme.spacing.unit*3}px`,
     position: 'sticky',
     top: -1,  // to ensure background pixels are covered up
+    zIndex: theme.zIndex.appBar - 1,
   },
 })
 
