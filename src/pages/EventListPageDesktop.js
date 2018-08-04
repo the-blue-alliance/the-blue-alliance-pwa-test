@@ -27,10 +27,16 @@ import NestedScrollspy from '../components/NestedScrollspy'
 const sideNavWidth = 160
 const styles = theme => ({
   sideNav: {
-    position: 'fixed',
+    position: 'sticky',
+    top: 0,
+    height: 'calc(100vh - 8rem)',
     width: '100%',
     maxWidth: sideNavWidth,
-    marginTop: theme.spacing.unit*3,
+    paddingTop: theme.spacing.unit*3,
+  },
+  scrollSpyContainer: {
+    height: 'calc(100vh - 14rem)',
+    overflowY: 'auto',
   },
   yearButton: {
     marginBottom: theme.spacing.unit*3,
@@ -204,30 +210,31 @@ class EventListPageDesktop extends PureComponent {
                   </div>
                 }
                 {this.state.contentRef && officialEventsGrouped && unofficialEventsGrouped &&
-                  <NestedScrollspy
-                    collapseSections
-                    contentRef={this.state.contentRef}
-                    sections={sections}
-                    sectionLabels={{
-                      'official': 'Official',
-                      'unofficial': 'Unofficial',
-                    }}
-                    sectionItems={{
-                      'official': officialEventsGrouped.map(group => {
-                        return ({
-                          'id': group.get('slug'),
-                          'label': group.get('label'),
-                        })
-                      }).toJS(),
-                      'unofficial': unofficialEventsGrouped.map(group => {
-                        return ({
-                          'id': group.get('slug'),
-                          'label': group.get('label'),
-                        })
-                      }).toJS(),
-                    }}
-                    activeItemCallback={this.scrollspyActiveCallback}
-                  />
+                  <div className={classes.scrollSpyContainer}>
+                    <NestedScrollspy
+                      contentRef={this.state.contentRef}
+                      sections={sections}
+                      sectionLabels={{
+                        'official': 'Official',
+                        'unofficial': 'Unofficial',
+                      }}
+                      sectionItems={{
+                        'official': officialEventsGrouped.map(group => {
+                          return ({
+                            'id': group.get('slug'),
+                            'label': group.get('label'),
+                          })
+                        }).toJS(),
+                        'unofficial': unofficialEventsGrouped.map(group => {
+                          return ({
+                            'id': group.get('slug'),
+                            'label': group.get('label'),
+                          })
+                        }).toJS(),
+                      }}
+                      activeItemCallback={this.scrollspyActiveCallback}
+                    />
+                  </div>
                 }
               </div>
             </Grid>
