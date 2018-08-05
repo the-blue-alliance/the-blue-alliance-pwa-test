@@ -5,21 +5,20 @@ import { withStyles } from '@material-ui/core/styles'
 import { Map, Set } from 'immutable'
 
 import Button from '@material-ui/core/Button'
-import Checkbox from '@material-ui/core/Checkbox'
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import Divider from '@material-ui/core/Divider'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
 
-const styles = {
+import EventFilterChip from './EventFilterChip'
+import { districtColors } from '../utils'
+
+const styles = theme => ({
   listWrapper: {
     maxHeight: '100%',
     overflow: 'auto',
   },
-}
+})
 
 // Fake district for filtering regionals
 const regional = Map({
@@ -54,28 +53,27 @@ class EventFilterDialog extends PureComponent {
 
   render() {
     return (
-      <Dialog onClose={this.handleClose} open={this.props.isOpen}>
+      <Dialog onClose={this.handleClose} open={this.props.isOpen} maxWidth='md'>
         <DialogTitle>Filter Events</DialogTitle>
         <Divider />
-        <div className={this.props.classes.listWrapper}>
-          <List>
-            <ListItem key={'regional'} button onClick={this.handleToggle(regional)}>
-              <Checkbox
-                checked={this.props.districtFilters.has(regional.get('key'))}
+        <div>
+          <EventFilterChip
+            label='Regionals'
+            color={districtColors['regional']}
+            selected={this.props.districtFilters.has(regional.get('key'))}
+            onClick={this.handleToggle(regional)}
+          />
+          {this.props.districts.map(district => {
+            return (
+              <EventFilterChip
+                key={district.get('key')}
+                label={`${district.get('abbreviation').toUpperCase()} District`}
+                color={districtColors[district.get('abbreviation')]}
+                selected={this.props.districtFilters.has(district.get('key'))}
+                onClick={this.handleToggle(district)}
               />
-              <ListItemText primary='Regionals' />
-            </ListItem>
-            {this.props.districts.map(district =>{
-              return (
-                <ListItem key={district.get('key')} button onClick={this.handleToggle(district)}>
-                  <Checkbox
-                    checked={this.props.districtFilters.has(district.get('key'))}
-                  />
-                  <ListItemText primary={`${district.get('display_name')} District`} />
-                </ListItem>
-              )
-            })}
-          </List>
+            )
+          })}
         </div>
         <Divider />
         <DialogActions>

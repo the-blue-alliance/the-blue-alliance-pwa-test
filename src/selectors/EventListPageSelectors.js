@@ -44,10 +44,10 @@ export const getSortedEvents = createSelector(
         if (a.end_date > b.end_date) {
           return 1
         }
-        if (a.safeShortName() < b.safeShortName()) {
+        if (a.name < b.name) {
           return -1
         }
-        if (a.safeShortName() > b.safeShortName()) {
+        if (a.name > b.name) {
           return 1
         }
         return 0
@@ -186,10 +186,10 @@ export const getDistricts = createSelector(
       })
     }
     return districts.sort((a, b) => {
-      if (a.get('display_name') < b.get('display_name')) {
+      if (a.get('abbreviation') < b.get('abbreviation')) {
         return -1
       }
-      if (a.get('display_name') > b.get('display_name')) {
+      if (a.get('abbreviation') > b.get('abbreviation')) {
         return 1
       }
       return 0

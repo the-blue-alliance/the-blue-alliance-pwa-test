@@ -10,12 +10,17 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { Link } from 'react-router-dom'
 
+import { districtColors } from '../utils'
+
 const styles = theme => ({
   eventListItem: {
     padding: `${theme.spacing.unit}px ${theme.spacing.unit*3}px`,
   },
   eventListItemLive: {
-    borderLeft: `${theme.spacing.unit}px solid ${green[500]}`,
+    borderRight: `${theme.spacing.unit}px solid ${green[500]}`,
+    paddingRight: theme.spacing.unit*2,
+  },
+  districtListItem: {
     paddingLeft: theme.spacing.unit*2,
   },
   hiddenDivider: {
@@ -31,10 +36,21 @@ const styles = theme => ({
 
 class EventListItem extends PureComponent {
   render() {
-    const { classes, event, hasDivider } = this.props
+    const { classes, theme, event, hasDivider } = this.props
     return (
       <React.Fragment>
-        <div className={classNames({[classes.eventListItem]: true, [classes.eventListItemLive]: event.isNow()})}>
+        <div
+          className={
+            classNames({
+              [classes.eventListItem]: true,
+              [classes.eventListItemLive]: event.isNow(),
+              [classes.districtListItem]: event.district,
+            })
+          }
+          style={event.district ? {
+            borderLeft: `${theme.spacing.unit}px solid ${districtColors[event.district.get('abbreviation')]}`,
+          } : {}}
+        >
           <Grid container spacing={24}>
             <Grid item xs={9}>
               <div className={classes.verticalCenter}>
@@ -72,4 +88,4 @@ EventListItem.propTypes = {
   hasDivider: PropTypes.bool.isRequired,
 }
 
-export default withStyles(styles)(EventListItem)
+export default withStyles(styles, {withTheme: true})(EventListItem)
