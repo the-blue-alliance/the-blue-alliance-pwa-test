@@ -20,8 +20,13 @@ const styles = theme => ({
     borderRight: `${theme.spacing.unit}px solid ${green[500]}`,
     paddingRight: theme.spacing.unit*2,
   },
-  districtListItem: {
-    paddingLeft: theme.spacing.unit*2,
+  districtIndicator: {
+    position: 'absolute',
+    top: theme.spacing.unit / 2,
+    left: theme.spacing.unit / 2,
+    bottom: theme.spacing.unit / 2,
+    width: theme.spacing.unit / 2,
+    borderRadius: theme.spacing.unit / 2,
   },
   hiddenDivider: {
     display: 'none',
@@ -44,13 +49,13 @@ class EventListItem extends PureComponent {
             classNames({
               [classes.eventListItem]: true,
               [classes.eventListItemLive]: event.isNow(),
-              [classes.districtListItem]: event.district,
             })
           }
-          style={event.district ? {
-            borderLeft: `${theme.spacing.unit}px solid ${districtColors[event.district.get('abbreviation')]}`,
-          } : {}}
         >
+          {event.district && <div
+            className={classes.districtIndicator}
+            style={{ backgroundColor: districtColors[event.district.get('abbreviation')] }}
+          />}
           <Grid container spacing={24}>
             <Grid item xs={9}>
               <div className={classes.verticalCenter}>
