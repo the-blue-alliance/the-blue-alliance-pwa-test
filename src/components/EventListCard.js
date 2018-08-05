@@ -34,6 +34,7 @@ class EventListCard extends PureComponent {
       <Paper className={classes.eventListCard} elevation={4}>
         <EventListCardHeader label={label}/>
         <VirtualList
+          key={events.size}  // Force remount if events change
           scrollElement={scrollRef}
           items={events}
           itemCount={events.size}
