@@ -77,9 +77,6 @@ class GroupedEventTabContents extends PureComponent {
         <Zoom
           in={this.currentGroup !== null && activeEventGroup !== this.currentGroup}
           timeout={transitionDuration}
-          style={{
-            transitionDelay: activeEventGroup ? transitionDuration.exit : 0,
-          }}
         >
           <Button
             variant='fab'

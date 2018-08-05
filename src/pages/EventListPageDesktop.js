@@ -18,9 +18,8 @@ import Zoom from '@material-ui/core/Zoom'
 // TBA Components
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ResponsiveLayout from '../components/ResponsiveLayout'
-import EventFilterDialogContainer from '../containers/EventFilterDialogContainer'
+import EventFilterContainer from '../containers/EventFilterContainer'
 import EventListCard from '../components/EventListCard'
-import HideableBadge from '../components/HideableBadge'
 import ScrollLink from '../components/ScrollLink'
 import NestedScrollspy from '../components/NestedScrollspy'
 
@@ -34,8 +33,15 @@ const styles = theme => ({
     maxWidth: sideNavWidth,
     paddingTop: theme.spacing.unit*3,
   },
+  rightBar: {
+    position: 'sticky',
+    top: 0,
+    height: 'calc(100vh - 8rem)',
+    width: '100%',
+    paddingTop: theme.spacing.unit*3,
+  },
   scrollSpyContainer: {
-    height: 'calc(100vh - 14rem)',
+    height: 'calc(100vh - 10rem)',
     overflowY: 'auto',
   },
   yearButton: {
@@ -99,7 +105,7 @@ class EventListPageDesktop extends PureComponent {
   render() {
     console.log("Render EventListPageDesktop")
 
-    const { classes, theme, year, validYears, groupedEvents, yearMenuOpen, filterCount } = this.props
+    const { classes, theme, year, validYears, groupedEvents, yearMenuOpen } = this.props
     const officialEventsGrouped = groupedEvents && groupedEvents.filter(group => group.get('isOfficial'))
     const unofficialEventsGrouped = groupedEvents && groupedEvents.filter(group => !group.get('isOfficial'))
 
@@ -141,9 +147,6 @@ class EventListPageDesktop extends PureComponent {
           <Zoom
             in={currentGroup !== null}
             timeout={transitionDuration}
-            style={{
-              transitionDelay: currentGroup ? transitionDuration.exit : 0,
-            }}
             unmountOnExit
           >
             <ScrollLink
@@ -192,24 +195,6 @@ class EventListPageDesktop extends PureComponent {
                   )}
                 </Menu>
 
-                {groupedEvents && groupedEvents.size !== 0 &&
-                  <div className={classes.buttonContainer}>
-                    <HideableBadge
-                      badgeContent={filterCount}
-                      color='secondary'
-                      hidden={filterCount === 0}
-                    >
-                      <Button
-                        color='default'
-                        variant="raised"
-                        onClick={this.props.filterFunction}
-                      >
-                          <Icon className={classes.leftIcon}>filter_list</Icon>
-                        Filter
-                      </Button>
-                    </HideableBadge>
-                  </div>
-                }
                 {this.state.contentRef && officialEventsGrouped && unofficialEventsGrouped &&
                   <div className={classes.scrollSpyContainer}>
                     <NestedScrollspy
@@ -239,7 +224,7 @@ class EventListPageDesktop extends PureComponent {
                 }
               </div>
             </Grid>
-            <Grid item xs={9} lg={10}>
+            <Grid item xs={7} lg={8}>
               <h1>{year} <em>FIRST</em> Robotics Competition Events</h1>
               {!groupedEvents &&
                 <div className={classes.zeroDataContainer}>
@@ -286,9 +271,13 @@ class EventListPageDesktop extends PureComponent {
                 </div>
               }
             </Grid>
+            <Grid item xs={2}>
+              <div className={classes.rightBar}>
+                {groupedEvents && <EventFilterContainer year={year} />}
+              </div>
+            </Grid>
           </Grid>
         </ResponsiveLayout>
-        <EventFilterDialogContainer year={year} />
       </TBAPageContainer>
     )
   }
@@ -297,10 +286,8 @@ class EventListPageDesktop extends PureComponent {
 EventListPageDesktop.propTypes = {
   classes: PropTypes.object.isRequired,
   refreshFunction: PropTypes.func.isRequired,
-  filterFunction: PropTypes.func.isRequired,
   setYearMenuOpen: PropTypes.func.isRequired,
   setPageState: PropTypes.func.isRequired,
-  filterCount: PropTypes.number.isRequired,
   yearMenuOpen: PropTypes.bool.isRequired,
   year: PropTypes.number.isRequired,
   groupedEvents: ImmutablePropTypes.list,
