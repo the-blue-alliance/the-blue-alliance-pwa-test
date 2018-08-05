@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 import { List, Map, Set } from 'immutable'
+import unidecode from 'unidecode'
 import { getCurrentPageState, getYear } from '../selectors/CommonPageSelectors'
 import Event from '../database/Event'
 import { slugify } from '../utils'
@@ -21,6 +22,10 @@ const getYearEvents = createSelector(
     }
   }
 )
+
+const getLocationFilter = (state, props) => {
+  return getCurrentPageState(state, props).get('locationFilter')
+}
 
 const getDistrictFilters = (state, props) => {
   return getCurrentPageState(state, props).get('districtFilters')
@@ -60,9 +65,11 @@ export const getSortedEvents = createSelector(
 // Grouped by preseason, week, championship, FoC, and offseason month
 // With applied filters
 export const getFilteredGroupedEvents = createSelector(
-  [getSortedEvents, getDistrictFilters],
-  (events, districtFilters) => {
+  [getSortedEvents, getLocationFilter, getDistrictFilters],
+  (events, locationFilter, districtFilters) => {
     if (events) {
+      const filterLowerCase = locationFilter ? locationFilter.toLowerCase() : ''
+
       let groupedEvents = List()
       let preseasonEvents = List()
       let weekEvents = List()
@@ -70,7 +77,9 @@ export const getFilteredGroupedEvents = createSelector(
       let focEvents = List()
       let offseasonEvents = List()
 
-      events.filter(event => {
+      events.filter(event => (
+        event.getCityStateCountryLower() && unidecode(event.getCityStateCountryLower()).includes(filterLowerCase)
+      )).filter(event => {
         return districtFilters && (
           districtFilters.size === 0 ||
           districtFilters.has(event.getIn(['district', 'key'])) ||

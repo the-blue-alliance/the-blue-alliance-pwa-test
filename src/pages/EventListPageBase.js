@@ -24,6 +24,7 @@ const mapStateToProps = (state, props) => ({
   // Params
   year: getYear(state, props),
   // States
+  locationFilter: getCurrentPageState(state, props).get('locationFilter'),
   districtFilters: getCurrentPageState(state, props).get('districtFilters'),
   yearMenuOpen: getCurrentPageState(state, props).get('yearMenuOpen'),
   // Data
@@ -59,6 +60,7 @@ class EventListPageBase extends PureComponent {
     this.props.resetPage({
       activeEventGroup: null,
       filterDialogOpen: false,
+      locationFilter: '',
       districtFilters: Set(),
       yearMenuOpen: false,
     })
@@ -71,7 +73,7 @@ class EventListPageBase extends PureComponent {
   render() {
     console.log("Render EventListPageBase")
 
-    const { year, districtFilters } = this.props
+    const { year, locationFilter, districtFilters } = this.props
 
     // Compute valid years
     let validYears = []
@@ -79,7 +81,7 @@ class EventListPageBase extends PureComponent {
       validYears.push(y)
     }
 
-    const filterCount = districtFilters ? districtFilters.size : 0
+    const filterCount = (locationFilter === '' ? 0 : 1) + (districtFilters ? districtFilters.size : 0)
 
     return (
       <React.Fragment>

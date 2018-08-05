@@ -8,6 +8,7 @@ import EventFilter from '../components/EventFilter'
 const mapStateToProps = (state, props) => ({
   // Params
   // States
+  locationFilter: getCurrentPageState(state, props).get('locationFilter'),
   districtFilters: getCurrentPageState(state, props).get('districtFilters'),
   districts: getDistricts(state, props),
   // Data

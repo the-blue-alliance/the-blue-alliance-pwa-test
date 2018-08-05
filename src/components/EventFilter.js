@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles'
 import { Map, Set } from 'immutable'
 
 import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Zoom from '@material-ui/core/Zoom'
 
@@ -14,6 +15,11 @@ import { districtColors } from '../utils'
 const styles = theme => ({
   title: {
     margin: theme.spacing.unit,
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: '100%',
   },
   clearButton: {
     margin: theme.spacing.unit,
@@ -28,6 +34,7 @@ const regional = Map({
 class EventFilter extends PureComponent {
   handleClear = () => {
     this.props.setPageState({
+      locationFilter: '',
       districtFilters: Set(),
     })
   }
@@ -46,6 +53,13 @@ class EventFilter extends PureComponent {
     })
   }
 
+  handleLocationFilter = (event) => {
+    const location = event.target.value
+    this.props.setPageState({
+      locationFilter: location,
+    })
+  }
+
   render() {
     const { classes, theme } = this.props
 
@@ -57,6 +71,13 @@ class EventFilter extends PureComponent {
     return (
       <React.Fragment>
         <Typography variant='title' className={classes.title}>Filters</Typography>
+        <TextField
+          label='Location'
+          className={classes.textField}
+          value={this.props.locationFilter}
+          onChange={this.handleLocationFilter}
+          margin='normal'
+        />
         <EventFilterChip
           label='Regionals'
           color={districtColors['regional']}
@@ -75,7 +96,7 @@ class EventFilter extends PureComponent {
           )
         })}
         <Zoom
-          in={this.props.districtFilters.size !== 0}
+          in={this.props.locationFilter !== '' || this.props.districtFilters.size !== 0}
           timeout={transitionDuration}
         >
           <Button variant='outlined' className={classes.clearButton} onClick={this.handleClear}>

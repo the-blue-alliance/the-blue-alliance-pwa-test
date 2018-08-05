@@ -65,6 +65,17 @@ export default class Event extends Record({
     return this.cityStateCountry
   }
 
+  getCityStateCountryLower() {
+    if (this.cityStateCountryLower === undefined) {
+      if (this.getCityStateCountry()) {
+        this.cityStateCountryLower = this.getCityStateCountry().toLowerCase()
+      } else {
+        this.cityStateCountryLower = null
+      }
+    }
+    return this.cityStateCountryLower
+  }
+
   getDateString() {
     if (this.dateStr === undefined) {
       const startDate = new Date(this.start_date)

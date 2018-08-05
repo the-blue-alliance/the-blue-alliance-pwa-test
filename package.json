@@ -42,6 +42,7 @@
     "reselect": "^3.0.1",
     "stackdriver-errors-js": "^0.4.0",
     "sweet-scroll": "^3.0.0",
+    "unidecode": "^0.1.8",
     "why-did-you-update": "^0.1.1"
   },
   "devDependencies": {
