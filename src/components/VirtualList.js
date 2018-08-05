@@ -108,7 +108,6 @@ class VirtualList extends PureComponent {
       itemRenderer,
       itemHeight,
       overscanCount,
-      renderAll,
     } = this.props
 
     return (
