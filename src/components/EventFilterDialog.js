@@ -9,14 +9,21 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogActions from '@material-ui/core/DialogActions'
 import Divider from '@material-ui/core/Divider'
+import TextField from '@material-ui/core/TextField'
 
 import EventFilterChip from './EventFilterChip'
 import { districtColors } from '../utils'
 
 const styles = theme => ({
-  listWrapper: {
-    maxHeight: '100%',
-    overflow: 'auto',
+  textContainer: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+  },
+  textField: {
+    width: '100%',
+  },
+  chipContainer: {
+    overflowY: 'auto',
   },
 })
 
@@ -33,6 +40,7 @@ class EventFilterDialog extends PureComponent {
   handleClear = () => {
     this.props.setPageState({
       filterDialogOpen: false,
+      locationFilter: '',
       districtFilters: Set(),
     })
   }
@@ -51,12 +59,30 @@ class EventFilterDialog extends PureComponent {
     })
   }
 
+  handleLocationFilter = (event) => {
+    const location = event.target.value
+    this.props.setPageState({
+      locationFilter: location,
+    })
+  }
+
   render() {
+    const { classes } = this.props
     return (
       <Dialog onClose={this.handleClose} open={this.props.isOpen} maxWidth='md'>
         <DialogTitle>Filter Events</DialogTitle>
         <Divider />
-        <div>
+        <div className={classes.textContainer}>
+          <TextField
+            label='Location'
+            className={classes.textField}
+            value={this.props.locationFilter}
+            onChange={this.handleLocationFilter}
+            margin='normal'
+          />
+        </div>
+        <Divider />
+        <div className={classes.chipContainer}>
           <EventFilterChip
             label='Regionals'
             color={districtColors['regional']}

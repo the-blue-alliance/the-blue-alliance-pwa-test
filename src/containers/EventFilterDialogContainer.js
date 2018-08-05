@@ -9,6 +9,7 @@ const mapStateToProps = (state, props) => ({
   // Params
   // States
   isOpen: getCurrentPageState(state, props).get('filterDialogOpen'),
+  locationFilter: getCurrentPageState(state, props).get('locationFilter'),
   districtFilters: getCurrentPageState(state, props).get('districtFilters'),
   districts: getDistricts(state, props),
   // Data
