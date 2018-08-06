@@ -1,5 +1,3 @@
-// import 'intersection-observer'  // Polyfill
-
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import Observer from 'react-intersection-observer'
