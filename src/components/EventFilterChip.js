@@ -29,7 +29,11 @@ class EventFilterChip extends PureComponent {
     return (
       <Chip
         className={classes.chip}
-        style={selected && color ? {backgroundColor: color, color: theme.palette.getContrastText(color)} : {}}
+        style={selected && color ? {
+          backgroundColor: color,
+          color: theme.palette.getContrastText(color),
+          border: `1px solid ${selected ? theme.palette.getContrastText(color) : '#fff'}`
+        } : {}}
         label={
           <React.Fragment>
             <span
