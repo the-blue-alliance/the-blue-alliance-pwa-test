@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from '@material-ui/core/styles'
@@ -32,7 +33,13 @@ const regional = Map({
 })
 
 class EventFilter extends PureComponent {
+  constructor(props) {
+    super(props)
+    this.locationInput = React.createRef()
+  }
+
   handleClear = () => {
+    this.locationInput.current.value = ''
     this.props.setPageState({
       locationFilter: '',
       districtFilters: Set(),
@@ -55,9 +62,9 @@ class EventFilter extends PureComponent {
 
   handleLocationFilter = (event) => {
     const location = event.target.value
-    this.props.setPageState({
+    requestAnimationFrame(() => ReactDOM.unstable_deferredUpdates(() => this.props.setPageState({
       locationFilter: location,
-    })
+    })))
   }
 
   render() {
@@ -72,9 +79,10 @@ class EventFilter extends PureComponent {
       <React.Fragment>
         <Typography variant='title' className={classes.title}>Filters</Typography>
         <TextField
+          inputRef={this.locationInput}
           label='Location'
           className={classes.textField}
-          value={this.props.locationFilter}
+          defaultValue={this.props.locationFilter}
           onChange={this.handleLocationFilter}
           margin='normal'
         />

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from '@material-ui/core/styles'
@@ -33,11 +34,17 @@ const regional = Map({
 })
 
 class EventFilterDialog extends PureComponent {
+  constructor(props) {
+    super(props)
+    this.locationInput = React.createRef()
+  }
+
   handleClose = () => {
     this.props.setPageState({ filterDialogOpen: false })
   }
 
   handleClear = () => {
+    this.locationInput.current.value = ''
     this.props.setPageState({
       filterDialogOpen: false,
       locationFilter: '',
@@ -61,9 +68,9 @@ class EventFilterDialog extends PureComponent {
 
   handleLocationFilter = (event) => {
     const location = event.target.value
-    this.props.setPageState({
+    requestAnimationFrame(() => ReactDOM.unstable_deferredUpdates(() => this.props.setPageState({
       locationFilter: location,
-    })
+    })))
   }
 
   render() {
@@ -74,9 +81,10 @@ class EventFilterDialog extends PureComponent {
         <Divider />
         <div className={classes.textContainer}>
           <TextField
+            inputRef={this.locationInput}
             label='Location'
             className={classes.textField}
-            value={this.props.locationFilter}
+            defaultValue={this.props.locationFilter}
             onChange={this.handleLocationFilter}
             margin='normal'
           />

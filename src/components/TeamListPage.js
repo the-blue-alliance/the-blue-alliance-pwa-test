@@ -61,9 +61,10 @@ class TeamListPage extends PureComponent {
   }
 
   handleTextFieldChange = (e) => {
-    this.props.setPageState({
-      filter: e.target.value
-    })
+    const filter = e.target.value
+    requestAnimationFrame(() => ReactDOM.unstable_deferredUpdates(() => this.props.setPageState({
+      filter,
+    })))
   }
 
   render() {
