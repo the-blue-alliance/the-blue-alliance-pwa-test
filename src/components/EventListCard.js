@@ -20,7 +20,7 @@ class EventListCard extends PureComponent {
     const event = this.props.events.get(itemIndex)
     return (
       <div key={event.key} style={style}>
-        <EventListItemDesktop style={style} event={event} hasDivider={this.props.events.size === itemIndex + 1} />
+        <EventListItemDesktop event={event} hasDivider={this.props.events.size === itemIndex + 1} />
       </div>
     )
   }
