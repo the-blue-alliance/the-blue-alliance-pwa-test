@@ -72,9 +72,6 @@ class VirtualList extends PureComponent {
     if (this.props.renderAll) {
       requestAnimationFrame(() => {
         ReactDOM.unstable_deferredUpdates(() => this.setState({renderAll: true}))
-        if (scrollElement) {
-          this.unregisterEventListeners(scrollElement)
-        }
       })
     }
   }
@@ -90,6 +87,10 @@ class VirtualList extends PureComponent {
         this.unregisterEventListeners(prevScrollElement)
       }
       this.registerEventListeners(scrollElement)
+    }
+
+    if (this.state.renderAll && scrollElement) {
+      this.unregisterEventListeners(scrollElement)
     }
   }
 
