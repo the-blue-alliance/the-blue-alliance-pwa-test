@@ -36,6 +36,10 @@ db.version(10).stores({  // Rename table
 }).upgrade(function (t) {
   t.teamEventStatus.clear()
 })
+db.version(11).stores({
+  media: '&key',
+  mediaTeams: '&key, mediaKey, teamKey, teamKey_year',
+})
 
 export default db;
 
@@ -119,6 +123,20 @@ export const addTeamEventStatuses = (statuses) => {
   db.teamEventStatuses.bulkPut(statuses)
 }
 
+export const addMedias = (medias) => db.media.bulkPut(medias)
+
+export const addTeamMedias = (teamKey, medias, year) => {
+  addMedias(medias)
+  db.mediaTeams.bulkPut(medias.map(media => {
+    return {
+      key: `${media.key}_${teamKey}`,
+      mediaKey: media.key,
+      teamKey: teamKey,
+      teamKey_year: `${teamKey}_${year}`,
+    }
+  }))
+}
+
 export const addUserFavorites = (favorites) => {
   db.userFavorites.bulkPut(favorites)
 }
@@ -147,4 +165,12 @@ export const augmentTeamEventStatus = (
   newStatus.year = year
   newStatus.teamKey_year = `${teamKey}_${year}`
   return newStatus
+}
+
+export const augmentMedia = (
+  media,
+) => {
+  var newMedia = Object.assign({}, media)
+  newMedia.key = `${media.type}_${media.foreign_key}`
+  return newMedia
 }

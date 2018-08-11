@@ -15,6 +15,7 @@ import {
   fetchTeamYearEvents,
   fetchTeamYearMatches,
   fetchTeamYearEventStatuses,
+  fetchTeamYearMedia,
 } from '../actions'
 
 // Selectors
@@ -64,6 +65,7 @@ const mapDispatchToProps = (dispatch) => ({
   fetchTeamYearEvents: (teamNumber, year) => dispatch(fetchTeamYearEvents(teamNumber, year)),
   fetchTeamYearMatches: (teamNumber, year) => dispatch(fetchTeamYearMatches(teamNumber, year)),
   fetchTeamYearEventStatuses: (teamNumber, year) => dispatch(fetchTeamYearEventStatuses(teamNumber, year)),
+  fetchTeamYearMedia: (teamNumber, year) => dispatch(fetchTeamYearMedia(teamNumber, year)),
 })
 
 class TeamPageBase extends PureComponent {
@@ -76,6 +78,7 @@ class TeamPageBase extends PureComponent {
       store.dispatch(fetchTeamYearEvents(teamNumber, year)),
       store.dispatch(fetchTeamYearMatches(teamNumber, year)),
       store.dispatch(fetchTeamYearEventStatuses(teamNumber, year)),
+      store.dispatch(fetchTeamYearMedia(teamNumber, year)),
     ])
   }
 
@@ -86,6 +89,7 @@ class TeamPageBase extends PureComponent {
     this.props.fetchTeamYearEvents(this.props.teamNumber, this.props.year)
     this.props.fetchTeamYearMatches(this.props.teamNumber, this.props.year)
     this.props.fetchTeamYearEventStatuses(this.props.teamNumber, this.props.year)
+    this.props.fetchTeamYearMedia(this.props.teamNumber, this.props.year)
   }
 
   setYearMenuOpen = (isOpen) => {

@@ -12,9 +12,11 @@ import db, {
   addTeams,
   addTeamEvents,
   addTeamEventStatuses,
+  addTeamMedias,
   addUserFavorites,
   augmentAward,
   augmentTeamEventStatus,
+  augmentMedia,
 } from '../database/db'
 import fetch from 'isomorphic-fetch'
 import moment from 'moment'
@@ -514,6 +516,40 @@ export function fetchTeamYearEventStatuses(teamNumber, year) {
       },
       writeDB: (statuses) => {
         addTeamEventStatuses(statuses)
+      },
+    })
+  }
+}
+
+export function fetchTeamYearMedia(teamNumber, year) {
+  return (dispatch, getState) => {
+    const teamKey = `frc${teamNumber}`
+    return createFetcher({
+      dispatch,
+      getState,
+      endpointUrl: `/api/v3/team/${teamKey}/media/${year}`,
+      query: db.mediaTeams.where('teamKey_year').equals(`${teamKey}_${year}`),
+      join: (mediaTeams) => {
+        return Promise.all(mediaTeams.map(mediaTeam => db.media.get(mediaTeam.mediaKey)))
+      },
+      isCollection: true,
+      transformData: (medias) => {
+        var newMedias = []
+        for (var media of medias) {
+          newMedias.push(augmentMedia(media))
+        }
+        return newMedias
+      },
+      createAction: (medias) => {
+        return {
+          type: types.RECEIVE_TEAM_YEAR_MEDIA,
+          teamKey,
+          year,
+          data: medias,
+        }
+      },
+      writeDB: (medias) => {
+        addTeamMedias(teamKey, medias, year)
       },
     })
   }
