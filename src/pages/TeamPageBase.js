@@ -28,6 +28,7 @@ import {
   getAwardsByEvent,
   getMatchesByEvent,
   getStatusByEvent,
+  getTeamYearMedias,
 } from '../selectors/TeamPageSelectors'
 
 // Components
@@ -52,6 +53,7 @@ const mapStateToProps = (state, props) => ({
   awardsByEvent: getAwardsByEvent(state, props),
   matchesByEvent: getMatchesByEvent(state, props),
   statusByEvent: getStatusByEvent(state, props),
+  teamYearMedias: getTeamYearMedias(state, props),
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -119,6 +121,7 @@ class TeamPageBase extends PureComponent {
       awardsByEvent,
       matchesByEvent,
       statusByEvent,
+      teamYearMedias,
     } = this.props
 
     let teamTitle = `Team ${teamNumber}`
@@ -152,6 +155,7 @@ class TeamPageBase extends PureComponent {
             awardsByEvent={awardsByEvent}
             matchesByEvent={matchesByEvent}
             statusByEvent={statusByEvent}
+            teamYearMedias={teamYearMedias}
           />
         </Hidden>
         <Hidden mdUp>
@@ -170,6 +174,7 @@ class TeamPageBase extends PureComponent {
             awardsByEvent={awardsByEvent}
             matchesByEvent={matchesByEvent}
             statusByEvent={statusByEvent}
+            teamYearMedias={teamYearMedias}
           />
         </Hidden>
       </React.Fragment>

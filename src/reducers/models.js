@@ -90,6 +90,12 @@ const models = (state = Map(), action) => {
         'teamEventStatuses',
         ['byTeamYear', action.teamKey, action.year],
         action.data)
+    case types.RECEIVE_TEAM_YEAR_MEDIA:
+      return updateMulti(
+        state,
+        'media',
+        ['byTeamYear', action.teamKey, action.year],
+        action.data)
     case types.RECEIVE_EVENT_INFO:
       return updateSingle(
         state,

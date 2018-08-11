@@ -4,6 +4,7 @@ import { getYear } from '../selectors/CommonPageSelectors'
 import Award from '../database/Award'
 import Event from '../database/Event'
 import Match from '../database/Match'
+import Media from '../database/Media'
 import Team from '../database/Team'
 
 export const getTeamNumber = (state, props) => {
@@ -191,6 +192,24 @@ export const getStatusByEvent = createSelector(
   (statusesByKey, keys) => {
     if (keys) {
       return keys.toSeq().map(key => statusesByKey.get(key))
+    }
+  }
+)
+
+const getMediaByKey = (state, props) => {
+  return state.getIn(['models', 'media', 'byKey'])
+}
+
+const getTeamYearMediaKeys = (state, props) => {
+  return state.getIn(['models', 'media', 'collections', 'byTeamYear', `frc${getTeamNumber(state, props)}`, getYear(state, props)])
+}
+
+export const getTeamYearMedias = createSelector(
+  getMediaByKey,
+  getTeamYearMediaKeys,
+  (mediaByKey, keys) => {
+    if (keys) {
+      return keys.toSeq().map(key => new Media(mediaByKey.get(key)))
     }
   }
 )

@@ -8,6 +8,9 @@ import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import EventIcon from '@material-ui/icons/Event'
 import Grid from '@material-ui/core/Grid'
+import GridList from '@material-ui/core/GridList'
+import GridListTile from '@material-ui/core/GridListTile'
+import GridListTileBar from '@material-ui/core/GridListTileBar'
 import Icon from '@material-ui/core/Icon'
 import LocalMoviesIcon from '@material-ui/icons/LocalMovies'
 import Menu from '@material-ui/core/Menu'
@@ -95,7 +98,10 @@ class TeamPageDesktop extends PureComponent {
       awardsByEvent,
       matchesByEvent,
       statusByEvent,
+      teamYearMedias,
     } = this.props
+
+    const images = teamYearMedias ? teamYearMedias.filter(m => m.isImage()) : undefined
 
     return (
       <TBAPageContainer
@@ -235,7 +241,15 @@ class TeamPageDesktop extends PureComponent {
                 <h2>Media</h2>
                 <div id='photos'>
                   <Typography variant='title' gutterBottom>Photos</Typography>
-                  {true &&
+                  {images ?
+                    <GridList cols={5}>
+                      {images.map(img => (
+                        <GridListTile key={img.key} cols={1}>
+                          <img src={img.getThumbnailURL()} />
+                        </GridListTile>
+                      ))}
+                    </GridList>
+                    :
                     <div className={classes.zeroDataContainer}>
                       <PhotoLibraryIcon className={classes.zeroDataIcon} />
                       <Typography variant='subheading'>No photos</Typography>
