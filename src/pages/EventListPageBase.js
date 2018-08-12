@@ -41,7 +41,13 @@ const mapDispatchToProps = (dispatch) => ({
 
 class EventListPageBase extends PureComponent {
   static fetchData({ store, params }) {
-    return store.dispatch(fetchYearEvents(params.year ? params.year : 2018))
+    let { year } = params
+    if (year === undefined) {
+      year = 2018  // TODO don't hardcode
+    } else {
+      year = parseInt(year, 10)
+    }
+    return store.dispatch(fetchYearEvents(year))
   }
 
   refreshFunction = () => {
