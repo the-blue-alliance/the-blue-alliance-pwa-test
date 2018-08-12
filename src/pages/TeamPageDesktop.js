@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 
 // Components
+import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import EventIcon from '@material-ui/icons/Event'
@@ -43,6 +44,13 @@ const styles = theme => ({
   },
   infoIcon: {
     fontSize: 'inherit',
+  },
+  mainRobotImage: {
+    float: 'right',
+    margin: theme.spacing.unit,
+    height: 150,
+    width: 150,
+    boxShadow: theme.shadows[4],
   },
   zeroDataContainer: {
     paddingTop: theme.spacing.unit*3,
@@ -102,6 +110,7 @@ class TeamPageDesktop extends PureComponent {
     } = this.props
 
     const images = teamYearMedias ? teamYearMedias.filter(m => m.isImage()) : undefined
+    const mainRobotImage = images ? images.filter(i => i.preferred).toList().get(0) : undefined
 
     return (
       <TBAPageContainer
@@ -187,6 +196,9 @@ class TeamPageDesktop extends PureComponent {
             <Grid item xs={9} lg={10}>
               <div id='team-info'>
                 <h1>Team {teamNumber}{team && team.nickname && ` - ${team.nickname}`}</h1>
+                {mainRobotImage &&
+                  <Avatar alt={`Team ${teamNumber}`} src={mainRobotImage.getThumbnailURL()} className={classes.mainRobotImage} />
+                }
                 {team && team.getCityStateCountry() &&
                   <Typography variant='body1'>
                     <Icon className={classes.infoIcon}>location_on</Icon> From <a target='_blank' href={`https://www.google.com/maps?q=${team.getCityStateCountry()}`}>{team.getCityStateCountry()}</a>
