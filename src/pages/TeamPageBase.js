@@ -128,6 +128,8 @@ class TeamPageBase extends PureComponent {
     if (team && team.get('nickname')) {
       teamTitle = `${team.get('nickname')} - Team ${teamNumber}`
     }
+    const images = teamYearMedias ? teamYearMedias.filter(m => m.isImage()) : undefined
+    const mainRobotImage = images ? images.filter(i => i.preferred).toList().get(0) : undefined
 
     return (
       <React.Fragment>
@@ -139,6 +141,11 @@ class TeamPageBase extends PureComponent {
               content={`Team information and competition results for ${teamTitle}` + (team.getCityStateCountry() ? ` from ${team.getCityStateCountry()}.` : '.')}
             />
           }
+          <meta
+            property='og:image'
+            content={mainRobotImage ? mainRobotImage.getThumbnailURL() : 'https://pwa.thebluealliance.com/icon-512.png'}
+          />
+        }
         </TBAHelmet>
         <Hidden smDown>
           <TeamPageDesktop
@@ -155,7 +162,8 @@ class TeamPageBase extends PureComponent {
             awardsByEvent={awardsByEvent}
             matchesByEvent={matchesByEvent}
             statusByEvent={statusByEvent}
-            teamYearMedias={teamYearMedias}
+            images={images}
+            mainRobotImage={mainRobotImage}
           />
         </Hidden>
         <Hidden mdUp>
@@ -174,7 +182,8 @@ class TeamPageBase extends PureComponent {
             awardsByEvent={awardsByEvent}
             matchesByEvent={matchesByEvent}
             statusByEvent={statusByEvent}
-            teamYearMedias={teamYearMedias}
+            images={images}
+            mainRobotImage={mainRobotImage}
           />
         </Hidden>
       </React.Fragment>

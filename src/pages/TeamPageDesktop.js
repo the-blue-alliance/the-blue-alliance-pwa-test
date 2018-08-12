@@ -113,11 +113,9 @@ class TeamPageDesktop extends PureComponent {
       awardsByEvent,
       matchesByEvent,
       statusByEvent,
-      teamYearMedias,
+      images,
+      mainRobotImage,
     } = this.props
-
-    const images = teamYearMedias ? teamYearMedias.filter(m => m.isImage()) : undefined
-    const mainRobotImage = images ? images.filter(i => i.preferred).toList().get(0) : undefined
 
     return (
       <TBAPageContainer
