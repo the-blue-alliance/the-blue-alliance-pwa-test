@@ -52,6 +52,13 @@ const styles = theme => ({
     width: 150,
     boxShadow: theme.shadows[4],
   },
+  photosContainer: {
+    marginBottom: theme.spacing.unit * 3,
+  },
+  imageGridItem: {
+    margin: theme.spacing.unit,
+    boxShadow: theme.shadows[4],
+  },
   zeroDataContainer: {
     paddingTop: theme.spacing.unit*3,
     display: 'flex',
@@ -251,12 +258,12 @@ class TeamPageDesktop extends PureComponent {
               </div>
               <div id='media'>
                 <h2>Media</h2>
-                <div id='photos'>
+                <div id='photos' className={classes.photosContainer}>
                   <Typography variant='title' gutterBottom>Photos</Typography>
                   {images ?
                     <GridList cols={5}>
                       {images.map(img => (
-                        <GridListTile key={img.key} cols={1}>
+                        <GridListTile key={img.key} cols={1} className={classes.imageGridItem}>
                           <img src={img.getThumbnailURL()} />
                         </GridListTile>
                       ))}
