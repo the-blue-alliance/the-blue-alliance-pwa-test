@@ -1,3 +1,4 @@
+import ReactDOM from 'react-dom'
 import * as types from '../constants/ActionTypes'
 import * as sources from '../constants/DataSources'
 import db, {
@@ -135,6 +136,17 @@ const handleErrors = (response) => {
   return response.json()
 }
 
+const doAsync = (fn) => {
+  if (typeof window === 'undefined') {
+    // Don't do async if SSR
+    fn()
+  } else if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => ReactDOM.unstable_deferredUpdates(() => fn()))
+  } else {
+    setTimeout(() => ReactDOM.unstable_deferredUpdates(() => fn()), 0)
+  }
+}
+
 const createFetcher = ({
   dispatch,
   getState,
@@ -157,10 +169,12 @@ const createFetcher = ({
       Promise.all([fullQueryFast, db.apiCalls.get(endpointUrl)]).then(values => {
         const [data, apiCall] = values
         // If isCollection, make sure we've hit this endpoint before
-        if ((!isCollection || apiCall) && dataSource < sources.IDB_FAST && data !== undefined) {
-          dataSource = sources.IDB_FAST
-          dispatch(createAction(isCollection ? data : data[0]))
-        }
+        doAsync(() => {
+          if ((!isCollection || apiCall) && dataSource < sources.IDB_FAST && data !== undefined) {
+            dataSource = sources.IDB_FAST
+            dispatch(createAction(isCollection ? data : data[0]))
+          }
+        })
       }).catch(error => {
         console.log(error)
       })
@@ -170,10 +184,12 @@ const createFetcher = ({
     Promise.all([fullQuery, db.apiCalls.get(endpointUrl)]).then(values => {
       const [data, apiCall] = values
       // If isCollection, make sure we've hit this endpoint before
-      if ((!isCollection || apiCall) && dataSource < sources.IDB && data !== undefined) {
-        dataSource = sources.IDB
-        dispatch(createAction(isCollection ? data : data[0]))
-      }
+      doAsync(() => {
+        if ((!isCollection || apiCall) && dataSource < sources.IDB && data !== undefined) {
+          dataSource = sources.IDB
+          dispatch(createAction(isCollection ? data : data[0]))
+        }
+      })
     }).catch(error => {
       console.log(error)
     })
@@ -188,18 +204,20 @@ const createFetcher = ({
     )
     .then(handleErrors)
     .then(data => {
-      if (dataSource < sources.API && data !== undefined) {
-        dataSource = sources.API
-        if (transformData) {
-          data = transformData(data)
-        }
-        dispatch(createAction(data))
+      doAsync(() => {
+        if (dataSource < sources.API && data !== undefined) {
+          dataSource = sources.API
+          if (transformData) {
+            data = transformData(data)
+          }
+          dispatch(createAction(data))
 
-        // Delete old db entries and write new ones
-        query.delete()
-        writeDB(data)
-      }
-      dispatch(decrementLoadingCount())
+          // Delete old db entries and write new ones
+          query.delete()
+          writeDB(data)
+        }
+        dispatch(decrementLoadingCount())
+      })
     })
     .catch(error => {
       dispatch(decrementLoadingCount())
