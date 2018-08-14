@@ -23,12 +23,25 @@ class VirtualList extends PureComponent {
   }
 
   handleScroll = () => {
-    this.setState({
-      scrollTop: this.props.scrollElement.scrollTop,
-      offsetTop: ReactDOM.findDOMNode(this).getBoundingClientRect().top -
-        this.props.scrollElement.getBoundingClientRect().top +
-        this.props.scrollElement.scrollTop,
-    })
+    const scrollTop = this.props.scrollElement.scrollTop
+    const scrollBottom = scrollTop + this.props.scrollElement.clientHeight
+    const thisRect = ReactDOM.findDOMNode(this).getBoundingClientRect()
+    const scrollElRect = this.props.scrollElement.getBoundingClientRect()
+
+    const offsetTop = thisRect.top - scrollElRect.top + scrollTop
+    const offsetBottom = offsetTop + thisRect.height
+
+    // Only update scrollTop if in view
+    if (scrollBottom > offsetTop && scrollTop < offsetBottom) {
+      this.setState({
+        scrollTop,
+        offsetTop,
+      })
+    } else {
+      this.setState({
+        offsetTop,
+      })
+    }
   }
 
   handleResize = () => {
