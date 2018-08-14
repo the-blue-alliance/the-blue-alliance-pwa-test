@@ -10,7 +10,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
-import InfoOutlineIcon from '@material-ui/icons/InfoOutline'
+import InfoOutlined from '@material-ui/icons/InfoOutlined'
 import EventIcon from '@material-ui/icons/Event'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
@@ -207,7 +207,7 @@ class EventPage extends PureComponent {
                 <List>
                   <ListItem>
                     <ListItemIcon>
-                      <InfoOutlineIcon />
+                      <InfoOutlined />
                     </ListItemIcon>
                     <ListItemText primary={name} />
                   </ListItem>
