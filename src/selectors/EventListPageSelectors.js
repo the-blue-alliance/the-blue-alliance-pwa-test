@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 import { List, Map, Set } from 'immutable'
+import moment from 'moment-timezone'
 import unidecode from 'unidecode'
 import { getCurrentPageState, getYear } from '../selectors/CommonPageSelectors'
 import Event from '../database/Event'
@@ -163,7 +164,7 @@ export const getFilteredGroupedEvents = createSelector(
       // Offseasons by Month
       let offseasonsByMonth = {}
       offseasonEvents.forEach(event => {
-        const month = `${new Date(event.start_date).toLocaleString('en-us', {timeZone: 'UTC', month: 'short'})} Offseason`
+        const month = `${moment(event.start_date).format('MMM')} Offseason`
         if (month in offseasonsByMonth) {
           offseasonsByMonth[month] = offseasonsByMonth[month].push(event)
         } else {

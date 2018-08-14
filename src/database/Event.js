@@ -78,20 +78,11 @@ export default class Event extends Record({
 
   getDateString() {
     if (this.dateStr === undefined) {
-      const startDate = new Date(this.start_date)
-      const endDate = new Date(this.end_date)
-      this.dateStr = endDate.toLocaleString('en-us', {
-        timeZone: 'UTC',
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-      })
-      if (startDate.getTime() !== endDate.getTime()) {
-        const startDateStr = startDate.toLocaleString('en-us', {
-          timeZone: 'UTC',
-          day: 'numeric',
-          month: 'short',
-        })
+      const startDate = moment(this.start_date)
+      const endDate = moment(this.end_date)
+      this.dateStr = endDate.format('MMM D, YYYY')
+      if (this.start_date !== this.end_date) {
+        const startDateStr = startDate.format('MMM D')
         this.dateStr = `${startDateStr} to ${this.dateStr}`
       }
     }
