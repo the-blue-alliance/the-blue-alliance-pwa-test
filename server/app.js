@@ -14,17 +14,19 @@ import { createGenerateClassName } from '@material-ui/core/styles';
 import { SheetsRegistry } from 'react-jss/lib/jss';
 import Helmet from 'react-helmet';
 
-import TBAApp from '../../src/TBAApp'
-import routes from '../../src/routes'
-import reducer from '../../src/reducers'
-import {receiveEventMatches} from '../../src/actions';
+const { default: TBAApp } = require('../src/TBAApp');
+import routes from '../src/routes'
+import reducer from '../src/reducers'
+import {receiveEventMatches} from '../src/actions';
 
-const clientBuildPath = path.resolve(__dirname, 'client');
+const clientBuildPath = path.resolve(__dirname, '../client');
 const app = createReactAppExpress({
   clientBuildPath,
   handleRender: renderPage,
   universalRender: handleUniversalRender,
 });
+
+let TBAAppClass = TBAApp;
 
 let context;
 let sheetsRegistry;
@@ -116,7 +118,7 @@ function handleUniversalRender(req, res) {
       <Provider store={store}>
         <StaticRouter location={req.url} context={context}>
           <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-            <TBAApp />
+            <TBAAppClass />
           </JssProvider>
         </StaticRouter>
       </Provider>
@@ -127,5 +129,14 @@ function handleUniversalRender(req, res) {
     res.send(500);
   });
 }
+
+if (module.hot) {
+  module.hot.accept('../src/TBAApp', () => {
+    const { default: TBAApp } = require('../src/TBAApp');
+    TBAAppClass = TBAApp;
+    console.log('✅ Server hot reloaded TBAApp');
+  });
+}
+
 
 module.exports = app;

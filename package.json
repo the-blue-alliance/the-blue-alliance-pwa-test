@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@cra-express/core": "^2.2.5",
     "@material-ui/core": "^1.5.0",
     "@material-ui/icons": "^2.0.2",
     "autosuggest-highlight": "^3.1.1",
@@ -42,18 +43,20 @@
     "reselect": "^3.0.1",
     "stackdriver-errors-js": "^0.4.0",
     "sweet-scroll": "^3.0.0",
+    "uglifycss": "0.0.29",
     "unidecode": "^0.1.8",
     "why-did-you-update": "^0.1.1"
   },
   "devDependencies": {
-    "cra-universal": "^2.1.0",
+    "cra-universal": "^3.2.5",
     "react-scripts": "1.1.4",
     "rimraf": "^2.6.2"
   },
   "scripts": {
     "start": "react-scripts start",
+    "startssr": "npx cra-universal start",
     "build": "react-scripts build",
-    "buildprod": "echo Y | cra-universal clean && cra-universal build && rimraf ./build/index.html && rimraf ./functions/server && cp -a ./dist ./functions/server",
+    "buildprod": "echo Y | npx cra-universal clean && npx cra-universal build && rimraf ./build/index.html && rimraf ./functions/crau-dist && cp -a ./dist ./functions/crau-dist",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }

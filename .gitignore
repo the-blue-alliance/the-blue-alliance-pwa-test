@@ -2,7 +2,6 @@
 
 # dependencies
 /node_modules
-/server/node_modules
 /functions/node_modules
 
 # testing
@@ -10,9 +9,9 @@
 
 # production
 /build
-/server/build
+/server-build
 /dist
-/functions/server
+/functions/crau-dist
 
 # misc
 .DS_Store
