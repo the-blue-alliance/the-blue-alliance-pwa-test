@@ -24,6 +24,7 @@ import TeamsList from './TeamsList'
 import TBAHelmet from '../components/TBAHelmet'
 import TBAPageContainer from '../containers/TBAPageContainer'
 import AllianceTableContainer from '../containers/AllianceTableContainer'
+import EventRankingsTableContainer from '../containers/EventRankingsTableContainer'
 import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 
 import { fetchEventInfo, fetchEventMatches, fetchEventTeams, fetchEventRankings, fetchEventAlliances } from '../actions'
@@ -145,6 +146,7 @@ class EventPage extends PureComponent {
                       fullWidth
                     >
                       <Tab label="Results" />
+                      <Tab label="Rankings" />
                       <Tab label="Teams" />
                     </Tabs>
                   </Paper>
@@ -162,6 +164,10 @@ class EventPage extends PureComponent {
                     </Grid>
                   </div>
                   {this.props.tabIdx === 1 &&
+                  <div>
+                    <EventRankingsTableContainer eventKey={eventKey} />
+                  </div>}
+                  {this.props.tabIdx === 2 &&
                   <div>
                     <TeamsList scrollElement={this.contentRef} teams={teams} year={year}/>
                   </div>}
