@@ -132,6 +132,18 @@ const models = (state = Map(), action) => {
         'teamEventStatuses',
         ['byEvent', action.eventKey],
         action.data)
+    case types.RECEIVE_EVENT_RANKINGS:
+      return updateSingle(
+        state,
+        'eventRankings',
+        action.eventKey,
+        action.data)
+    case types.RECEIVE_EVENT_ALLIANCES:
+      return updateSingle(
+        state,
+        'eventAlliances',
+        action.eventKey,
+        action.data)
     case types.RECEIVE_TEAM_LIST_PAGE:
       return updateMulti(
         state,

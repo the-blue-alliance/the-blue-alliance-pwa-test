@@ -25,7 +25,7 @@ import TBAHelmet from '../components/TBAHelmet'
 import TBAPageContainer from '../containers/TBAPageContainer'
 import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 
-import { fetchEventInfo, fetchEventMatches, fetchEventTeams } from '../actions'
+import { fetchEventInfo, fetchEventMatches, fetchEventTeams, fetchEventRankings, fetchEventAlliances } from '../actions'
 
 const styles = theme => ({
   hidden: {
@@ -60,6 +60,8 @@ class EventPage extends PureComponent {
       store.dispatch(fetchEventInfo(params.eventKey)),
       store.dispatch(fetchEventMatches(params.eventKey)),
       store.dispatch(fetchEventTeams(params.eventKey)),
+      store.dispatch(fetchEventRankings(params.eventKey)),
+      store.dispatch(fetchEventAlliances(params.eventKey)),
     ])
   }
 
@@ -86,6 +88,8 @@ class EventPage extends PureComponent {
     this.props.fetchEventInfo(this.props.eventKey)
     this.props.fetchEventMatches(this.props.eventKey)
     this.props.fetchEventTeams(this.props.eventKey)
+    this.props.fetchEventRankings(this.props.eventKey)
+    this.props.fetchEventAlliances(this.props.eventKey)
   }
 
   tabHandleChangeIndex = tabIdx => {

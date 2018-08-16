@@ -6,6 +6,8 @@ import db, {
   addEvent,
   addEvents,
   addEventTeams,
+  addEventRankings,
+  addEventAlliances,
   addMatch,
   addMatches,
   addTeamYears,
@@ -345,6 +347,55 @@ export function fetchEventTeamStatuses(eventKey) {
       },
       writeDB: (statuses) => {
         addTeamEventStatuses(statuses)
+      },
+    })
+  }
+}
+
+export function fetchEventRankings(eventKey) {
+  return (dispatch, getState) => {
+    return createFetcher({
+      dispatch,
+      getState,
+      endpointUrl: `/api/v3/event/${eventKey}/rankings`,
+      query: db.events.where('key').equals(eventKey),
+      createAction: (rankings) => {
+        return {
+          type: types.RECEIVE_EVENT_RANKINGS,
+          eventKey,
+          data: rankings,
+        }
+      },
+      transformData: (rankings) => {
+        rankings.key = eventKey
+        return rankings
+      },
+      writeDB: (rankings) => {
+        addEventRankings(rankings)
+      },
+    })
+  }
+}
+
+export function fetchEventAlliances(eventKey) {
+  return (dispatch, getState) => {
+    return createFetcher({
+      dispatch,
+      getState,
+      endpointUrl: `/api/v3/event/${eventKey}/alliances`,
+      query: db.events.where('key').equals(eventKey),
+      createAction: (alliances) => {
+        return {
+          type: types.RECEIVE_EVENT_ALLIANCES,
+          eventKey,
+          data: alliances,
+        }
+      },
+      transformData: (alliances) => {
+        return {key: eventKey, alliances}
+      },
+      writeDB: (alliances) => {
+        addEventAlliances(alliances)
       },
     })
   }

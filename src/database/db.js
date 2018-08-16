@@ -40,6 +40,10 @@ db.version(11).stores({
   media: '&key',
   mediaTeams: '&key, mediaKey, teamKey, teamKey_year',
 })
+db.version(12).stores({
+  eventRankings: '&key',
+  eventAlliances: '&key',
+})
 
 export default db;
 
@@ -79,6 +83,10 @@ export const addEventTeams = (eventKey, teams) => {
     }
   }))
 }
+
+export const addEventRankings = (rankings) => db.eventRankings.put(rankings)
+
+export const addEventAlliances = (alliances) => db.eventAlliances.put(alliances)
 
 export const addMatch = (match) => db.matches.put(match)
 
