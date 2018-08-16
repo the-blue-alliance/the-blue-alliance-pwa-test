@@ -23,6 +23,7 @@ import TeamsList from './TeamsList'
 
 import TBAHelmet from '../components/TBAHelmet'
 import TBAPageContainer from '../containers/TBAPageContainer'
+import AllianceTableContainer from '../containers/AllianceTableContainer'
 import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 
 import { fetchEventInfo, fetchEventMatches, fetchEventTeams, fetchEventRankings, fetchEventAlliances } from '../actions'
@@ -103,7 +104,7 @@ class EventPage extends PureComponent {
   render() {
     console.log("Render Event Page")
 
-    const { classes, event, matches, teams } = this.props
+    const { classes, eventKey, event, matches, teams } = this.props
 
     var name = null
     var shortName = null
@@ -154,6 +155,7 @@ class EventPage extends PureComponent {
                         <MatchTableContainer matches={this.props.qualMatches} />
                       </Grid>
                       <Grid item xs={6}>
+                        <AllianceTableContainer eventKey={eventKey} />
                         <h3>Playoff Results</h3>
                         <MatchTableContainer matches={this.props.playoffMatches} />
                       </Grid>

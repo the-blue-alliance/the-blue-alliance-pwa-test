@@ -367,8 +367,7 @@ export function fetchEventRankings(eventKey) {
         }
       },
       transformData: (rankings) => {
-        rankings.key = eventKey
-        return rankings
+        return {key: eventKey, rankings}
       },
       writeDB: (rankings) => {
         addEventRankings(rankings)
