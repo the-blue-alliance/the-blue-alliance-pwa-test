@@ -102,7 +102,7 @@ class AllianceTable extends PureComponent {
                   )
                 })
                 :
-                [...Array(4).keys()].map(i => (
+                [...Array(8).keys()].map(i => (
                   <TableRow key={i} className={classes.tr}>
                     <TableCell component="th" scope="row"><Skeleton /></TableCell>
                     <TableCell><Skeleton /></TableCell>
