@@ -30,6 +30,7 @@ class TeamEventResults extends PureComponent {
     const ContainerComponent = container ? container : React.Fragment
 
     let playoffStatusStr = null
+    let pickOrderStr = null
     if (status) {
       const playoffLevel = status.getIn(['playoff', 'level'])
       const playoffStatus = status.getIn(['playoff', 'status'])
@@ -41,6 +42,15 @@ class TeamEventResults extends PureComponent {
         } else if (playoffStatus === 'eliminated') {
           playoffStatusStr = <React.Fragment><b>Eliminated</b> in the <b>{levelMap[playoffLevel]}</b></React.Fragment>
         }
+      }
+
+      const pickOrder = status.getIn(['alliance', 'pick'])
+      if (pickOrder === 0) {
+        pickOrderStr = 'Captain'
+      } else if (pickOrder === -1) {
+        pickOrderStr = 'Backup'
+      } else {
+        pickOrderStr = `${ordinal(pickOrder)} Pick`
       }
     }
     if (status && !status.get('qual') && !status.get('playoff') && awards && awards.size === 0) {
@@ -62,7 +72,7 @@ class TeamEventResults extends PureComponent {
               }
               {status.getIn(['alliance']) &&
                 <Typography variant='subheading'>
-                  Alliance: <b>{status.getIn(['alliance', 'pick']) === 0 ? 'Captain' : `${ordinal(status.getIn(['alliance', 'pick']))} Pick`}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
+                  Alliance: <b>{pickOrderStr}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
                 </Typography>
               }
               {status.getIn(['playoff', 'record']) &&
