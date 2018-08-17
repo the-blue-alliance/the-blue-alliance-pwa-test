@@ -358,7 +358,7 @@ export function fetchEventRankings(eventKey) {
       dispatch,
       getState,
       endpointUrl: `/api/v3/event/${eventKey}/rankings`,
-      query: db.events.where('key').equals(eventKey),
+      query: db.eventRankings.where('key').equals(eventKey),
       createAction: (rankings) => {
         return {
           type: types.RECEIVE_EVENT_RANKINGS,
@@ -382,7 +382,7 @@ export function fetchEventAlliances(eventKey) {
       dispatch,
       getState,
       endpointUrl: `/api/v3/event/${eventKey}/alliances`,
-      query: db.events.where('key').equals(eventKey),
+      query: db.eventAlliances.where('key').equals(eventKey),
       createAction: (alliances) => {
         return {
           type: types.RECEIVE_EVENT_ALLIANCES,
