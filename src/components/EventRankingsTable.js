@@ -48,6 +48,7 @@ const styles = theme => ({
   paper: {
     marginTop: theme.spacing.unit * 3,
     marginBottom: theme.spacing.unit,
+    overflowX: 'auto',
   },
   tr: {
     height: 32,
@@ -107,7 +108,7 @@ class EventRankingsTable extends PureComponent {
     }
     columns.push({key: 'dq', label: 'DQ'})
     columns.push({key: 'played', label: 'Played'})
-    rankings.get('extra_stats_info').forEach((es, i) => columns.push({key: `es_${i}`, label: es.get('name')}))
+    rankings.get('extra_stats_info').forEach((es, i) => columns.push({key: `es_${i}`, label: `${es.get('name')}*`}))
 
     return (
       <React.Fragment>
