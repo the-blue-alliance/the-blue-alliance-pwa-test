@@ -18,6 +18,12 @@ const styles = theme => ({
   tr: {
     height: 32,
   },
+  th: {
+    padding: theme.spacing.unit,
+  },
+  td: {
+    padding: theme.spacing.unit,
+  },
   medalIcon: {
     height: 18,
   },
@@ -47,13 +53,13 @@ class AllianceTable extends PureComponent {
           <Table padding='dense'>
             <TableHead>
               <TableRow className={classes.tr}>
-                <TableCell>Alliance</TableCell>
-                <TableCell>Status</TableCell>
+                <TableCell className={classes.th}>Alliance</TableCell>
+                <TableCell className={classes.th}>Status</TableCell>
                 {[...Array(teamsPerAlliance).keys()].map(i => {
                   if (i === 0) {
-                    return <TableCell key={i} numeric>Captain</TableCell>
+                    return <TableCell key={i} className={classes.th} numeric>Captain</TableCell>
                   } else {
-                    return <TableCell key={i} numeric>{`Pick ${i}`}</TableCell>
+                    return <TableCell key={i} className={classes.th} numeric>{`Pick ${i}`}</TableCell>
                   }
                 })}
               </TableRow>
@@ -72,10 +78,10 @@ class AllianceTable extends PureComponent {
 
                   return (
                     <TableRow key={i} className={classes.tr}>
-                      <TableCell component="th" scope="row">
+                      <TableCell component="th" scope="row" className={classes.td}>
                         {a.get('name') ? a.get('name') : `Alliance ${i+1}`}
                       </TableCell>
-                      <TableCell>
+                      <TableCell className={classes.td}>
                         {status}
                       </TableCell>
                       {a.get('picks').map(teamKey => {
@@ -92,7 +98,7 @@ class AllianceTable extends PureComponent {
                           </React.Fragment>
                         }
                         return (
-                          <TableCell key={teamKey} numeric>
+                          <TableCell key={teamKey} className={classes.td} numeric>
                             <Link to={{pathname: `/team/${teamNum}/${yearStr}`, hash: eventKey, state: {modal: true}}}>{teamNum}</Link>
                             {backupTeam}
                           </TableCell>
@@ -104,11 +110,11 @@ class AllianceTable extends PureComponent {
                 :
                 [...Array(8).keys()].map(i => (
                   <TableRow key={i} className={classes.tr}>
-                    <TableCell component="th" scope="row"><Skeleton /></TableCell>
-                    <TableCell><Skeleton /></TableCell>
-                    <TableCell><Skeleton /></TableCell>
-                    <TableCell><Skeleton /></TableCell>
-                    <TableCell><Skeleton /></TableCell>
+                    <TableCell component="th" scope="row" className={classes.td}><Skeleton /></TableCell>
+                    <TableCell className={classes.td}><Skeleton /></TableCell>
+                    <TableCell className={classes.td}><Skeleton /></TableCell>
+                    <TableCell className={classes.td}><Skeleton /></TableCell>
+                    <TableCell className={classes.td}><Skeleton /></TableCell>
                   </TableRow>
                 ))
               }
