@@ -16,10 +16,10 @@ import Icon from '@material-ui/core/Icon'
 import LocalMoviesIcon from '@material-ui/icons/LocalMovies'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-
 import Paper from '@material-ui/core/Paper'
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary'
 import Typography from '@material-ui/core/Typography'
+import PhotoIcon from '@material-ui/icons/Photo'
 
 // TBA Components
 import TBAPageContainer from '../containers/TBAPageContainer'
@@ -201,9 +201,9 @@ class TeamPageDesktop extends PureComponent {
             <Grid item xs={9} lg={10}>
               <div id='team-info'>
                 <h1>Team {teamNumber}{team && team.nickname && ` - ${team.nickname}`}</h1>
-                {mainRobotImage &&
-                  <Avatar alt={`Team ${teamNumber}`} src={mainRobotImage.getThumbnailURL()} className={classes.mainRobotImage} />
-                }
+                <Avatar alt={`Team ${teamNumber}`} src={mainRobotImage ? mainRobotImage.getThumbnailURL() : null} className={classes.mainRobotImage}>
+                  {mainRobotImage ? null : <PhotoIcon />}
+                </Avatar>
                 {team && team.getCityStateCountry() &&
                   <Typography variant='body1'>
                     <Icon className={classes.infoIcon}>location_on</Icon> From <a target='_blank' href={`https://www.google.com/maps?q=${team.getCityStateCountry()}`}>{team.getCityStateCountry()}</a>
