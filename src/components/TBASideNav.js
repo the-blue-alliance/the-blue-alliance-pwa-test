@@ -23,12 +23,15 @@ import ListSubheader from '@material-ui/core/ListSubheader'
 import Switch from '@material-ui/core/Switch'
 import Divider from '@material-ui/core/Divider'
 
+import PageStateContainer from '../containers/PageStateContainer'
+
 const styles = theme => ({
   root:  {
     zIndex: 1,
     position: 'absolute',
   },
   content: {
+    width: 190,
     marginTop: 64,
     overflowY: 'auto',
   },
@@ -112,6 +115,7 @@ class TBASideNavContent extends PureComponent {
             </ListItemSecondaryAction>
           </ListItem>
           <LinearProgress />
+          <PageStateContainer />
         </List>
         <Divider />
         <List>

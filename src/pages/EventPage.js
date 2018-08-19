@@ -150,7 +150,7 @@ class EventPage extends PureComponent {
             <Grid item xs={12}>
               <Paper className={classes.tabs} square>
                 <Tabs
-                  value={tabIdx}
+                  value={tabIdx ? tabIdx : 0}
                   onChange={this.tabHandleChange}
                   fullWidth
                   scrollable
