@@ -26,7 +26,7 @@ const getMatchesByKey = (state, props) => {
 }
 
 const getEventMatchKeys = (state, props) => {
-  return state.getIn(['models', 'matches', 'collections', 'byEvent', getEventKey(state, props)])
+  return state.getIn(['models', 'matches', 'collections', 'byEvent', props.eventKey])
 }
 
 const getEventMatches = createSelector(

@@ -1,6 +1,6 @@
 import HomePageContainer from './containers/HomePageContainer'
 import EventListPageBase from './pages/EventListPageBase'
-import EventPageContainer from './containers/EventPageContainer'
+import EventPage from './pages/EventPage'
 import MatchPageContainer from './containers/MatchPageContainer'
 import AccountPageBase from './pages/AccountPageBase'
 import SigninRequiredPageBase from './pages/SigninRequiredPageBase'
@@ -26,7 +26,7 @@ export default [
   },
   {
       path: '/event/:eventKey',
-      component: EventPageContainer,
+      component: EventPage,
       exact: true,
   },
   {

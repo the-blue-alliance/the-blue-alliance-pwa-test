@@ -1,35 +1,30 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
-import classNames from 'classnames'
 
 import TBAAppBarContainer from '../containers/TBAAppBarContainer'
-import ScrollRestoreContainer from '../containers/ScrollRestoreContainer'
 
 const styles = theme => ({
-  content: {
-    backgroundColor: theme.palette.background.default,  // For some reason this is necessary to scroll to work on fixed sidenav
-    position: 'fixed',
-    top: 56,
-    right: 0,
-    bottom: 56,
-    left: 0,
-    overflowX: 'hidden',
+  container: {
+    marginTop: 56,
     [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
-      top: 48,
+      marginTop: 48,
     },
     [theme.breakpoints.up('sm')]: {
-      top: 64,
+      marginTop: 64,
     },
+    marginBottom: 56,
     [theme.breakpoints.up('md')]: {
-      bottom: 0,
-      left: 180,
+      marginBottom: 0,
+      marginLeft: 190,
     },
   },
-  tabbedContent: {
-    top: 56 + 48,
-    [theme.breakpoints.up('sm')]: {
-      top: 64 + 48,
+  content: {
+    maxWidth: 1200,
+    margin: '0 auto',
+    padding: `${theme.spacing.unit*3}px ${theme.spacing.unit}px 0`,
+    [theme.breakpoints.up('md')]: {
+      padding: `${theme.spacing.unit*3}px ${theme.spacing.unit*3}px 0`,
     },
   },
 })
@@ -38,25 +33,21 @@ class TBAPage extends PureComponent {
   render() {
     console.log("Render TBAPage")
 
+    const { classes, children, title, refreshFunction, filterFunction, filterCount } = this.props
+
     return (
       <React.Fragment>
         <TBAAppBarContainer
-          title={this.props.title}
-          refreshFunction={this.props.refreshFunction}
-          filterFunction={this.props.filterFunction}
-          filterCount={this.props.filterCount}
-          tabs={this.props.tabs}
+          title={title}
+          refreshFunction={refreshFunction}
+          filterFunction={filterFunction}
+          filterCount={filterCount}
         />
-        <ScrollRestoreContainer
-          scrollId={'_page'}
-          contentRef={this.props.contentRef}
-          className={classNames({
-            [this.props.classes.content]: true,
-            [this.props.classes.tabbedContent]: this.props.tabs,
-          })}
-        >
-          {this.props.children}
-        </ScrollRestoreContainer>
+        <div className={classes.container}>
+          <main className={classes.content}>
+            {children}
+          </main>
+        </div>
       </React.Fragment>
     )
   }

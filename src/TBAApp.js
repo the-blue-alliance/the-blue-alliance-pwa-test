@@ -165,12 +165,27 @@ const ModalSwitchConainer = connect(mapStateToProps, mapDispatchToProps)(ModalSw
 const styles = theme => ({
 })
 
+const darkTheme = false
+const displayTextColor = darkTheme ? 'rgba(255, 255, 255, 0.87)' : 'rgba(0, 0, 0, 0.87)'
 const theme = createMuiTheme({
   palette: {
     primary: indigo,
     secondary: amber,
+    type: darkTheme ? 'dark' : 'light',
   },
   typography: {
+    display4: {
+      color: displayTextColor,
+    },
+    display3: {
+      color: displayTextColor,
+    },
+    display2: {
+      color: displayTextColor,
+    },
+    display1: {
+      color: displayTextColor,
+    },
     title: {
       fontWeight: 400,
     },

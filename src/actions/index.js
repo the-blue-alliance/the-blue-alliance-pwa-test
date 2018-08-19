@@ -139,14 +139,15 @@ const handleErrors = (response) => {
 }
 
 const doAsync = (fn) => {
-  if (typeof window === 'undefined') {
-    // Don't do async if SSR
-    fn()
-  } else if ('requestIdleCallback' in window) {
-    requestIdleCallback(() => ReactDOM.unstable_deferredUpdates(() => fn()))
-  } else {
-    setTimeout(() => ReactDOM.unstable_deferredUpdates(() => fn()), 0)
-  }
+  fn()
+  // if (typeof window === 'undefined') {
+  //   // Don't do async if SSR
+  //   fn()
+  // } else if ('requestIdleCallback' in window) {
+  //   requestIdleCallback(() => ReactDOM.unstable_deferredUpdates(() => fn()))
+  // } else {
+  //   setTimeout(() => ReactDOM.unstable_deferredUpdates(() => fn()), 0)
+  // }
 }
 
 const createFetcher = ({
