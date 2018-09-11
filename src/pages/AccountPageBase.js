@@ -1,6 +1,5 @@
 // General
 import React, { PureComponent } from 'react'
-import ReactDOM from 'react-dom'
 import { push } from 'connected-react-router'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -71,8 +70,7 @@ class AccountPageBase extends PureComponent {
     this.props.resetPage()
     this.props.setNav('account')
 
-    // Fetch data async
-    ReactDOM.unstable_deferredUpdates(() => this.refreshFunction())
+    requestIdleCallback(() => this.refreshFunction())
   }
 
   render() {

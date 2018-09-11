@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'
-import ReactDOM from 'react-dom'
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Hidden from '@material-ui/core/Hidden'
@@ -53,7 +52,7 @@ class TeamListPage extends PureComponent {
 
   componentDidUpdate() {
     // Rerender without cascading
-    ReactDOM.unstable_deferredUpdates(() => this.setState({ restoreScroll: false }))
+    requestIdleCallback(() => this.setState({ restoreScroll: false }))
   }
 
   refreshFunction = () => {
@@ -62,9 +61,9 @@ class TeamListPage extends PureComponent {
 
   handleTextFieldChange = (e) => {
     const filter = e.target.value
-    requestAnimationFrame(() => ReactDOM.unstable_deferredUpdates(() => this.props.setPageState({
+    requestIdleCallback(() => this.props.setPageState({
       filter,
-    })))
+    }))
   }
 
   render() {

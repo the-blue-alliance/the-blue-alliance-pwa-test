@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'
-import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from '@material-ui/core/styles'
@@ -62,9 +61,9 @@ class EventFilter extends PureComponent {
 
   handleLocationFilter = (event) => {
     const location = event.target.value
-    requestAnimationFrame(() => ReactDOM.unstable_deferredUpdates(() => this.props.setPageState({
+    requestIdleCallback(() => this.props.setPageState({
       locationFilter: location,
-    })))
+    }))
   }
 
   render() {

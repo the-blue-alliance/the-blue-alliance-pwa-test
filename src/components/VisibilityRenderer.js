@@ -1,5 +1,4 @@
 import { PureComponent } from 'react'
-import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 
 class VisibilityRenderer extends PureComponent {
@@ -42,7 +41,7 @@ class VisibilityRenderer extends PureComponent {
     }
     if (Object.keys(newState).length > 0) {
       // Render without cascading
-      ReactDOM.unstable_deferredUpdates(() => this.setState(newState))
+      requestIdleCallback(() => this.setState(newState))
     }
   }
 
