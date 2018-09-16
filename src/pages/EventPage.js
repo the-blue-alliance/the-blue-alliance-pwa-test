@@ -166,17 +166,17 @@ class EventPage extends PureComponent {
               </Paper>
               {tabIdx === 0 && <Grid container spacing={16}>
                 <Grid item xs={12} sm={6}>
-                  <Paper>
+                  <Paper id='qual'>
                     <EventPageSectionHeader label='Qualification Results'/>
                     <MatchTableContainer eventKey={eventKey} qual/>
                   </Paper>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Paper className={classes.sectionCard}>
+                  <Paper id='alliances' className={classes.sectionCard}>
                     <EventPageSectionHeader label='Alliances'/>
                     <AllianceTableContainer eventKey={eventKey} />
                   </Paper>
-                  <Paper className={classes.sectionCard}>
+                  <Paper id='playoff' className={classes.sectionCard}>
                     <EventPageSectionHeader label='Playoff Results'/>
                     <MatchTableContainer eventKey={eventKey} playoff/>
                   </Paper>
