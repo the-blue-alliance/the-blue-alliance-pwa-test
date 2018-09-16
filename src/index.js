@@ -16,6 +16,9 @@ import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import { reactReduxFirebase } from 'react-redux-firebase'
 
+import JssProvider from 'react-jss/lib/JssProvider'
+import { createGenerateClassName } from '@material-ui/core/styles'
+
 import { userManagerMiddleware } from './middleware'
 import reducer from './reducers'
 import TBAApp from './TBAApp'
@@ -79,10 +82,14 @@ store.subscribe(() => {
   }
 })
 
+const generateClassName = createGenerateClassName()
+
 ReactDOM.hydrate(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <TBAApp />
+      <JssProvider generateClassName={generateClassName}>
+        <TBAApp />
+      </JssProvider>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root'))

@@ -83,9 +83,7 @@ class VirtualList extends PureComponent {
     }
 
     if (this.props.renderAll) {
-      requestAnimationFrame(() => {
-        ReactDOM.unstable_deferredUpdates(() => this.setState({renderAll: true}))
-      })
+      requestIdleCallback(() => this.setState({renderAll: true}))
     }
   }
 

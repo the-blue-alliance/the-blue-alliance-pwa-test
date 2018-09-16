@@ -1,6 +1,5 @@
 // General
 import React, { PureComponent } from 'react'
-import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
 
@@ -356,7 +355,7 @@ class MatchTable extends PureComponent {
   }
 
   componentDidMount() {
-    ReactDOM.unstable_deferredUpdates(() => this.setState({isFirstRender: false}))
+    requestIdleCallback(() => this.setState({isFirstRender: false}))
   }
 
   render() {

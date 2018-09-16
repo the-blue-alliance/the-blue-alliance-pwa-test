@@ -1,6 +1,5 @@
 // General
 import React, { PureComponent } from 'react'
-import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 
 // Actions
@@ -110,8 +109,7 @@ class TeamPageBase extends PureComponent {
     })
     this.props.setNav('teams')
 
-    // Fetch data async
-    ReactDOM.unstable_deferredUpdates(() => this.refreshFunction())
+    requestIdleCallback(() => this.refreshFunction())
   }
 
   render() {

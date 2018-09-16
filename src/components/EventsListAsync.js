@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'
-import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 
 import EventsList3 from './EventsList3'
@@ -19,7 +18,7 @@ class EventsListAsync extends PureComponent {
   }
 
   componentDidMount() {
-    ReactDOM.unstable_deferredUpdates(() => this.setState({ isFirstRender: false }))
+    requestIdleCallback(() => this.setState({ isFirstRender: false }))
   }
 
   render() {

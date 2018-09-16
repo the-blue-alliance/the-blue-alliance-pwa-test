@@ -1,6 +1,5 @@
 // General
 import React, { PureComponent } from 'react'
-import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { Set } from 'immutable'
 
@@ -72,8 +71,7 @@ class EventListPageBase extends PureComponent {
     })
     this.props.setNav('events')
 
-    // Fetch data async
-    ReactDOM.unstable_deferredUpdates(() => this.refreshFunction())
+    requestIdleCallback(() => this.refreshFunction())
   }
 
   render() {

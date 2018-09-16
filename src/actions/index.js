@@ -1,4 +1,3 @@
-import ReactDOM from 'react-dom'
 import * as types from '../constants/ActionTypes'
 import * as sources from '../constants/DataSources'
 import db, {
@@ -144,9 +143,9 @@ const doAsync = (fn) => {
   //   // Don't do async if SSR
   //   fn()
   // } else if ('requestIdleCallback' in window) {
-  //   requestIdleCallback(() => ReactDOM.unstable_deferredUpdates(() => fn()))
+  //   requestIdleCallback(() => fn())
   // } else {
-  //   setTimeout(() => ReactDOM.unstable_deferredUpdates(() => fn()), 0)
+  //   setTimeout(() => fn(), 0)
   // }
 }
 
