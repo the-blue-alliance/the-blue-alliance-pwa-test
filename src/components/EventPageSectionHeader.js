@@ -32,6 +32,16 @@ const styles = theme => ({
   label: {
     flex: '1 1 auto',
   },
+  observer: {
+    position: 'absolute',
+    top: -(56 + 48),
+    [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
+      top: -(48 + 48),
+    },
+    [theme.breakpoints.up('sm')]: {
+      top: -(64 + 48),
+    },
+  },
 })
 
 class EventPageSectionHeader extends PureComponent {
@@ -50,6 +60,11 @@ class EventPageSectionHeader extends PureComponent {
 
   handleClose = event => {
     event.preventDefault()
+    this.setState({ anchorEl: null })
+  }
+
+  handleScroll = event => {
+    event.preventDefault()
 
     const scroller = new SweetScroll({
       duration: 250,
@@ -66,16 +81,8 @@ class EventPageSectionHeader extends PureComponent {
     const { classes, label } = this.props
     const { isRaised, anchorEl } = this.state
 
-    console.log(this.state)
-
-
     return (
       <React.Fragment>
-        <Observer
-          tag="div"
-          onChange={this.observerChange}
-          rootMargin={`${-(56+48-1)}px`}
-        />
         <ButtonBase
           onClick={this.handleClick}
           component={Paper}
@@ -83,6 +90,11 @@ class EventPageSectionHeader extends PureComponent {
           elevation={isRaised ? 4 : 0}
           square={isRaised}
         >
+          <Observer
+            className={classes.observer}
+            tag="div"
+            onChange={this.observerChange}
+          />
           <Typography variant='title' className={classes.label}>{label}</Typography>
           <ExpandMore/>
         </ButtonBase>
@@ -92,19 +104,19 @@ class EventPageSectionHeader extends PureComponent {
           onClose={this.handleClose}
         >
           <MenuItem
-            onClick={this.handleClose}
+            onClick={this.handleScroll}
           >
             Qualification Results
           </MenuItem>
            <MenuItem
-            onClick={this.handleClose}
+            onClick={this.handleScroll}
           >
             Alliances
           </MenuItem>
            <MenuItem
-            onClick={this.handleClose}
+            onClick={this.handleScroll}
           >
-            Qualification Results
+            Playoff Results
           </MenuItem>
         </Menu>
       </React.Fragment>
