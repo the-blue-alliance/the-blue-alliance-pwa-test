@@ -4,6 +4,7 @@ import Observer from 'react-intersection-observer'
 import { withStyles } from '@material-ui/core/styles'
 
 import ButtonBase from '@material-ui/core/ButtonBase'
+import ListSubheader from '@material-ui/core/ListSubheader'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Paper from '@material-ui/core/Paper'
@@ -15,7 +16,7 @@ import ScrollLink from './ScrollLink'
 
 const styles = theme => ({
   paper: {
-    height: 40,
+    height: 50,
     padding: `${theme.spacing.unit}px ${theme.spacing.unit*3}px`,
     position: 'sticky',
     top: 56 + 48 - 1,
@@ -58,27 +59,23 @@ class EventPageSectionHeader extends PureComponent {
     this.setState({ anchorEl: event.currentTarget })
   }
 
-  handleClose = event => {
-    event.preventDefault()
+  handleClose = () => {
     this.setState({ anchorEl: null })
   }
 
-  handleScroll = event => {
-    event.preventDefault()
-
+  handleScroll = id => {
     const scroller = new SweetScroll({
       duration: 250,
-      easing: 'easeOutQuint',
-      offset: -112,
+      offset: -48,
     })
-    scroller.to(`#${'alliances'}`)
+    scroller.to(`#${id}`)
     this.setState({ anchorEl: null })
   }
 
   render() {
     console.log("Render EventPageSectionHeader")
 
-    const { classes, label } = this.props
+    const { classes, sectionKey, label, sections } = this.props
     const { isRaised, anchorEl } = this.state
 
     return (
@@ -102,22 +99,28 @@ class EventPageSectionHeader extends PureComponent {
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          disableRestoreFocus
         >
-          <MenuItem
-            onClick={this.handleScroll}
-          >
-            Qualification Results
-          </MenuItem>
-           <MenuItem
-            onClick={this.handleScroll}
-          >
-            Alliances
-          </MenuItem>
-           <MenuItem
-            onClick={this.handleScroll}
-          >
-            Playoff Results
-          </MenuItem>
+          <ListSubheader component="div">Jump To:</ListSubheader>
+          {sections.map(({ key, label }) => {
+            return (
+              <MenuItem
+                key={key}
+                onClick={this.handleScroll.bind(this, key)}
+                selected={key === sectionKey}
+              >
+                {label}
+              </MenuItem>
+            )
+          })}
         </Menu>
       </React.Fragment>
     )

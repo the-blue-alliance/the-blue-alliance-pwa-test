@@ -118,6 +118,12 @@ class EventPage extends PureComponent {
       shortName = event.safeShortName()
     }
 
+    const sections = [
+      {key: 'qual', label: 'Qualification Results'},
+      {key: 'alliances', label: 'Alliances'},
+      {key: 'playoff', label: 'Playoff Results'},
+    ]
+
     return (
       <React.Fragment>
         <TBAHelmet>
@@ -167,17 +173,29 @@ class EventPage extends PureComponent {
               {tabIdx === 0 && <Grid container spacing={16}>
                 <Grid item xs={12} sm={6}>
                   <Paper id='qual'>
-                    <EventPageSectionHeader label='Qualification Results'/>
+                    <EventPageSectionHeader
+                      sectionKey='qual'
+                      label='Qualification Results'
+                      sections={sections}
+                    />
                     <MatchTableContainer eventKey={eventKey} qual/>
                   </Paper>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Paper id='alliances' className={classes.sectionCard}>
-                    <EventPageSectionHeader label='Alliances'/>
+                    <EventPageSectionHeader
+                      sectionKey='alliances'
+                      label='Alliances'
+                      sections={sections}
+                    />
                     <AllianceTableContainer eventKey={eventKey} />
                   </Paper>
                   <Paper id='playoff' className={classes.sectionCard}>
-                    <EventPageSectionHeader label='Playoff Results'/>
+                    <EventPageSectionHeader
+                      sectionKey='playoff'
+                      label='Playoff Results'
+                      sections={sections}
+                    />
                     <MatchTableContainer eventKey={eventKey} playoff/>
                   </Paper>
                 </Grid>

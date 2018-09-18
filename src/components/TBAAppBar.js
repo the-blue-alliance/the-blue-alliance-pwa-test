@@ -69,7 +69,7 @@ class TBAToolbar extends PureComponent {
 
     return (
       <React.Fragment>
-        <Toolbar className={classes.toolbar}>
+        <Toolbar className={classes.toolbar} data-scroll-header>
           {title ?
             <IconButton
               color="inherit"
