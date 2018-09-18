@@ -67,6 +67,7 @@ const styles = theme => ({
     marginRight: -theme.spacing.unit,
     marginBottom: theme.spacing.unit*2,
     zIndex: theme.zIndex.appBar-1,
+    willChange: 'transform',  // Fix chrome rendering issue
   },
   sectionCard: {
     marginBottom: theme.spacing.unit*2,
