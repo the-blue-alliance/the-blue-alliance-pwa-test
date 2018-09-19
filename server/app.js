@@ -116,11 +116,11 @@ function handleUniversalRender(req, res) {
     console.time(`${req.url} RENDER`)
     return ReactDOMServer.renderToNodeStream(
       <Provider store={store}>
-        <StaticRouter location={req.url} context={context}>
-          <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
+        <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
+          <StaticRouter location={req.url} context={context}>
             <TBAAppClass />
-          </JssProvider>
-        </StaticRouter>
+          </StaticRouter>
+        </JssProvider>
       </Provider>
     );
   })

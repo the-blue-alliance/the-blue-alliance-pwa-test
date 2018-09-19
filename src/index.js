@@ -86,11 +86,11 @@ const generateClassName = createGenerateClassName()
 
 ReactDOM.hydrate(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <JssProvider generateClassName={generateClassName}>
+    <JssProvider generateClassName={generateClassName}>
+      <ConnectedRouter history={history}>
         <TBAApp />
-      </JssProvider>
-    </ConnectedRouter>
+      </ConnectedRouter>
+    </JssProvider>
   </Provider>,
   document.getElementById('root'))
 
