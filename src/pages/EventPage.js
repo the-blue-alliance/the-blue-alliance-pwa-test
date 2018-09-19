@@ -171,37 +171,41 @@ class EventPage extends PureComponent {
                   <Tab label='Media' />
                 </Tabs>
               </Paper>
-              {tabIdx === 0 && <Grid container spacing={16}>
-                <Grid item xs={12} sm={6}>
-                  <Paper id='qual'>
-                    <EventPageSectionHeader
-                      sectionKey='qual'
-                      label='Qualification Results'
-                      sections={sections}
-                    />
-                    <MatchListContainer eventKey={eventKey} qual/>
-                  </Paper>
+              <div hidden={tabIdx !== 0}>
+                <Grid container spacing={16}>
+                  <Grid item xs={12} sm={6}>
+                    <Paper id='qual'>
+                      <EventPageSectionHeader
+                        sectionKey='qual'
+                        label='Qualification Results'
+                        sections={sections}
+                      />
+                      <MatchListContainer eventKey={eventKey} qual/>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Paper id='alliances' className={classes.sectionCard}>
+                      <EventPageSectionHeader
+                        sectionKey='alliances'
+                        label='Alliances'
+                        sections={sections}
+                      />
+                      <AllianceTableContainer eventKey={eventKey} />
+                    </Paper>
+                    <Paper id='playoff' className={classes.sectionCard}>
+                      <EventPageSectionHeader
+                        sectionKey='playoff'
+                        label='Playoff Results'
+                        sections={sections}
+                      />
+                      <MatchListContainer eventKey={eventKey} playoff/>
+                    </Paper>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Paper id='alliances' className={classes.sectionCard}>
-                    <EventPageSectionHeader
-                      sectionKey='alliances'
-                      label='Alliances'
-                      sections={sections}
-                    />
-                    <AllianceTableContainer eventKey={eventKey} />
-                  </Paper>
-                  <Paper id='playoff' className={classes.sectionCard}>
-                    <EventPageSectionHeader
-                      sectionKey='playoff'
-                      label='Playoff Results'
-                      sections={sections}
-                    />
-                    <MatchListContainer eventKey={eventKey} playoff/>
-                  </Paper>
-                </Grid>
-              </Grid>}
-              {tabIdx === 1 && <EventRankingsTableContainer eventKey={eventKey} />}
+              </div>
+              <div hidden={tabIdx !== 1}>
+                <EventRankingsTableContainer eventKey={eventKey} />
+              </div>
             </Grid>
           </Grid>
         </TBAPageContainer>
