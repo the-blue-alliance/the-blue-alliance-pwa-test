@@ -25,7 +25,7 @@ import PlaceIcon from '@material-ui/icons/Place'
 import TBAHelmet from '../components/TBAHelmet'
 import TBAPageContainer from '../containers/TBAPageContainer'
 import AllianceTableContainer from '../containers/AllianceTableContainer'
-import MatchTableContainer from '../containers/MatchTableContainer'
+import MatchListContainer from '../containers/MatchListContainer'
 import EventPageSectionHeader from '../components/EventPageSectionHeader'
 import EventRankingsTableContainer from '../containers/EventRankingsTableContainer'
 import Skeleton from '../components/Skeleton'
@@ -179,7 +179,7 @@ class EventPage extends PureComponent {
                       label='Qualification Results'
                       sections={sections}
                     />
-                    <MatchTableContainer eventKey={eventKey} qual/>
+                    <MatchListContainer eventKey={eventKey} qual/>
                   </Paper>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -197,7 +197,7 @@ class EventPage extends PureComponent {
                       label='Playoff Results'
                       sections={sections}
                     />
-                    <MatchTableContainer eventKey={eventKey} playoff/>
+                    <MatchListContainer eventKey={eventKey} playoff/>
                   </Paper>
                 </Grid>
               </Grid>}

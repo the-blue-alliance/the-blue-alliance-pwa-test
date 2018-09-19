@@ -6,83 +6,115 @@ import classNames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
 
 // Components
-import ButtonBase from '@material-ui/core/ButtonBase'
 import ListItem from '@material-ui/core/ListItem'
 import Tooltip from '@material-ui/core/Tooltip'
 import { Link } from 'react-router-dom'
-import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
 
 const styles = theme => ({
   listItem: {
     display: 'flex',
     flexDirection: 'row',
-    padding: theme.spacing.unit / 2,
-    height: 88,
+    padding: `1px ${theme.spacing.unit / 2}px`,
+    height: 60,
+    [theme.breakpoints.up('lg')]: {
+      height: 30,
+    },
+    fontSize: 14,
+    textAlign: 'center',
   },
   matchName: {
     flexGrow: 1,
     flexBasis: 0,
-    textAlign: 'center',
   },
   match: {
+    display: 'flex',
+    flexWrap: 'wrap',
     flexGrow: 4,
     flexBasis: 0,
-    textAlign: 'center',
   },
   matchWithTime: {
+    display: 'flex',
+    flexWrap: 'wrap',
     flexGrow: 3,
     flexBasis: 0,
-    textAlign: 'center',
   },
   time: {
     flexGrow: 1,
     flexBasis: 0,
-    textAlign: 'center',
     fontSize: 14,
   },
   alliance: {
     display: 'flex',
-    flexDirection: 'row',
+    flexGrow: 1,
+    width: '80%',
+    [theme.breakpoints.up('lg')]: {
+      width: '40%',
+    },
     overflow: 'hidden',
-    borderRadius: theme.spacing.unit,
-    border: '2px solid transparent',
+    border: '1px solid transparent',
   },
   redAlliance: {
+    borderRadius: `${theme.spacing.unit}px 0px 0px 0px`,
+    [theme.breakpoints.up('lg')]: {
+      borderRadius: `${theme.spacing.unit}px 0px 0px ${theme.spacing.unit}px`,
+    },
     '& $team': {
       backgroundColor: '#ffeeee',
     },
-    '& $score': {
-      backgroundColor: '#ffdddd',
-    },
   },
   blueAlliance: {
+    borderRadius: `0px 0px 0px ${theme.spacing.unit}px`,
+    [theme.breakpoints.up('lg')]: {
+      borderRadius: 0,
+    },
     '& $team': {
       backgroundColor: '#eeeeff',
-    },
-    '& $score': {
-      backgroundColor: '#ddddff',
     },
   },
   team: {
     flexGrow: 1,
     flexBasis: 0,
-    padding: theme.spacing.unit,
-    '&:hover': {
-      textDecoration: 'inherit',
-    },
+    position: 'relative',
+    padding: theme.spacing.unit / 2,
   },
   score: {
-    position: 'relative',
     flexGrow: 1,
-    flexBasis: 0,
-    padding: theme.spacing.unit,
-    fontWeight: 'bold',
+    width: '20%',
+    [theme.breakpoints.up('lg')]: {
+      width: '10%',
+    },
+    overflow: 'hidden',
+    border: '1px solid transparent',
+    '& div': {
+      position: 'relative',
+      padding: theme.spacing.unit / 2,
+    },
+  },
+  redScore: {
+    borderRadius: `0px ${theme.spacing.unit}px 0px 0px`,
+    '& div': {
+      backgroundColor: '#ffdddd',
+    },
+    [theme.breakpoints.up('lg')]: {
+      borderRadius: 0,
+      order: 1,
+    },
+  },
+  blueScore: {
+    borderRadius: `0px 0px ${theme.spacing.unit}px 0px`,
+    [theme.breakpoints.up('lg')]: {
+      borderRadius: `0px ${theme.spacing.unit}px ${theme.spacing.unit}px 0px`,
+    },
+    '& div': {
+      backgroundColor: '#ddddff',
+    },
+    order: 1,
   },
   redWin: {
-    border: '2px solid red',
+    fontWeight: 'bold',
   },
   blueWin: {
-    border: '2px solid blue',
+    fontWeight: 'bold',
   },
   selectedTeam: {
     textDecoration: 'underline',
@@ -98,15 +130,15 @@ const styles = theme => ({
   },
   rpDotA: {
     position: 'absolute',
-    top: '3px',
+    top: '2px',
     left: '3px',
     height: '6px',
     width: '6px',
   },
   rpDotB: {
     position: 'absolute',
-    top: '3px',
-    left: '10px',
+    top: '2px',
+    left: '9px',
     height: '6px',
     width: '6px',
   },
@@ -138,118 +170,59 @@ class MatchListItem extends PureComponent {
     return (
       <ListItem
         className={classes.listItem}
-        component={Link}
-        to={{pathname: `/match/${match.key}`, state: {modal: true}}}
         style={style}
-        button
         divider
-        disableRipple
       >
-        <div className={classes.matchName}>
-          {match.getCompLevel()}
-          <br/>
-          {match.getSetMatch(true)}
-        </div>
+        <Link
+          className={classes.matchName}
+          to={{pathname: `/match/${match.key}`, state: {modal: true}}}
+          dangerouslySetInnerHTML={{__html: `${match.getCompLevel()} ${match.getSetMatch(true)}`}}
+        />
         <div className={showTime ? classes.matchWithTime : classes.match}>
           <div className={classNames({[classes.alliance]: true, [classes.redAlliance]: true,  [classes.redWin]: redWin})}>
-            {match.alliances.getIn(['red', 'team_keys']).map(teamKey => {
-              const teamNum = teamKey.substr(3)
-              const dq = match.isDQ(teamKey)
-              const surrogate = match.isSurrogate(teamKey)
-              return (
-                <LinkContainer
-                  key={teamKey}
-                  component="div"
-                  to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key, state: {modal: true}}}
-                >
-                  <ButtonBase
-                    className={classes.team}
-                  >
-                    <div
-                      className={classNames({
-                        [classes.selectedTeam]: teamKey === selectedTeamKey && !dq,
-                        [classes.dq]: dq && teamKey !== selectedTeamKey,
-                        [classes.selectedTeamDQ]: teamKey === selectedTeamKey && dq,
-                        [classes.surrogate]: surrogate,
-                      })}
-                    >
-                      {teamNum}
-                      {favoriteTeamKeys.has(teamKey) &&
-                        <svg className={classes.favoriteDot}>
-                          <circle cx="2.5" cy="2.5" r="2.5"/>
-                        </svg>
-                      }
-                    </div>
-                  </ButtonBase>
-                </LinkContainer>
-              )
-            })}
-            {!showTime && <div className={classNames({
+            <Teams
+              classes={classes}
+              match={match}
+              teamKeys={match.alliances.getIn(['red', 'team_keys'])}
+              selectedTeamKey={selectedTeamKey}
+              favoriteTeamKeys={favoriteTeamKeys}
+            />
+          </div>
+          <div className={classNames({
               [classes.score]: true,
+              [classes.redScore]: true,
+              [classes.redWin]: redWin,
               [classes.selectedTeam]: match.isOnAlliance(selectedTeamKey, 'red')
-            })}>
-              {match.rpEarnedA('red') &&
-                <svg className={classes.rpDotA}>
-                  <circle cx="2" cy="2" r="2"/>
-                </svg>
-              }
-              {match.rpEarnedB('red') &&
-                <svg className={classes.rpDotB}>
-                  <circle cx="2" cy="2" r="2"/>
-                </svg>
-              }
-              {redScore}
-            </div>}
+            })}
+          >
+            {!showTime && <Score
+              classes={classes}
+              match={match}
+              score={redScore}
+            />}
           </div>
           <div className={classNames({[classes.alliance]: true, [classes.blueAlliance]: true,  [classes.blueWin]: blueWin})}>
-            {match.alliances.getIn(['blue', 'team_keys']).map(teamKey => {
-              const teamNum = teamKey.substr(3)
-              const dq = match.isDQ(teamKey)
-              const surrogate = match.isSurrogate(teamKey)
-              return (
-                <LinkContainer
-                  key={teamKey}
-                  component="div"
-                  to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key, state: {modal: true}}}
-                >
-                  <ButtonBase
-                    className={classes.team}
-                  >
-                    <div
-                      className={classNames({
-                        [classes.selectedTeam]: teamKey === selectedTeamKey && !dq,
-                        [classes.dq]: dq && teamKey !== selectedTeamKey,
-                        [classes.selectedTeamDQ]: teamKey === selectedTeamKey && dq,
-                        [classes.surrogate]: surrogate,
-                      })}
-                    >
-                      {teamNum}
-                      {favoriteTeamKeys.has(teamKey) &&
-                        <svg className={classes.favoriteDot}>
-                          <circle cx="2.5" cy="2.5" r="2.5"/>
-                        </svg>
-                      }
-                    </div>
-                  </ButtonBase>
-                </LinkContainer>
-              )
-            })}
-            {!showTime && <div className={classNames({
+            <Teams
+              classes={classes}
+              match={match}
+              teamKeys={match.alliances.getIn(['blue', 'team_keys'])}
+              selectedTeamKey={selectedTeamKey}
+              favoriteTeamKeys={favoriteTeamKeys}
+            />
+          </div>
+          <div className={classNames({
               [classes.score]: true,
+              [classes.blueScore]: true,
+              [classes.blueWin]: blueWin,
               [classes.selectedTeam]: match.isOnAlliance(selectedTeamKey, 'blue')
-            })}>
-              {match.rpEarnedA('blue') &&
-                <svg className={classes.rpDotA}>
-                  <circle cx="2" cy="2" r="2"/>
-                </svg>
-              }
-              {match.rpEarnedB('blue') &&
-                <svg className={classes.rpDotB}>
-                  <circle cx="2" cy="2" r="2"/>
-                </svg>
-              }
-              {blueScore}
-            </div>}
+            })}
+          >
+            {!showTime && <Score
+              classes={classes}
+              match={match}
+              score={blueScore}
+              hasSelectedTeam={match.isOnAlliance(selectedTeamKey, 'blue')}
+            />}
           </div>
         </div>
         {showTime &&
@@ -274,3 +247,52 @@ MatchListItem.propTypes = {
 }
 
 export default withStyles(styles)(MatchListItem)
+
+function Teams({ classes, match, teamKeys, selectedTeamKey, favoriteTeamKeys }) {
+  return teamKeys.map(teamKey => {
+    const teamNum = teamKey.substr(3)
+    const dq = match.isDQ(teamKey)
+    const surrogate = match.isSurrogate(teamKey)
+    return (
+      <div
+        key={teamKey}
+        className={classes.team}
+      >
+        <Link
+          className={classNames({
+            [classes.selectedTeam]: teamKey === selectedTeamKey && !dq,
+            [classes.dq]: dq && teamKey !== selectedTeamKey,
+            [classes.selectedTeamDQ]: teamKey === selectedTeamKey && dq,
+            [classes.surrogate]: surrogate,
+          })}
+          to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key, state: {modal: true}}}
+        >
+          {teamNum}
+          {favoriteTeamKeys.has(teamKey) &&
+            <svg className={classes.favoriteDot}>
+              <circle cx="2.5" cy="2.5" r="2.5"/>
+            </svg>
+          }
+        </Link>
+      </div>
+    )
+  })
+}
+
+function Score({ classes, match, score }) {
+  return (
+    <div>
+      {match.rpEarnedA('red') &&
+        <svg className={classes.rpDotA}>
+          <circle cx="2" cy="2" r="2"/>
+        </svg>
+      }
+      {match.rpEarnedB('red') &&
+        <svg className={classes.rpDotB}>
+          <circle cx="2" cy="2" r="2"/>
+        </svg>
+      }
+      {score}
+    </div>
+  )
+}

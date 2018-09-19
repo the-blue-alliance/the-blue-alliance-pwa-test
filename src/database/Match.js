@@ -53,7 +53,7 @@ export default class Match extends Record({
     if (this.comp_level === 'qm' || this.comp_level === 'f') {
       return `${this.match_number}`
     } else {
-      return `${this.set_number} ${short ? '-' : 'Match'} ${this.match_number}`
+      return `${this.set_number}&nbsp;${short ? '-' : 'Match'}&nbsp;${this.match_number}`
     }
   }
 

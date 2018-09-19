@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles'
 
 // Components
 import CircularProgress from '@material-ui/core/CircularProgress'
+import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 import VideogameAssetIcon from '@material-ui/icons/VideogameAsset'
 
@@ -120,17 +121,25 @@ class MatchList extends PureComponent {
     }
 
     return (
-      <VirtualStickyHeaderList
-        scrollElement={scrollElement}
-        headers={this.state.headers}
-        items={this.state.items}
-        headerRenderer={this.headerRenderer}
-        itemRenderer={this.itemRenderer}
-        headerHeight={24}
-        itemHeight={88}
-        overscanCount={5}
-      />
+      <List subheader={<div />}>
+        {matches.map(match => {
+          return <MatchListItemContainer key={match.key} match={match} selectedTeamKey={this.props.selectedTeamKey}/>
+        })}
+      </List>
     )
+
+    // return (
+    //   <VirtualStickyHeaderList
+    //     scrollElement={scrollElement}
+    //     headers={this.state.headers}
+    //     items={this.state.items}
+    //     headerRenderer={this.headerRenderer}
+    //     itemRenderer={this.itemRenderer}
+    //     headerHeight={24}
+    //     itemHeight={30}
+    //     overscanCount={5}
+    //   />
+    // )
   }
 }
 
