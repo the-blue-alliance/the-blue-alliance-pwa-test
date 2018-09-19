@@ -12,7 +12,7 @@ import Paper from '@material-ui/core/Paper'
 import { Link } from 'react-router-dom'
 
 // TBA Components
-import MatchList from '../components/MatchList'
+import MatchListContainer from '../containers/MatchListContainer'
 import TeamEventResults from '../components/TeamEventResults'
 
 const styles = theme => ({
@@ -30,7 +30,7 @@ const styles = theme => ({
 class TeamAtEventMobile extends PureComponent {
   render() {
     console.log("Render TeamAtEventMobile")
-    const { classes, hideEventName, scrollElement, event, matches, status, awards, teamKey } = this.props
+    const { classes, hideEventName, scrollElement, event, status, awards, teamKey } = this.props
 
     return (
       <React.Fragment>
@@ -54,9 +54,8 @@ class TeamAtEventMobile extends PureComponent {
             status={status}
             awards={awards}
           />
-          <MatchList
-            scrollElement={scrollElement}
-            matches={matches}
+          <MatchListContainer
+            eventKey={event.key}
             selectedTeamKey={teamKey}
           />
         </Paper>

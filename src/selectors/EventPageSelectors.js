@@ -29,21 +29,25 @@ const getEventMatchKeys = (state, props) => {
   return state.getIn(['models', 'matches', 'collections', 'byEvent', props.eventKey])
 }
 
+const getSelectedTeamKey = (state, props) => {
+  return props.selectedTeamKey
+}
+
 const getEventMatches = createSelector(
   getMatchesByKey,
   getEventMatchKeys,
-  (matchesByKey, keys) => {
-    if (keys) {
-      return keys.toSeq().map(key => matchesByKey.get(key))
+  (matchesByKey, matchKeys) => {
+    if (matchKeys) {
+      return matchKeys.toSeq().map(key => new Match(matchesByKey.get(key)))
     }
+    return undefined
   }
 )
 
-export const getSortedEventMatches = createSelector(
+const getSortedEventMatches = createSelector(
   [getEventMatches],
   (matches) => {
     if (matches) {
-      matches = matches.map(m => new Match(m))
       return matches.toList().sort((a, b) => {
         const orderA = a.getNaturalOrder()
         const orderB = b.getNaturalOrder()
@@ -60,47 +64,53 @@ export const getSortedEventMatches = createSelector(
   }
 )
 
-export const getSortedEventQualMatches = createSelector(
-  [getEventMatches],
+const getSortedEventQualMatches = createSelector(
+  [getSortedEventMatches],
   (matches) => {
     if (matches) {
-      matches = matches.filter(m => m.get('comp_level') === 'qm').map(m => new Match(m))
-      return matches.toList().sort((a, b) => {
-        const orderA = a.getNaturalOrder()
-        const orderB = b.getNaturalOrder()
-        if (orderA < orderB) {
-          return -1
-        }
-        if (orderA > orderB) {
-          return 1
-        }
-        return 0
-      }).toList()
+      return matches.filter(m => m.get('comp_level') === 'qm')
     }
     return undefined
   }
 )
 
-export const getSortedEventPlayoffMatches = createSelector(
-  [getEventMatches],
+const getSortedEventPlayoffMatches = createSelector(
+  [getSortedEventMatches],
   (matches) => {
     if (matches) {
-      matches = matches.filter(m => m.get('comp_level') !== 'qm').map(m => new Match(m))
-      return matches.toList().sort((a, b) => {
-        const orderA = a.getNaturalOrder()
-        const orderB = b.getNaturalOrder()
-        if (orderA < orderB) {
-          return -1
-        }
-        if (orderA > orderB) {
-          return 1
-        }
-        return 0
-      }).toList()
+      return matches.filter(m => m.get('comp_level') !== 'qm')
     }
     return undefined
   }
 )
+
+
+const getTeamEventMatches = createSelector(
+  getSortedEventMatches,
+  getSelectedTeamKey,
+  (matches, selectedTeamKey) => {
+    if (matches) {
+      return matches.filter(m => (
+        m.alliances.getIn(['red', 'team_keys']).concat(m.alliances.getIn(['blue', 'team_keys'])).toSet().has(selectedTeamKey)
+      ))
+    }
+    return undefined
+  }
+)
+
+export const getMatches = (state, props) => {
+  if (props.selectedTeamKey) {
+    return getTeamEventMatches(state, props)
+  }
+
+  if (props.qual) {
+    return getSortedEventQualMatches(state, props)
+  } else if (props.playoff) {
+    return getSortedEventPlayoffMatches(state, props)
+  } else {
+    return getSortedEventMatches(state, props)
+  }
+}
 
 const getTeamsByKey = (state, props) => {
   return state.getIn(['models', 'teams', 'byKey'])

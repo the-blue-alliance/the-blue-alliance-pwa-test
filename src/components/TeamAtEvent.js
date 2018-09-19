@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import { Link } from 'react-router-dom'
 
 // TBA Components
-import MatchTableContainer from '../containers/MatchTableContainer'
+import MatchListContainer from '../containers/MatchListContainer'
 import TeamEventResults from '../components/TeamEventResults'
 
 const styles = theme => ({
@@ -18,14 +18,14 @@ const styles = theme => ({
 class TeamAtEvent extends PureComponent {
   render() {
     console.log("Render TeamAtEvent")
-    const { hideEventName, awards, event, matches, status, teamKey, disableVisibilityRenderer } = this.props
+    const { hideEventName, awards, event, status, teamKey, disableVisibilityRenderer } = this.props
 
     return (
       <Grid container spacing={24}>
         <Grid item xs={12} lg={4}>
           {!hideEventName && <React.Fragment>
             <Typography variant='title' gutterBottom>
-              <Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link>
+              <Link to={`/event/${event.key}`}>{event.name}</Link>
             </Typography>
             <Typography variant='caption' gutterBottom>
               {event.getDateString()}
@@ -37,10 +37,9 @@ class TeamAtEvent extends PureComponent {
           />
         </Grid>
         <Grid item xs={12} lg={8}>
-          <MatchTableContainer
-            matches={matches}
+          <MatchListContainer
+            eventKey={event.key}
             selectedTeamKey={teamKey}
-            disableVisibilityRenderer={disableVisibilityRenderer}
           />
         </Grid>
       </Grid>

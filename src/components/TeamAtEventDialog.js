@@ -105,7 +105,7 @@ class TeamAtEventDialog extends PureComponent {
   render() {
     console.log("Render Team@Event Dialog")
 
-    const { classes, isLoading, awards, event, eventKey, matches, status, team, teamNumber } = this.props
+    const { classes, isLoading, awards, event, eventKey, status, team, teamNumber } = this.props
 
     let teamTitle = `Team ${teamNumber}`
     if (team) {
@@ -136,7 +136,6 @@ class TeamAtEventDialog extends PureComponent {
             <TeamAtEvent
               awards={awards}
               event={event}
-              matches={matches}
               status={status}
               teamKey={`frc${teamNumber}`}
               hideEventName
@@ -191,7 +190,6 @@ class TeamAtEventDialog extends PureComponent {
                 scrollElement={this.state.scrollRef}
                 isLoading={isLoading}
                 event={event}
-                matches={matches}
                 status={status}
                 awards={awards}
                 teamKey={`frc${teamNumber}`}
