@@ -36,6 +36,10 @@ export const decrementLoadingCount = () => ({
   type: types.DECREMENT_LOADING_COUNT,
 })
 
+export const toggleTheme = () => ({
+  type: types.TOGGLE_THEME,
+})
+
 export const toggleAPI = () => ({
   type: types.TOGGLE_API,
 })

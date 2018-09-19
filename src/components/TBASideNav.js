@@ -51,6 +51,8 @@ class TBASideNavContent extends PureComponent {
       classes,
       auth,
       navValue,
+      toggleTheme,
+      darkTheme,
       apiEnabled,
       idbEnabled,
       toggleAPI,
@@ -96,6 +98,15 @@ class TBASideNavContent extends PureComponent {
         <Divider />
         <List>
           <ListSubheader>Temp for testing</ListSubheader>
+          <ListItem>
+            <ListItemText primary={darkTheme ? "Dark Theme" : "Light Theme"} />
+            <ListItemSecondaryAction>
+              <Switch
+                onClick={toggleTheme}
+                checked={!darkTheme}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
           <ListItem>
             <ListItemText primary={apiEnabled ? "API Enabled" : "API Disabled"} />
             <ListItemSecondaryAction>

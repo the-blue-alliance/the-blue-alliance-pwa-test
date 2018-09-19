@@ -1,16 +1,15 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import ReactGA from 'react-ga'
-import indigo from '@material-ui/core/colors/indigo'
-import amber from '@material-ui/core/colors/amber'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import errorReporter from './errorReporter'
 
 import { setPageKey } from './actions'
 import routes from './routes'
+import { canUseDOM } from './utils'
 
+import TBAThemeProvider from './components/TBAThemeProvider'
 import TBAHelmet from './components/TBAHelmet'
 import TBANavContainer from './containers/TBANavContainer'
 import TBASnackbarsContainer from './containers/TBASnackbarsContainer'
@@ -19,12 +18,7 @@ import SearchModal from './components/SearchModal'
 
 // For Google Analytics tracking
 ReactGA.initialize('UA-3251931-11') // TODO: Change to real tracking number
-var canUseDOM = !!(
-      typeof window !== 'undefined' &&
-      window.document &&
-      window.document.createElement
-)
-class Analytics extends Component {
+class Analytics extends React.Component {
   // Modified from https://github.com/react-ga/react-ga/issues/122#issuecomment-320436578
   constructor(props) {
     super(props)
@@ -161,37 +155,8 @@ const mapDispatchToProps = (dispatch) => ({
 
 const ModalSwitchConainer = connect(mapStateToProps, mapDispatchToProps)(ModalSwitch)
 
-const styles = theme => ({
-})
 
-const darkTheme = false
-const displayTextColor = darkTheme ? 'rgba(255, 255, 255, 0.87)' : 'rgba(0, 0, 0, 0.87)'
-const theme = createMuiTheme({
-  palette: {
-    primary: indigo,
-    secondary: amber,
-    type: darkTheme ? 'dark' : 'light',
-  },
-  typography: {
-    display4: {
-      color: displayTextColor,
-    },
-    display3: {
-      color: displayTextColor,
-    },
-    display2: {
-      color: displayTextColor,
-    },
-    display1: {
-      color: displayTextColor,
-    },
-    title: {
-      fontWeight: 400,
-    },
-  },
-})
-
-class TBAApp extends Component {
+class TBAApp extends React.Component {
   constructor(props) {
     super(props)
     this.state = { hasError: false }
@@ -221,7 +186,7 @@ class TBAApp extends Component {
       )
     }
     return (
-      <MuiThemeProvider theme={theme} sheetsManager={canUseDOM ? null : new Map()}>
+      <TBAThemeProvider>
         <TBAHelmet>
           <meta name='description' content='The best way to scout, watch, and relive the FIRST Robotics Competition.' />
         </TBAHelmet>
@@ -230,9 +195,9 @@ class TBAApp extends Component {
         <TBANavContainer />
         <Route component={ModalSwitchConainer} />
         <Route path="/" component={Analytics}/>
-      </MuiThemeProvider>
+      </TBAThemeProvider>
     )
   }
 }
 
-export default withStyles(styles)(TBAApp)
+export default TBAApp
