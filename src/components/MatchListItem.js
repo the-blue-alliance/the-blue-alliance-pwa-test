@@ -253,6 +253,16 @@ function Teams({ classes, match, teamKeys, selectedTeamKey, favoriteTeamKeys }) 
     const teamNum = teamKey.substr(3)
     const dq = match.isDQ(teamKey)
     const surrogate = match.isSurrogate(teamKey)
+
+    let teamEl = teamNum
+    if (dq && surrogate) {
+      teamEl = <Tooltip title="DQ | Surrogate" placement="top"><span>{teamNum}</span></Tooltip>
+    } else if (dq) {
+      teamEl = <Tooltip title="DQ" placement="top"><span>{teamNum}</span></Tooltip>
+    } else if (surrogate) {
+      teamEl = <Tooltip title="Surrogate" placement="top"><span>{teamNum}</span></Tooltip>
+    }
+
     return (
       <div
         key={teamKey}
@@ -267,7 +277,7 @@ function Teams({ classes, match, teamKeys, selectedTeamKey, favoriteTeamKeys }) 
           })}
           to={{pathname: `/team/${teamKey.substring(3)}/${match.getYear()}`, hash: match.event_key, state: {modal: true}}}
         >
-          {teamNum}
+          {teamEl}
           {favoriteTeamKeys.has(teamKey) &&
             <svg className={classes.favoriteDot}>
               <circle cx="2.5" cy="2.5" r="2.5"/>
@@ -280,17 +290,24 @@ function Teams({ classes, match, teamKeys, selectedTeamKey, favoriteTeamKeys }) 
 }
 
 function Score({ classes, match, score }) {
+  const rpEarnedTextA = match.rpEarnedTextA()
+  const rpEarnedTextB = match.rpEarnedTextB()
+
   return (
     <div>
       {match.rpEarnedA('red') &&
-        <svg className={classes.rpDotA}>
-          <circle cx="2" cy="2" r="2"/>
-        </svg>
+        <Tooltip title={rpEarnedTextA} placement="top">
+          <svg className={classes.rpDotA}>
+            <circle cx="2" cy="2" r="2"/>
+          </svg>
+        </Tooltip>
       }
       {match.rpEarnedB('red') &&
-        <svg className={classes.rpDotB}>
-          <circle cx="2" cy="2" r="2"/>
-        </svg>
+        <Tooltip title={rpEarnedTextB} placement="top">
+          <svg className={classes.rpDotB}>
+            <circle cx="2" cy="2" r="2"/>
+          </svg>
+        </Tooltip>
       }
       {score}
     </div>
