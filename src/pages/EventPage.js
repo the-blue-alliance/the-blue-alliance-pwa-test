@@ -68,6 +68,7 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit*2,
     zIndex: theme.zIndex.appBar-1,
     willChange: 'transform',  // Fix chrome rendering issue
+    color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
   },
   sectionCard: {
     marginBottom: theme.spacing.unit*2,

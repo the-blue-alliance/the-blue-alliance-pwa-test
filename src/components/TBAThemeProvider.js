@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { withStyles } from '@material-ui/core/styles'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 
-import indigo from '@material-ui/core/colors/indigo'
 import amber from '@material-ui/core/colors/amber'
+import indigo from '@material-ui/core/colors/indigo'
 
 import { canUseDOM } from '../utils'
 
@@ -50,6 +51,7 @@ class TBAThemeProvider extends React.Component {
     const { children, darkTheme } = this.props
     return (
       <MuiThemeProvider theme={this.state.theme} sheetsManager={canUseDOM ? null : new Map()}>
+        <TBAGlobalStyle />
         {children}
       </MuiThemeProvider>
     )
@@ -64,3 +66,13 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TBAThemeProvider)
+
+const TBAGlobalStyle = withStyles((theme) => ({
+  '@global': {
+    a: {
+      color: theme.palette.type === 'light' ?  indigo[500] : '#536DFE',
+    },
+  },
+}))((props) => {
+  return null
+})
