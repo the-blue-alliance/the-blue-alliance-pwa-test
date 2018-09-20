@@ -13,7 +13,7 @@ import TBAThemeProvider from './components/TBAThemeProvider'
 import TBAHelmet from './components/TBAHelmet'
 import TBANav from './components/TBANav'
 import TBASnackbars from './components/TBASnackbars'
-// import TBAModalDialog from './components/TBAModalDialog'
+import TBAModalDialog from './components/TBAModalDialog'
 // import SearchModal from './components/SearchModal'
 
 // For Google Analytics tracking
@@ -139,8 +139,8 @@ class ModalSwitch extends React.Component {
             <Route key={i} exact={exact} path={path} component={component} />
           )}
         </Switch>
-        {/*
         <TBAModalDialog isModal={isModal && !Boolean(location.state.searchModal)} open={this.state.modalOpen} handleClose={this.handleClose} />
+        {/*
         <SearchModal isModal={isModal && Boolean(location.state.searchModal)} open={this.state.modalOpen} handleClose={this.handleClose} />
         */}
       </React.Fragment>
