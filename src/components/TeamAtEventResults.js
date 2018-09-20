@@ -13,6 +13,9 @@ import Skeleton from '../components/Skeleton'
 const styles = theme => ({
   awardList: {
     margin: 0,
+    '& li': {
+      color: theme.palette.type === 'light' ?  theme.palette.common.black : theme.palette.common.white,
+    },
   },
 })
 
@@ -103,7 +106,7 @@ class TeamAtEventResults extends PureComponent {
                 <Typography variant='subheading'>Awards:</Typography>
                 <ul className={classes.awardList}>
                   {awards.map(award =>
-                    <li key={award.key}>{award.name}</li>
+                    <li key={award.key}><Typography>{award.name}</Typography></li>
                   )}
                 </ul>
               </React.Fragment>
