@@ -94,21 +94,21 @@ class TBAAppBar extends PureComponent {
           <Hidden smDown implementation="css">
             <TBAAppBarSearch />
           </Hidden>
-          {!this.props.isLoading && this.props.refreshFunction &&
-            <IconButton color="inherit" onClick={() => this.props.refreshFunction()}>
-              <RefreshIcon />
-            </IconButton>
-          }
-          {this.props.isLoading &&
-            <div className={classes.progress}>
-              <CircularProgress color="secondary" size={20} thickness={5}/>
-            </div>
-          }
           <Hidden mdUp implementation="css">
             <IconButton color="inherit" component={Link} to={{pathname: '/search', state: {modal: true, searchModal: true}}}>
               <SearchIcon />
             </IconButton>
           </Hidden>
+          {this.props.isLoading &&
+            <div className={classes.progress}>
+              <CircularProgress color="secondary" size={20} thickness={5}/>
+            </div>
+          }
+          {!this.props.isLoading && this.props.refreshFunction &&
+            <IconButton color="inherit" onClick={() => this.props.refreshFunction()}>
+              <RefreshIcon />
+            </IconButton>
+          }
           <IconButton color="inherit" onClick={this.handleShare}>
             <ShareIcon />
           </IconButton>

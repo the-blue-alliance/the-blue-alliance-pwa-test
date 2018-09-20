@@ -1,6 +1,6 @@
 import HomePage from './pages/HomePage'
 // import EventListPageBase from './pages/EventListPageBase'
-// import EventPage from './pages/EventPage'
+import EventPage from './pages/EventPage'
 // import MatchPageContainer from './containers/MatchPageContainer'
 // import AccountPageBase from './pages/AccountPageBase'
 // import SigninRequiredPageBase from './pages/SigninRequiredPageBase'
@@ -24,11 +24,11 @@ export default [
   //     component: EventListPageBase,
   //     exact: true,
   // },
-  // {
-  //     path: '/event/:eventKey',
-  //     component: EventPage,
-  //     exact: true,
-  // },
+  {
+      path: '/event/:eventKey',
+      component: EventPage,
+      exact: true,
+  },
   // {
   //     path: '/signin_required',
   //     component: SigninRequiredPageBase,
