@@ -23,7 +23,7 @@ import PlaceIcon from '@material-ui/icons/Place'
 
 // TBA Components
 import TBAHelmet from '../components/TBAHelmet'
-import TBAPageContainer from '../containers/TBAPageContainer'
+import TBAPage from '../components/TBAPage'
 import AllianceTableContainer from '../containers/AllianceTableContainer'
 import MatchListContainer from '../containers/MatchListContainer'
 import EventPageSectionHeader from '../components/EventPageSectionHeader'
@@ -137,10 +137,8 @@ class EventPage extends PureComponent {
             />
           }
         </TBAHelmet>
-        <TBAPageContainer
-          // history={this.props.history}
-          // refreshFunction={this.refreshFunction}
-          // contentRef={el => this.contentRef = el}
+        <TBAPage
+          refreshFunction={this.refreshFunction}
         >
           <Grid container spacing={16}>
             <Grid item xs={12}>
@@ -209,7 +207,7 @@ class EventPage extends PureComponent {
               </div>
             </Grid>
           </Grid>
-        </TBAPageContainer>
+        </TBAPage>
       </React.Fragment>
     )
   }

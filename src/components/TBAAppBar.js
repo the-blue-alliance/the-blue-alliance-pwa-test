@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 
 import AppBar from '@material-ui/core/AppBar'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import FilterListIcon from '@material-ui/icons/FilterList'
 import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -93,16 +92,6 @@ class TBAToolbar extends PureComponent {
           <Hidden smDown implementation="css">
             <TBAAppBarSearch />
           </Hidden>
-          {this.props.filterFunction && <IconButton color="inherit" onClick={this.props.filterFunction}>
-            <HideableBadge
-              badgeContent={this.props.filterCount}
-              color='secondary'
-              hidden={this.props.filterCount === 0}
-              style={{height: 24, width: 24}}
-            >
-              <FilterListIcon />
-            </HideableBadge>
-          </IconButton>}
           {!this.props.isLoading && this.props.refreshFunction &&
             <IconButton color="inherit" onClick={() => this.props.refreshFunction()}>
               <RefreshIcon />

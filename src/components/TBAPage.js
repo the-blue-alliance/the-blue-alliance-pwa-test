@@ -33,15 +33,13 @@ class TBAPage extends PureComponent {
   render() {
     console.log("Render TBAPage")
 
-    const { classes, children, title, refreshFunction, filterFunction, filterCount } = this.props
+    const { classes, children, title, refreshFunction } = this.props
 
     return (
       <React.Fragment>
         <TBAAppBarContainer
           title={title}
           refreshFunction={refreshFunction}
-          filterFunction={filterFunction}
-          filterCount={filterCount}
         />
         <div className={classes.container}>
           <main className={classes.content}>
@@ -56,7 +54,7 @@ class TBAPage extends PureComponent {
 TBAPage.propTypes = {
   classes: PropTypes.object.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  filterCount: PropTypes.number,
+  refreshFunction: PropTypes.func,
 }
 
 export default withStyles(styles)(TBAPage)
