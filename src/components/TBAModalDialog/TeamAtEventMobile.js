@@ -30,7 +30,7 @@ const styles = theme => ({
 class TeamAtEventMobile extends PureComponent {
   render() {
     console.log("Render TeamAtEventMobile")
-    const { classes, hideEventName, scrollElement, event, status, awards, teamKey } = this.props
+    const { classes, hideEventName, event, status, awards, teamKey } = this.props
 
     return (
       <React.Fragment>

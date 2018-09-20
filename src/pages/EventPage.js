@@ -12,7 +12,6 @@ import { getEventKey, getEventModel } from '../selectors/EventPageSelectors'
 
 // Components
 import Grid from '@material-ui/core/Grid'
-import Hidden from '@material-ui/core/Hidden'
 import Paper from '@material-ui/core/Paper'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
@@ -112,12 +111,10 @@ class EventPage extends PureComponent {
     const { classes, eventKey, event, tabIdx } = this.props
 
     var name = null
-    var shortName = null
     var year = undefined
     if (event) {
       year = event.year
       name = `${event.name} ${year}`
-      shortName = event.safeShortName()
     }
 
     const sections = [

@@ -102,7 +102,7 @@ class MatchList extends PureComponent {
   render() {
     console.log("Render MatchList")
 
-    const { classes, scrollElement, matches } = this.props
+    const { classes, matches } = this.props
 
     if (matches === undefined) {
       return (

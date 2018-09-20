@@ -3,14 +3,12 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from '@material-ui/core/styles'
 
-import Paper from '@material-ui/core/Paper'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
 import { Link } from 'react-router-dom'
 
 import Skeleton from './Skeleton'
@@ -67,9 +65,9 @@ class EventAllianceTable extends PureComponent {
             alliances.map((a, i) => {
               let status
               if (a.getIn(['status', 'status']) === 'won') {
-                status = <img src='/medal-gold.png' className={classes.medalIcon}/>
+                status = <img src='/medal-gold.png' className={classes.medalIcon} alt='Gold medal'/>
               } else if (a.getIn(['status', 'level']) === 'f') {
-                status = <img src='/medal-silver.png' className={classes.medalIcon}/>
+                status = <img src='/medal-silver.png' className={classes.medalIcon} alt='Silver medal'/>
               } else {
                 status = a.getIn(['status', 'level']).toUpperCase()
               }

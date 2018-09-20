@@ -18,7 +18,7 @@ const styles = theme => ({
 class TeamAtEvent extends PureComponent {
   render() {
     console.log("Render TeamAtEvent")
-    const { hideEventName, awards, event, status, teamKey, disableVisibilityRenderer } = this.props
+    const { hideEventName, awards, event, status, teamKey } = this.props
 
     return (
       <Grid container spacing={24}>
