@@ -9,6 +9,8 @@ import HomeIcon from '@material-ui/icons/Home'
 import EventIcon from '@material-ui/icons/Event'
 import PeopleIcon from '@material-ui/icons/People'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import { connect } from 'react-redux'
+import { push } from 'connected-react-router'
 
 import TBANavMoreMenu from './TBANavMoreMenu'
 
@@ -79,4 +81,15 @@ TBABottomNav.propTypes = {
   classes: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(TBABottomNav)
+const mapStateToProps = (state, props) => ({
+  navValue: state.getIn(['appState', 'navValue']),
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  push: (path) => dispatch(push(path)),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(TBABottomNav))
