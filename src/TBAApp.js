@@ -11,10 +11,10 @@ import { canUseDOM } from './utils'
 
 import TBAThemeProvider from './components/TBAThemeProvider'
 import TBAHelmet from './components/TBAHelmet'
-import TBANavContainer from './containers/TBANavContainer'
-import TBASnackbarsContainer from './containers/TBASnackbarsContainer'
-import TBAModalDialog from './components/TBAModalDialog'
-import SearchModal from './components/SearchModal'
+import TBANav from './components/TBANav'
+import TBASnackbars from './components/TBASnackbars'
+// import TBAModalDialog from './components/TBAModalDialog'
+// import SearchModal from './components/SearchModal'
 
 // For Google Analytics tracking
 ReactGA.initialize('UA-3251931-11') // TODO: Change to real tracking number
@@ -139,8 +139,10 @@ class ModalSwitch extends React.Component {
             <Route key={i} exact={exact} path={path} component={component} />
           )}
         </Switch>
+        {/*
         <TBAModalDialog isModal={isModal && !Boolean(location.state.searchModal)} open={this.state.modalOpen} handleClose={this.handleClose} />
         <SearchModal isModal={isModal && Boolean(location.state.searchModal)} open={this.state.modalOpen} handleClose={this.handleClose} />
+        */}
       </React.Fragment>
     )
   }
@@ -191,8 +193,8 @@ class TBAApp extends React.Component {
           <meta name='description' content='The best way to scout, watch, and relive the FIRST Robotics Competition.' />
         </TBAHelmet>
         <CssBaseline />
-        <TBASnackbarsContainer />
-        <TBANavContainer />
+        <TBASnackbars />
+        <TBANav />
         <Route component={ModalSwitchConainer} />
         <Route path="/" component={Analytics}/>
       </TBAThemeProvider>

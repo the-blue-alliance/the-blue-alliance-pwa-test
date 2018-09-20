@@ -48,7 +48,7 @@ class TBAThemeProvider extends React.Component {
   }
 
   render() {
-    const { children } = this.props
+    const { children, darkTheme } = this.props
     return (
       <MuiThemeProvider theme={this.state.theme} sheetsManager={canUseDOM ? null : new Map()}>
         <TBAGlobalStyle />
