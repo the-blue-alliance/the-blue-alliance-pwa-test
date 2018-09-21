@@ -2,7 +2,7 @@ import HomePage from './pages/HomePage'
 // import EventListPageBase from './pages/EventListPageBase'
 import EventPage from './pages/EventPage'
 // import MatchPageContainer from './containers/MatchPageContainer'
-// import AccountPageBase from './pages/AccountPageBase'
+import AccountPage from './pages/AccountPage'
 // import SigninRequiredPageBase from './pages/SigninRequiredPageBase'
 // import TeamListPageContainer from './containers/TeamListPageContainer'
 // import TeamPageBase from './pages/TeamPageBase'
@@ -14,11 +14,11 @@ export default [
       component: HomePage,
       exact: true,
   },
-  // {
-  //     path: '/account',
-  //     component: AccountPageBase,
-  //     exact: true,
-  // },
+  {
+      path: '/account',
+      component: AccountPage,
+      exact: true,
+  },
   // {
   //     path: '/events/:year?',
   //     component: EventListPageBase,

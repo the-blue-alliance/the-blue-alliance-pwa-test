@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import { withStyles } from '@material-ui/core/styles'
+import { withFirebase } from 'react-redux-firebase'
 
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -71,4 +72,4 @@ class TBANav extends PureComponent {
   }
 }
 
-export default withStyles(styles)(TBANav)
+export default withFirebase(withStyles(styles)(TBANav))
