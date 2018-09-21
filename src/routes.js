@@ -3,7 +3,7 @@ import HomePage from './pages/HomePage'
 import EventPage from './pages/EventPage'
 // import MatchPageContainer from './containers/MatchPageContainer'
 import AccountPage from './pages/AccountPage'
-// import SigninRequiredPageBase from './pages/SigninRequiredPageBase'
+import SigninRequiredPage from './pages/SigninRequiredPage'
 // import TeamListPageContainer from './containers/TeamListPageContainer'
 // import TeamPageBase from './pages/TeamPageBase'
 import NotFoundPage from './pages/NotFoundPage'
@@ -29,11 +29,11 @@ export default [
       component: EventPage,
       exact: true,
   },
-  // {
-  //     path: '/signin_required',
-  //     component: SigninRequiredPageBase,
-  //     exact: true,
-  // },
+  {
+      path: '/signin_required',
+      component: SigninRequiredPage,
+      exact: true,
+  },
   // {
   //     path: '/match/:matchKey',
   //     component: MatchPageContainer,
