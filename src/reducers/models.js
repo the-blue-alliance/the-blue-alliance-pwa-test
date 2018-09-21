@@ -1,6 +1,12 @@
 import * as types from '../constants/ActionTypes'
 import { fromJS, List, Map, Set } from 'immutable'
 
+import Award from '../database/Award'
+import Event from '../database/Event'
+import Match from '../database/Match'
+import Media from '../database/Media'
+import Team from '../database/Team'
+
 const mergeDeep = (state = Map(), data) => {
   // Wrapper for Map.mergeDeep that handles undefined state
   return state.mergeDeep(data)
@@ -16,7 +22,7 @@ const updateSingle = (state, modelType, modelKey, newModel) => {
 
 const updateMulti = (state, modelType, partialPath, newModels, merge=false) => {
   let newModelsByKey = Map()
-  fromJS(newModels).forEach(o => newModelsByKey = newModelsByKey.set(o.get('key'), o))
+  newModels.forEach(o => newModelsByKey = newModelsByKey.set(o.get('key'), o))
 
   // Merge new models into current models
   const byKeyPath = [modelType].concat(['byKey'])
@@ -59,104 +65,104 @@ const models = (state = Map(), action) => {
         state,
         'teamYears',
         action.teamKey,
-        action.data)
+        fromJS(action.data))
     case types.RECEIVE_TEAM_INFO:
       return updateSingle(
         state,
         'teams',
         action.teamKey,
-        action.data)
+        new Team(fromJS(action.data)))
     case types.RECEIVE_TEAM_YEAR_AWARDS:
       return updateMulti(
         state,
         'awards',
         ['byTeamYear', action.teamKey, action.year],
-        action.data)
+        fromJS(action.data).map(o => new Award(o)))
     case types.RECEIVE_TEAM_YEAR_EVENTS:
       return updateMulti(
         state,
         'events',
         ['byTeamYear', action.teamKey, action.year],
-        action.data)
+        fromJS(action.data).map(o => new Event(o)))
     case types.RECEIVE_TEAM_YEAR_MATCHES:
       return updateMulti(
         state,
         'matches',
         ['byTeamYear', action.teamKey, action.year],
-        action.data)
+        fromJS(action.data).map(o => new Match(o)))
     case types.RECEIVE_TEAM_YEAR_EVENT_STATUSES:
       return updateMulti(
         state,
         'teamEventStatuses',
         ['byTeamYear', action.teamKey, action.year],
-        action.data)
+        fromJS(action.data))
     case types.RECEIVE_TEAM_YEAR_MEDIA:
       return updateMulti(
         state,
         'media',
         ['byTeamYear', action.teamKey, action.year],
-        action.data)
+        fromJS(action.data).map(o => new Media(o)))
     case types.RECEIVE_EVENT_INFO:
       return updateSingle(
         state,
         'events',
         action.eventKey,
-        action.data)
+        new Event(fromJS(action.data)))
     case types.RECEIVE_YEAR_EVENTS:
       return updateMulti(
         state,
         'events',
         ['byYear', action.year],
-        action.data)
+        fromJS(action.data).map(o => new Event(o)))
     case types.RECEIVE_EVENT_AWARDS:
       return updateMulti(
         state,
         'awards',
         ['byEvent', action.eventKey],
-        action.data)
+        fromJS(action.data).map(o => new Award(o)))
     case types.RECEIVE_EVENT_MATCHES:
       return updateMulti(
         state,
         'matches',
         ['byEvent', action.eventKey],
-        action.data)
+        fromJS(action.data).map(o => new Match(o)))
     case types.RECEIVE_EVENT_TEAMS:
       return updateMulti(
         state,
         'teams',
         ['byEvent', action.eventKey],
-        action.data)
+        fromJS(action.data).map(o => new Team(o)))
     case types.RECEIVE_EVENT_TEAM_STATUSES:
       return updateMulti(
         state,
         'teamEventStatuses',
         ['byEvent', action.eventKey],
-        action.data)
+        fromJS(action.data))
     case types.RECEIVE_EVENT_RANKINGS:
       return updateSingle(
         state,
         'eventRankings',
         action.eventKey,
-        action.data)
+        fromJS(action.data))
     case types.RECEIVE_EVENT_ALLIANCES:
       return updateSingle(
         state,
         'eventAlliances',
         action.eventKey,
-        action.data)
+        fromJS(action.data))
     case types.RECEIVE_TEAM_LIST_PAGE:
       return updateMulti(
         state,
         'teams',
         ['all'],
-        action.data,
+        fromJS(action.data).map(o => new Team(o)),
         true)
     case types.RECEIVE_MATCH_INFO:
       return updateSingle(
         state,
         'matches',
         action.matchKey,
-        action.data)
+        new Match(fromJS(action.data)))
     default:
       return state
   }

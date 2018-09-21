@@ -81,6 +81,10 @@ export default class Match extends Record({
     return this.getIn(['alliances', color, 'team_keys']).includes(teamKey)
   }
 
+  hasTeamKey(teamKey) {
+    return this.getIn(['alliances', 'red', 'team_keys']).includes(teamKey) || this.getIn(['alliances', 'blue', 'team_keys']).includes(teamKey)
+  }
+
   rpEarnedA(color) {
     const breakdown = this.getIn(['score_breakdown', color])
     if (breakdown && (

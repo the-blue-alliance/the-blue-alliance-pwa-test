@@ -1,6 +1,4 @@
 import createCachedSelector from 're-reselect'
-import Award from '../database/Award'
-import Match from '../database/Match'
 
 const getTeamKey = (state, props) => {
   return props.teamKey
@@ -36,7 +34,7 @@ const getEventAwards = createCachedSelector(
   getEventAwardKeys,
   (awardsByKey, keys) => {
     if (keys) {
-      return keys.toSeq().map(key => new Award(awardsByKey.get(key)))
+      return keys.toSeq().map(key => awardsByKey.get(key))
     }
   }
 )(
@@ -52,7 +50,7 @@ const getTeamYearAwards = createCachedSelector(
   getTeamYearAwardKeys,
   (awardsByKey, keys) => {
     if (keys) {
-      return keys.toSeq().map(key => new Award(awardsByKey.get(key)))
+      return keys.toSeq().map(key => awardsByKey.get(key))
     }
   }
 )(
@@ -123,7 +121,7 @@ const getEventMatches = createCachedSelector(
   getEventMatchKeys,
   (matchesByKey, keys) => {
     if (keys) {
-      return keys.toSeq().map(key => new Match(matchesByKey.get(key)))
+      return keys.toSeq().map(key => matchesByKey.get(key))
     }
   }
 )(
@@ -139,7 +137,7 @@ const getTeamYearMatches = createCachedSelector(
   getTeamYearMatchKeys,
   (matchesByKey, keys) => {
     if (keys) {
-      return keys.toSeq().map(key => new Match(matchesByKey.get(key)))
+      return keys.toSeq().map(key => matchesByKey.get(key))
     }
   }
 )(
@@ -156,8 +154,7 @@ export const getTeamEventMatches = createCachedSelector(
 
     if (matches) {
       matches = matches.filter(m => {
-        return (m.alliances.getIn(['red', 'team_keys']).concat(m.alliances.getIn(['blue', 'team_keys'])).toSet().has(teamKey) &&
-          m.event_key === eventKey)
+        return m.hasTeamKey(teamKey) && m.event_key === eventKey
       })
       return matches.toList().sort((a, b) => {
         const orderA = a.getNaturalOrder()
