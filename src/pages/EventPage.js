@@ -12,6 +12,7 @@ import { getEventKey, getEventModel } from '../selectors/EventPageSelectors'
 
 // Components
 import Grid from '@material-ui/core/Grid'
+import NoSsr from '@material-ui/core/NoSsr'
 import Paper from '@material-ui/core/Paper'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
@@ -158,41 +159,43 @@ class EventPage extends PureComponent {
                 <Tab label='Media' />
               </Tabs>
             </Paper>
-            <div hidden={tabIdx !== 0}>
-              <Grid container spacing={16}>
-                <Grid item xs={12} sm={6}>
-                  <Paper id='qual'>
-                    <SectionHeaderWithScrollto
-                      sectionKey='qual'
-                      label='Qualification Results'
-                      sections={sections}
-                    />
-                    <MatchListContainer eventKey={eventKey} qual/>
-                  </Paper>
+            <NoSsr>
+              <div hidden={tabIdx !== 0}>
+                <Grid container spacing={16}>
+                  <Grid item xs={12} sm={6}>
+                    <Paper id='qual'>
+                      <SectionHeaderWithScrollto
+                        sectionKey='qual'
+                        label='Qualification Results'
+                        sections={sections}
+                      />
+                      <MatchListContainer eventKey={eventKey} qual/>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Paper id='alliances' className={classes.sectionCard}>
+                      <SectionHeaderWithScrollto
+                        sectionKey='alliances'
+                        label='Alliances'
+                        sections={sections}
+                      />
+                      <EventAllianceTableContainer eventKey={eventKey} />
+                    </Paper>
+                    <Paper id='playoff' className={classes.sectionCard}>
+                      <SectionHeaderWithScrollto
+                        sectionKey='playoff'
+                        label='Playoff Results'
+                        sections={sections}
+                      />
+                      <MatchListContainer eventKey={eventKey} playoff/>
+                    </Paper>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Paper id='alliances' className={classes.sectionCard}>
-                    <SectionHeaderWithScrollto
-                      sectionKey='alliances'
-                      label='Alliances'
-                      sections={sections}
-                    />
-                    <EventAllianceTableContainer eventKey={eventKey} />
-                  </Paper>
-                  <Paper id='playoff' className={classes.sectionCard}>
-                    <SectionHeaderWithScrollto
-                      sectionKey='playoff'
-                      label='Playoff Results'
-                      sections={sections}
-                    />
-                    <MatchListContainer eventKey={eventKey} playoff/>
-                  </Paper>
-                </Grid>
-              </Grid>
-            </div>
-            <div hidden={tabIdx !== 1}>
-              <EventRankingsTableContainer eventKey={eventKey} />
-            </div>
+              </div>
+              <div hidden={tabIdx !== 1}>
+                <EventRankingsTableContainer eventKey={eventKey} />
+              </div>
+            </NoSsr>
           </Grid>
         </Grid>
       </TBAPage>
