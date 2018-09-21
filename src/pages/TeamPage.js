@@ -30,12 +30,16 @@ import {
 
 // Components
 import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Grid from '@material-ui/core/Grid'
 import Hidden from '@material-ui/core/Hidden'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 import Paper from '@material-ui/core/Paper'
 import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import EventIcon from '@material-ui/icons/Event'
 import InfoIcon from '@material-ui/icons/Info'
 import LinkIcon from '@material-ui/icons/Link'
@@ -87,6 +91,11 @@ const styles = theme => ({
     width: 150,
     boxShadow: theme.shadows[4],
   },
+  yearMenuButtonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    margin: theme.spacing.unit,
+  },
   zeroDataContainer: {
     paddingTop: theme.spacing.unit*3,
     display: 'flex',
@@ -110,6 +119,10 @@ const styles = theme => ({
 })
 
 class TeamPage extends PureComponent {
+  state = {
+    yearMenuAnchorEl: null,
+  }
+
   static fetchData({ store, params }) {
     let { teamNumber, year } = params
     if (year === undefined) {
@@ -142,8 +155,19 @@ class TeamPage extends PureComponent {
     this.props.setPageState({tabIdx})
   }
 
-  setYearMenuOpen = (isOpen) => {
-    this.props.setPageState({ yearMenuOpen: isOpen })
+  handleYearOpen = event => {
+    this.setState({ yearMenuAnchorEl: event.currentTarget });
+  }
+
+  handleYearClose = event => {
+    this.setState({ yearMenuAnchorEl: null });
+  }
+
+  handleYearSelect = year => {
+    this.handleYearClose()
+    if (year !== this.props.year) {
+      requestAnimationFrame(() => this.props.pushHistory(`/team/${this.props.teamNumber}/${year}`))
+    }
   }
 
   componentDidMount() {
@@ -169,6 +193,7 @@ class TeamPage extends PureComponent {
       teamYearMedias,
       tabIdx,
     } = this.props
+    const { yearMenuAnchorEl } = this.state
 
     let safeTabIdx = tabIdx
     if (safeTabIdx === undefined) {
@@ -190,7 +215,7 @@ class TeamPage extends PureComponent {
         refreshFunction={this.refreshFunction}
       >
         <Grid container spacing={16}>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={3} className={classes.titleArea}>
             <Avatar alt={`Team ${teamNumber}'s ${year} robot`} src={mainRobotImage ? mainRobotImage.getThumbnailURL() : null} className={classes.mainRobotImage}>
               {mainRobotImage ? null : <PhotoIcon />}
             </Avatar>
@@ -201,9 +226,33 @@ class TeamPage extends PureComponent {
                   {team.nickname && <React.Fragment><br/>{team.nickname}</React.Fragment>}
                 </React.Fragment>
                 :
-                <Skeleton width='75%'/>
+                <Skeleton width='75%' rows={2}/>
               }</Typography>
             </Hidden>
+            <div className={classes.yearMenuButtonContainer}>
+              <Button
+                variant='raised'
+                color='primary'
+                onClick={this.handleYearOpen}
+              >
+                {`${year} Season`} <ArrowDropDownIcon />
+              </Button>
+              {validYears && <Menu
+                anchorEl={yearMenuAnchorEl}
+                open={Boolean(yearMenuAnchorEl)}
+                onClose={this.handleYearClose}
+              >
+                {validYears.map(y =>
+                  <MenuItem
+                    key={y}
+                    selected={y === year}
+                    onClick={() => this.handleYearSelect(y)}
+                  >
+                    {y} Season
+                  </MenuItem>
+                ).reverse()}
+              </Menu>}
+            </div>
           </Grid>
 
           <Grid item xs={12} md={9}>
