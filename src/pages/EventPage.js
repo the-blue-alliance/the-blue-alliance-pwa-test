@@ -110,6 +110,11 @@ class EventPage extends PureComponent {
 
     const { classes, eventKey, event, tabIdx } = this.props
 
+    let safeTabIdx = tabIdx
+    if (safeTabIdx === undefined) {
+      safeTabIdx = 0
+    }
+
     var name = null
     var year = undefined
     if (event) {
@@ -145,7 +150,7 @@ class EventPage extends PureComponent {
           <Grid item xs={12}>
             <Paper className={classes.tabs} square>
               <Tabs
-                value={tabIdx ? tabIdx : 0}
+                value={safeTabIdx}
                 onChange={this.tabHandleChange}
                 fullWidth
                 scrollable
@@ -159,40 +164,40 @@ class EventPage extends PureComponent {
                 <Tab label='Media' />
               </Tabs>
             </Paper>
-            <NoSsr>
-              <div hidden={tabIdx !== 0}>
-                <Grid container spacing={16}>
-                  <Grid item xs={12} sm={6}>
-                    <Paper id='qual'>
-                      <SectionHeaderWithScrollto
-                        sectionKey='qual'
-                        label='Qualification Results'
-                        sections={sections}
-                      />
-                      <MatchListContainer eventKey={eventKey} qual/>
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Paper id='alliances' className={classes.sectionCard}>
-                      <SectionHeaderWithScrollto
-                        sectionKey='alliances'
-                        label='Alliances'
-                        sections={sections}
-                      />
-                      <EventAllianceTableContainer eventKey={eventKey} />
-                    </Paper>
-                    <Paper id='playoff' className={classes.sectionCard}>
-                      <SectionHeaderWithScrollto
-                        sectionKey='playoff'
-                        label='Playoff Results'
-                        sections={sections}
-                      />
-                      <MatchListContainer eventKey={eventKey} playoff/>
-                    </Paper>
-                  </Grid>
+            <div hidden={safeTabIdx !== 0}>
+              <Grid container spacing={16}>
+                <Grid item xs={12} sm={6}>
+                  <Paper id='qual'>
+                    <SectionHeaderWithScrollto
+                      sectionKey='qual'
+                      label='Qualification Results'
+                      sections={sections}
+                    />
+                    <MatchListContainer eventKey={eventKey} qual/>
+                  </Paper>
                 </Grid>
-              </div>
-              <div hidden={tabIdx !== 1}>
+                <Grid item xs={12} sm={6}>
+                  <Paper id='alliances' className={classes.sectionCard}>
+                    <SectionHeaderWithScrollto
+                      sectionKey='alliances'
+                      label='Alliances'
+                      sections={sections}
+                    />
+                    <EventAllianceTableContainer eventKey={eventKey} />
+                  </Paper>
+                  <Paper id='playoff' className={classes.sectionCard}>
+                    <SectionHeaderWithScrollto
+                      sectionKey='playoff'
+                      label='Playoff Results'
+                      sections={sections}
+                    />
+                    <MatchListContainer eventKey={eventKey} playoff/>
+                  </Paper>
+                </Grid>
+              </Grid>
+            </div>
+            <NoSsr>
+              <div hidden={safeTabIdx !== 1}>
                 <EventRankingsTableContainer eventKey={eventKey} />
               </div>
             </NoSsr>
