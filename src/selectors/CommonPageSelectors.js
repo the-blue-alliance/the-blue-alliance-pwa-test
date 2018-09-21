@@ -55,6 +55,9 @@ export const getYear = (state, props) => {
   if (props.year) {
     return props.year
   }
+  if (props.eventKey) {
+    return parseInt(props.eventKey.substring(0, 4), 10)
+  }
   const year = parseInt(props.match.params.year, 10)
   return year ? year : 2018
 }

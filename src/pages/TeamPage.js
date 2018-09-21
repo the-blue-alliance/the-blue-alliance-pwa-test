@@ -25,9 +25,6 @@ import {
   getTeamModel,
   getTeamYears,
   getSortedTeamYearEvents,
-  getAwardsByEvent,
-  getMatchesByEvent,
-  getStatusByEvent,
   getTeamYearMedias,
 } from '../selectors/TeamPageSelectors'
 
@@ -62,9 +59,6 @@ const mapStateToProps = (state, props) => ({
   team: getTeamModel(state, props),
   validYears: getTeamYears(state, props),
   teamYearEvents: getSortedTeamYearEvents(state, props),
-  awardsByEvent: getAwardsByEvent(state, props),
-  matchesByEvent: getMatchesByEvent(state, props),
-  statusByEvent: getStatusByEvent(state, props),
   teamYearMedias: getTeamYearMedias(state, props),
 })
 
@@ -172,9 +166,6 @@ class TeamPage extends PureComponent {
       validYears,
       year,
       teamYearEvents,
-      awardsByEvent,
-      matchesByEvent,
-      statusByEvent,
       teamYearMedias,
       tabIdx,
     } = this.props
@@ -199,7 +190,6 @@ class TeamPage extends PureComponent {
         refreshFunction={this.refreshFunction}
       >
         <Grid container spacing={16}>
-
           <Grid item xs={12} md={3}>
             <Avatar alt={`Team ${teamNumber}'s ${year} robot`} src={mainRobotImage ? mainRobotImage.getThumbnailURL() : null} className={classes.mainRobotImage}>
               {mainRobotImage ? null : <PhotoIcon />}
@@ -280,15 +270,11 @@ class TeamPage extends PureComponent {
                 </div>
               }
               {teamYearEvents && teamYearEvents.valueSeq().map(function(event) {
-                const eventKey = event.key
                 return (
                   <Paper key={event.key} id={event.get('event_code')} className={classes.eventCard} elevation={4}>
                     <TeamAtEvent
-                      awards={awardsByEvent.get(eventKey)}
-                      event={event}
-                      matches={matchesByEvent.get(eventKey)}
-                      status={statusByEvent && statusByEvent.get(`${eventKey}_frc${teamNumber}`)}
                       teamKey={`frc${teamNumber}`}
+                      event={event}
                     />
                   </Paper>
                 )

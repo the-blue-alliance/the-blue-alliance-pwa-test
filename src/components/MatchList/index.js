@@ -75,7 +75,7 @@ class MatchList extends PureComponent {
   render() {
     console.log("Render MatchList")
 
-    const { classes, matches, selectedTeamKey } = this.props
+    const { classes, matches, teamKey } = this.props
 
     if (matches === undefined) {
       return (
@@ -102,7 +102,7 @@ class MatchList extends PureComponent {
             <div key={header.key}>
               <MatchListSubheader text={headers[headerIndex].text} />
               {items[header.key].map(match => {
-                return <MatchListItemContainer key={match.key} match={match} selectedTeamKey={selectedTeamKey}/>
+                return <MatchListItemContainer key={match.key} match={match} selectedTeamKey={teamKey}/>
               })}
             </div>
           )

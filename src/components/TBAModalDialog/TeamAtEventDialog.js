@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { goBack } from 'connected-react-router'
 import { resetModal, setModalState, fetchEventAwards, fetchEventMatches, fetchEventTeams, fetchEventTeamStatuses } from '../../actions'
 import { getCurrentModalState } from '../../selectors/CommonPageSelectors'
-import { getTeamNumber, getEventKey, getTeamModel, getEventModel, getSortedAwards, getTeamEventStatus } from '../../selectors/TeamAtEventDialogSelectors'
+import { getTeamNumber, getEventKey, getTeamModel, getEventModel } from '../../selectors/TeamAtEventDialogSelectors'
 
 // Components
 import AppBar from '@material-ui/core/AppBar'
@@ -26,7 +26,6 @@ import { Link } from 'react-router-dom'
 // TBA Components
 import TBAScrollRestore from '../TBAScrollRestore'
 import TeamAtEvent from '../../components/TeamAtEvent'
-import TeamAtEventMobile from './TeamAtEventMobile'
 
 const styles = theme => ({
   content: {
@@ -64,7 +63,6 @@ const styles = theme => ({
 
 class TeamAtEventDialog extends PureComponent {
   state = {
-    scrollRef: null,
     menuAnchorEl: null,
   }
 
@@ -111,7 +109,7 @@ class TeamAtEventDialog extends PureComponent {
   render() {
     console.log("Render Team@Event Dialog")
 
-    const { classes, isLoading, awards, event, eventKey, status, team, teamNumber } = this.props
+    const { classes, isLoading, event, eventKey, team, teamNumber } = this.props
 
     let teamTitle = `Team ${teamNumber}`
     if (team) {
@@ -140,10 +138,8 @@ class TeamAtEventDialog extends PureComponent {
           <Divider />
           <DialogContent className={classes.content}>
             <TeamAtEvent
-              awards={awards}
-              event={event}
-              status={status}
               teamKey={`frc${teamNumber}`}
+              event={event}
               hideEventName
             />
           </DialogContent>
@@ -186,19 +182,10 @@ class TeamAtEventDialog extends PureComponent {
               key={eventKey}
               scrollId={`${eventKey}_frc${teamNumber}`}
               className={classes.scrollContainer}
-              contentRef={el => {
-                if (!this.state.scrollRef) {
-                  this.setState({scrollRef: el})
-                }
-              }}
             >
-              <TeamAtEventMobile
-                scrollElement={this.state.scrollRef}
-                isLoading={isLoading}
-                event={event}
-                status={status}
-                awards={awards}
+              <TeamAtEvent
                 teamKey={`frc${teamNumber}`}
+                event={event}
                 hideEventName
               />
             </TBAScrollRestore>
@@ -219,8 +206,6 @@ const mapStateToProps = (state, props) => ({
   eventKey: getEventKey(state, props),
   team: getTeamModel(state, props),
   event: getEventModel(state, props),
-  awards: getSortedAwards(state, props),
-  status: getTeamEventStatus(state, props),
 })
 
 const mapDispatchToProps = (dispatch) => ({

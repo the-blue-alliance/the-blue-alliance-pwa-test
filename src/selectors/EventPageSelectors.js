@@ -29,10 +29,6 @@ const getEventMatchKeys = (state, props) => {
   return state.getIn(['models', 'matches', 'collections', 'byEvent', props.eventKey])
 }
 
-const getSelectedTeamKey = (state, props) => {
-  return props.selectedTeamKey
-}
-
 const getEventMatches = createSelector(
   getMatchesByKey,
   getEventMatchKeys,
@@ -84,25 +80,20 @@ const getSortedEventPlayoffMatches = createSelector(
   }
 )
 
-
-const getTeamEventMatches = createSelector(
-  getSortedEventMatches,
-  getSelectedTeamKey,
-  (matches, selectedTeamKey) => {
-    if (matches) {
-      return matches.filter(m => (
-        m.alliances.getIn(['red', 'team_keys']).concat(m.alliances.getIn(['blue', 'team_keys'])).toSet().has(selectedTeamKey)
-      ))
-    }
-    return undefined
-  }
-)
+// const getTeamEventMatches = createSelector(
+//   getSortedEventMatches,
+//   getSelectedTeamKey,
+//   (matches, selectedTeamKey) => {
+//     if (matches) {
+//       return matches.filter(m => (
+//         m.alliances.getIn(['red', 'team_keys']).concat(m.alliances.getIn(['blue', 'team_keys'])).toSet().has(selectedTeamKey)
+//       ))
+//     }
+//     return undefined
+//   }
+// )
 
 export const getMatches = (state, props) => {
-  if (props.selectedTeamKey) {
-    return getTeamEventMatches(state, props)
-  }
-
   if (props.qual) {
     return getSortedEventQualMatches(state, props)
   } else if (props.playoff) {

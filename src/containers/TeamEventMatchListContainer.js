@@ -1,23 +1,23 @@
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { getMatches } from '../selectors/EventPageSelectors'
+import { getTeamEventMatches } from '../selectors/TeamAtEventSelectors'
 import MatchList from '../components/MatchList'
 
 const mapStateToProps = (state, props) => ({
-  matches: getMatches(state, props),
+  matches: getTeamEventMatches(state, props),
 })
 
 const mapDispatchToProps = (dispatch) => ({
 })
 
-const MatchListContainer = connect(
+const TeamEventMatchListContainer = connect(
   mapStateToProps,
   mapDispatchToProps
 )(MatchList)
 
-MatchListContainer.propTypes = {
+TeamEventMatchListContainer.propTypes = {
   eventKey: PropTypes.string.isRequired,
-  selectedTeamKey: PropTypes.string,
+  teamKey: PropTypes.string.isRequired,
 }
 
-export default MatchListContainer
+export default TeamEventMatchListContainer

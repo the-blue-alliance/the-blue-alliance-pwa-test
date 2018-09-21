@@ -102,7 +102,7 @@ class MatchList extends PureComponent {
   render() {
     console.log("Render MatchList")
 
-    const { classes, scrollElement, matches } = this.props
+    const { classes, scrollElement, matches, teamKey } = this.props
 
     if (matches === undefined) {
       return (
@@ -123,7 +123,7 @@ class MatchList extends PureComponent {
     return (
       <List subheader={<div />}>
         {matches.map(match => {
-          return <MatchListItemContainer key={match.key} match={match} selectedTeamKey={this.props.selectedTeamKey}/>
+          return <MatchListItemContainer key={match.key} match={match} selectedTeamKey={teamKey}/>
         })}
       </List>
     )
