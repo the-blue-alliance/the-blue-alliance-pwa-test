@@ -41,19 +41,7 @@ export default class Match extends Record({
     if (this.comp_level === 'qm' || this.comp_level === 'f') {
       return `${COMP_LEVELS[this.comp_level]} ${this.match_number}`
     } else {
-      return `${COMP_LEVELS[this.comp_level]} ${this.set_number} ${short ? '-' : 'Match'} ${this.match_number}`
-    }
-  }
-
-  getCompLevel() {
-    return COMP_LEVELS[this.comp_level]
-  }
-
-  getSetMatch(short=false) {
-    if (this.comp_level === 'qm' || this.comp_level === 'f') {
-      return `${this.match_number}`
-    } else {
-      return `${this.set_number}&nbsp;${short ? '-' : 'Match'}&nbsp;${this.match_number}`
+      return `${COMP_LEVELS[this.comp_level]} ${this.set_number}${short ? '\u00A0-\u00A0' : ' Match '}${this.match_number}`
     }
   }
 

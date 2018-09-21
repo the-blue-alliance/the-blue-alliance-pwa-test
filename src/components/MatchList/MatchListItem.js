@@ -176,8 +176,9 @@ class MatchListItem extends PureComponent {
         <Link
           className={classes.matchName}
           to={{pathname: `/match/${match.key}`, state: {modal: true}}}
-          dangerouslySetInnerHTML={{__html: `${match.getCompLevel()} ${match.getSetMatch(true)}`}}
-        />
+        >
+          {match.getDisplayName(true)}
+        </Link>
         <div className={showTime ? classes.matchWithTime : classes.match}>
           <div className={classNames({[classes.alliance]: true, [classes.redAlliance]: true,  [classes.redWin]: redWin})}>
             <Teams
