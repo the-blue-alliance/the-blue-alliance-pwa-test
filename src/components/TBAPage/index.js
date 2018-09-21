@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 
+import TBAHelmet from '../TBAHelmet'
 import TBAAppBar from './TBAAppBar'
 
 const styles = theme => ({
@@ -33,10 +34,17 @@ class TBAPage extends PureComponent {
   render() {
     console.log("Render TBAPage")
 
-    const { classes, children, title, refreshFunction } = this.props
+    const { classes, children, title, metaDescription, refreshFunction } = this.props
 
     return (
       <React.Fragment>
+        <TBAHelmet>
+          <title>{title}</title>
+          {metaDescription && <meta
+            name='description'
+            content={metaDescription}
+          />}
+        </TBAHelmet>
         <TBAAppBar
           title={title}
           refreshFunction={refreshFunction}
@@ -54,6 +62,7 @@ class TBAPage extends PureComponent {
 TBAPage.propTypes = {
   classes: PropTypes.object.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+  metaDescription: PropTypes.string,
   refreshFunction: PropTypes.func,
 }
 

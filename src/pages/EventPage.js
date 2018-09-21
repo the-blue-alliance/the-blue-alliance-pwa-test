@@ -21,7 +21,6 @@ import LinkIcon from '@material-ui/icons/Link'
 import PlaceIcon from '@material-ui/icons/Place'
 
 // TBA Components
-import TBAHelmet from '../components/TBAHelmet'
 import TBAPage from '../components/TBAPage'
 import EventAllianceTableContainer from '../containers/EventAllianceTableContainer'
 import MatchListContainer from '../containers/MatchListContainer'
@@ -124,88 +123,79 @@ class EventPage extends PureComponent {
     ]
 
     return (
-      <React.Fragment>
-        <TBAHelmet>
-          <title>{name}</title>
-          {event &&
-            <meta
-              name='description'
-              content={`Videos and match results for the ${year} ${event.name} FIRST Robotics Competition in ${event.getCityStateCountry()}.`}
-            />
-          }
-        </TBAHelmet>
-        <TBAPage
-          refreshFunction={this.refreshFunction}
-        >
-          <Grid container spacing={16}>
-            <Grid item xs={12}>
-              <Typography variant='display1' gutterBottom>{event ? name : <Skeleton width='75%'/>}</Typography>
-              <Typography variant='body1'><EventIcon fontSize='inherit' className={classes.icon} /> {event ? event.getDateString() : <Skeleton width='200px'/>}</Typography>
-              <Typography variant='body1'><PlaceIcon fontSize='inherit' className={classes.icon} /> {event ?
-                <React.Fragment>
-                  <a href={event.gmaps_url} target='_blank' rel='noopener noreferrer'>{event.location_name}</a><span>{` in ${event.getCityStateCountry()}`}</span>
-                </React.Fragment>
-                :
-                <Skeleton width='200px'/>
-              }</Typography>
-              <Typography variant='body1'><LinkIcon fontSize='inherit' className={classes.icon} /> {event ? <a href={event.website} target='_blank' rel='noopener noreferrer'>{event.website}</a> : <Skeleton width='200px'/>}</Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.tabs} square>
-                <Tabs
-                  value={tabIdx ? tabIdx : 0}
-                  onChange={this.tabHandleChange}
-                  fullWidth
-                  scrollable
-                  className='hide-scrollbar'
-                >
-                  <Tab label='Results' />
-                  <Tab label='Rankings' />
-                  <Tab label='Awards' />
-                  <Tab label='Teams' />
-                  <Tab label='Insights' />
-                  <Tab label='Media' />
-                </Tabs>
-              </Paper>
-              <div hidden={tabIdx !== 0}>
-                <Grid container spacing={16}>
-                  <Grid item xs={12} sm={6}>
-                    <Paper id='qual'>
-                      <SectionHeaderWithScrollto
-                        sectionKey='qual'
-                        label='Qualification Results'
-                        sections={sections}
-                      />
-                      <MatchListContainer eventKey={eventKey} qual/>
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Paper id='alliances' className={classes.sectionCard}>
-                      <SectionHeaderWithScrollto
-                        sectionKey='alliances'
-                        label='Alliances'
-                        sections={sections}
-                      />
-                      <EventAllianceTableContainer eventKey={eventKey} />
-                    </Paper>
-                    <Paper id='playoff' className={classes.sectionCard}>
-                      <SectionHeaderWithScrollto
-                        sectionKey='playoff'
-                        label='Playoff Results'
-                        sections={sections}
-                      />
-                      <MatchListContainer eventKey={eventKey} playoff/>
-                    </Paper>
-                  </Grid>
-                </Grid>
-              </div>
-              <div hidden={tabIdx !== 1}>
-                <EventRankingsTableContainer eventKey={eventKey} />
-              </div>
-            </Grid>
+      <TBAPage
+        title={name}
+        metaDescription={event && `Videos and match results for the ${year} ${event.name} FIRST Robotics Competition in ${event.getCityStateCountry()}.`}
+        refreshFunction={this.refreshFunction}
+      >
+        <Grid container spacing={16}>
+          <Grid item xs={12}>
+            <Typography variant='display1' gutterBottom>{event ? name : <Skeleton width='75%'/>}</Typography>
+            <Typography variant='body1'><EventIcon fontSize='inherit' className={classes.icon} /> {event ? event.getDateString() : <Skeleton width='200px'/>}</Typography>
+            <Typography variant='body1'><PlaceIcon fontSize='inherit' className={classes.icon} /> {event ?
+              <React.Fragment>
+                <a href={event.gmaps_url} target='_blank' rel='noopener noreferrer'>{event.location_name}</a><span>{` in ${event.getCityStateCountry()}`}</span>
+              </React.Fragment>
+              :
+              <Skeleton width='200px'/>
+            }</Typography>
+            <Typography variant='body1'><LinkIcon fontSize='inherit' className={classes.icon} /> {event ? <a href={event.website} target='_blank' rel='noopener noreferrer'>{event.website}</a> : <Skeleton width='200px'/>}</Typography>
           </Grid>
-        </TBAPage>
-      </React.Fragment>
+          <Grid item xs={12}>
+            <Paper className={classes.tabs} square>
+              <Tabs
+                value={tabIdx ? tabIdx : 0}
+                onChange={this.tabHandleChange}
+                fullWidth
+                scrollable
+                className='hide-scrollbar'
+              >
+                <Tab label='Results' />
+                <Tab label='Rankings' />
+                <Tab label='Awards' />
+                <Tab label='Teams' />
+                <Tab label='Insights' />
+                <Tab label='Media' />
+              </Tabs>
+            </Paper>
+            <div hidden={tabIdx !== 0}>
+              <Grid container spacing={16}>
+                <Grid item xs={12} sm={6}>
+                  <Paper id='qual'>
+                    <SectionHeaderWithScrollto
+                      sectionKey='qual'
+                      label='Qualification Results'
+                      sections={sections}
+                    />
+                    <MatchListContainer eventKey={eventKey} qual/>
+                  </Paper>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Paper id='alliances' className={classes.sectionCard}>
+                    <SectionHeaderWithScrollto
+                      sectionKey='alliances'
+                      label='Alliances'
+                      sections={sections}
+                    />
+                    <EventAllianceTableContainer eventKey={eventKey} />
+                  </Paper>
+                  <Paper id='playoff' className={classes.sectionCard}>
+                    <SectionHeaderWithScrollto
+                      sectionKey='playoff'
+                      label='Playoff Results'
+                      sections={sections}
+                    />
+                    <MatchListContainer eventKey={eventKey} playoff/>
+                  </Paper>
+                </Grid>
+              </Grid>
+            </div>
+            <div hidden={tabIdx !== 1}>
+              <EventRankingsTableContainer eventKey={eventKey} />
+            </div>
+          </Grid>
+        </Grid>
+      </TBAPage>
     )
   }
 }
