@@ -58,6 +58,12 @@ const styles = theme => ({
   },
 })
 
+const sections = [
+  {key: 'qual', label: 'Qualification Results'},
+  {key: 'alliances', label: 'Alliances'},
+  {key: 'playoff', label: 'Playoff Results'},
+]
+
 class EventPage extends PureComponent {
   static fetchData({ store, params }) {
     return Promise.all([
@@ -105,12 +111,6 @@ class EventPage extends PureComponent {
       year = event.year
       name = `${event.name} ${year}`
     }
-
-    const sections = [
-      {key: 'qual', label: 'Qualification Results'},
-      {key: 'alliances', label: 'Alliances'},
-      {key: 'playoff', label: 'Playoff Results'},
-    ]
 
     return (
       <TBAPage
