@@ -1,5 +1,5 @@
 // General
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 
 // Components
@@ -31,7 +31,7 @@ const styles = theme => ({
   },
 })
 
-class MatchList extends PureComponent {
+class MatchList extends Component {
   computeGroupedMatches = matches => {
     console.log("Computing match list!")
 
@@ -70,6 +70,35 @@ class MatchList extends PureComponent {
       items['f'] = matchesByLevel['f']
     }
     return { headers, items }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const { matches, teamKey } = this.props
+    const { matches: nextMatches, teamKey: nextTeamKey } = nextProps
+
+    if (teamKey !== nextTeamKey) {
+      return true
+    }
+
+    if (matches === undefined) {
+      if (nextMatches === undefined) {
+        return false
+      } else {
+        return true
+      }
+    } else {
+      if (nextMatches === undefined) {
+        return true
+      } else {
+        // Order matters, so just check for equality
+        matches.forEach((match, i) => {
+          if (match !== nextMatches.get(i)) {
+            return true
+          }
+        })
+        return false
+      }
+    }
   }
 
   render() {
