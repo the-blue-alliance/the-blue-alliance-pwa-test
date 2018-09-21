@@ -36,14 +36,6 @@ export const getCurrentScrollStates = createSelector(
   }
 )
 
-// export const getYear = (state, props) => {
-//   if (props.year) {
-//     return props.year
-//   }
-//   const year = parseInt(props.match.params.year, 10)
-//   return year ? year : 2018
-// }
-
 // Modals
 const getStateHistoryModal = (state, props) => {
   return state.getIn(['page', 'stateHistoryModal'])
@@ -56,3 +48,13 @@ export const getCurrentModalState = createSelector(
     return modalState === undefined ? Map() : modalState
   }
 )
+
+// Misc
+export const getYear = (state, props) => {
+  // TODO: use API status
+  if (props.year) {
+    return props.year
+  }
+  const year = parseInt(props.match.params.year, 10)
+  return year ? year : 2018
+}

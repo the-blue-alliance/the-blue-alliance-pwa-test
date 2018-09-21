@@ -14,15 +14,15 @@ import { push } from 'connected-react-router'
 
 import TBANavMoreMenu from './TBANavMoreMenu'
 
-const styles = {
+const styles = theme => ({
   root: {
     position: 'fixed',
     bottom: 0,
     left: 0,
     width: '100%',
-    zIndex: 1,
+    zIndex: theme.zIndex.appBar,
   },
-}
+})
 
 class TBABottomNav extends React.PureComponent {
   state = {

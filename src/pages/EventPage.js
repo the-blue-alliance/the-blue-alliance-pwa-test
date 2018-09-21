@@ -15,7 +15,6 @@ import Grid from '@material-ui/core/Grid'
 import NoSsr from '@material-ui/core/NoSsr'
 import Paper from '@material-ui/core/Paper'
 import Tab from '@material-ui/core/Tab'
-import Tabs from '@material-ui/core/Tabs'
 import Typography from '@material-ui/core/Typography'
 import EventIcon from '@material-ui/icons/Event'
 import LinkIcon from '@material-ui/icons/Link'
@@ -28,6 +27,7 @@ import MatchListContainer from '../containers/MatchListContainer'
 import SectionHeaderWithScrollto from '../components/SectionHeaderWithScrollto'
 import EventRankingsTableContainer from '../containers/EventRankingsTableContainer'
 import Skeleton from '../components/Skeleton'
+import PageTabs from '../components/PageTabs'
 
 const mapStateToProps = (state, props) => ({
   // Params
@@ -52,22 +52,6 @@ const styles = theme => ({
   icon: {
     top: '0.125em',
     position: 'relative',
-  },
-  tabs: {
-    position: 'sticky',
-    top: 56 - 1,
-    [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
-      top: 48 - 1,
-    },
-    [theme.breakpoints.up('sm')]: {
-      top: 64 - 1,
-    },
-    marginLeft: -theme.spacing.unit,
-    marginRight: -theme.spacing.unit,
-    marginBottom: theme.spacing.unit*2,
-    zIndex: theme.zIndex.appBar-1,
-    willChange: 'transform',  // Fix chrome rendering issue
-    color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
   },
   sectionCard: {
     marginBottom: theme.spacing.unit*2,
@@ -148,22 +132,20 @@ class EventPage extends PureComponent {
             <Typography variant='body1'><LinkIcon fontSize='inherit' className={classes.icon} /> {event ? <a href={event.website} target='_blank' rel='noopener noreferrer'>{event.website}</a> : <Skeleton width='200px'/>}</Typography>
           </Grid>
           <Grid item xs={12}>
-            <Paper className={classes.tabs} square>
-              <Tabs
-                value={safeTabIdx}
-                onChange={this.tabHandleChange}
-                fullWidth
-                scrollable
-                className='hide-scrollbar'
-              >
-                <Tab label='Results' />
-                <Tab label='Rankings' />
-                <Tab label='Awards' />
-                <Tab label='Teams' />
-                <Tab label='Insights' />
-                <Tab label='Media' />
-              </Tabs>
-            </Paper>
+            <PageTabs
+              value={safeTabIdx}
+              onChange={this.tabHandleChange}
+              fullWidth
+              scrollable
+              className='hide-scrollbar'
+            >
+              <Tab label='Results' />
+              <Tab label='Rankings' />
+              <Tab label='Awards' />
+              <Tab label='Teams' />
+              <Tab label='Insights' />
+              <Tab label='Media' />
+            </PageTabs>
             <div hidden={safeTabIdx !== 0}>
               <Grid container spacing={16}>
                 <Grid item xs={12} sm={6}>

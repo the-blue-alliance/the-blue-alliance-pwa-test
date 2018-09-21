@@ -22,7 +22,7 @@ class TeamAtEvent extends PureComponent {
 
     return (
       <Grid container spacing={24}>
-        <Grid item xs={12} lg={4}>
+        <Grid item xs={12} md={4}>
           {!hideEventName && <React.Fragment>
             <Typography variant='title' gutterBottom>
               <Link to={`/event/${event.key}`}>{event.name}</Link>
@@ -36,7 +36,7 @@ class TeamAtEvent extends PureComponent {
             awards={awards}
           />
         </Grid>
-        <Grid item xs={12} lg={8}>
+        <Grid item xs={12} md={8}>
           <MatchListContainer
             eventKey={event.key}
             selectedTeamKey={teamKey}

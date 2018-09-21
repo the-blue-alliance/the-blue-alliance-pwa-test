@@ -34,7 +34,14 @@ class TBAPage extends PureComponent {
   render() {
     console.log("Render TBAPage")
 
-    const { classes, children, title, metaDescription, refreshFunction } = this.props
+    const {
+      classes,
+      children,
+      title,
+      metaDescription,
+      metaImage,
+      refreshFunction,
+    } = this.props
 
     return (
       <React.Fragment>
@@ -44,6 +51,10 @@ class TBAPage extends PureComponent {
             name='description'
             content={metaDescription}
           />}
+          <meta
+            name='og:image'
+            content={metaImage ? metaImage : 'https://pwa.thebluealliance.com/icon-512.png'}
+          />
         </TBAHelmet>
         <TBAAppBar
           title={title}
@@ -63,6 +74,7 @@ TBAPage.propTypes = {
   classes: PropTypes.object.isRequired,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   metaDescription: PropTypes.string,
+  metaImage: PropTypes.string,
   refreshFunction: PropTypes.func,
 }
 
