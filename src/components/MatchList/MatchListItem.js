@@ -342,3 +342,38 @@ function Score({ classes, match, score }) {
     </div>
   )
 }
+
+
+class MatchListItemHeader extends PureComponent {
+  render() {
+    const { classes } = this.props
+    return (
+      <ListItem
+        className={classes.listItem}
+      >
+        <div className={classes.videoIconContainer}>
+          <PlayCircleOutlineIcon
+            fontSize='inherit'
+            className={classes.videoIcon}
+            color='inherit'
+          />
+        </div>
+        <div className={classes.matchName}>
+          <b>Match</b>
+        </div>
+        <div className={classes.match}>
+          <div className={classNames({[classes.alliance]: true, [classes.redAlliance]: true})}>
+            <div className={classes.team}><b>Red Alliance</b></div>
+          </div>
+          <div className={classNames({[classes.alliance]: true, [classes.blueAlliance]: true})}>
+            <div className={classes.team}><b>Blue Alliance</b></div>
+          </div>
+          <div className={classes.time}>
+            <div><b>Scores</b></div>
+          </div>
+        </div>
+      </ListItem>
+    )
+  }
+}
+export const MatchHeaderItem = withStyles(styles)(MatchListItemHeader)

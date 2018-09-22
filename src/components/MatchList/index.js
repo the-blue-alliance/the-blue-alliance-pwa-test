@@ -10,6 +10,7 @@ import VideogameAssetIcon from '@material-ui/icons/VideogameAsset'
 
 // TBA Components
 import MatchListSubheader from './MatchListSubheader'
+import { MatchHeaderItem } from './MatchListItem'
 import MatchListItemContainer from '../../containers/MatchListItemContainer'
 
 
@@ -126,6 +127,7 @@ class MatchList extends Component {
 
     return (
       <List subheader={<div />} disablePadding>
+        <MatchHeaderItem />
         {headers.map((header, headerIndex) => {
           return (
             <div key={header.key}>
