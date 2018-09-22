@@ -15,6 +15,7 @@ import TBANav from './components/TBANav'
 import TBASnackbars from './components/TBASnackbars'
 import TBAModalDialog from './components/TBAModalDialog'
 // import SearchModal from './components/SearchModal'
+import ErrorPage from './pages/ErrorPage'
 
 // For Google Analytics tracking
 ReactGA.initialize('UA-3251931-11') // TODO: Change to real tracking number
@@ -178,25 +179,22 @@ class TBAApp extends React.Component {
   }
 
   render() {
-    if (this.state.hasError) {
-      return (
-        <div>
-          Whoops! Something went wrong on our end.
-          Please close the app and restart it.
-          <a href="/">Or try clicking here!</a>
-        </div>
-      )
-    }
     return (
       <TBAThemeProvider>
-        <TBAHelmet>
-          <meta name='description' content='The best way to scout, watch, and relive the FIRST Robotics Competition.' />
-        </TBAHelmet>
         <CssBaseline />
-        <TBASnackbars />
-        <TBANav />
-        <Route component={ModalSwitchConainer} />
-        <Route path="/" component={Analytics}/>
+        {this.state.hasError ?
+          <ErrorPage />
+          :
+          <React.Fragment>
+            <TBAHelmet>
+              <meta name='description' content='The best way to scout, watch, and relive the FIRST Robotics Competition.' />
+            </TBAHelmet>
+            <TBASnackbars />
+            <TBANav />
+            <Route component={ModalSwitchConainer} />
+            <Route path="/" component={Analytics}/>
+          </React.Fragment>
+        }
       </TBAThemeProvider>
     )
   }
