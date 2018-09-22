@@ -50,8 +50,9 @@ import PlaceIcon from '@material-ui/icons/Place'
 import TBAPage from '../components/TBAPage'
 import Skeleton from '../components/Skeleton'
 import PageTabs from '../components/PageTabs'
-import TeamAtEvent from '../components/TeamAtEvent'
 import NestedScrollspy from '../components/NestedScrollspy'
+import SectionHeaderWithScrollto from '../components/SectionHeaderWithScrollto'
+import TeamAtEvent from '../components/TeamAtEvent'
 
 const mapStateToProps = (state, props) => ({
   // Params
@@ -128,11 +129,9 @@ const styles = theme => ({
   zeroDataSpinner: {
     margin: '0 auto',
   },
-  eventCard: theme.mixins.gutters({
-    paddingTop: 16,
-    paddingBottom: 16,
-    marginBottom: theme.spacing.unit * 3,
-  }),
+  eventCard: {
+    marginBottom: theme.spacing.unit*2,
+  },
 })
 
 class TeamPage extends PureComponent {
@@ -223,6 +222,11 @@ class TeamPage extends PureComponent {
     }
     const images = teamYearMedias ? teamYearMedias.filter(m => m.isImage()) : undefined
     const mainRobotImage = images ? images.filter(i => i.preferred).toList().get(0) : undefined
+
+    let sections
+    if (teamYearEvents) {
+      sections = teamYearEvents.map(event => ({key: event.event_code, label: event.safeShortName()}))
+    }
 
     return (
       <TBAPage
@@ -352,7 +356,13 @@ class TeamPage extends PureComponent {
                   }
                   {teamYearEvents && teamYearEvents.valueSeq().map(function(event) {
                     return (
-                      <Paper key={event.key} id={event.event_code} className={classes.eventCard} elevation={4}>
+                      <Paper key={event.key} id={event.event_code} className={classes.eventCard}>
+                        <SectionHeaderWithScrollto
+                          sectionKey={event.event_code}
+                          label={event.name}
+                          subLabel={event.getDateString()}
+                          sections={sections}
+                        />
                         <TeamAtEvent
                           teamKey={`frc${teamNumber}`}
                           event={event}

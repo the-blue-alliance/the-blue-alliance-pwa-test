@@ -73,7 +73,7 @@ class SectionHeaderWithScrollto extends PureComponent {
   render() {
     console.log("Render SectionHeaderWithScrollto")
 
-    const { classes, sectionKey, label, sections } = this.props
+    const { classes, sectionKey, label, subLabel, sections } = this.props
     const { isRaised, anchorEl } = this.state
 
     return (
@@ -91,6 +91,7 @@ class SectionHeaderWithScrollto extends PureComponent {
             onChange={this.observerChange}
           />
           <Typography variant='title' className={classes.label}>{label}</Typography>
+          <Typography variant='caption' className={classes.label}>{subLabel}</Typography>
           <ExpandMore/>
         </ButtonBase>
         <Menu

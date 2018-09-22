@@ -13,30 +13,35 @@ import TeamEventMatchListContainer from '../containers/TeamEventMatchListContain
 import TeamAtEventResultsContainer from '../containers/TeamAtEventResultsContainer'
 
 const styles = theme => ({
+  results: {
+    padding: theme.spacing.unit,
+    [theme.breakpoints.up('md')]: {
+      paddingLeft: theme.spacing.unit*3,
+    }
+  },
+  matches: {
+    padding: 0,
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing.unit,
+      paddingRight: theme.spacing.unit*3,
+    },
+  },
 })
 
 class TeamAtEvent extends PureComponent {
   render() {
     console.log("Render TeamAtEvent")
-    const { hideEventName, event, teamKey } = this.props
+    const { classes, event, teamKey } = this.props
 
     return (
-      <Grid container spacing={24}>
-        <Grid item xs={12} md={4}>
-          {!hideEventName && <React.Fragment>
-            <Typography variant='title' gutterBottom>
-              <Link to={`/event/${event.key}`}>{event.name}</Link>
-            </Typography>
-            <Typography variant='caption' gutterBottom>
-              {event.getDateString()}
-            </Typography>
-          </React.Fragment>}
+      <Grid container>
+        <Grid item xs={12} md={4} className={classes.results}>
           <TeamAtEventResultsContainer
             teamKey={teamKey}
             eventKey={event.key}
           />
         </Grid>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={8} className={classes.matches}>
           <TeamEventMatchListContainer
             teamKey={teamKey}
             eventKey={event.key}
@@ -49,7 +54,6 @@ class TeamAtEvent extends PureComponent {
 
 TeamAtEvent.propTypes = {
   classes: PropTypes.object.isRequired,
-  hideEventName: PropTypes.bool,
 }
 
 export default withStyles(styles)(TeamAtEvent)

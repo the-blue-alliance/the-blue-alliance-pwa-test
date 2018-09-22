@@ -16,6 +16,7 @@ import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import Paper from '@material-ui/core/Paper'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
@@ -29,8 +30,7 @@ import TeamAtEvent from '../../components/TeamAtEvent'
 
 const styles = theme => ({
   content: {
-    paddingTop: theme.spacing.unit*2,
-    paddingBottom: theme.spacing.unit*2,
+    padding: 0,
   },
   contentMobile: {
     position: 'fixed',
@@ -58,6 +58,9 @@ const styles = theme => ({
   },
   toolbar: {
     padding: 0,
+  },
+  paper: {
+    margin: theme.spacing.unit,
   },
 })
 
@@ -140,7 +143,6 @@ class TeamAtEventDialog extends PureComponent {
             <TeamAtEvent
               teamKey={`frc${teamNumber}`}
               event={event}
-              hideEventName
             />
           </DialogContent>
         </Hidden>
@@ -183,11 +185,12 @@ class TeamAtEventDialog extends PureComponent {
               scrollId={`${eventKey}_frc${teamNumber}`}
               className={classes.scrollContainer}
             >
-              <TeamAtEvent
-                teamKey={`frc${teamNumber}`}
-                event={event}
-                hideEventName
-              />
+              <Paper className={classes.paper}>
+                <TeamAtEvent
+                  teamKey={`frc${teamNumber}`}
+                  event={event}
+                />
+              </Paper>
             </TBAScrollRestore>
           </DialogContent>
         </Hidden>
