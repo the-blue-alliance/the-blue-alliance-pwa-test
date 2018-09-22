@@ -4,7 +4,7 @@ import EventPage from './pages/EventPage'
 // import MatchPageContainer from './containers/MatchPageContainer'
 import AccountPage from './pages/AccountPage'
 import SigninRequiredPage from './pages/SigninRequiredPage'
-// import TeamListPageContainer from './containers/TeamListPageContainer'
+import TeamListPage from './pages/TeamListPage'
 import TeamPage from './pages/TeamPage'
 import NotFoundPage from './pages/NotFoundPage'
 
@@ -39,11 +39,11 @@ export default [
   //     component: MatchPageContainer,
   //     exact: true,
   // },
-  // {
-  //     path: '/teams',
-  //     component: TeamListPageContainer,
-  //     exact: true,
-  // },
+  {
+      path: '/teams',
+      component: TeamListPage,
+      exact: true,
+  },
   {
       path: '/team/:teamNumber/:year?',
       component: TeamPage,
