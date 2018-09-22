@@ -89,11 +89,14 @@ class EventListItem extends PureComponent {
             {event.webcasts.size > 0 && (
               event.isNow() ?
               <Tooltip title='Watch Now' placement='right'>
-                <div>
-                  <IconButton color='default'>
-                    <VideocamIcon />
-                  </IconButton>
-                </div>
+                <IconButton
+                  color='default'
+                  component='a'
+                  href={`https://www.thebluealliance.com/watch/${event.key}`}
+                  target='_blank'
+                >
+                  <VideocamIcon />
+                </IconButton>
               </Tooltip>
               :
               <Tooltip title='Event webcast is offline' placement='right'>
