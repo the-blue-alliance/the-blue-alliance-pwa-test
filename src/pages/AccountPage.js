@@ -70,7 +70,7 @@ class AccountPage extends PureComponent {
     this.props.resetPage()
     this.props.setNav('account')
 
-    requestIdleCallback(() => this.refreshFunction())
+    requestAnimationFrame(() => this.refreshFunction())
   }
 
   render() {

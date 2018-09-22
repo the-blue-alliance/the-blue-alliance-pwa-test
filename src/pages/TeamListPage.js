@@ -70,12 +70,12 @@ class TeamListPage extends PureComponent {
     })
     this.props.setNav('teams')
 
-    requestIdleCallback(() => this.refreshFunction())
+    requestAnimationFrame(() => this.refreshFunction())
   }
 
   handleTextFieldChange = (e) => {
     const filter = e.target.value
-    requestIdleCallback(() => this.props.setPageState({
+    requestAnimationFrame(() => this.props.setPageState({
       filter,
     }))
   }

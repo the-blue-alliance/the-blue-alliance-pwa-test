@@ -194,7 +194,7 @@ class TeamPage extends PureComponent {
     })
     this.props.setNav('teams')
 
-    requestIdleCallback(() => this.refreshFunction())
+    requestAnimationFrame(() => this.refreshFunction())
   }
 
   render() {

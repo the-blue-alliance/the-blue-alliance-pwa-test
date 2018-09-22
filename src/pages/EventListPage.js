@@ -133,7 +133,7 @@ class EventListPage extends PureComponent {
     })
     this.props.setNav('events')
 
-    requestIdleCallback(() => this.refreshFunction())
+    requestAnimationFrame(() => this.refreshFunction())
   }
 
   render() {

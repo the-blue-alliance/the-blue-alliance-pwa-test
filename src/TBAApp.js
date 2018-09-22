@@ -109,7 +109,7 @@ class ModalSwitch extends React.Component {
       this.initialKey !== nextLocation.key
     )
     if (nextIsModal && !this.state.modalOpen) {
-      requestIdleCallback(() => this.setState({modalOpen: true}))
+      requestAnimationFrame(() => this.setState({modalOpen: true}))
       this.props.setPageKey(this.basePageLocation.key)
     }
     if (!nextIsModal && this.state.modalOpen) {
@@ -119,7 +119,7 @@ class ModalSwitch extends React.Component {
   }
 
   handleClose = () => {
-    requestIdleCallback(() => this.setState({modalOpen: false}))
+    requestAnimationFrame(() => this.setState({modalOpen: false}))
     this.props.history.go(-this.modalKeyDepths[this.props.location.key])
   }
 
