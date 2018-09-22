@@ -4,11 +4,12 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import classNames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
+import { Link } from 'react-router-dom'
 
 // Components
 import ListItem from '@material-ui/core/ListItem'
 import Tooltip from '@material-ui/core/Tooltip'
-import { Link } from 'react-router-dom'
+import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline'
 
 const styles = theme => ({
   listItem: {
@@ -21,6 +22,13 @@ const styles = theme => ({
     [theme.breakpoints.up('lg')]: {
       height: 30,
     },
+  },
+  videoIconContainer: {
+    marginLeft: theme.spacing.unit / 2,
+  },
+  videoIcon: {
+    top: '0.125em',
+    position: 'relative',
   },
   matchName: {
     flexGrow: 1,
@@ -182,6 +190,13 @@ class MatchListItem extends PureComponent {
         style={style}
         divider
       >
+        <div className={classes.videoIconContainer}>
+          <PlayCircleOutlineIcon
+            fontSize='inherit'
+            className={classes.videoIcon}
+            color={match.videos.size === 0 ? 'disabled' : 'inherit'}
+          />
+        </div>
         <Link
           className={classes.matchName}
           to={{pathname: `/match/${match.key}`, state: {modal: true}}}
