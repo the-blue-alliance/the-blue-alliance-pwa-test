@@ -154,6 +154,7 @@ class EventPage extends PureComponent {
                       sectionKey='qual'
                       label={<Typography variant='title'>Qualification Results</Typography>}
                       sections={sections}
+                      withSpace
                     />
                     <EventMatchListContainer eventKey={eventKey} qual/>
                   </Paper>
@@ -164,6 +165,7 @@ class EventPage extends PureComponent {
                       sectionKey='alliances'
                       label={<Typography variant='title'>Alliances</Typography>}
                       sections={sections}
+                      withSpace
                     />
                     <EventAllianceTableContainer eventKey={eventKey} />
                   </Paper>
@@ -172,6 +174,7 @@ class EventPage extends PureComponent {
                       sectionKey='playoff'
                       label={<Typography variant='title'>Playoff Results</Typography>}
                       sections={sections}
+                      withSpace
                     />
                     <EventMatchListContainer eventKey={eventKey} playoff/>
                   </Paper>

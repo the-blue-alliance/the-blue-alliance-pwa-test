@@ -1,5 +1,5 @@
 import HomePage from './pages/HomePage'
-// import EventListPageBase from './pages/EventListPageBase'
+import EventListPage from './pages/EventListPage'
 import EventPage from './pages/EventPage'
 // import MatchPageContainer from './containers/MatchPageContainer'
 import AccountPage from './pages/AccountPage'
@@ -19,11 +19,11 @@ export default [
       component: AccountPage,
       exact: true,
   },
-  // {
-  //     path: '/events/:year?',
-  //     component: EventListPageBase,
-  //     exact: true,
-  // },
+  {
+      path: '/events/:year?',
+      component: EventListPage,
+      exact: true,
+  },
   {
       path: '/event/:eventKey',
       component: EventPage,

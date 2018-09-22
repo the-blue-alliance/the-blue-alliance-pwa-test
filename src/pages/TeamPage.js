@@ -367,6 +367,7 @@ class TeamPage extends PureComponent {
                             </React.Fragment>
                           }
                           sections={sections}
+                          withSpace
                         />
                         <TeamAtEvent
                           teamKey={`frc${teamNumber}`}

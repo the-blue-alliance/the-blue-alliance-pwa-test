@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import Observer from 'react-intersection-observer'
 import { withStyles } from '@material-ui/core/styles'
+import classNames from 'classnames'
 
 import Divider from '@material-ui/core/Divider'
 import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
-import ListSubheader from '@material-ui/core/ListSubheader'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Paper from '@material-ui/core/Paper'
@@ -17,6 +17,19 @@ const styles = theme => ({
   paper: {
     padding: `${theme.spacing.unit}px ${theme.spacing.unit*3}px`,
     position: 'sticky',
+    top: 56 - 1,
+    [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
+      top: 48 - 1,
+    },
+    [theme.breakpoints.up('sm')]: {
+      top: 64 - 1,
+    },
+    zIndex: theme.zIndex.appBar - 2,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  paperWithSpace: {
     top: 56 + 48 - 1,
     [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
       top: 48 + 48 - 1,
@@ -24,17 +37,21 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       top: 64 + 48 - 1,
     },
-    zIndex: theme.zIndex.appBar - 2,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   flex: {
     flex: 1,
-    // textAlign: 'center',
   },
   observer: {
     position: 'absolute',
+    top: -56,
+    [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
+      top: -48,
+    },
+    [theme.breakpoints.up('sm')]: {
+      top: -64,
+    },
+  },
+  observerWithSpace: {
     top: -(56 + 48),
     [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
       top: -(48 + 48),
@@ -66,7 +83,7 @@ class SectionHeaderWithScrollto extends PureComponent {
   handleScroll = id => {
     const scroller = new SweetScroll({
       duration: 250,
-      offset: -48,
+      offset: this.props.withSpace ? -48 : 0,
     })
     scroller.to(`#${id}`)
     this.setState({ anchorEl: null })
@@ -75,18 +92,18 @@ class SectionHeaderWithScrollto extends PureComponent {
   render() {
     console.log("Render SectionHeaderWithScrollto")
 
-    const { classes, sectionKey, label, sections } = this.props
+    const { classes, sectionKey, label, sections, withSpace } = this.props
     const { isRaised, anchorEl } = this.state
 
     return (
       <React.Fragment>
         <Paper
-          className={classes.paper}
+          className={classNames({[classes.paper]: true, [classes.paperWithSpace]: withSpace})}
           elevation={isRaised ? 4 : 0}
           square={isRaised}
         >
           <Observer
-            className={classes.observer}
+            className={classNames({[classes.observer]: true, [classes.observerWithSpace]: withSpace})}
             tag="div"
             onChange={this.observerChange}
           />
@@ -114,7 +131,6 @@ class SectionHeaderWithScrollto extends PureComponent {
           }}
           disableRestoreFocus
         >
-          <ListSubheader component="div">Jump To:</ListSubheader>
           {sections.map(({ key, label }) => {
             return (
               <MenuItem
