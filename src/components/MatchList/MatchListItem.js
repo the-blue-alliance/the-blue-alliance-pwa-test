@@ -23,6 +23,9 @@ const styles = theme => ({
       height: 30,
     },
   },
+  listItemHeader: {
+    backgroundColor: theme.palette.grey[100],
+  },
   videoIconContainer: {
     marginLeft: theme.spacing.unit / 2,
   },
@@ -92,6 +95,9 @@ const styles = theme => ({
     flexBasis: 0,
     position: 'relative',
     padding: theme.spacing.unit / 2,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   score: {
     display: 'flex',
@@ -349,7 +355,8 @@ class MatchListItemHeader extends PureComponent {
     const { classes } = this.props
     return (
       <ListItem
-        className={classes.listItem}
+        className={classNames({[classes.listItem]: true, [classes.listItemHeader]: true})}
+        divider
       >
         <div className={classes.videoIconContainer}>
           <PlayCircleOutlineIcon

@@ -7,10 +7,8 @@ import ListSubheader from '@material-ui/core/ListSubheader'
 
 const styles = theme => ({
   subHeader: {
-    backgroundColor: theme.palette.primary.main,
-  },
-  subHeaderText: {
-    color: theme.palette.primary.contrastText,
+    backgroundColor: theme.palette.grey[100],
+    borderBottom: `1px solid ${theme.palette.divider}`,
   },
 })
 
@@ -18,9 +16,11 @@ class MatchListSubheader extends PureComponent {
   render() {
     const { classes, text } = this.props
     return (
-      <ListSubheader className={classes.subHeader}>
-        <ListItemText primary={text} classes={{primary: classes.subHeaderText}}/>
-      </ListSubheader>
+      <React.Fragment>
+        <ListSubheader className={classes.subHeader}>
+          <ListItemText primary={text}/>
+        </ListSubheader>
+      </React.Fragment>
     )
   }
 }
