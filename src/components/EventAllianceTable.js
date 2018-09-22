@@ -65,9 +65,9 @@ class EventAllianceTable extends PureComponent {
             alliances.map((a, i) => {
               let status
               if (a.getIn(['status', 'status']) === 'won') {
-                status = <img src='/medal-gold.png' className={classes.medalIcon} alt='Gold medal'/>
+                status = <Tooltip title='Winner' placement='top'><img src='/medal-gold.png' className={classes.medalIcon} alt='Gold medal'/></Tooltip>
               } else if (a.getIn(['status', 'level']) === 'f') {
-                status = <img src='/medal-silver.png' className={classes.medalIcon} alt='Silver medal'/>
+                status = <Tooltip title='Finalist' placement='top'><img src='/medal-silver.png' className={classes.medalIcon} alt='Silver medal'/></Tooltip>
               } else {
                 status = a.getIn(['status', 'level']).toUpperCase()
               }
