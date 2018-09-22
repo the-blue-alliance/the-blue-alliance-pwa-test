@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 
 import green from '@material-ui/core/colors/green'
 import Divider from '@material-ui/core/Divider'
+import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
@@ -72,7 +73,10 @@ class EventListItem extends PureComponent {
 
           <div className={classes.eventNameLocationContainer}>
             <Typography variant='subheading' noWrap>
-              <Link to={`/event/${event.key}`}>{event.name}</Link>
+              <Link to={`/event/${event.key}`}>
+                <Hidden implementation='css' xsDown>{event.name}</Hidden>
+                <Hidden implementation='css' smUp>{event.safeShortName()}</Hidden>
+              </Link>
             </Typography>
             <Typography variant='body1' noWrap>
               {event.getCityStateCountry()}
