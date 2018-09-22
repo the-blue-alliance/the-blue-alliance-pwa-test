@@ -70,7 +70,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(TBAThemeProvider)
 const TBAGlobalStyle = withStyles((theme) => ({
   '@global': {
     a: {
-      color: theme.palette.type === 'light' ?  indigo[500] : '#536DFE',
+      color: theme.palette.type === 'light' ?  theme.palette.primary.main : theme.palette.primary.light,
     },
   },
 }))((props) => {
