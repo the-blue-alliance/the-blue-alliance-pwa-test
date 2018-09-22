@@ -123,7 +123,7 @@ class TeamAtEventDialog extends PureComponent {
       <React.Fragment>
         <Hidden smDown>
           <Toolbar className={classes.toolbar}>
-            <IconButton aria-label="Back" onClick={() => this.props.goBack()}>
+            <IconButton aria-label="Back" onClick={this.props.goBack}>
               <ChevronLeftIcon />
             </IconButton>
             <div className={classes.flex}>
@@ -149,7 +149,7 @@ class TeamAtEventDialog extends PureComponent {
         <Hidden mdUp>
           <AppBar color='default'>
             <Toolbar className={classes.toolbar}>
-              <IconButton aria-label="Back" onClick={() => this.props.goBack()}>
+              <IconButton aria-label="Back" onClick={this.props.goBack}>
                 <ChevronLeftIcon />
               </IconButton>
               <div className={classes.flex}>

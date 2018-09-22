@@ -3,18 +3,17 @@ import PropTypes from 'prop-types'
 import Observer from 'react-intersection-observer'
 import { withStyles } from '@material-ui/core/styles'
 
-import ButtonBase from '@material-ui/core/ButtonBase'
+import Hidden from '@material-ui/core/Hidden'
+import IconButton from '@material-ui/core/IconButton'
 import ListSubheader from '@material-ui/core/ListSubheader'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Paper from '@material-ui/core/Paper'
-import Typography from '@material-ui/core/Typography'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import SweetScroll from 'sweet-scroll'
 
 const styles = theme => ({
   paper: {
-    height: 50,
     padding: `${theme.spacing.unit}px ${theme.spacing.unit*3}px`,
     position: 'sticky',
     top: 56 + 48 - 1,
@@ -27,9 +26,11 @@ const styles = theme => ({
     zIndex: theme.zIndex.appBar - 2,
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
   },
-  label: {
-    flex: '1 1 auto',
+  flex: {
+    flex: 1,
+    // textAlign: 'center',
   },
   observer: {
     position: 'absolute',
@@ -73,14 +74,12 @@ class SectionHeaderWithScrollto extends PureComponent {
   render() {
     console.log("Render SectionHeaderWithScrollto")
 
-    const { classes, sectionKey, label, subLabel, sections } = this.props
+    const { classes, sectionKey, label, sections } = this.props
     const { isRaised, anchorEl } = this.state
 
     return (
       <React.Fragment>
-        <ButtonBase
-          onClick={this.handleClick}
-          component={Paper}
+        <Paper
           className={classes.paper}
           elevation={isRaised ? 4 : 0}
           square={isRaised}
@@ -90,10 +89,15 @@ class SectionHeaderWithScrollto extends PureComponent {
             tag="div"
             onChange={this.observerChange}
           />
-          <Typography variant='title' className={classes.label}>{label}</Typography>
-          <Typography variant='caption' className={classes.label}>{subLabel}</Typography>
-          <ExpandMore/>
-        </ButtonBase>
+          <div className={classes.flex}>
+            {label}
+          </div>
+          <Hidden mdUp implementation='css'>
+            <IconButton onClick={this.handleClick}>
+              <ExpandMore/>
+            </IconButton>
+          </Hidden>
+        </Paper>
         <Menu
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
@@ -128,7 +132,7 @@ class SectionHeaderWithScrollto extends PureComponent {
 
 SectionHeaderWithScrollto.propTypes = {
   classes: PropTypes.object.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
 }
 
 export default withStyles(styles)(SectionHeaderWithScrollto)

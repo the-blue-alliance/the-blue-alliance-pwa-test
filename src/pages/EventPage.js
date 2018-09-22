@@ -152,7 +152,7 @@ class EventPage extends PureComponent {
                   <Paper id='qual'>
                     <SectionHeaderWithScrollto
                       sectionKey='qual'
-                      label='Qualification Results'
+                      label={<Typography variant='title'>Qualification Results</Typography>}
                       sections={sections}
                     />
                     <EventMatchListContainer eventKey={eventKey} qual/>
@@ -162,7 +162,7 @@ class EventPage extends PureComponent {
                   <Paper id='alliances' className={classes.sectionCard}>
                     <SectionHeaderWithScrollto
                       sectionKey='alliances'
-                      label='Alliances'
+                      label={<Typography variant='title'>Alliances</Typography>}
                       sections={sections}
                     />
                     <EventAllianceTableContainer eventKey={eventKey} />
@@ -170,7 +170,7 @@ class EventPage extends PureComponent {
                   <Paper id='playoff' className={classes.sectionCard}>
                     <SectionHeaderWithScrollto
                       sectionKey='playoff'
-                      label='Playoff Results'
+                      label={<Typography variant='title'>Playoff Results</Typography>}
                       sections={sections}
                     />
                     <EventMatchListContainer eventKey={eventKey} playoff/>

@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
+import { Link } from 'react-router-dom'
 
 // Actions
 import { push } from 'connected-react-router'
@@ -359,8 +360,12 @@ class TeamPage extends PureComponent {
                       <Paper key={event.key} id={event.event_code} className={classes.eventCard}>
                         <SectionHeaderWithScrollto
                           sectionKey={event.event_code}
-                          label={event.name}
-                          subLabel={event.getDateString()}
+                          label={
+                            <React.Fragment>
+                              <Typography variant='title'><Link to={{pathname: `/event/${event.key}`}}>{event.name}</Link></Typography>
+                              <Typography variant='caption'>{event.getDateString()}</Typography>
+                            </React.Fragment>
+                          }
                           sections={sections}
                         />
                         <TeamAtEvent
