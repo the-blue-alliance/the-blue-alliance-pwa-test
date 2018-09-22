@@ -5,8 +5,6 @@ import { withStyles } from '@material-ui/core/styles'
 
 // Components
 import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import { Link } from 'react-router-dom'
 
 // TBA Components
 import TeamEventMatchListContainer from '../containers/TeamEventMatchListContainer'

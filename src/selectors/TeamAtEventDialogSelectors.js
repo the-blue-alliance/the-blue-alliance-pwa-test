@@ -2,10 +2,6 @@ import { createSelector } from 'reselect'
 import Event from '../database/Event'
 import Team from '../database/Team'
 
-const getYear = (state, props) => {
-  return parseInt(getEventKey(state, props).substring(0, 4), 10)
-}
-
 export const getTeamNumber = (state, props) => {
   return parseInt(props.match.params.teamNumber, 10)
 }

@@ -112,7 +112,7 @@ class TeamAtEventDialog extends PureComponent {
   render() {
     console.log("Render Team@Event Dialog")
 
-    const { classes, isLoading, event, eventKey, team, teamNumber } = this.props
+    const { classes, event, eventKey, team, teamNumber } = this.props
 
     let teamTitle = `Team ${teamNumber}`
     if (team) {
@@ -202,7 +202,6 @@ class TeamAtEventDialog extends PureComponent {
 const mapStateToProps = (state, props) => ({
   // Params
   // States
-  isLoading: state.getIn(['appState', 'loadingCount']) > 0,
   tabIdx: getCurrentModalState(state, props).get('tabIdx'),
   // Data
   teamNumber: getTeamNumber(state, props),
