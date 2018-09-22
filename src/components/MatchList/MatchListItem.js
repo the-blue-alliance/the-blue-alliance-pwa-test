@@ -15,12 +15,12 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row',
     padding: `1px ${theme.spacing.unit / 2}px`,
+    fontSize: 14,
+    textAlign: 'center',
     height: 60,
     [theme.breakpoints.up('lg')]: {
       height: 30,
     },
-    fontSize: 14,
-    textAlign: 'center',
   },
   matchName: {
     flexGrow: 1,
@@ -28,27 +28,35 @@ const styles = theme => ({
   },
   match: {
     display: 'flex',
+    flexDirection: 'column',
     flexWrap: 'wrap',
     flexGrow: 4,
     flexBasis: 0,
-  },
-  matchWithTime: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexGrow: 3,
-    flexBasis: 0,
+    height: '100%',
   },
   time: {
+    display: 'flex',
+    flexDirection: 'column',
     flexGrow: 1,
-    flexBasis: 0,
-    fontSize: 14,
+    width: '24%',
+    overflow: 'hidden',
+    border: '1px solid transparent',
+    '& div': {
+      flex: 1,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: theme.spacing.unit / 2,
+      borderRadius: `0px ${theme.spacing.unit}px ${theme.spacing.unit}px 0px`,
+      backgroundColor: theme.palette.grey[200],
+    },
   },
   alliance: {
     display: 'flex',
     flexGrow: 1,
-    width: '80%',
+    width: '76%',
     [theme.breakpoints.up('lg')]: {
-      width: '40%',
+      width: '38%',
     },
     overflow: 'hidden',
     border: '1px solid transparent',
@@ -78,14 +86,17 @@ const styles = theme => ({
     padding: theme.spacing.unit / 2,
   },
   score: {
+    display: 'flex',
     flexGrow: 1,
-    width: '20%',
+    width: '24%',
     [theme.breakpoints.up('lg')]: {
-      width: '10%',
+      width: '12%',
     },
     overflow: 'hidden',
     border: '1px solid transparent',
     '& div': {
+      flexGrow: 1,
+      flexBasis: 0,
       position: 'relative',
       padding: theme.spacing.unit / 2,
     },
@@ -97,7 +108,6 @@ const styles = theme => ({
     },
     [theme.breakpoints.up('lg')]: {
       borderRadius: 0,
-      order: 1,
     },
   },
   blueScore: {
@@ -108,7 +118,6 @@ const styles = theme => ({
     '& div': {
       backgroundColor: '#ddddff',
     },
-    order: 1,
   },
   redWin: {
     fontWeight: 'bold',
@@ -179,7 +188,7 @@ class MatchListItem extends PureComponent {
         >
           {match.getDisplayName(true)}
         </Link>
-        <div className={showTime ? classes.matchWithTime : classes.match}>
+        <div className={classes.match}>
           <div className={classNames({[classes.alliance]: true, [classes.redAlliance]: true,  [classes.redWin]: redWin})}>
             <Teams
               classes={classes}
@@ -188,19 +197,6 @@ class MatchListItem extends PureComponent {
               selectedTeamKey={selectedTeamKey}
               favoriteTeamKeys={favoriteTeamKeys}
             />
-          </div>
-          <div className={classNames({
-              [classes.score]: true,
-              [classes.redScore]: true,
-              [classes.redWin]: redWin,
-              [classes.selectedTeam]: match.isOnAlliance(selectedTeamKey, 'red')
-            })}
-          >
-            {!showTime && <Score
-              classes={classes}
-              match={match}
-              score={redScore}
-            />}
           </div>
           <div className={classNames({[classes.alliance]: true, [classes.blueAlliance]: true,  [classes.blueWin]: blueWin})}>
             <Teams
@@ -211,32 +207,49 @@ class MatchListItem extends PureComponent {
               favoriteTeamKeys={favoriteTeamKeys}
             />
           </div>
-          <div className={classNames({
+          {!showTime && <div className={classNames({
+              [classes.score]: true,
+              [classes.redScore]: true,
+              [classes.redWin]: redWin,
+              [classes.selectedTeam]: match.isOnAlliance(selectedTeamKey, 'red')
+            })}
+          >
+            <Score
+              classes={classes}
+              match={match}
+              score={redScore}
+            />
+          </div>}
+          {!showTime && <div className={classNames({
               [classes.score]: true,
               [classes.blueScore]: true,
               [classes.blueWin]: blueWin,
               [classes.selectedTeam]: match.isOnAlliance(selectedTeamKey, 'blue')
             })}
           >
-            {!showTime && <Score
+            <Score
               classes={classes}
               match={match}
               score={blueScore}
               hasSelectedTeam={match.isOnAlliance(selectedTeamKey, 'blue')}
-            />}
-          </div>
+            />
+          </div>}
+          {showTime &&
+            <div className={classes.time}>
+              <div>
+                <span>
+                  {match.predicted_time ?
+                    <Tooltip title={`Scheduled at ${match.getTimeStr()}`} placement="top">
+                      <i>{match.getPredictedTimeStr()}*</i>
+                    </Tooltip>
+                  :
+                    match.getTimeStr()
+                  }
+                </span>
+              </div>
+            </div>
+          }
         </div>
-        {showTime &&
-          <div className={classes.time}>
-            {match.predicted_time ?
-              <Tooltip title={`Scheduled at ${match.getTimeStr()}`} placement="top">
-                <i>{match.getPredictedTimeStr()}*</i>
-              </Tooltip>
-            :
-              match.getTimeStr()
-            }
-          </div>
-        }
       </ListItem>
     )
   }
