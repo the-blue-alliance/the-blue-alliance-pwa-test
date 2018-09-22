@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Observer from 'react-intersection-observer'
 import { withStyles } from '@material-ui/core/styles'
 
+import Divider from '@material-ui/core/Divider'
 import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
 import ListSubheader from '@material-ui/core/ListSubheader'
@@ -98,6 +99,7 @@ class SectionHeaderWithScrollto extends PureComponent {
             </IconButton>
           </Hidden>
         </Paper>
+        <Divider />
         <Menu
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
