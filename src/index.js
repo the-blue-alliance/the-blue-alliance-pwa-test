@@ -23,6 +23,12 @@ import { userManagerMiddleware } from './middleware'
 import reducer from './reducers'
 import TBAApp from './TBAApp'
 
+import Award from './database/Award'
+import Event from './database/Event'
+import Match from './database/Match'
+import Media from './database/Media'
+import Team from './database/Team'
+
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
 //   whyDidYouUpdate(React);
@@ -54,6 +60,33 @@ delete window.__PRELOADED_STATE__  // Allow garbage collection
 let initialState = Map()
 if (preloadedState) {
   initialState = fromJS(preloadedState)
+  // Convert to models
+  const awardsPath = ['models', 'awards', 'byKey']
+  const awards = initialState.getIn(awardsPath)
+  if (awards) {
+    initialState = initialState.setIn(awardsPath, awards.map(o => new Award(o)))
+  }
+  const eventsPath = ['models', 'events', 'byKey']
+  const events = initialState.getIn(eventsPath)
+  if (events) {
+    initialState = initialState.setIn(eventsPath, events.map(o => new Event(o)))
+  }
+  const matchesPath = ['models', 'matches', 'byKey']
+  const matches = initialState.getIn(matchesPath)
+  if (matches) {
+    initialState = initialState.setIn(matchesPath, matches.map(o => new Match(o)))
+  }
+  const mediasPath = ['models', 'medias', 'byKey']
+  const medias = initialState.getIn(mediasPath)
+  if (medias) {
+    initialState = initialState.setIn(mediasPath, medias.map(o => new Media(o)))
+  }
+  const teamsPath = ['models', 'teams', 'byKey']
+  const teams = initialState.getIn(teamsPath)
+  if (teams) {
+    initialState = initialState.setIn(teamsPath, teams.map(o => new Team(o)))
+  }
+
   // Remove the script tag
   const preload = document.getElementById('preloaded-state-server-side')
   if (preload && preload.parentNode) {
