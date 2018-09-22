@@ -22,9 +22,10 @@ const styles = theme => ({
     [theme.breakpoints.up('lg')]: {
       height: 30,
     },
+    color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
   },
   listItemHeader: {
-    backgroundColor: theme.palette.grey[100],
+    backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
   },
   videoIconContainer: {
     marginLeft: theme.spacing.unit / 2,
@@ -59,7 +60,7 @@ const styles = theme => ({
       justifyContent: 'center',
       padding: theme.spacing.unit / 2,
       borderRadius: `0px ${theme.spacing.unit}px ${theme.spacing.unit}px 0px`,
-      backgroundColor: theme.palette.grey[200],
+      backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
     },
   },
   alliance: {
@@ -78,7 +79,7 @@ const styles = theme => ({
       borderRadius: `${theme.spacing.unit}px 0px 0px ${theme.spacing.unit}px`,
     },
     '& $team': {
-      backgroundColor: '#ffeeee',
+      backgroundColor: theme.palette.type === 'light' ? '#FFEEEE' : '#803B3A',
     },
   },
   blueAlliance: {
@@ -87,7 +88,7 @@ const styles = theme => ({
       borderRadius: 0,
     },
     '& $team': {
-      backgroundColor: '#eeeeff',
+      backgroundColor: theme.palette.type === 'light' ? '#EEEEFF' : '#3A3A80',
     },
   },
   team: {
@@ -118,7 +119,7 @@ const styles = theme => ({
   redScore: {
     borderRadius: `0px ${theme.spacing.unit}px 0px 0px`,
     '& div': {
-      backgroundColor: '#ffdddd',
+      backgroundColor: theme.palette.type === 'light' ? '#FFDDDD' : '#802020',
     },
     [theme.breakpoints.up('lg')]: {
       borderRadius: 0,
@@ -130,7 +131,7 @@ const styles = theme => ({
       borderRadius: `0px ${theme.spacing.unit}px ${theme.spacing.unit}px 0px`,
     },
     '& div': {
-      backgroundColor: '#ddddff',
+      backgroundColor: theme.palette.type === 'light' ? '#DDDDFF' : '#202080',
     },
   },
   redWin: {

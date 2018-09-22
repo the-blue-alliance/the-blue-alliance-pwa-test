@@ -7,7 +7,7 @@ import ListSubheader from '@material-ui/core/ListSubheader'
 
 const styles = theme => ({
   subHeader: {
-    backgroundColor: theme.palette.grey[100],
+    backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
 })
