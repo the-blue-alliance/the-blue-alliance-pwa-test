@@ -44,6 +44,7 @@ export default class Event extends Record({
   location_name: undefined,
   gmaps_url: undefined,
   website: undefined,
+  webcasts: undefined,
 }) {
   safeShortName() {
     return this.short_name ? this.short_name : this.name
