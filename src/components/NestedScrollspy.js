@@ -78,17 +78,12 @@ class NestedScrollspy extends PureComponent {
   updateActiveSection = (el) => {
     const section = el ? el.id : null
     this.setState({activeSection: section})
-    if (this.activeSectionItem[section] && this.props.activeItemCallback) {
-      this.props.activeItemCallback(section, this.activeSectionItem[section])
-    }
+
   }
 
   updateActiveItem = (el, section) => {
     this.activeSectionItem[section] = el ? el.id : null
     const activeSection = this.state.activeSection
-    if (this.activeSectionItem[activeSection] && this.props.activeItemCallback) {
-      this.props.activeItemCallback(activeSection, this.activeSectionItem[activeSection])
-    }
   }
 
   render() {
@@ -138,7 +133,6 @@ NestedScrollspy.propTypes = {
   sections: PropTypes.array.isRequired,
   sectionLabels: PropTypes.array.isRequired,
   sectionItems: PropTypes.object,
-  activeItemCallback: PropTypes.func,
 }
 
 export default withStyles(styles)(NestedScrollspy)
