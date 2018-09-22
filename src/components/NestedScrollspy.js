@@ -83,7 +83,6 @@ class NestedScrollspy extends PureComponent {
 
   updateActiveItem = (el, section) => {
     this.activeSectionItem[section] = el ? el.id : null
-    const activeSection = this.state.activeSection
   }
 
   render() {

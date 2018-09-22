@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import classNames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 
