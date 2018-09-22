@@ -9,7 +9,7 @@ import { push } from 'connected-react-router'
 import { resetPage, setPageState, setNav, fetchYearEvents } from '../actions'
 
 // Selectors
-import { getCurrentPageState, getYear } from '../selectors/CommonPageSelectors'
+import { getYear } from '../selectors/CommonPageSelectors'
 import { getFilteredGroupedEvents } from '../selectors/EventListPageSelectors'
 
 // Components
@@ -18,21 +18,21 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Grid from '@material-ui/core/Grid'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import NoSsr from '@material-ui/core/NoSsr'
 import Typography from '@material-ui/core/Typography'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import FilterListIcon from '@material-ui/icons/FilterList'
 
 // TBA Components
 import TBAPage from '../components/TBAPage'
 import NestedScrollspy from '../components/NestedScrollspy'
 import EventListCard from '../components/EventListCard'
+import EventFilterSidebarContainer from '../containers/EventFilterSidebarContainer'
+import EventFilterDialogContainer from '../containers/EventFilterDialogContainer'
 
 const mapStateToProps = (state, props) => ({
   // Params
   year: getYear(state, props),
   // States
-  locationFilter: getCurrentPageState(state, props).get('locationFilter'),
-  districtFilters: getCurrentPageState(state, props).get('districtFilters'),
   // Data
   groupedEvents: getFilteredGroupedEvents(state, props),
 })
@@ -64,15 +64,18 @@ const styles = theme => ({
     height: 'calc(100vh - 10rem)',
     overflowY: 'auto',
   },
-  fab: {
-    position: 'fixed',
-    bottom: 56 + theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2,
+  rightBarContainer: {
+    display: 'none',
     [theme.breakpoints.up('md')]: {
-      bottom: theme.spacing.unit * 4,
-      right: theme.spacing.unit * 4,
+      display: 'block',
     },
-    zIndex: theme.zIndex.appBar,
+  },
+  rightBar: {
+    position: 'sticky',
+    top: 0,
+    height: 'calc(100vh - 8rem)',
+    width: '100%',
+    paddingTop: theme.spacing.unit*3,
   },
   zeroDataContainer: {
     paddingTop: theme.spacing.unit*3,
@@ -121,16 +124,11 @@ class EventListPage extends PureComponent {
       requestAnimationFrame(() => this.props.pushHistory(`/events/${year}`))
     }
   }
-  // filterFunction = () => {
-  //   this.props.setPageState({ filterDialogOpen: true })
-  // }
 
   componentDidMount() {
     this.props.resetPage({
-      // activeEventGroup: null,
-      // filterDialogOpen: false,
-      // locationFilter: '',
-      // districtFilters: Set(),
+      locationFilter: '',
+      districtFilters: Set(),
       yearMenuAnchorEl: false,
     })
     this.props.setNav('events')
@@ -141,7 +139,7 @@ class EventListPage extends PureComponent {
   render() {
     console.log("Render EventListPage")
 
-    const { classes, year, groupedEvents, locationFilter, districtFilters } = this.props
+    const { classes, year, groupedEvents } = this.props
     const { yearMenuAnchorEl } = this.state
 
     // Compute valid years
@@ -164,8 +162,6 @@ class EventListPage extends PureComponent {
       mainSections.push('unofficial')
       unofficialEventsGrouped.forEach(g => sections.push({key: g.get('slug'), label: g.get('label')}))
     }
-
-    const filterCount = (locationFilter === '' ? 0 : 1) + (districtFilters ? districtFilters.size : 0)
 
     return (
       <TBAPage
@@ -220,7 +216,7 @@ class EventListPage extends PureComponent {
               </div>}
             </div>
           </Grid>
-          <Grid item xs={12} md={9} lg={10}>
+          <Grid item xs={12} md={7} lg={8}>
             <Typography variant='display1' gutterBottom>{year} <i>FIRST</i> Robotics Competition Events</Typography>
             {!groupedEvents &&
               <div className={classes.zeroDataContainer}>
@@ -263,14 +259,17 @@ class EventListPage extends PureComponent {
               </div>
             }
           </Grid>
+          <NoSsr>
+            <Grid item xs={2} className={classes.rightBarContainer}>
+              <div className={classes.rightBar}>
+                {groupedEvents && <EventFilterSidebarContainer year={year} />}
+              </div>
+            </Grid>
+          </NoSsr>
         </Grid>
-        <Button
-          variant='fab'
-          className={classes.fab}
-          color='secondary'
-        >
-          <FilterListIcon/>
-        </Button>
+        <NoSsr>
+          <EventFilterDialogContainer year={year} />
+        </NoSsr>
       </TBAPage>
     )
   }
