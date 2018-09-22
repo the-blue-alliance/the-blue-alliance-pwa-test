@@ -51,6 +51,7 @@ import TBAPage from '../components/TBAPage'
 import Skeleton from '../components/Skeleton'
 import PageTabs from '../components/PageTabs'
 import TeamAtEvent from '../components/TeamAtEvent'
+import NestedScrollspy from '../components/NestedScrollspy'
 
 const mapStateToProps = (state, props) => ({
   // Params
@@ -95,6 +96,22 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'center',
     margin: theme.spacing.unit,
+  },
+  sideNavContainer: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'block',
+    },
+  },
+  sideNav: {
+    position: 'sticky',
+    top: 56 + 48 + theme.spacing.unit,
+    [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
+      top: 48 + 48 + theme.spacing.unit,
+    },
+    [theme.breakpoints.up('sm')]: {
+      top: 64 + 48 + theme.spacing.unit,
+    },
   },
   zeroDataContainer: {
     paddingTop: theme.spacing.unit*3,
@@ -306,28 +323,45 @@ class TeamPage extends PureComponent {
               <Tab label='Robot' />
             </PageTabs>
             <div hidden={safeTabIdx !== 0}>
-              {!teamYearEvents &&
-                <div className={classes.zeroDataContainer}>
-                  <CircularProgress color='secondary' size={120} className={classes.zeroDataSpinner} />
-                  <Typography variant='subheading'>Events loading</Typography>
-                </div>
-              }
-              {teamYearEvents && teamYearEvents.size === 0 &&
-                <div className={classes.zeroDataContainer}>
-                  <EventIcon className={classes.zeroDataIcon} />
-                  <Typography variant='subheading'>No events</Typography>
-                </div>
-              }
-              {teamYearEvents && teamYearEvents.valueSeq().map(function(event) {
-                return (
-                  <Paper key={event.key} id={event.get('event_code')} className={classes.eventCard} elevation={4}>
-                    <TeamAtEvent
-                      teamKey={`frc${teamNumber}`}
-                      event={event}
-                    />
-                  </Paper>
-                )
-              })}
+              <Grid container spacing={8}>
+                <Grid item xs={12} md={3} lg={2} className={classes.sideNavContainer}>
+                  <div className={classes.sideNav}>
+                    {teamYearEvents && <NestedScrollspy
+                      sections={teamYearEvents.map(event => {
+                        return event.event_code
+                      }).toJS()}
+                      sectionLabels={teamYearEvents.map(event => {
+                        return event.safeShortName()
+                      }).toJS()}
+                      scrollOffset={-48}
+                    />}
+                  </div>
+                </Grid>
+                <Grid item xs={12} md={9} lg={10}>
+                  {!teamYearEvents &&
+                    <div className={classes.zeroDataContainer}>
+                      <CircularProgress color='secondary' size={120} className={classes.zeroDataSpinner} />
+                      <Typography variant='subheading'>Events loading</Typography>
+                    </div>
+                  }
+                  {teamYearEvents && teamYearEvents.size === 0 &&
+                    <div className={classes.zeroDataContainer}>
+                      <EventIcon className={classes.zeroDataIcon} />
+                      <Typography variant='subheading'>No events</Typography>
+                    </div>
+                  }
+                  {teamYearEvents && teamYearEvents.valueSeq().map(function(event) {
+                    return (
+                      <Paper key={event.key} id={event.event_code} className={classes.eventCard} elevation={4}>
+                        <TeamAtEvent
+                          teamKey={`frc${teamNumber}`}
+                          event={event}
+                        />
+                      </Paper>
+                    )
+                  })}
+                </Grid>
+              </Grid>
             </div>
           </Grid>
         </Grid>
