@@ -3,7 +3,7 @@ import asyncComponent from './components/AsyncComponent'
 const HomePage = asyncComponent(() => import(/* webpackChunkName: "HomePage"*/ './pages/HomePage'), 'HomePage')
 const EventListPage = asyncComponent(() => import(/* webpackChunkName: "EventListPage"*/ './pages/EventListPage'), 'EventListPage')
 const EventPage = asyncComponent(() => import(/* webpackChunkName: "EventPage"*/ './pages/EventPage'), 'EventPage')
-//const MatchPageContainer = asyncComponent(() => import(/* webpackChunkName: "MatchPageContainer"*/ './containers/MatchPageContainer'))
+const MatchPage = asyncComponent(() => import(/* webpackChunkName: "MatchPage"*/ './pages/MatchPage'))
 const AccountPage = asyncComponent(() => import(/* webpackChunkName: "AccountPage"*/ './pages/AccountPage'), 'AccountPage')
 const SigninRequiredPage = asyncComponent(() => import(/* webpackChunkName: "SigninRequiredPage"*/ './pages/SigninRequiredPage'), 'SigninRequiredPage')
 const TeamListPage = asyncComponent(() => import(/* webpackChunkName: "TeamListPage"*/ './pages/TeamListPage'), 'TeamListPage')
@@ -55,11 +55,17 @@ export default [
     component: SigninRequiredPage,
     exact: true,
   },
-  // {
-  //     path: '/match/:matchKey',
-  //     component: MatchPageContainer,
-  //     exact: true,
-  // },
+  {
+    path: '/match/:matchKey',
+    component: MatchPage,
+    exact: true,
+    ssrDataFetcher: ({ store, params }) => {
+      return Promise.all([
+        store.dispatch(actions.fetchEventInfo(params.matchKey.split('_')[0])),
+        store.dispatch(actions.fetchMatchInfo(params.matchKey)),
+      ])
+    },
+  },
   {
     path: '/teams',
     component: TeamListPage,

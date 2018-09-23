@@ -1,14 +1,19 @@
 import React, { PureComponent } from 'react'
 import { withStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import fitvids from 'fitvids'
+
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Grid from '@material-ui/core/Grid'
 
 const styles = theme => ({
 })
 
 class MatchVideos extends PureComponent {
   componentDidMount() {
+    fitvids()
+  }
+
+  componentDidUpdate() {
     fitvids()
   }
 
@@ -23,7 +28,7 @@ class MatchVideos extends PureComponent {
 
     return (
       <Grid container spacing={8}>
-        {match.get('videos').map(video => {
+        {match.videos.map(video => {
           return (
             <Grid item xs={12} key={video.get('key')}>
               <iframe title="Match Video" width="560" height="315" src={`https://www.youtube.com/embed/${video.get('key')}`} frameBorder="0" allowFullScreen></iframe>
