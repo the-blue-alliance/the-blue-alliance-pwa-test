@@ -9,13 +9,14 @@ import { setPageKey } from './actions'
 import routes from './routes'
 import { canUseDOM } from './utils'
 
+import asyncComponent from './components/AsyncComponent'
 import TBAThemeProvider from './components/TBAThemeProvider'
 import TBAHelmet from './components/TBAHelmet'
+import ErrorPage from './pages/ErrorPage'
 import TBANav from './components/TBANav'
 import TBASnackbars from './components/TBASnackbars'
-import TBAModalDialog from './components/TBAModalDialog'
+const TBAModalDialog = asyncComponent(() => import('./components/TBAModalDialog'))
 // import SearchModal from './components/SearchModal'
-import ErrorPage from './pages/ErrorPage'
 
 // For Google Analytics tracking
 ReactGA.initialize('UA-3251931-11') // TODO: Change to real tracking number

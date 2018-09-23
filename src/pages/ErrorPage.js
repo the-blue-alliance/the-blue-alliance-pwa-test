@@ -5,8 +5,6 @@ import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
-import TBAIconBlue from '../icons/tba_icon_blue'
-
 const styles = theme => ({
   container: {
     height: '100vh',
@@ -20,10 +18,6 @@ const styles = theme => ({
     maxWidth: theme.breakpoints.values.sm,
     textAlign: 'center',
   },
-  logo: {
-    width: 100,
-    height: 100,
-  },
 })
 
 class ErrorPage extends PureComponent {
@@ -35,7 +29,6 @@ class ErrorPage extends PureComponent {
     return (
       <div className={classes.container}>
         <Paper className={classes.paper}>
-          <TBAIconBlue className={classes.logo} />
           <Typography variant='display1' gutterBottom>
             Whoops!
           </Typography>

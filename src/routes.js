@@ -1,12 +1,13 @@
-import HomePage from './pages/HomePage'
-import EventListPage from './pages/EventListPage'
-import EventPage from './pages/EventPage'
-// import MatchPageContainer from './containers/MatchPageContainer'
-import AccountPage from './pages/AccountPage'
-import SigninRequiredPage from './pages/SigninRequiredPage'
-import TeamListPage from './pages/TeamListPage'
-import TeamPage from './pages/TeamPage'
-import NotFoundPage from './pages/NotFoundPage'
+import asyncComponent from './components/AsyncComponent'
+const HomePage = asyncComponent(() => import('./pages/HomePage'))
+const EventListPage = asyncComponent(() => import('./pages/EventListPage'))
+const EventPage = asyncComponent(() => import('./pages/EventPage'))
+//const MatchPageContainer = asyncComponent(() => import('./containers/MatchPageContainer'))
+const AccountPage = asyncComponent(() => import('./pages/AccountPage'))
+const SigninRequiredPage = asyncComponent(() => import('./pages/SigninRequiredPage'))
+const TeamListPage = asyncComponent(() => import('./pages/TeamListPage'))
+const TeamPage = asyncComponent(() => import('./pages/TeamPage'))
+const NotFoundPage = asyncComponent(() => import('./pages/NotFoundPage'))
 
 export default [
   {
