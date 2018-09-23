@@ -94,18 +94,6 @@ class EventListPage extends PureComponent {
     yearMenuAnchorEl: null,
   }
 
-  static fetchData({ store, params }) {
-    let { year } = params
-    if (year === undefined) {
-      year = 2018  // TODO don't hardcode
-    } else {
-      year = parseInt(year, 10)
-    }
-    return Promise.all([
-      store.dispatch(fetchYearEvents(year)),
-    ])
-  }
-
   refreshFunction = () => {
     this.props.fetchYearEvents(this.props.year)
   }

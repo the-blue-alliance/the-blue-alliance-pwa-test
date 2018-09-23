@@ -15,7 +15,7 @@ import TBAHelmet from './components/TBAHelmet'
 import ErrorPage from './pages/ErrorPage'
 import TBANav from './components/TBANav'
 import TBASnackbars from './components/TBASnackbars'
-const TBAModalDialog = asyncComponent(() => import('./components/TBAModalDialog'))
+const TBAModalDialog = asyncComponent(() => import(/* webpackChunkName: "TBAModalDialog"*/ './components/TBAModalDialog'), 'TBAModalDialog')
 // import SearchModal from './components/SearchModal'
 
 // For Google Analytics tracking

@@ -140,24 +140,6 @@ class TeamPage extends PureComponent {
     yearMenuAnchorEl: null,
   }
 
-  static fetchData({ store, params }) {
-    let { teamNumber, year } = params
-    if (year === undefined) {
-      year = 2018  // TODO don't hardcode
-    } else {
-      year = parseInt(year, 10)
-    }
-    return Promise.all([
-      store.dispatch(fetchTeamYears(teamNumber)),
-      store.dispatch(fetchTeamInfo(teamNumber)),
-      store.dispatch(fetchTeamYearAwards(teamNumber, year)),
-      store.dispatch(fetchTeamYearEvents(teamNumber, year)),
-      store.dispatch(fetchTeamYearMatches(teamNumber, year)),
-      store.dispatch(fetchTeamYearEventStatuses(teamNumber, year)),
-      store.dispatch(fetchTeamYearMedia(teamNumber, year)),
-    ])
-  }
-
   refreshFunction = () => {
     this.props.fetchTeamYears(this.props.teamNumber)
     this.props.fetchTeamInfo(this.props.teamNumber)

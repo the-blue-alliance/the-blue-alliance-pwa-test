@@ -3,6 +3,7 @@ import 'intersection-observer'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
+import Loadable from 'react-loadable'
 import { fromJS, Map } from 'immutable'
 import registerServiceWorker from './registerServiceWorker'
 
@@ -117,7 +118,7 @@ store.subscribe(() => {
 
 const generateClassName = createGenerateClassName()
 
-ReactDOM.hydrate(
+Loadable.preloadReady().then(() => ReactDOM.hydrate(
   <Provider store={store}>
     <JssProvider generateClassName={generateClassName}>
       <ConnectedRouter history={history}>
@@ -126,5 +127,6 @@ ReactDOM.hydrate(
     </JssProvider>
   </Provider>,
   document.getElementById('root'))
+)
 
 registerServiceWorker(store)

@@ -65,15 +65,6 @@ const sections = [
 ]
 
 class EventPage extends PureComponent {
-  static fetchData({ store, params }) {
-    return Promise.all([
-      store.dispatch(fetchEventInfo(params.eventKey)),
-      store.dispatch(fetchEventMatches(params.eventKey)),
-      store.dispatch(fetchEventAlliances(params.eventKey)),
-      store.dispatch(fetchEventRankings(params.eventKey)),
-    ])
-  }
-
   refreshFunction = () => {
     this.props.fetchEventInfo(this.props.eventKey)
     this.props.fetchEventMatches(this.props.eventKey)
