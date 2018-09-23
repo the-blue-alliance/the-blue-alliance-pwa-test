@@ -37,6 +37,7 @@ const styles = theme => ({
   matchName: {
     flexGrow: 1,
     flexBasis: 0,
+    padding: `0px ${theme.spacing.unit / 2}px`,
   },
   match: {
     display: 'flex',
