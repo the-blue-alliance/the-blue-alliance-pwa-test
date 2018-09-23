@@ -105,16 +105,16 @@ const store = createStoreWithFirebase(
   ),
 )
 
-// Subscribe to the store to keep the url hash in sync
-let lastHash = null
-store.subscribe(() => {
-  const state = store.getState()
-  const newHash = state.getIn(['page', 'stateHistory', state.getIn(['page', 'currentKey']), 'hash'])
-  if (newHash !== undefined && newHash !== lastHash ) {
-    window.history.replaceState(window.history.state, null, `#${newHash}`)
-    lastHash = newHash
-  }
-})
+// // Subscribe to the store to keep the url hash in sync
+// let lastHash = null
+// store.subscribe(() => {
+//   const state = store.getState()
+//   const newHash = state.getIn(['page', 'stateHistory', state.getIn(['page', 'currentKey']), 'hash'])
+//   if (newHash !== undefined && newHash !== lastHash ) {
+//     window.history.replaceState(window.history.state, null, `#${newHash}`)
+//     lastHash = newHash
+//   }
+// })
 
 const generateClassName = createGenerateClassName()
 
