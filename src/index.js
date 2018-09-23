@@ -22,6 +22,7 @@ import { createGenerateClassName } from '@material-ui/core/styles'
 
 import { userManagerMiddleware } from './middleware'
 import reducer from './reducers'
+import { loadAppState, saveAppState } from './saveLoadLocalStorage'
 import TBAApp from './TBAApp'
 
 import Award from './database/Award'
@@ -94,6 +95,10 @@ if (preloadedState) {
     preload.parentNode.removeChild(preload)
   }
 }
+
+// Merge in state in localStorage
+initialState = initialState.set('appState', loadAppState())
+
 const store = createStoreWithFirebase(
   connectRouter(history)(reducer),
   initialState,
@@ -104,6 +109,11 @@ const store = createStoreWithFirebase(
     // loggerMiddleware,
   ),
 )
+
+// Save state to localStorage
+store.subscribe(() => {
+  saveAppState(store.getState())
+})
 
 // // Subscribe to the store to keep the url hash in sync
 // let lastHash = null

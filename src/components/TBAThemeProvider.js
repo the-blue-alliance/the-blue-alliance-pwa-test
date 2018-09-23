@@ -41,6 +41,10 @@ class TBAThemeProvider extends React.Component {
     theme: createTheme(false)
   }
 
+  componentDidMount() {
+    this.setState({theme: createTheme(this.props.darkTheme)})
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.darkTheme !== this.props.darkTheme) {
       this.setState({theme: createTheme(this.props.darkTheme)})
