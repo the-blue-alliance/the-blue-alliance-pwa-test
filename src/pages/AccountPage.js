@@ -39,6 +39,9 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 const styles = theme => ({
+  card: {
+    marginBottom: theme.spacing.unit * 3,
+  },
   signOutButton: {
     float: 'right',
   },
@@ -102,16 +105,16 @@ class AccountPage extends PureComponent {
             >
               Sign Out
             </Button>
-            <h1>Welcome back!</h1>
-            <h2>Profile</h2>
-            <Card>
+            <Typography variant='display1' gutterBottom>Welcome back!</Typography>
+            <Typography variant='title'>Profile</Typography>
+            <Card className={classes.card}>
               <CardContent>
-                <p><strong>Name:</strong> {auth.displayName}</p>
-                <p><strong>Email:</strong> {auth.email}</p>
+                <Typography><strong>Name:</strong> {auth.displayName}</Typography>
+                <Typography><strong>Email:</strong> {auth.email}</Typography>
               </CardContent>
             </Card>
-            <h2>myTBA</h2>
-            <Card>
+            <Typography variant='title'>myTBA</Typography>
+            <Card className={classes.card}>
               <CardContent>
                 <MyTBASettingsContainer />
               </CardContent>
@@ -122,7 +125,7 @@ class AccountPage extends PureComponent {
             >
               <DialogTitle>Sign out?</DialogTitle>
               <DialogContent>
-                <Typography variant='body1'>
+                <Typography>
                   You are currently signed in as {auth.displayName} ({auth.email}).
                   Are you sure you want to sign out of The Blue Alliance?
                 </Typography>
