@@ -39,11 +39,11 @@ class TeamAtEventResults extends PureComponent {
       const playoffStatus = status.getIn(['playoff', 'status'])
       if (playoffLevel && playoffStatus) {
         if (playoffStatus === 'won') {
-          playoffStatusStr = <React.Fragment><b>Won</b> the <b>{playoffLevel === 'f' ? 'Event' : levelMap[playoffLevel]}</b></React.Fragment>
+          playoffStatusStr = <React.Fragment><strong>Won</strong> the <strong>{playoffLevel === 'f' ? 'Event' : levelMap[playoffLevel]}</strong></React.Fragment>
         } else if (playoffStatus === 'playing') {
-          playoffStatusStr = <React.Fragment><b>Playing</b> in the <b>{levelMap[playoffLevel]}</b></React.Fragment>
+          playoffStatusStr = <React.Fragment><strong>Playing</strong> in the <strong>{levelMap[playoffLevel]}</strong></React.Fragment>
         } else if (playoffStatus === 'eliminated') {
-          playoffStatusStr = <React.Fragment><b>Eliminated</b> in the <b>{levelMap[playoffLevel]}</b></React.Fragment>
+          playoffStatusStr = <React.Fragment><strong>Eliminated</strong> in the <strong>{levelMap[playoffLevel]}</strong></React.Fragment>
         }
       }
 
@@ -65,22 +65,22 @@ class TeamAtEventResults extends PureComponent {
             <React.Fragment>
               {status.getIn(['qual', 'ranking', 'rank']) &&
                 <Typography variant='subheading'>
-                  Rank: <b>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</b>
+                  Rank: <strong>{status.getIn(['qual', 'ranking', 'rank'])}/{status.getIn(['qual', 'num_teams'])}</strong>
                 </Typography>
               }
               {status.getIn(['qual', 'ranking', 'record']) &&
                 <Typography variant='subheading'>
-                  Qual Record: <b>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</b>
+                  Qual Record: <strong>{status.getIn(['qual', 'ranking', 'record', 'wins'])}-{status.getIn(['qual', 'ranking', 'record', 'losses'])}-{status.getIn(['qual', 'ranking', 'record', 'ties'])}</strong>
                 </Typography>
               }
               {status.getIn(['alliance']) &&
                 <Typography variant='subheading'>
-                  Alliance: <b>{pickOrderStr}</b> of <b>{status.getIn(['alliance', 'name'])}</b>
+                  Alliance: <strong>{pickOrderStr}</strong> of <strong>{status.getIn(['alliance', 'name'])}</strong>
                 </Typography>
               }
               {status.getIn(['playoff', 'record']) &&
                 <Typography variant='subheading'>
-                  Playoff Record: <b>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</b>
+                  Playoff Record: <strong>{status.getIn(['playoff', 'record', 'wins'])}-{status.getIn(['playoff', 'record', 'losses'])}-{status.getIn(['playoff', 'record', 'ties'])}</strong>
                 </Typography>
               }
               {playoffStatusStr &&

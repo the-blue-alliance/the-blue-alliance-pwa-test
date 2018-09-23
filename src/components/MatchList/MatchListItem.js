@@ -367,17 +367,17 @@ class MatchListItemHeader extends PureComponent {
           />
         </div>
         <div className={classes.matchName}>
-          <b>Match</b>
+          <strong>Match</strong>
         </div>
         <div className={classes.match}>
           <div className={classNames({[classes.alliance]: true, [classes.redAlliance]: true})}>
-            <div className={classes.team}><b>Red Alliance</b></div>
+            <div className={classes.team}><strong>Red Alliance</strong></div>
           </div>
           <div className={classNames({[classes.alliance]: true, [classes.blueAlliance]: true})}>
-            <div className={classes.team}><b>Blue Alliance</b></div>
+            <div className={classes.team}><strong>Blue Alliance</strong></div>
           </div>
           <div className={classes.time}>
-            <div><b>Scores</b></div>
+            <div><strong>Scores</strong></div>
           </div>
         </div>
       </ListItem>

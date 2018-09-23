@@ -11,9 +11,9 @@ const myTBABody = (
   <React.Fragment>
     Signing in enables myTBA, which lets you customize your experience when using The Blue Alliance.
     <br />
-    <Icon>star</Icon> <b>Favorites</b> are used for personalized content and quick access.
+    <Icon>star</Icon> <strong>Favorites</strong> are used for personalized content and quick access.
     <br />
-    <Icon>notifications</Icon> <b>Subscriptions</b> are used for push notifications (Android only).
+    <Icon>notifications</Icon> <strong>Subscriptions</strong> are used for push notifications (Android only).
   </React.Fragment>
 )
 const aboutGoogleAccountsBody = (

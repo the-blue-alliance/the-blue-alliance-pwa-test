@@ -106,8 +106,8 @@ class AccountPage extends PureComponent {
             <h2>Profile</h2>
             <Card>
               <CardContent>
-                <p><b>Name:</b> {auth.displayName}</p>
-                <p><b>Email:</b> {auth.email}</p>
+                <p><strong>Name:</strong> {auth.displayName}</p>
+                <p><strong>Email:</strong> {auth.email}</p>
               </CardContent>
             </Card>
             <h2>myTBA</h2>
