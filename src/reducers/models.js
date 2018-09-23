@@ -7,7 +7,14 @@ import Match from '../database/Match'
 import Media from '../database/Media'
 import Team from '../database/Team'
 
-const mergeDeep = (state = Map(), data) => {
+const mergeDeepSingle = (state, data) => {
+  if (state === undefined) {
+    return data
+  }
+  return state.mergeDeep(data)
+}
+
+const mergeDeepMulti = (state = Map(), data) => {
   // Wrapper for Map.mergeDeep that handles undefined state
   return state.mergeDeep(data)
 }
@@ -17,7 +24,7 @@ const updateSingle = (state, modelType, modelKey, newModel) => {
   // TODO: Delete model is null
   const modelPath = [modelType, 'byKey', modelKey]
   const currentModel = state.getIn(modelPath)
-  return state.setIn(modelPath, mergeDeep(currentModel, newModel))
+  return state.setIn(modelPath, mergeDeepSingle(currentModel, newModel))
 }
 
 const updateMulti = (state, modelType, partialPath, newModels, merge=false) => {
@@ -26,7 +33,7 @@ const updateMulti = (state, modelType, partialPath, newModels, merge=false) => {
 
   // Merge new models into current models
   const byKeyPath = [modelType].concat(['byKey'])
-  const mergedModelsByKey = mergeDeep(state.getIn(byKeyPath), newModelsByKey)
+  const mergedModelsByKey = mergeDeepMulti(state.getIn(byKeyPath), newModelsByKey)
 
   // Merge new collection into current collection
   const collectionPath = [modelType, 'collections'].concat(partialPath)

@@ -3,7 +3,6 @@ import { List, Map, Set } from 'immutable'
 import moment from 'moment-timezone'
 import unidecode from 'unidecode'
 import { getCurrentPageState, getYear } from '../selectors/CommonPageSelectors'
-import Event from '../database/Event'
 import { slugify } from '../utils'
 
 const getEventsByKey = (state, props) => {
@@ -37,7 +36,7 @@ export const getSortedEvents = createSelector(
   [getYearEvents],
   (events) => {
     if (events) {
-      events = events.map(e => new Event(e)).sort((a, b) => {
+      events = events.sort((a, b) => {
         if (a.start_date < b.start_date) {
           return -1
         }

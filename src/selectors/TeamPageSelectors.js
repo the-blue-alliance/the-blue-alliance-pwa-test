@@ -1,8 +1,5 @@
 import { createSelector } from 'reselect'
 import { getYear } from '../selectors/CommonPageSelectors'
-import Event from '../database/Event'
-import Media from '../database/Media'
-import Team from '../database/Team'
 
 export const getTeamNumber = (state, props) => {
   return parseInt(props.match.params.teamNumber, 10)
@@ -16,19 +13,9 @@ export const getTeamYears = (state, props) => {
   return state.getIn(['models', 'teamYears', 'byKey', getTeamKey(state, props), 'years'])
 }
 
-export const getTeam = (state, props) => {
+export const getTeamModel = (state, props) => {
   return state.getIn(['models', 'teams', 'byKey', getTeamKey(state, props)])
 }
-
-export const getTeamModel = createSelector(
-  [getTeam],
-  (team) => {
-    if (team) {
-      return new Team(team)
-    }
-    return undefined
-  }
-)
 
 const getTeamYearEventKeys = (state, props) => {
   return state.getIn(['models', 'events', 'collections', 'byTeamYear', getTeamKey(state, props), getYear(state, props)])
@@ -52,7 +39,6 @@ export const getSortedTeamYearEvents = createSelector(
   [getTeamYearEvents],
   (events) => {
     if (events) {
-      events = events.map(e => new Event(e))
       return events.sort((a, b) => {
         if (a.get('start_date') < b.get('start_date')) {
           return -1
@@ -79,7 +65,7 @@ export const getTeamYearMedias = createSelector(
   getTeamYearMediaKeys,
   (mediaByKey, keys) => {
     if (keys) {
-      return keys.toSeq().map(key => new Media(mediaByKey.get(key)))
+      return keys.toSeq().map(key => mediaByKey.get(key))
     }
   }
 )

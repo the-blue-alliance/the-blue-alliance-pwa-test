@@ -1,25 +1,12 @@
 import { createSelector } from 'reselect'
-import Event from '../database/Event'
-import Match from '../database/Match'
-import Team from '../database/Team'
 
 export const getEventKey = (state, props) => {
   return props.match.params.eventKey
 }
 
-export const getEvent = (state, props) => {
+export const getEventModel = (state, props) => {
   return state.getIn(['models', 'events', 'byKey', getEventKey(state, props)])
 }
-
-export const getEventModel = createSelector(
-  [getEvent],
-  (event) => {
-    if (event) {
-      return new Event(event)
-    }
-    return undefined
-  }
-)
 
 const getMatchesByKey = (state, props) => {
   return state.getIn(['models', 'matches', 'byKey'])
@@ -34,7 +21,7 @@ const getEventMatches = createSelector(
   getEventMatchKeys,
   (matchesByKey, matchKeys) => {
     if (matchKeys) {
-      return matchKeys.toSeq().map(key => new Match(matchesByKey.get(key)))
+      return matchKeys.toSeq().map(key => matchesByKey.get(key))
     }
     return undefined
   }
@@ -124,7 +111,6 @@ export const getSortedEventTeams = createSelector(
   [getEventTeams],
   (teams) => {
     if (teams) {
-      teams = teams.map(m => new Team(m))
       return teams.sort((a, b) => {
         if (a.get('team_number') < b.get('team_number')) {
           return -1
