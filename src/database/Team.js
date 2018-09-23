@@ -61,7 +61,7 @@ export default class Team extends Record({
 
   getTeamNameWithBreaks() {
     if (this.teamNameWithBreaks === undefined) {
-      this.teamNameWithBreaks = this.name.split('/').join('/\u200B').split('?').join('?\u200B')
+      this.teamNameWithBreaks = this.name && this.name.split('/').join('/\u200B').split('?').join('?\u200B')
     }
     return this.teamNameWithBreaks
   }
