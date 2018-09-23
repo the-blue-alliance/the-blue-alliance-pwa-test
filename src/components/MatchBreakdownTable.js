@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress'
 import CheckIcon from '@material-ui/icons/Check'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import ClearIcon from '@material-ui/icons/Clear'
@@ -16,10 +16,10 @@ const styles = theme => ({
     margin: 0,
     width: '100%',
     marginLeft: 'auto',
-    backgroundColor: '#ffffff',
     borderCollapse: 'collapse',
     border: '1px solid #ddd',
     fontSize: '14px',
+    color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
     '& tr': {
       padding: '5px 0',
       border: '1px solid #ddd',
@@ -38,7 +38,7 @@ const styles = theme => ({
     },
   },
   key: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
   },
   icon: {
     top: '0.125em',
@@ -46,16 +46,16 @@ const styles = theme => ({
     fontSize: '14px',
   },
   red: {
-    backgroundColor: '#ffeeee',
+    backgroundColor: theme.palette.type === 'light' ? '#FFEEEE' : '#803B3A',
   },
   blue: {
-    backgroundColor: '#eeeeff',
+    backgroundColor: theme.palette.type === 'light' ? '#EEEEFF' : '#3A3A80',
   },
   redScore: {
-    backgroundColor: '#ffdddd',
+    backgroundColor: theme.palette.type === 'light' ? '#FFDDDD' : '#802020',
   },
   blueScore: {
-    backgroundColor: '#ddddff',
+    backgroundColor: theme.palette.type === 'light' ? '#DDDDFF' : '#202080',
   },
 });
 
