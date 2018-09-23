@@ -181,7 +181,6 @@ class TeamAtEventDialog extends PureComponent {
           </AppBar>
           <DialogContent className={classes.contentMobile}>
             <TBAScrollRestore
-              key={eventKey}
               scrollId={`${eventKey}_frc${teamNumber}`}
               className={classes.scrollContainer}
             >

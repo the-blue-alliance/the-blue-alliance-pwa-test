@@ -14,6 +14,7 @@ const styles = theme => ({
   table: {
     padding: '5px 0',
     margin: 0,
+    marginBottom: theme.spacing.unit,
     width: '100%',
     marginLeft: 'auto',
     borderCollapse: 'collapse',
