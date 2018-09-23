@@ -4,7 +4,7 @@ import 'intersection-observer'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { fromJS, Map } from 'immutable'
-import registerServiceWorker, { unregister } from './registerServiceWorker'
+import registerServiceWorker from './registerServiceWorker'
 
 import { applyMiddleware, createStore, compose } from 'redux'
 import { Provider } from 'react-redux'
@@ -127,5 +127,4 @@ ReactDOM.hydrate(
   </Provider>,
   document.getElementById('root'))
 
-// registerServiceWorker(store)
-unregister()  // Temp don't register service worker
+registerServiceWorker(store)
