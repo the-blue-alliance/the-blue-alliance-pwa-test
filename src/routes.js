@@ -92,3 +92,12 @@ export default [
     exact: true,
   },
 ]
+
+export const preloadPages = () => {
+  // Preload common pages
+  HomePage.preload()
+  EventListPage.preload()
+  EventPage.preload()
+  TeamListPage.preload()
+  TeamPage.preload()
+}

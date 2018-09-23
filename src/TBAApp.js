@@ -6,7 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import errorReporter from './errorReporter'
 
 import { setPageKey } from './actions'
-import routes from './routes'
+import routes, { preloadPages } from './routes'
 import { canUseDOM } from './utils'
 
 import asyncComponent from './components/AsyncComponent'
@@ -172,6 +172,7 @@ class TBAApp extends React.Component {
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles)
     }
+    preloadPages()
   }
 
   componentDidCatch(error, info) {
