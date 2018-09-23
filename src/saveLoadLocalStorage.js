@@ -1,14 +1,15 @@
 import { fromJS, Map, Set } from 'immutable'
+import { defaultAppState } from './reducers/appState'
 
 export const loadAppState = () => {
   try {
     const serializedState = localStorage.getItem('appStatePartial')
     if (serializedState === null) {
-      return Map()
+      return defaultAppState
     }
     return fromJS(JSON.parse(serializedState))
   } catch (err) {
-    return Map()
+    return defaultAppState
   }
 }
 
