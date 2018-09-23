@@ -142,7 +142,7 @@ class EventRankingsTable extends PureComponent {
                 }, this)}
               </TableRow>
             </TableHead>
-            <TableBody>
+            {rankings.get('rankings') && <TableBody>
               {rankings.get('rankings').sort(getSorting(order, orderBy)).map((ranking, i) => {
                 const teamNumber = ranking.get('team_key').substr(3)
                 return (
@@ -165,7 +165,7 @@ class EventRankingsTable extends PureComponent {
                   </TableRow>
                 )
               })}
-            </TableBody>
+            </TableBody>}
           </Table>
         </Paper>
         <small>*This column is calculated for your convenience by The Blue Alliance using data provided by <i>FIRST</i> and is not official.</small>
