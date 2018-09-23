@@ -17,7 +17,7 @@ class MatchListSubheader extends PureComponent {
     const { classes, text } = this.props
     return (
       <React.Fragment>
-        <ListSubheader className={classes.subHeader}>
+        <ListSubheader component='div' className={classes.subHeader}>
           <ListItemText primary={text}/>
         </ListSubheader>
       </React.Fragment>

@@ -193,6 +193,7 @@ class MatchListItem extends PureComponent {
 
     return (
       <ListItem
+        component='div'
         className={classes.listItem}
         style={style}
         divider
@@ -356,6 +357,7 @@ class MatchListItemHeader extends PureComponent {
     const { classes } = this.props
     return (
       <ListItem
+        component='div'
         className={classNames({[classes.listItem]: true, [classes.listItemHeader]: true})}
         divider
       >

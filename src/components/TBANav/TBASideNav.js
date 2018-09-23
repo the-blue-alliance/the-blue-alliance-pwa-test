@@ -66,7 +66,7 @@ class TBASideNavContent extends PureComponent {
     return (
     <Drawer className={classes.root} variant="permanent">
       <div className={classes.content}>
-        <List>
+        <List component='div'>
           <ListItem button component={Link} to="/">
             <ListItemIcon className={classNames({[classes.activeIcon]: navValue === 'home'})}>
               <HomeIcon />
@@ -128,14 +128,19 @@ class TBASideNavContent extends PureComponent {
               />
             </ListItemSecondaryAction>
           </ListItem>
-          <LinearProgress />
-          <PageState />
+          <ListItem disableGutters>
+            <LinearProgress style={{width: '100%'}}/>
+          </ListItem>
+          <ListItem disableGutters>
+            <PageState />
+          </ListItem>
         </List>
         <Divider />
-        <List>
+        <List component='div'>
           {auth.isEmpty ?
             <ListItem
               button
+              component='div'
               onClick={promptSignInOpen}
             >
               <ListItemAvatar>

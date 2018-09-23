@@ -126,7 +126,7 @@ class MatchList extends Component {
     const { headers, items } = this.computeGroupedMatches(matches)
 
     return (
-      <List subheader={<div />} disablePadding>
+      <List component='div' disablePadding>
         <MatchHeaderItem />
         {headers.map((header, headerIndex) => {
           return (
