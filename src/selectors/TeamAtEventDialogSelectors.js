@@ -1,5 +1,3 @@
-import { createSelector } from 'reselect'
-
 export const getTeamNumber = (state, props) => {
   return parseInt(props.match.params.teamNumber, 10)
 }

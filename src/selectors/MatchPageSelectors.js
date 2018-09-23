@@ -1,5 +1,3 @@
-import { createSelector } from 'reselect'
-
 const getEventKey = (state, props) => {
   return props.match.params.matchKey.split('_')[0]
 }
