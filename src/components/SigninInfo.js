@@ -1,19 +1,29 @@
 import React from 'react'
+import { withStyles } from '@material-ui/core/styles'
 
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import Icon from '@material-ui/core/Icon'
 import Typography from '@material-ui/core/Typography'
+import NotificationsIcon from '@material-ui/icons/Notifications'
+import StarIcon from '@material-ui/icons/Star'
+
+const styles = theme => ({
+  icon: {
+    top: '0.125em',
+    position: 'relative',
+    fontSize: '14px',
+  },
+});
 
 const titleText = 'Please sign in to The Blue Alliance'
 const infoText = 'Your account settings will be accessible whenever you are signed into The Blue Alliance.'
-const myTBABody = (
+const MyTBABody = props => (
   <React.Fragment>
     Signing in enables myTBA, which lets you customize your experience when using The Blue Alliance.
     <br />
-    <Icon>star</Icon> <b>Favorites</b> are used for personalized content and quick access.
+    <StarIcon className={props.classes.icon}/> <strong>Favorites</strong> are used for personalized content and quick access.
     <br />
-    <Icon>notifications</Icon> <b>Subscriptions</b> are used for push notifications (Android only).
+    <NotificationsIcon className={props.classes.icon}/> <strong>Subscriptions</strong> are used for push notifications (Android only).
   </React.Fragment>
 )
 const aboutGoogleAccountsBody = (
@@ -28,32 +38,34 @@ const SigninInfo = (props) => {
       <React.Fragment>
         <DialogTitle>{titleText}</DialogTitle>
         <DialogContent>
-          <Typography variant='body1'>{infoText}</Typography>
+          <Typography>{infoText}</Typography>
           <br />
 
           <Typography variant='title'>myTBA</Typography>
-          <Typography variant='body1'>{myTBABody}</Typography>
+          <Typography><MyTBABody classes={props.classes}/></Typography>
 
           <br />
           <Typography variant='title'>About Google Accounts</Typography>
-          <Typography variant='body1'>{aboutGoogleAccountsBody}</Typography>
+          <Typography>{aboutGoogleAccountsBody}</Typography>
         </DialogContent>
       </React.Fragment>
     )
   } else {
     return (
       <React.Fragment>
-        <h1>{titleText}</h1>
-        <p>{infoText}</p>
+        <Typography variant='display1' gutterBottom>{titleText}</Typography>
+        <Typography>{infoText}</Typography>
+        <br />
 
-        <h2>myTBA</h2>
-        <p>{myTBABody}</p>
+        <Typography variant='headline' gutterBottom>myTBA</Typography>
+        <Typography><MyTBABody classes={props.classes}/></Typography>
+        <br />
 
-        <h2>About Google Accounts</h2>
-        <p>{aboutGoogleAccountsBody}</p>
+        <Typography variant='headline' gutterBottom>About Google Accounts</Typography>
+        <Typography>{aboutGoogleAccountsBody}</Typography>
       </React.Fragment>
     )
   }
 }
 
-export default SigninInfo
+export default withStyles(styles)(SigninInfo)

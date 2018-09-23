@@ -2,63 +2,120 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withStyles } from '@material-ui/core/styles'
-
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import Typography from '@material-ui/core/Typography'
 import { Link } from 'react-router-dom'
 
+import green from '@material-ui/core/colors/green'
+import Divider from '@material-ui/core/Divider'
+import Hidden from '@material-ui/core/Hidden'
+import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
+import VideocamIcon from '@material-ui/icons/Videocam'
+import VideocamOffIcon from '@material-ui/icons/VideocamOff'
+
+import { districtColors } from '../utils'
+
 const styles = theme => ({
-  listItemText: {
-    padding: 0,
+  eventListItem: {
+    display: 'flex',
+    position: 'relative',
+    padding: `${theme.spacing.unit}px ${theme.spacing.unit*3}px`,
   },
-  dateContainer: {
-    float: 'right',
-    width: 150,
-    textAlign: 'right',
+  eventLiveIndicator: {
+    position: 'absolute',
+    top: theme.spacing.unit / 2,
+    right: theme.spacing.unit / 2,
+    bottom: theme.spacing.unit / 2,
+    width: theme.spacing.unit / 2,
+    borderRadius: theme.spacing.unit / 2,
+    backgroundColor: green[500],
   },
-  locationContainer: {
-    float: 'left',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    width: 'calc(100% - 170px)',
+  districtIndicator: {
+    position: 'absolute',
+    top: theme.spacing.unit / 2,
+    left: theme.spacing.unit / 2,
+    bottom: theme.spacing.unit / 2,
+    width: theme.spacing.unit / 2,
+    borderRadius: theme.spacing.unit / 2,
+  },
+  eventNameLocationContainer: {
+    display: 'flex',
+    flexGrow: 1,
+    width: '55%',
+    justifyContent: 'center',
+    flexDirection: 'column',
+  },
+  eventDateContainer: {
+    display: 'flex',
+    flexGrow: 1,
+    width: '30%',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    paddingLeft: theme.spacing.unit,
+    paddingRight: theme.spacing.unit,
+  },
+  eventWebcastButtonContainer: {
+    width: 48,
   },
 })
 
 class EventListItem extends PureComponent {
   render() {
-    const { classes, style, event, team } = this.props
-    let to = `/event/${event.key}`
-    if (team) {
-      to = {pathname: `/team/${team.team_number}/${event.year}`, hash:event.event_code, state: {modal: true}}
-    }
+    const { classes, event } = this.props
     return (
-      <ListItem
-        className={classes.listItem}
-        component={Link}
-        to={to}
-        style={style}
-        button
-        divider
-        disableRipple
-      >
-        <ListItemText
-          className={classes.listItemText}
-          disableTypography
-          primary={event.safeShortName()}
-          secondary={
-            <Typography>
-              <span className={classes.locationContainer}>
-                {event.getCityStateCountry()}
-              </span>
-              <span className={classes.dateContainer}>
-                {event.getDateString()}
-              </span>
+      <React.Fragment>
+        <div className={classes.eventListItem}>
+          {event.district && <div
+            className={classes.districtIndicator}
+            style={{ backgroundColor: districtColors[event.district.get('abbreviation')] }}
+          />}
+          {event.isNow() && <div className={classes.eventLiveIndicator} />}
+
+          <div className={classes.eventNameLocationContainer}>
+            <Typography variant='subheading' noWrap>
+              <Link to={`/event/${event.key}`}>
+                <Hidden implementation='css' xsDown>{event.name}</Hidden>
+                <Hidden implementation='css' smUp>{event.safeShortName()}</Hidden>
+              </Link>
             </Typography>
-          }
-        />
-      </ListItem>
+            <Typography variant='body1' noWrap>
+              {event.getCityStateCountry()}
+            </Typography>
+          </div>
+
+          <div className={classes.eventDateContainer}>
+            <Typography variant='body1'>
+              {event.getDateString()}
+            </Typography>
+          </div>
+
+          <div className={classes.eventWebcastButtonContainer}>
+            {event.webcasts.size > 0 && (
+              event.isNow() ?
+              <Tooltip title='Watch Now' placement='right'>
+                <IconButton
+                  color='default'
+                  component='a'
+                  href={`https://www.thebluealliance.com/watch/${event.key}`}
+                  target='_blank'
+                >
+                  <VideocamIcon />
+                </IconButton>
+              </Tooltip>
+              :
+              <Tooltip title='Event webcast is offline' placement='right'>
+                <div>
+                  <IconButton color='default' disabled>
+                    <VideocamOffIcon />
+                  </IconButton>
+                </div>
+              </Tooltip>
+            )}
+          </div>
+
+        </div>
+        <Divider />
+      </React.Fragment>
     )
   }
 }
@@ -66,7 +123,6 @@ class EventListItem extends PureComponent {
 EventListItem.propTypes = {
   classes: PropTypes.object.isRequired,
   event: ImmutablePropTypes.record.isRequired,
-  team: ImmutablePropTypes.record,
 }
 
 export default withStyles(styles)(EventListItem)

@@ -36,7 +36,10 @@ const Skeleton = (props) => {
     style.width = width
   }
   return (
-    Array.from(Array(num).keys()).map(i => <span key={i} className={classes.loading} style={style}>&zwnj;</span>)
+    Array.from(Array(num).keys()).map(i => <React.Fragment key={i}>
+      <span className={classes.loading} style={style}>&zwnj;</span>
+      <br />
+    </React.Fragment>)
   )
 }
 

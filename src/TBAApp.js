@@ -1,30 +1,26 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import ReactGA from 'react-ga'
-import indigo from '@material-ui/core/colors/indigo'
-import amber from '@material-ui/core/colors/amber'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import errorReporter from './errorReporter'
 
 import { setPageKey } from './actions'
-import routes from './routes'
+import routes, { preloadPages } from './routes'
+import { canUseDOM } from './utils'
 
+import asyncComponent from './components/AsyncComponent'
+import TBAThemeProvider from './components/TBAThemeProvider'
 import TBAHelmet from './components/TBAHelmet'
-import TBANavContainer from './containers/TBANavContainer'
-import TBASnackbarsContainer from './containers/TBASnackbarsContainer'
-import TBAModalDialog from './components/TBAModalDialog'
-import SearchModal from './components/SearchModal'
+import ErrorPage from './pages/ErrorPage'
+import TBANav from './components/TBANav'
+import TBASnackbars from './components/TBASnackbars'
+const TBAModalDialog = asyncComponent(() => import(/* webpackChunkName: "TBAModalDialog"*/ './components/TBAModalDialog'), 'TBAModalDialog')
+// import SearchModal from './components/SearchModal'
 
 // For Google Analytics tracking
 ReactGA.initialize('UA-3251931-11') // TODO: Change to real tracking number
-var canUseDOM = !!(
-      typeof window !== 'undefined' &&
-      window.document &&
-      window.document.createElement
-)
-class Analytics extends Component {
+class Analytics extends React.Component {
   // Modified from https://github.com/react-ga/react-ga/issues/122#issuecomment-320436578
   constructor(props) {
     super(props)
@@ -115,7 +111,7 @@ class ModalSwitch extends React.Component {
       this.initialKey !== nextLocation.key
     )
     if (nextIsModal && !this.state.modalOpen) {
-      requestIdleCallback(() => this.setState({modalOpen: true}))
+      requestAnimationFrame(() => this.setState({modalOpen: true}))
       this.props.setPageKey(this.basePageLocation.key)
     }
     if (!nextIsModal && this.state.modalOpen) {
@@ -125,7 +121,7 @@ class ModalSwitch extends React.Component {
   }
 
   handleClose = () => {
-    requestIdleCallback(() => this.setState({modalOpen: false}))
+    requestAnimationFrame(() => this.setState({modalOpen: false}))
     this.props.history.go(-this.modalKeyDepths[this.props.location.key])
   }
 
@@ -146,7 +142,9 @@ class ModalSwitch extends React.Component {
           )}
         </Switch>
         <TBAModalDialog isModal={isModal && !Boolean(location.state.searchModal)} open={this.state.modalOpen} handleClose={this.handleClose} />
+        {/*
         <SearchModal isModal={isModal && Boolean(location.state.searchModal)} open={this.state.modalOpen} handleClose={this.handleClose} />
+        */}
       </React.Fragment>
     )
   }
@@ -161,22 +159,8 @@ const mapDispatchToProps = (dispatch) => ({
 
 const ModalSwitchConainer = connect(mapStateToProps, mapDispatchToProps)(ModalSwitch)
 
-const styles = theme => ({
-})
 
-const theme = createMuiTheme({
-  palette: {
-    primary: indigo,
-    secondary: amber,
-  },
-  typography: {
-    title: {
-      fontWeight: 400,
-    },
-  },
-})
-
-class TBAApp extends Component {
+class TBAApp extends React.Component {
   constructor(props) {
     super(props)
     this.state = { hasError: false }
@@ -188,6 +172,7 @@ class TBAApp extends Component {
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles)
     }
+    preloadPages()
   }
 
   componentDidCatch(error, info) {
@@ -196,28 +181,25 @@ class TBAApp extends Component {
   }
 
   render() {
-    if (this.state.hasError) {
-      return (
-        <div>
-          Whoops! Something went wrong on our end.
-          Please close the app and restart it.
-          <a href="/">Or try clicking here!</a>
-        </div>
-      )
-    }
     return (
-      <MuiThemeProvider theme={theme} sheetsManager={canUseDOM ? null : new Map()}>
-        <TBAHelmet>
-          <meta name='description' content='The best way to scout, watch, and relive the FIRST Robotics Competition.' />
-        </TBAHelmet>
+      <TBAThemeProvider>
         <CssBaseline />
-        <TBASnackbarsContainer />
-        <TBANavContainer />
-        <Route component={ModalSwitchConainer} />
-        <Route path="/" component={Analytics}/>
-      </MuiThemeProvider>
+        {this.state.hasError ?
+          <ErrorPage />
+          :
+          <React.Fragment>
+            <TBAHelmet>
+              <meta name='description' content='The best way to scout, watch, and relive the FIRST Robotics Competition.' />
+            </TBAHelmet>
+            <TBASnackbars />
+            <TBANav />
+            <Route component={ModalSwitchConainer} />
+            <Route path="/" component={Analytics}/>
+          </React.Fragment>
+        }
+      </TBAThemeProvider>
     )
   }
 }
 
-export default withStyles(styles)(TBAApp)
+export default TBAApp

@@ -1,3 +1,4 @@
+import Loadable from 'react-loadable'
 import { Map } from 'immutable'
 import path from 'path';
 import { createStore, applyMiddleware } from 'redux'
@@ -19,6 +20,9 @@ import routes from '../src/routes'
 import reducer from '../src/reducers'
 import {receiveEventMatches} from '../src/actions';
 
+import manifest from '../build/asset-manifest.json';
+
+
 const clientBuildPath = path.resolve(__dirname, '../client');
 const app = createReactAppExpress({
   clientBuildPath,
@@ -26,11 +30,16 @@ const app = createReactAppExpress({
   universalRender: handleUniversalRender,
 });
 
+const extractAssets = (manifest, chunks) => Object.keys(manifest)
+  .filter(c => chunks.indexOf(c.replace('.js', '')) > -1)
+  .map(a => manifest[a]);
+
 let TBAAppClass = TBAApp;
 
 let context;
 let sheetsRegistry;
 let preloadedState;
+let modules;
 function renderPage(req, res, stream, htmlData, options) {
   // Reduce TTFB by streaming HTML to client as it becomes available
   // Currently not as optimal as it could be due to render blocking
@@ -45,6 +54,11 @@ function renderPage(req, res, stream, htmlData, options) {
   stream.on('data', chunk => string += chunk.toString())
   stream.on('end', () => {
     console.timeEnd(`${req.url} RENDER`)
+
+    // Add in bundles
+    const chunkedScripts = extractAssets(manifest, modules).map(bundle => {
+      return `<script src="/${bundle}"></script>`
+    }).join('')
 
     // TODO: Determine status code early in render and this whole chunk can move up
     if (context.statusCode) {
@@ -61,7 +75,7 @@ function renderPage(req, res, stream, htmlData, options) {
       helmet.link.toString()
     res.write(tags + '<style id="jss-server-side">' +
       uglifycss.processString(sheetsRegistry.toString()) +
-      segments2[0] + '<div id="root">' + string + lastSegment
+      segments2[0] + '<div id="root">' + string + lastSegment.replace('</body>', chunkedScripts + '</body>')
     )
     res.end()
     console.log(`${req.url} END`)
@@ -79,8 +93,8 @@ function handleUniversalRender(req, res) {
   )
 
   let foundPath = null
-  // Get matching component
-  let { path, component } = routes.find(
+  // Get matching route
+  let { path, ssrDataFetcher } = routes.find(
     ({ path, exact }) => {
       foundPath = matchPath(req.url,
         {
@@ -93,18 +107,16 @@ function handleUniversalRender(req, res) {
     }
   ) || {}
 
-  // Make empty component to be safe
-  if (!component) {
-    component = {}
-  }
-
-  // Set fetchData if it doesn't exist to be safe
-  if (!component.fetchData) {
-    component.fetchData = () => new Promise(resolve => resolve())
+  // Set ssrDataFetcher if it doesn't exist to be safe
+  if (!ssrDataFetcher) {
+    ssrDataFetcher = () => new Promise(resolve => resolve())
   }
 
   console.time(`${req.url} FETCH`)
-  return component.fetchData({ store, params: (foundPath ? foundPath.params : {}) }).then(() => {
+  return Promise.all([
+    Loadable.preloadAll(),  // Preload code split
+    ssrDataFetcher({ store, params: (foundPath ? foundPath.params : {}) }),  // Fetch API
+  ]).then(() => {
     console.timeEnd(`${req.url} FETCH`)
 
     // Remove parts of state we don't care about
@@ -112,16 +124,19 @@ function handleUniversalRender(req, res) {
 
     context = {};
     sheetsRegistry = new SheetsRegistry();
+    modules = [];
     const generateClassName = createGenerateClassName();
     console.time(`${req.url} RENDER`)
     return ReactDOMServer.renderToNodeStream(
-      <Provider store={store}>
-        <StaticRouter location={req.url} context={context}>
+      <Loadable.Capture report={moduleName => modules.push(moduleName)}>
+        <Provider store={store}>
           <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-            <TBAAppClass />
+            <StaticRouter location={req.url} context={context}>
+              <TBAAppClass />
+            </StaticRouter>
           </JssProvider>
-        </StaticRouter>
-      </Provider>
+        </Provider>
+      </Loadable.Capture>
     );
   })
   .catch(err => {

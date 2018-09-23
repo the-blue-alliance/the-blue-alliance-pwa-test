@@ -5,42 +5,44 @@ import { withStyles } from '@material-ui/core/styles'
 
 // Components
 import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import { Link } from 'react-router-dom'
 
 // TBA Components
-import MatchTableContainer from '../containers/MatchTableContainer'
-import TeamEventResults from '../components/TeamEventResults'
+import TeamEventMatchListContainer from '../containers/TeamEventMatchListContainer'
+import TeamAtEventResultsContainer from '../containers/TeamAtEventResultsContainer'
 
 const styles = theme => ({
+  results: {
+    padding: theme.spacing.unit,
+    [theme.breakpoints.up('md')]: {
+      paddingLeft: theme.spacing.unit*3,
+    }
+  },
+  matches: {
+    padding: 0,
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing.unit,
+      paddingRight: theme.spacing.unit*3,
+    },
+  },
 })
 
 class TeamAtEvent extends PureComponent {
   render() {
     console.log("Render TeamAtEvent")
-    const { hideEventName, awards, event, matches, status, teamKey, disableVisibilityRenderer } = this.props
+    const { classes, event, teamKey } = this.props
 
     return (
-      <Grid container spacing={24}>
-        <Grid item xs={12} lg={4}>
-          {!hideEventName && <React.Fragment>
-            <Typography variant='title' gutterBottom>
-              <Link to={`/event/${event.get('key')}`}>{event.get('name')}</Link>
-            </Typography>
-            <Typography variant='caption' gutterBottom>
-              {event.getDateString()}
-            </Typography>
-          </React.Fragment>}
-          <TeamEventResults
-            status={status}
-            awards={awards}
+      <Grid container>
+        <Grid item xs={12} md={4} className={classes.results}>
+          <TeamAtEventResultsContainer
+            teamKey={teamKey}
+            eventKey={event.key}
           />
         </Grid>
-        <Grid item xs={12} lg={8}>
-          <MatchTableContainer
-            matches={matches}
-            selectedTeamKey={teamKey}
-            disableVisibilityRenderer={disableVisibilityRenderer}
+        <Grid item xs={12} md={8} className={classes.matches}>
+          <TeamEventMatchListContainer
+            teamKey={teamKey}
+            eventKey={event.key}
           />
         </Grid>
       </Grid>
@@ -50,7 +52,6 @@ class TeamAtEvent extends PureComponent {
 
 TeamAtEvent.propTypes = {
   classes: PropTypes.object.isRequired,
-  hideEventName: PropTypes.bool,
 }
 
 export default withStyles(styles)(TeamAtEvent)

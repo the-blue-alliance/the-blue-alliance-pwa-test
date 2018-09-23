@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect'
-import Team from '../database/Team'
 
 const getTeamsByKey = (state, props) => {
   return state.getIn(['models', 'teams', 'byKey'])
@@ -22,10 +21,9 @@ export const getSortedTeams = createSelector(
   [getAllTeams],
   (teams) => {
     if (teams) {
-      teams = teams.map(m => new Team(m))
       return teams.toList().sort((a, b) => {
-        const orderA = a.get('team_number')
-        const orderB = b.get('team_number')
+        const orderA = a.team_number
+        const orderB = b.team_number
         if (orderA < orderB) {
           return -1
         }

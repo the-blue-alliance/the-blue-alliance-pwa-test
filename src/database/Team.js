@@ -58,4 +58,11 @@ export default class Team extends Record({
     }
     return this.teamNumberString
   }
+
+  getTeamNameWithBreaks() {
+    if (this.teamNameWithBreaks === undefined) {
+      this.teamNameWithBreaks = this.name && this.name.split('/').join('/\u200B').split('?').join('?\u200B')
+    }
+    return this.teamNameWithBreaks
+  }
 }

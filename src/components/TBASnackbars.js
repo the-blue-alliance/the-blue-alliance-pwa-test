@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
@@ -10,6 +11,8 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
+
+import { openSnackbar, closeSnackbar } from '../actions'
 
 const styles = theme => ({
   close: {
@@ -123,4 +126,16 @@ TBASnackbars.propTypes = {
   classes: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(TBASnackbars)
+const mapStateToProps = (state, props) => ({
+  snackbar: state.getIn(['appState', 'snackbar']),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  openSnackbar: (value) => dispatch(openSnackbar(value)),
+  closeSnackbar: () => dispatch(closeSnackbar()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(TBASnackbars))

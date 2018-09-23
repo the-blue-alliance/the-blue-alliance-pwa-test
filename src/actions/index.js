@@ -36,6 +36,10 @@ export const decrementLoadingCount = () => ({
   type: types.DECREMENT_LOADING_COUNT,
 })
 
+export const toggleTheme = () => ({
+  type: types.TOGGLE_THEME,
+})
+
 export const toggleAPI = () => ({
   type: types.TOGGLE_API,
 })
@@ -138,14 +142,15 @@ const handleErrors = (response) => {
 }
 
 const doAsync = (fn) => {
-  if (typeof window === 'undefined') {
-    // Don't do async if SSR
-    fn()
-  } else if ('requestIdleCallback' in window) {
-    requestIdleCallback(() => fn())
-  } else {
-    setTimeout(() => fn(), 0)
-  }
+  fn()
+  // if (typeof window === 'undefined') {
+  //   // Don't do async if SSR
+  //   fn()
+  // } else if ('requestIdleCallback' in window) {
+  //   requestIdleCallback(() => fn())
+  // } else {
+  //   setTimeout(() => fn(), 0)
+  // }
 }
 
 const createFetcher = ({

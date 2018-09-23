@@ -1,6 +1,6 @@
 import { Record } from 'immutable';
 
-export default class Team extends Record({
+export default class Award extends Record({
   key: undefined,
   award_type: undefined,
   event_key: undefined,

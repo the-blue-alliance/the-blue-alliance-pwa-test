@@ -78,46 +78,41 @@ class NestedScrollspy extends PureComponent {
   updateActiveSection = (el) => {
     const section = el ? el.id : null
     this.setState({activeSection: section})
-    if (this.activeSectionItem[section] && this.props.activeItemCallback) {
-      this.props.activeItemCallback(section, this.activeSectionItem[section])
-    }
+
   }
 
   updateActiveItem = (el, section) => {
     this.activeSectionItem[section] = el ? el.id : null
-    const activeSection = this.state.activeSection
-    if (this.activeSectionItem[activeSection] && this.props.activeItemCallback) {
-      this.props.activeItemCallback(activeSection, this.activeSectionItem[activeSection])
-    }
   }
 
   render() {
     console.log("Render NestedScrollspy")
 
-    const { classes, collapseSections, contentRef, sections, sectionLabels, sectionItems } = this.props
+    const { classes, collapseSections, contentRef, sections, sectionLabels, sectionItems, scrollOffset } = this.props
 
     return (
       <Scrollspy
-        rootEl={`.${contentRef.className}`}
+        rootEl={contentRef ? `.${contentRef.className}` : null}
         items={sections}
         currentClassName={classes.sideNavSectionActive}
         className={classes.sideNavSectionContainer}
         onUpdate={(el) => {this.updateActiveSection(el)}}
+        offset={-64 + (scrollOffset ? scrollOffset : 0)}
       >
-        {sections.map(section => {
+        {sections.map((section, i) => {
           return (
             <li key={section} className={collapseSections ? classes.sideNavSectionCollapsable : classes.sideNavSection}>
-              <ScrollLink scrollEl={contentRef} to={section}>{sectionLabels[section]}</ScrollLink>
-              {sectionItems[section] &&
+              <ScrollLink scrollEl={contentRef} to={section} offset={scrollOffset}>{sectionLabels[i]}</ScrollLink>
+              {sectionItems && sectionItems[section] &&
                 <Scrollspy
-                  rootEl={`.${contentRef.className}`}
+                  rootEl={contentRef ? `.${contentRef.className}` : null}
                   items={sectionItems[section].map(item => item.id)}
                   currentClassName={this.state.activeSection === section ? classes.sideNavItemActive : classes.sideNavItemInactive}
                   onUpdate={(el) => this.updateActiveItem(el, section)}
                 >
                   {sectionItems[section].map(item =>
                     <li key={item.id} className={classes.sideNavItem}>
-                      <ScrollLink scrollEl={contentRef} to={item.id}>{item.label}</ScrollLink>
+                      <ScrollLink scrollEl={contentRef} to={item.id} offset={scrollOffset}>{item.label}</ScrollLink>
                     </li>
                   )}
                 </Scrollspy>
@@ -133,11 +128,10 @@ class NestedScrollspy extends PureComponent {
 NestedScrollspy.propTypes = {
   classes: PropTypes.object.isRequired,
   collapseSections: PropTypes.bool,
-  contentRef: PropTypes.object.isRequired,
+  contentRef: PropTypes.object,
   sections: PropTypes.array.isRequired,
-  sectionLabels: PropTypes.object.isRequired,
-  sectionItems: PropTypes.object.isRequired,
-  activeItemCallback: PropTypes.func,
+  sectionLabels: PropTypes.array.isRequired,
+  sectionItems: PropTypes.object,
 }
 
 export default withStyles(styles)(NestedScrollspy)

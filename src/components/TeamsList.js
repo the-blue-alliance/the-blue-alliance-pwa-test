@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
-import LinkContainer from 'react-router-bootstrap/lib/LinkContainer'
 import { withStyles } from '@material-ui/core/styles'
+import { Link } from 'react-router-dom'
+
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
@@ -9,8 +10,15 @@ import Typography from '@material-ui/core/Typography'
 import WindowScrollerList from './WindowScrollerList'
 
 const styles = theme => ({
-  teamsCard: {
-    margin: theme.spacing.unit,
+  zeroDataContainer: {
+    padding: theme.spacing.unit*3,
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    textAlign: 'center',
+  },
+  zeroDataSpinner: {
+    margin: '0 auto',
   },
 })
 
@@ -23,18 +31,18 @@ class TeamRow extends PureComponent {
       to += `/${year}`
     }
     return (
-      <LinkContainer to={to}>
-        <ListItem button divider disableRipple>
-          <ListItemText
-            primary={
-              <Typography noWrap>
+      <ListItem divider>
+        <ListItemText
+          primary={
+            <Typography noWrap>
+              <Link to={to}>
                 {`${team.get('team_number')} | ${team.get('nickname')}`}
-              </Typography>
-            }
-            secondary={cityStateCountry ? cityStateCountry : '--'}
-          />
-        </ListItem>
-      </LinkContainer>
+              </Link>
+            </Typography>
+          }
+          secondary={cityStateCountry ? cityStateCountry : '--'}
+        />
+      </ListItem>
     )
   }
 }
@@ -51,33 +59,36 @@ class TeamsList extends PureComponent {
 
   render() {
     console.log("Render TeamsList")
-    const { classes } = this.props
+    const { classes, teams, filter } = this.props
 
-    if (this.props.filter) {
-      const filterLowerCase = this.props.filter.toLowerCase()
-      this.filteredTeams = this.props.teams.filter(team => (
+    if (filter) {
+      const filterLowerCase = filter.toLowerCase()
+      this.filteredTeams = teams.filter(team => (
         team.getTeamNumberString().includes(filterLowerCase) ||
         (team.getNicknameLower() && team.getNicknameLower().includes(filterLowerCase)) ||
         (team.getCityStateCountryLower() && team.getCityStateCountryLower().includes(filterLowerCase))
       ))
     } else {
-      this.filteredTeams = this.props.teams
+      this.filteredTeams = teams
     }
 
-    if (this.props.teams !== undefined) {
-      return (
-        <Paper className={classes.teamsCard}>
+    return (
+      <Paper>
+        {teams !== undefined ?
           <WindowScrollerList
             scrollElement={this.props.scrollElement}
             rowCount={this.filteredTeams.size}
             rowHeight={65}
             rowRenderer={this.rowRenderer}
           />
-        </Paper>
-      )
-    } else {
-      return <CircularProgress color="secondary" size={100} />
-    }
+          :
+          <div className={classes.zeroDataContainer}>
+            <CircularProgress color='secondary' size={120} className={classes.zeroDataSpinner} />
+            <Typography variant='subheading'>Teams loading</Typography>
+          </div>
+        }
+      </Paper>
+    )
   }
 }
 

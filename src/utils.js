@@ -10,6 +10,12 @@ import amber from '@material-ui/core/colors/amber'
 import deepOrange from '@material-ui/core/colors/deepOrange'
 import red from '@material-ui/core/colors/red'
 
+export const canUseDOM = !!(
+      typeof window !== 'undefined' &&
+      window.document &&
+      window.document.createElement
+)
+
 // From https://gist.github.com/mathewbyrne/1280286
 export function slugify(text) {
   return text.toString().toLowerCase()

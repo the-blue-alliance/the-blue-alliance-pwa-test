@@ -12,18 +12,24 @@ const updateLoadingCount = (state = 0, action) => {
   }
 }
 
-const appState = (state = Map({
+export const defaultAppState = Map({
   loadingCount: 0,
+  darkTheme: false,
   apiEnabled: true,
   idbEnabled: true,
   navValue: 'home',
   snackbar: null,
-}), action) => {
+})
+
+const appState = (state = defaultAppState, action) => {
   switch (action.type) {
     case types.INCREMENT_LOADING_COUNT:
     case types.DECREMENT_LOADING_COUNT:
       return state
         .set('loadingCount', updateLoadingCount(state.get('loadingCount'), action))
+    case types.TOGGLE_THEME:
+      return state
+        .set('darkTheme', !state.get('darkTheme'))
     case types.TOGGLE_API:
       return state
         .set('apiEnabled', !state.get('apiEnabled'))

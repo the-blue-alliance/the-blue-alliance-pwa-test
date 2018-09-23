@@ -11,8 +11,7 @@
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js" as="script">
-    <link rel="preload" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700%7CMaterial+Icons" as="style">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -27,7 +26,7 @@
       body {
         margin: 0;
         padding: 0;
-        font-family: "Roboto", sans-serif;
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
         overscroll-behavior: contain;
       }
       a {
@@ -37,15 +36,11 @@
       a:hover {
         text-decoration: underline;
       }
-      h1, h2, h3, h4, h5, h6 {
-        font-weight: 400;
-      }
 
       /* For hiding scrollbar on tabs. Doesn't work for Firefox */
       .hide-scrollbar ::-webkit-scrollbar {
         display: none;
       }
-
       .hide-scrollbar {
         -ms-overflow-style: none;
       }
@@ -53,9 +48,6 @@
     <style id="jss-server-side"></style>
   </head>
   <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
     <div id="root"></div>
     <!--
       This HTML file is a template.
@@ -68,13 +60,5 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
     <script id="preloaded-state-server-side"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js"></script>
-    <script>
-      WebFont.load({
-        google: {
-          families: ['Roboto:300,400,500,700', 'Material+Icons']
-        }
-      });
-    </script>
   </body>
 </html>

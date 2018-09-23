@@ -12,22 +12,35 @@ class ScrollLink extends PureComponent {
   handleClick = (e) => {
     e.preventDefault()
 
+    const { scrollEl, to, offset } = this.props
+
     // Weird bug breaks scrolling if scrollTop === 0
     // https://github.com/tsuyoshiwada/sweet-scroll/issues/38
-    const els = document.getElementsByClassName(this.props.scrollEl.className)
-    let el = null
-    if (els) {
-      el = els[0]
-    }
-    if (el.scrollTop === 0) {
-      el.scrollTop = 1  // Set scrollTop = 1 to fix weird bug
+    if (scrollEl) {
+      const els = document.getElementsByClassName(scrollEl.className)
+      let el = null
+      if (els) {
+        el = els[0]
+      }
+      if (el.scrollTop === 0) {
+        el.scrollTop = 1  // Set scrollTop = 1 to fix weird bug
+      }
     }
 
-    const scroller = new SweetScroll({
+
+    const scrollOptions = {
       duration: 250,
       easing: 'easeOutQuint',
-    }, `.${this.props.scrollEl.className}`)
-    scroller.to(`#${this.props.to}`)
+      offset: offset ? offset : 0,
+    }
+
+    let scroller
+    if (scrollEl) {
+      scroller = new SweetScroll(scrollOptions, `.${scrollEl.className}`)
+    } else {
+      scroller = new SweetScroll(scrollOptions)
+    }
+    scroller.to(`#${to}`)
   }
 
   render() {

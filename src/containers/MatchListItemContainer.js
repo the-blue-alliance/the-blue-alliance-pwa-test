@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { getFavoriteTeamKeys } from '../selectors/UserFavoriteSelectors'
-import MatchListItem from '../components/MatchListItem'
+import MatchListItem from '../components/MatchList/MatchListItem'
 
 const mapStateToProps = (state, props) => ({
   favoriteTeamKeys: getFavoriteTeamKeys(state, props),
