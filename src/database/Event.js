@@ -46,10 +46,12 @@ export default class Event extends Record({
   website: undefined,
   webcasts: undefined,
 }) {
+  // Name
   safeShortName() {
     return this.short_name ? this.short_name : this.name
   }
 
+  // Location
   getCityStateCountry() {
     if (this.cityStateCountry === undefined) {
       this.cityStateCountry = ''
@@ -80,6 +82,7 @@ export default class Event extends Record({
     return this.cityStateCountryLower
   }
 
+  // Time
   getDateString() {
     if (this.dateStr === undefined) {
       const startDate = moment(this.start_date)
@@ -93,18 +96,55 @@ export default class Event extends Record({
     return this.dateStr
   }
 
-  isPast() {
-    return moment.tz(this.end_date, this.timezone).add(1, 'days') < moment.now()
+  startMoment() {
+    return moment.tz(this.start_date, this.timezone)
   }
 
-  isFuture() {
-    return moment.tz(this.start_date, this.timezone) > moment.now()
+  endMoment() {
+    // Add one day because end_date is 12 AM
+    return moment.tz(this.end_date, this.timezone).add(1, 'days')
+  }
+
+  withinDays(negativeDaysBefore, daysAfter) {
+    const now = moment.now()
+    const afterStart = this.startMoment().add(negativeDaysBefore, 'days') < now
+    const beforeEnd = this.endMoment().add(daysAfter, 'days') > now
+    return afterStart && beforeEnd
   }
 
   isNow() {
     return !this.isPast() && !this.isFuture()
   }
 
+  isPast() {
+    return this.endMoment() < moment.now()
+  }
+
+  isFuture() {
+    return this.startMoment() > moment.now()
+  }
+
+  isThisWeek() {
+    // An event is this week iff
+    // 1) The event is within 1 day of now
+    // OR
+    // 2) The event start date is on or within 4 days of the closest Wednesday
+    if (this.withinDays(-1, 1)) {
+      return true
+    }
+    const wed = 4
+    const today = moment().isoWeekday()
+    let closestWed
+    if (today <= wed) {
+      closestWed = moment().isoWeekday(wed)
+    } else {
+      closestWed = moment().add(1, 'weeks').isoWeekday(wed)
+    }
+    const offset = moment.duration(this.startMoment() - closestWed).asDays()
+    return Math.abs(offset) <= 4
+  }
+
+  // Event type
   isCMP() {
     return CMP_TYPES.has(this.event_type)
   }

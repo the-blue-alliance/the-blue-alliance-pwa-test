@@ -15,6 +15,17 @@ export default [
     path: '/',
     component: HomePage,
     exact: true,
+    ssrDataFetcher: ({ store, params }) => {
+      let { year } = params
+      if (year === undefined) {
+        year = 2018  // TODO don't hardcode
+      } else {
+        year = parseInt(year, 10)
+      }
+      return Promise.all([
+        store.dispatch(actions.fetchYearEvents(year)),
+      ])
+    },
   },
   {
     path: '/account',

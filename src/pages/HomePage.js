@@ -1,20 +1,37 @@
+// General
 import React, { PureComponent } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { resetPage, setNav } from '../actions'
 
+// Actions
+import { resetPage, setNav, fetchYearEvents } from '../actions'
+
+// Selectors
+import { getYear } from '../selectors/CommonPageSelectors'
+import { getWeekEvents } from '../selectors/HomePageSelectors'
+
+// Components
 import Button from '@material-ui/core/Button'
+import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
+// TBA Components
 import TBAPage from '../components/TBAPage'
+import EventListItem from '../components/EventListItem'
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state, props) => ({
+  // Params
+  year: getYear(state, props),
+  // States
+  // Data
+  weekEvents: getWeekEvents(state, props),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   resetPage: (defaultState) => dispatch(resetPage(defaultState)),
   setNav: (value) => dispatch(setNav(value)),
+  fetchYearEvents: (year) => dispatch(fetchYearEvents(year)),
 });
 
 const styles = theme => ({
@@ -24,19 +41,27 @@ const styles = theme => ({
 })
 
 class Home extends PureComponent {
-  constructor(props) {
-    super(props)
-    props.setNav('home')
-    props.resetPage()
+  refreshFunction = () => {
+    this.props.fetchYearEvents(this.props.year)
+  }
+
+  componentDidMount() {
+    this.props.resetPage({
+    })
+    this.props.setNav('home')
+
+    requestAnimationFrame(() => this.refreshFunction())
   }
 
   render() {
     console.log("Render Home")
 
-    const { classes } = this.props
+    const { classes, weekEvents } = this.props
 
     return (
-      <TBAPage>
+      <TBAPage
+        refreshFunction={this.refreshFunction}
+      >
         <Typography gutterBottom>The Blue Alliance is the best way to scout, watch, and relive the <em>FIRST</em> Robotics Competition.</Typography>
         <Typography gutterBottom>Welcome to a beta version of our new app!</Typography>
 
@@ -86,6 +111,17 @@ class Home extends PureComponent {
         >
           191 in 2018
         </Button>
+
+        {weekEvents &&
+          <React.Fragment>
+            <Typography variant='display1' gutterBottom>This Week's Events</Typography>
+            <Paper>
+              {weekEvents.map(event => {
+                return <EventListItem key={event.key} event={event}/>
+              })}
+            </Paper>
+          </React.Fragment>
+        }
       </TBAPage>
     )
   }
