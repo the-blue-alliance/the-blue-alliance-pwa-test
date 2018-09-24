@@ -78,7 +78,7 @@ if (preloadedState) {
   if (matches) {
     initialState = initialState.setIn(matchesPath, matches.map(o => new Match(o)))
   }
-  const mediasPath = ['models', 'medias', 'byKey']
+  const mediasPath = ['models', 'media', 'byKey']
   const medias = initialState.getIn(mediasPath)
   if (medias) {
     initialState = initialState.setIn(mediasPath, medias.map(o => new Media(o)))
