@@ -4,7 +4,6 @@ import 'intersection-observer'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Loadable from 'react-loadable'
-import { fromJS, Map } from 'immutable'
 import registerServiceWorker from './registerServiceWorker'
 
 import { applyMiddleware, createStore, compose } from 'redux'
@@ -20,16 +19,11 @@ import { reactReduxFirebase } from 'react-redux-firebase'
 import JssProvider from 'react-jss/lib/JssProvider'
 import { createGenerateClassName } from '@material-ui/core/styles'
 
+import preloadState from './statePreloader'
+import { loadAppState, saveAppState } from './saveLoadLocalStorage'
 import { userManagerMiddleware } from './middleware'
 import reducer from './reducers'
-import { loadAppState, saveAppState } from './saveLoadLocalStorage'
 import TBAApp from './TBAApp'
-
-import Award from './database/Award'
-import Event from './database/Event'
-import Match from './database/Match'
-import Media from './database/Media'
-import Team from './database/Team'
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -55,47 +49,8 @@ const history = createBrowserHistory()
 //   stateTransformer: state => state.toJS()
 // })
 
-// Grab the state from a global variable injected into the server-generated HTML
-// https://redux.js.org/recipes/server-rendering#the-client-side
-const preloadedState = window.__PRELOADED_STATE__
-delete window.__PRELOADED_STATE__  // Allow garbage collection
-let initialState = Map()
-if (preloadedState) {
-  initialState = fromJS(preloadedState)
-  // Convert to models
-  const awardsPath = ['models', 'awards', 'byKey']
-  const awards = initialState.getIn(awardsPath)
-  if (awards) {
-    initialState = initialState.setIn(awardsPath, awards.map(o => new Award(o)))
-  }
-  const eventsPath = ['models', 'events', 'byKey']
-  const events = initialState.getIn(eventsPath)
-  if (events) {
-    initialState = initialState.setIn(eventsPath, events.map(o => new Event(o)))
-  }
-  const matchesPath = ['models', 'matches', 'byKey']
-  const matches = initialState.getIn(matchesPath)
-  if (matches) {
-    initialState = initialState.setIn(matchesPath, matches.map(o => new Match(o)))
-  }
-  const mediasPath = ['models', 'media', 'byKey']
-  const medias = initialState.getIn(mediasPath)
-  if (medias) {
-    initialState = initialState.setIn(mediasPath, medias.map(o => new Media(o)))
-  }
-  const teamsPath = ['models', 'teams', 'byKey']
-  const teams = initialState.getIn(teamsPath)
-  if (teams) {
-    initialState = initialState.setIn(teamsPath, teams.map(o => new Team(o)))
-  }
-
-  // Remove the script tag
-  const preload = document.getElementById('preloaded-state-server-side')
-  if (preload && preload.parentNode) {
-    preload.parentNode.removeChild(preload)
-  }
-}
-
+// Preload state from SSR
+let initialState = preloadState()
 // Merge in state in localStorage
 initialState = initialState.set('appState', loadAppState())
 
