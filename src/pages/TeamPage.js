@@ -175,8 +175,6 @@ class TeamPage extends PureComponent {
       yearMenuOpen: false,
     })
     this.props.setNav('teams')
-
-    requestAnimationFrame(() => this.refreshFunction())
   }
 
   render() {

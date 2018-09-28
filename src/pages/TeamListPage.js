@@ -69,8 +69,6 @@ class TeamListPage extends PureComponent {
       filter: '',
     })
     this.props.setNav('teams')
-
-    requestAnimationFrame(() => this.refreshFunction())
   }
 
   handleTextFieldChange = (e) => {

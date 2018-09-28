@@ -81,9 +81,6 @@ class EventPage extends PureComponent {
       tabIdx: 0,
     })
     this.props.setNav('events')
-
-    // Fetch data async
-    requestAnimationFrame(() => this.refreshFunction())
   }
 
   render() {

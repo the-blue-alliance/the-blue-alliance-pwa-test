@@ -49,8 +49,6 @@ class Home extends PureComponent {
     this.props.resetPage({
     })
     this.props.setNav('home')
-
-    requestAnimationFrame(() => this.refreshFunction())
   }
 
   render() {

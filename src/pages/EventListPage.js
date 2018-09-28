@@ -121,8 +121,6 @@ class EventListPage extends PureComponent {
       yearMenuAnchorEl: false,
     })
     this.props.setNav('events')
-
-    requestAnimationFrame(() => this.refreshFunction())
   }
 
   render() {

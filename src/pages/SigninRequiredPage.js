@@ -46,8 +46,6 @@ class SigninRequiredPage extends PureComponent {
   componentDidMount() {
     this.props.resetPage()
     this.props.setNav('account')
-
-    requestAnimationFrame(() => this.refreshFunction())
   }
 
   render() {

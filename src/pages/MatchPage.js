@@ -40,15 +40,14 @@ const styles = theme => ({
 })
 
 class MatchPage extends PureComponent {
-  componentDidMount() {
-    this.props.resetPage({})
-    this.props.setNav('matches')
-    this.refreshFunction()
-  }
-
   refreshFunction = () => {
     this.props.fetchEventInfo(this.props.eventKey)
     this.props.fetchMatchInfo(this.props.matchKey)
+  }
+
+  componentDidMount() {
+    this.props.resetPage({})
+    this.props.setNav('matches')
   }
 
   render() {
