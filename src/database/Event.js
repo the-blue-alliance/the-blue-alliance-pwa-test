@@ -133,12 +133,14 @@ export default class Event extends Record({
       return true
     }
     const wed = 4
-    const today = moment().isoWeekday()
+    const thisWed = moment().isoWeekday(4)
+    const nextWed = moment().add(1, 'weeks').isoWeekday(wed)
+    const today = moment.now()
     let closestWed
-    if (today <= wed) {
-      closestWed = moment().isoWeekday(wed)
+    if (Math.abs(thisWed.diff(today)) < Math.abs(nextWed.diff(today))) {
+      closestWed = thisWed
     } else {
-      closestWed = moment().add(1, 'weeks').isoWeekday(wed)
+      closestWed = nextWed
     }
     const offset = moment.duration(this.startMoment() - closestWed).asDays()
     return Math.abs(offset) <= 4
