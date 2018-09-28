@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 import { Map } from 'immutable';
+import moment from 'moment'
 
 // Pages
 const getCurrentPageKey = (state, props) => {
@@ -12,6 +13,16 @@ const getCurrentModalKey = (state, props) => {
 
 const getStateHistory = (state, props) => {
   return state.getIn(['page', 'stateHistory'])
+}
+
+export const getCurrentYear = (state) => {
+  const year = state.getIn(['models', 'config', 'byKey', 'API_STATUS', 'current_season'])
+  return year ? year : moment().year()
+}
+
+export const getMaxYear = (state) => {
+  const year = state.getIn(['models', 'config', 'byKey', 'API_STATUS', 'max_season'])
+  return year ? year : moment().year()
 }
 
 export const getCurrentPageState = createSelector(
@@ -59,5 +70,5 @@ export const getYear = (state, props) => {
     return parseInt(props.eventKey.substring(0, 4), 10)
   }
   const year = parseInt(props.match.params.year, 10)
-  return year ? year : 2018
+  return year ? year : getCurrentYear(state)
 }

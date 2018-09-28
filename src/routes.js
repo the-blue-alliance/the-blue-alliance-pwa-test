@@ -1,5 +1,6 @@
 import * as actions from './actions'
 import asyncComponent from './components/AsyncComponent'
+import { getYear } from './selectors/CommonPageSelectors'
 const HomePage = asyncComponent(() => import(/* webpackChunkName: "HomePage"*/ './pages/HomePage'), 'HomePage')
 const EventListPage = asyncComponent(() => import(/* webpackChunkName: "EventListPage"*/ './pages/EventListPage'), 'EventListPage')
 const EventPage = asyncComponent(() => import(/* webpackChunkName: "EventPage"*/ './pages/EventPage'), 'EventPage')
@@ -16,12 +17,7 @@ export default [
     component: HomePage,
     exact: true,
     ssrDataFetcher: ({ store, params }) => {
-      let { year } = params
-      if (year === undefined) {
-        year = 2018  // TODO don't hardcode
-      } else {
-        year = parseInt(year, 10)
-      }
+      const year = getYear(store.getState(), params)
       return Promise.all([
         store.dispatch(actions.fetchYearEvents(year)),
       ])
@@ -37,12 +33,7 @@ export default [
     component: EventListPage,
     exact: true,
     ssrDataFetcher: ({ store, params }) => {
-      let { year } = params
-      if (year === undefined) {
-        year = 2018  // TODO don't hardcode
-      } else {
-        year = parseInt(year, 10)
-      }
+      const year = getYear(store.getState(), params)
       return Promise.all([
         store.dispatch(actions.fetchYearEvents(year)),
       ])
@@ -87,12 +78,8 @@ export default [
     component: TeamPage,
     exact: true,
     ssrDataFetcher: ({ store, params }) => {
-      let { teamNumber, year } = params
-      if (year === undefined) {
-        year = 2018  // TODO don't hardcode
-      } else {
-        year = parseInt(year, 10)
-      }
+      let { teamNumber } = params
+      const year = getYear(store.getState(), params)
       return Promise.all([
         store.dispatch(actions.fetchTeamYears(teamNumber)),
         store.dispatch(actions.fetchTeamInfo(teamNumber)),

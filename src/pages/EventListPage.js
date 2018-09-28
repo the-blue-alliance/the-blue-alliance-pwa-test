@@ -9,7 +9,7 @@ import { push } from 'connected-react-router'
 import { resetPage, setPageState, setNav, fetchYearEvents } from '../actions'
 
 // Selectors
-import { getYear } from '../selectors/CommonPageSelectors'
+import { getYear, getMaxYear } from '../selectors/CommonPageSelectors'
 import { getFilteredGroupedEvents } from '../selectors/EventListPageSelectors'
 
 // Components
@@ -32,6 +32,7 @@ import EventFilterDialogContainer from '../containers/EventFilterDialogContainer
 const mapStateToProps = (state, props) => ({
   // Params
   year: getYear(state, props),
+  maxYear: getMaxYear(state),
   // States
   // Data
   groupedEvents: getFilteredGroupedEvents(state, props),
@@ -127,12 +128,12 @@ class EventListPage extends PureComponent {
   render() {
     console.log("Render EventListPage")
 
-    const { classes, year, groupedEvents } = this.props
+    const { classes, year, maxYear, groupedEvents } = this.props
     const { yearMenuAnchorEl } = this.state
 
     // Compute valid years
     let validYears = []
-    for (let y=2018; y>=1992; y--) {
+    for (let y=maxYear; y>=1992; y--) {
       validYears.push(y)
     }
 

@@ -44,6 +44,9 @@ db.version(12).stores({
   eventRankings: '&key',
   eventAlliances: '&key',
 })
+db.version(13).stores({
+  config: '&key',
+})
 
 export default db;
 

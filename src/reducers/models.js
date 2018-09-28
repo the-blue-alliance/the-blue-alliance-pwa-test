@@ -67,6 +67,12 @@ const updateCollection = (state = Set(), newModelsByKey, merge) => {
 
 const models = (state = Map(), action) => {
   switch (action.type) {
+    case types.RECEIVE_API_STATUS:
+      return updateSingle(
+        state,
+        'config',
+        action.data.key,
+        fromJS(action.data))
     case types.RECEIVE_TEAM_YEARS:
       return updateSingle(
         state,

@@ -1,9 +1,22 @@
+// General
 import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 
+// Actions
+import { fetchAPIStatus } from '../../actions'
+
+// TBA Components
 import TBAHelmet from '../TBAHelmet'
 import TBAAppBar from './TBAAppBar'
+
+const mapStateToProps = (state, props) => ({
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchAPIStatus: () => dispatch(fetchAPIStatus()),
+})
 
 const styles = theme => ({
   container: {
@@ -31,8 +44,15 @@ const styles = theme => ({
 })
 
 class TBAPage extends PureComponent {
+  refreshFunction = () => {
+    this.props.fetchAPIStatus()
+    this.props.refreshFunction && this.props.refreshFunction()
+  }
+
   componentDidMount() {
     window.scrollTo(0, 0)
+    // Fetch data async
+    requestAnimationFrame(() => this.refreshFunction())
   }
 
   render() {
@@ -44,7 +64,6 @@ class TBAPage extends PureComponent {
       title,
       metaDescription,
       metaImage,
-      refreshFunction,
     } = this.props
 
     return (
@@ -62,7 +81,7 @@ class TBAPage extends PureComponent {
         </TBAHelmet>
         <TBAAppBar
           title={title}
-          refreshFunction={refreshFunction}
+          refreshFunction={this.refreshFunction}
         />
         <div className={classes.container}>
           <main className={classes.content}>
@@ -82,4 +101,4 @@ TBAPage.propTypes = {
   refreshFunction: PropTypes.func,
 }
 
-export default withStyles(styles)(TBAPage)
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TBAPage))

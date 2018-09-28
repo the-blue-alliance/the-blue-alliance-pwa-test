@@ -232,6 +232,31 @@ const createFetcher = ({
   }
 }
 
+// API status
+export function fetchAPIStatus() {
+  return (dispatch, getState) => {
+    return createFetcher({
+      dispatch,
+      getState,
+      endpointUrl: `/api/v3/status`,
+      query: db.config.where('key').equals('API_STATUS'),
+      transformData: (status) => {
+        status.key = 'API_STATUS'
+       return status
+      },
+      createAction: (status) => {
+        return {
+          type: types.RECEIVE_API_STATUS,
+          data: status,
+        }
+      },
+      writeDB: (status) => {
+        db.config.put(status)
+      },
+    })
+  }
+}
+
 // Event Page
 export function fetchEventInfo(eventKey) {
   return (dispatch, getState) => {

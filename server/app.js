@@ -18,7 +18,7 @@ import Helmet from 'react-helmet';
 const { default: TBAApp } = require('../src/TBAApp');
 import routes from '../src/routes'
 import reducer from '../src/reducers'
-import {receiveEventMatches} from '../src/actions';
+import { fetchAPIStatus } from '../src/actions';
 
 import manifest from '../build/asset-manifest.json';
 
@@ -115,8 +115,10 @@ function handleUniversalRender(req, res) {
   console.time(`${req.url} FETCH`)
   return Promise.all([
     Loadable.preloadAll(),  // Preload code split
+    store.dispatch(fetchAPIStatus()),  // Fetch API Status
+  ]).then(() =>
     ssrDataFetcher({ store, params: (foundPath ? foundPath.params : {}) }),  // Fetch API
-  ]).then(() => {
+  ).then(() => {
     console.timeEnd(`${req.url} FETCH`)
 
     // Remove parts of state we don't care about
