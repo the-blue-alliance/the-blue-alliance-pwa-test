@@ -62,14 +62,13 @@ export const getCurrentModalState = createSelector(
 
 // Misc
 export const getYear = (state, props) => {
-  // TODO: use API status
   if (props.year) {
     return props.year
   }
   if (props.eventKey) {
     return parseInt(props.eventKey.substring(0, 4), 10)
   }
-  if (props.match && props.match.parmas && props.match.params.year) {
+  if (props.match && props.match.params && props.match.params.year) {
     return parseInt(props.match.params.year, 10)
   }
   return getCurrentYear(state)
