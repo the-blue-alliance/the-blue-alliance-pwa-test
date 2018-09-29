@@ -16,7 +16,7 @@ import { ConnectedRouter, connectRouter, routerMiddleware } from 'connected-reac
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/database'
-import { reactReduxFirebase } from 'react-redux-firebase'
+import { reactReduxFirebase, firebaseConnect } from 'react-redux-firebase'
 
 import JssProvider from 'react-jss/lib/JssProvider'
 import { createGenerateClassName } from '@material-ui/core/styles'
@@ -85,11 +85,16 @@ store.subscribe(() => {
 
 const generateClassName = createGenerateClassName()
 
+// Global Firebase listeners
+const TBAAppWithFirebase =  firebaseConnect((props) => [
+  { path: 'live_events' },
+])(TBAApp)
+
 Loadable.preloadReady().then(() => ReactDOM.hydrate(
   <Provider store={store}>
     <JssProvider generateClassName={generateClassName}>
       <ConnectedRouter history={history}>
-        <TBAApp />
+        <TBAAppWithFirebase />
       </ConnectedRouter>
     </JssProvider>
   </Provider>,
