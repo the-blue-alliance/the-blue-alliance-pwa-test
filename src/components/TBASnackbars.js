@@ -15,10 +15,6 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import { openSnackbar, closeSnackbar } from '../actions'
 
 const styles = theme => ({
-  close: {
-    width: theme.spacing.unit * 4,
-    height: theme.spacing.unit * 4,
-  },
 })
 
 class TBASnackbars extends React.PureComponent {
@@ -51,7 +47,6 @@ class TBASnackbars extends React.PureComponent {
   }
 
   render() {
-    const { classes } = this.props
     if (!this.state.triggeredOnce) {
       return null
     }
@@ -72,7 +67,6 @@ class TBASnackbars extends React.PureComponent {
             <IconButton
               key="close"
               color="inherit"
-              className={classes.close}
               onClick={this.handleSnackbarClose}
             >
               <CloseIcon />
@@ -110,7 +104,6 @@ class TBASnackbars extends React.PureComponent {
             <IconButton
               key="close"
               color="inherit"
-              className={classes.close}
               onClick={this.handleSnackbarClose}
             >
               <CloseIcon />
