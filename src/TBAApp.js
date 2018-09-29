@@ -16,7 +16,8 @@ import TBAHelmet from './components/TBAHelmet'
 import ErrorPage from './pages/ErrorPage'
 import TBANav from './components/TBANav'
 import TBASnackbars from './components/TBASnackbars'
-const TBAModalDialog = asyncComponent(() => import(/* webpackChunkName: "TBAModalDialog"*/ './components/TBAModalDialog'), 'TBAModalDialog')
+// const TBAModalDialog = asyncComponent(() => import(/* webpackChunkName: "TBAModalDialog"*/ './components/TBAModalDialog'), 'TBAModalDialog')
+import TBAModalDialog from './components/TBAModalDialog'
 // import SearchModal from './components/SearchModal'
 
 // For Google Analytics tracking
@@ -173,7 +174,7 @@ class TBAApp extends React.Component {
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles)
     }
-    preloadPages()
+    // preloadPages()
   }
 
   componentDidCatch(error, info) {

@@ -1,15 +1,24 @@
 import * as actions from './actions'
 import asyncComponent from './components/AsyncComponent'
 import { getYear } from './selectors/CommonPageSelectors'
-const HomePage = asyncComponent(() => import(/* webpackChunkName: "HomePage"*/ './pages/HomePage'), 'HomePage')
-const EventListPage = asyncComponent(() => import(/* webpackChunkName: "EventListPage"*/ './pages/EventListPage'), 'EventListPage')
-const EventPage = asyncComponent(() => import(/* webpackChunkName: "EventPage"*/ './pages/EventPage'), 'EventPage')
-const MatchPage = asyncComponent(() => import(/* webpackChunkName: "MatchPage"*/ './pages/MatchPage'))
-const AccountPage = asyncComponent(() => import(/* webpackChunkName: "AccountPage"*/ './pages/AccountPage'), 'AccountPage')
-const SigninRequiredPage = asyncComponent(() => import(/* webpackChunkName: "SigninRequiredPage"*/ './pages/SigninRequiredPage'), 'SigninRequiredPage')
-const TeamListPage = asyncComponent(() => import(/* webpackChunkName: "TeamListPage"*/ './pages/TeamListPage'), 'TeamListPage')
-const TeamPage = asyncComponent(() => import(/* webpackChunkName: "TeamPage"*/ './pages/TeamPage'), 'TeamPage')
-const NotFoundPage = asyncComponent(() => import(/* webpackChunkName: "NotFoundPage"*/ './pages/NotFoundPage'), 'NotFoundPage')
+// const HomePage = asyncComponent(() => import(/* webpackChunkName: "HomePage"*/ './pages/HomePage'), 'HomePage')
+// const EventListPage = asyncComponent(() => import(/* webpackChunkName: "EventListPage"*/ './pages/EventListPage'), 'EventListPage')
+// const EventPage = asyncComponent(() => import(/* webpackChunkName: "EventPage"*/ './pages/EventPage'), 'EventPage')
+// const MatchPage = asyncComponent(() => import(/* webpackChunkName: "MatchPage"*/ './pages/MatchPage'))
+// const AccountPage = asyncComponent(() => import(/* webpackChunkName: "AccountPage"*/ './pages/AccountPage'), 'AccountPage')
+// const SigninRequiredPage = asyncComponent(() => import(/* webpackChunkName: "SigninRequiredPage"*/ './pages/SigninRequiredPage'), 'SigninRequiredPage')
+// const TeamListPage = asyncComponent(() => import(/* webpackChunkName: "TeamListPage"*/ './pages/TeamListPage'), 'TeamListPage')
+// const TeamPage = asyncComponent(() => import(/* webpackChunkName: "TeamPage"*/ './pages/TeamPage'), 'TeamPage')
+// const NotFoundPage = asyncComponent(() => import(/* webpackChunkName: "NotFoundPage"*/ './pages/NotFoundPage'), 'NotFoundPage')
+import HomePage from './pages/HomePage'
+import EventListPage from './pages/EventListPage'
+import EventPage from './pages/EventPage'
+import MatchPage from './pages/MatchPage'
+import AccountPage from './pages/AccountPage'
+import SigninRequiredPage from './pages/SigninRequiredPage'
+import TeamListPage from './pages/TeamListPage'
+import TeamPage from './pages/TeamPage'
+import NotFoundPage from './pages/NotFoundPage'
 
 export default [
   {
