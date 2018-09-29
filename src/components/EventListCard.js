@@ -7,7 +7,7 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
 import SectionHeaderWithScrollto from './SectionHeaderWithScrollto'
-import EventListItem from './EventListItem'
+import EventListItemContainer from '../containers/EventListItemContainer'
 
 const styles = theme => ({
   eventListCard: {
@@ -34,7 +34,7 @@ class EventListCard extends PureComponent {
           sectionKey={sectionKey}
         />
         {events.map(event => {
-          return <EventListItem key={event.key} event={event}/>
+          return <EventListItemContainer key={event.key} event={event}/>
         })}
       </Paper>
     )

@@ -18,7 +18,7 @@ import Typography from '@material-ui/core/Typography'
 
 // TBA Components
 import TBAPage from '../components/TBAPage'
-import EventListItem from '../components/EventListItem'
+import EventListItemContainer from '../containers/EventListItemContainer'
 
 const mapStateToProps = (state, props) => ({
   // Params
@@ -115,7 +115,7 @@ class Home extends PureComponent {
             <Typography variant='display1' gutterBottom>This Week's Events</Typography>
             <Paper>
               {weekEvents.map(event => {
-                return <EventListItem key={event.key} event={event}/>
+                return <EventListItemContainer key={event.key} event={event}/>
               })}
             </Paper>
           </React.Fragment>

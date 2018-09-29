@@ -15,6 +15,7 @@ import { createBrowserHistory } from 'history'
 import { ConnectedRouter, connectRouter, routerMiddleware } from 'connected-react-router/immutable'
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import 'firebase/database'
 import { reactReduxFirebase } from 'react-redux-firebase'
 
 import JssProvider from 'react-jss/lib/JssProvider'

@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import ReactGA from 'react-ga'
+import { firebaseConnect } from 'react-redux-firebase'
+
 import CssBaseline from '@material-ui/core/CssBaseline'
 import errorReporter from './errorReporter'
 
@@ -202,4 +204,7 @@ class TBAApp extends React.Component {
   }
 }
 
-export default TBAApp
+export default  firebaseConnect((props) => [
+  // Global Firebase listeners
+  { path: 'live_events' },
+])(TBAApp)

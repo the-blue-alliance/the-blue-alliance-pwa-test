@@ -68,11 +68,39 @@ const styles = theme => ({
       display: 'none',
     },
   },
+  webcastOnlineButton: {
+    color: green[500],
+  },
 })
 
 class EventListItem extends PureComponent {
   render() {
-    const { classes, event } = this.props
+    const { classes, event, webcastStatus } = this.props
+
+    let webcastButton = null
+    if (event.webcasts.size > 0) {
+      if (event.isNow()) {
+        webcastButton = <Tooltip title={webcastStatus === 'online' ? 'Watch Now' : 'Webcast Offline'} placement='right'>
+          <IconButton
+            className={webcastStatus === 'online' ? classes.webcastOnlineButton : null}
+            component='a'
+            href={`https://www.thebluealliance.com/watch/${event.key}`}
+            target='_blank'
+          >
+            {webcastStatus === 'offline' ? <VideocamOffIcon /> : <VideocamIcon />}
+          </IconButton>
+        </Tooltip>
+      } else {
+        webcastButton = <Tooltip title='Webcast Offline' placement='right'>
+          <div>
+            <IconButton color='default' disabled>
+              <VideocamOffIcon />
+            </IconButton>
+          </div>
+        </Tooltip>
+      }
+    }
+
     return (
       <React.Fragment>
         <div className={classes.eventListItem}>
@@ -101,27 +129,7 @@ class EventListItem extends PureComponent {
           </div>
 
           <div className={classes.eventWebcastButtonContainer}>
-            {event.webcasts.size > 0 && (
-              event.isNow() ?
-              <Tooltip title='Watch Now' placement='right'>
-                <IconButton
-                  color='default'
-                  component='a'
-                  href={`https://www.thebluealliance.com/watch/${event.key}`}
-                  target='_blank'
-                >
-                  <VideocamIcon />
-                </IconButton>
-              </Tooltip>
-              :
-              <Tooltip title='Event webcast is offline' placement='right'>
-                <div>
-                  <IconButton color='default' disabled>
-                    <VideocamOffIcon />
-                  </IconButton>
-                </div>
-              </Tooltip>
-            )}
+            {webcastButton}
           </div>
 
         </div>
