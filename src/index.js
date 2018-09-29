@@ -1,3 +1,5 @@
+import '@babel/polyfill'  // For IE support
+import 'react-app-polyfill/ie9' // For IE 9-11 support
 import 'intersection-observer'
 
 import React from 'react'
