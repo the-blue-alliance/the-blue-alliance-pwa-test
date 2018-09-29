@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 
 import green from '@material-ui/core/colors/green'
 import Divider from '@material-ui/core/Divider'
-import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
@@ -57,6 +56,18 @@ const styles = theme => ({
   eventWebcastButtonContainer: {
     width: 48,
   },
+  name: {
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'inline',
+    },
+  },
+  nameMobile: {
+    display: 'inline',
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
+  },
 })
 
 class EventListItem extends PureComponent {
@@ -74,8 +85,8 @@ class EventListItem extends PureComponent {
           <div className={classes.eventNameLocationContainer}>
             <Typography variant='subheading' noWrap>
               <Link to={`/event/${event.key}`}>
-                <Hidden implementation='css' xsDown>{event.name}</Hidden>
-                <Hidden implementation='css' smUp>{event.safeShortName()}</Hidden>
+                <span className={classes.name}>{event.name}</span>
+                <span className={classes.nameMobile}>{event.safeShortName()}</span>
               </Link>
             </Typography>
             <Typography variant='body1' noWrap>
