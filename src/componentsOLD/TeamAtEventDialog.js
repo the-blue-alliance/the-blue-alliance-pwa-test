@@ -76,7 +76,7 @@ class TeamAtEventDialog extends PureComponent {
     this.refreshFunction()
   }
 
-  UNSAFE_componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps, nextState) {
     if (this.props.location.pathname !== nextProps.location.pathname) {
       this.reset(nextProps)
     }
