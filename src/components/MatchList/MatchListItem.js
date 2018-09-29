@@ -51,7 +51,7 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
-    width: '24%',
+    width: '30%',
     overflow: 'hidden',
     border: '1px solid transparent',
     '& div': {
@@ -67,9 +67,9 @@ const styles = theme => ({
   alliance: {
     display: 'flex',
     flexGrow: 1,
-    width: '76%',
+    width: '70%',
     [theme.breakpoints.up('lg')]: {
-      width: '38%',
+      width: '35%',
     },
     overflow: 'hidden',
     border: '1px solid transparent',
@@ -104,9 +104,9 @@ const styles = theme => ({
   score: {
     display: 'flex',
     flexGrow: 1,
-    width: '24%',
+    width: '30%',
     [theme.breakpoints.up('lg')]: {
-      width: '12%',
+      width: '15%',
     },
     overflow: 'hidden',
     border: '1px solid transparent',
