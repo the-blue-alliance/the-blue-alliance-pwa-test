@@ -191,7 +191,7 @@ const createFetcher = ({
       const [data, apiCall] = values
       // If isCollection, make sure we've hit this endpoint before
       doAsync(() => {
-        if ((!isCollection || apiCall) && dataSource < sources.IDB && data !== undefined) {
+        if ((!isCollection || apiCall) && dataSource < sources.IDB && data.size > 0) {
           dataSource = sources.IDB
           dispatch(createAction(isCollection ? data : data[0]))
         }
