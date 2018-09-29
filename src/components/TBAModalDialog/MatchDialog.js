@@ -76,7 +76,7 @@ class MatchDialog extends PureComponent {
     this.reset(props)
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
     if (this.props.location.pathname !== nextProps.location.pathname) {
       this.reset(nextProps)
     }

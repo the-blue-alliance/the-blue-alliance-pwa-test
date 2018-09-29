@@ -65,7 +65,7 @@ class ModalSwitch extends React.Component {
     this.initialKey = props.location.key
   }
 
-  componentWillUpdate(nextProps) {
+  UNSAFE_componentWillUpdate(nextProps) {
     const { location } = this.props
     const { location: nextLocation, history: nextHistory } = nextProps
 
