@@ -57,7 +57,7 @@ function renderPage(req, res, stream, htmlData, options) {
 
     // Add in bundles
     const chunkedScripts = extractAssets(manifest, modules).map(bundle => {
-      return `<script src="/${bundle}"></script>`
+      return `<script src="${bundle}"></script>`
     }).join('')
 
     // TODO: Determine status code early in render and this whole chunk can move up
