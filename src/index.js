@@ -53,17 +53,25 @@ const history = createBrowserHistory()
 
 // Preload state from SSR
 let initialState = preloadState()
+
+let composeEnhancers = compose
+if(process.env.NODE_ENV === 'development') {
+  composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+}
+
 // Merge in state in localStorage
 initialState = initialState.set('appState', loadAppState())
 
 const store = createStoreWithFirebase(
   connectRouter(history)(reducer),
   initialState,
-  applyMiddleware(
-    thunk,
-    routerMiddleware(history),
-    userManagerMiddleware,
-    // loggerMiddleware,
+  composeEnhancers(
+    applyMiddleware(
+      thunk,
+      routerMiddleware(history),
+      userManagerMiddleware,
+      // loggerMiddleware,
+    )
   ),
 )
 
