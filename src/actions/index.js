@@ -22,6 +22,7 @@ import db, {
 } from '../database/db'
 import fetch from 'isomorphic-fetch'
 import moment from 'moment'
+import { canUseIDB } from '../utils'
 
 const BASE_URL = 'https://www.thebluealliance.com'
 // This is Eugene's key. If you abuse it, he will hunt you down.
@@ -128,15 +129,21 @@ export const closeSnackbar = () => ({
 })
 
 const handleErrors = (response) => {
+  if (response.status === 304) {
+    return undefined
+  }
+
   if (!response.ok) {
     console.log(response)
     throw Error(response.statusText)
   }
-  const lastModified = moment(response.headers.get('last-modified')).unix()
+  const lastModified = response.headers.get('last-modified')
+  const lastModifiedTime = moment(lastModified).unix()
   db.apiCalls.put({
     url: response.url.replace(BASE_URL, ''),
     accessTime: moment().unix(),
-    lastModifiedTime: lastModified ? lastModified : null,
+    lastModified: lastModified ? lastModified : null,
+    lastModifiedTime: lastModifiedTime ? lastModifiedTime : null,
   })
   return response.json()
 }
@@ -191,7 +198,7 @@ const createFetcher = ({
       const [data, apiCall] = values
       // If isCollection, make sure we've hit this endpoint before
       doAsync(() => {
-        if ((!isCollection || apiCall) && dataSource < sources.IDB && data.size > 0) {
+        if ((!isCollection || apiCall) && dataSource < sources.IDB && data.length > 0) {
           dataSource = sources.IDB
           dispatch(createAction(isCollection ? data : data[0]))
         }
@@ -204,30 +211,40 @@ const createFetcher = ({
   // Update from API
   if (getState().getIn(['appState', 'apiEnabled'])) {
     dispatch(incrementLoadingCount())
-    return fetch(
-      BASE_URL + endpointUrl,
-      fetchOptions ? fetchOptions : {headers: {'X-TBA-Auth-Key': TBA_KEY}}
-    )
-    .then(handleErrors)
-    .then(data => {
-      doAsync(() => {
-        if (dataSource < sources.API && data !== undefined) {
-          dataSource = sources.API
-          if (transformData) {
-            data = transformData(data)
-          }
-          dispatch(createAction(data))
 
-          // Delete old db entries and write new ones
-          query.delete()
-          writeDB(data)
-        }
-        dispatch(decrementLoadingCount())
+    let apiCallPromise = new Promise(resolve => resolve())
+    if (canUseIDB) {
+      apiCallPromise = db.apiCalls.get(endpointUrl)
+    }
+    return apiCallPromise.then(apiCall => {
+      return fetch(
+        BASE_URL + endpointUrl,
+        fetchOptions ? fetchOptions : {headers: {
+          'X-TBA-Auth-Key': TBA_KEY,
+          'If-Modified-Since': apiCall ? apiCall.lastModified : null,
+        }},
+      )
+      .then(handleErrors)
+      .then(data => {
+        doAsync(() => {
+          if (dataSource < sources.API && data !== undefined) {
+            dataSource = sources.API
+            if (transformData) {
+              data = transformData(data)
+            }
+            dispatch(createAction(data))
+
+            // Delete old db entries and write new ones
+            query.delete()
+            writeDB(data)
+          }
+          dispatch(decrementLoadingCount())
+        })
       })
-    })
-    .catch(error => {
-      dispatch(decrementLoadingCount())
-      console.log(error)
+      .catch(error => {
+        dispatch(decrementLoadingCount())
+        console.log(error)
+      })
     })
   }
 }
