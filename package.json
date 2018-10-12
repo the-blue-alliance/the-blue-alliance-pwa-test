@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "cra-universal": "^3.2.5",
-    "react-scripts": "2.0.1",
+    "react-scripts": "2.0.4",
     "rimraf": "^2.6.2"
   },
   "scripts": {
