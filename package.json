@@ -47,6 +47,13 @@
     "why-did-you-update": "^0.1.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@storybook/addon-actions": "^4.0.6",
+    "@storybook/addon-links": "^4.0.6",
+    "@storybook/addon-options": "^4.0.6",
+    "@storybook/addons": "^4.0.6",
+    "@storybook/react": "^4.0.6",
+    "babel-loader": "^8.0.4",
     "cra-universal": "^3.2.5",
     "react-scripts": "2.0.4",
     "rimraf": "^2.6.2"
@@ -57,7 +64,9 @@
     "build": "react-scripts build",
     "buildprod": "echo Y | npx cra-universal clean && npx cra-universal build && rimraf ./build/index.html && rimraf ./functions/crau-dist && cp -a ./dist ./functions/crau-dist",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "browserslist": [
     ">0.2%",

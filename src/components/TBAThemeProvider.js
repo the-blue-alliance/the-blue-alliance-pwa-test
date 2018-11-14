@@ -73,8 +73,29 @@ export default connect(mapStateToProps, mapDispatchToProps)(TBAThemeProvider)
 
 const TBAGlobalStyle = withStyles((theme) => ({
   '@global': {
+    body: {
+      margin: 0,
+      padding: 0,
+      fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
+      overscrollBehavior: 'contain',
+    },
     a: {
       color: theme.palette.type === 'light' ? theme.palette.primary.main : theme.palette.primary.light,
+      textDecoration: 'none',
+    },
+    'a:hover': {
+      textDecoration: 'underline',
+    },
+    // For hiding scrollbar on tabs. Doesn't work for Firefox
+    '.hide-scrollbar ::-webkit-scrollbar': {
+      display: 'none',
+    },
+    '.hide-scrollbar': {
+      '-ms-overflow-style': 'none',
+    },
+    // For IE
+    main: {
+      display: 'block',
     },
   },
 }))((props) => {
