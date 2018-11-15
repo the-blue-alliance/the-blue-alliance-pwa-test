@@ -9,7 +9,6 @@ import indigo from '@material-ui/core/colors/indigo'
 import { canUseDOM } from '../utils'
 
 const createTheme = darkTheme => {
-  const displayTextColor = darkTheme ? 'rgba(255, 255, 255, 0.87)' : 'rgba(0, 0, 0, 0.87)'
   return createMuiTheme({
     palette: {
       primary: indigo,
@@ -17,18 +16,6 @@ const createTheme = darkTheme => {
       type: darkTheme ? 'dark' : 'light',
     },
     typography: {
-      // display4: {
-      //   color: displayTextColor,
-      // },
-      // display3: {
-      //   color: displayTextColor,
-      // },
-      // display2: {
-      //   color: displayTextColor,
-      // },
-      // display1: {
-      //   color: displayTextColor,
-      // },
       h6: {
         fontWeight: 400,
       },
