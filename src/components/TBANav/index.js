@@ -58,10 +58,10 @@ class TBANav extends PureComponent {
           <React.Fragment>
             <SigninInfo isDialog />
             <DialogActions>
-              <Button onClick={this.promptSignInClose} color='default' variant='raised'>
+              <Button onClick={this.promptSignInClose} color='default' variant='contained'>
                 No thanks
               </Button>
-              <Button onClick={this.signIn} color='primary' variant='raised' autoFocus>
+              <Button onClick={this.signIn} color='primary' variant='contained' autoFocus>
                 Sign in
               </Button>
             </DialogActions>

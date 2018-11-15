@@ -99,7 +99,7 @@ class AccountPage extends PureComponent {
               className={classes.signOutButton}
               onClick={this.promptSignOutOpen}
               color='default'
-              variant='raised'
+              variant='contained'
             >
               Sign Out
             </Button>
@@ -129,10 +129,10 @@ class AccountPage extends PureComponent {
                 </Typography>
               </DialogContent>
               <DialogActions>
-                <Button onClick={this.promptSignOutClose} color='default' variant='raised' autoFocus>
+                <Button onClick={this.promptSignOutClose} color='default' variant='contained' autoFocus>
                   No
                 </Button>
-                <Button onClick={this.signOut} color='primary' variant='raised'>
+                <Button onClick={this.signOut} color='primary' variant='contained'>
                   Yes
                 </Button>
               </DialogActions>

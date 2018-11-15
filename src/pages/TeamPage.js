@@ -233,7 +233,7 @@ class TeamPage extends PureComponent {
             </Hidden>
             <div className={classes.yearMenuButtonContainer}>
               <Button
-                variant='raised'
+                variant='contained'
                 color='primary'
                 onClick={this.handleYearOpen}
               >

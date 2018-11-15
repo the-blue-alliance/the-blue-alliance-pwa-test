@@ -161,7 +161,7 @@ class EventListPage extends PureComponent {
             <div className={classes.sideNav}>
               <Button
                 color='primary'
-                variant='raised'
+                variant='contained'
                 onClick={this.handleYearOpen}
               >
                 {`${year} Events`} <ArrowDropDownIcon />

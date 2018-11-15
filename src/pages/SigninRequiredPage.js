@@ -70,10 +70,10 @@ class SigninRequiredPage extends PureComponent {
           <React.Fragment>
             <SigninInfo />
             <DialogActions>
-              <Button onClick={this.props.goBack} color='default' variant='raised'>
+              <Button onClick={this.props.goBack} color='default' variant='contained'>
                 No thanks, take me back
               </Button>
-              <Button onClick={this.signIn} color='primary' variant='raised' autoFocus>
+              <Button onClick={this.signIn} color='primary' variant='contained' autoFocus>
                 Sign in
               </Button>
             </DialogActions>

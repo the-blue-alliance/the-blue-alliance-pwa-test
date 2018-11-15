@@ -38,7 +38,7 @@ class ErrorPage extends PureComponent {
           <Button
             color='primary'
             className={classes.button}
-            variant='raised'
+            variant='contained'
             component='a'
             href='/'
             fullWidth
