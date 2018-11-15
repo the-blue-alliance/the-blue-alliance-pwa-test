@@ -111,19 +111,19 @@ class EventListItem extends PureComponent {
           {event.isNow() && <div className={classes.eventLiveIndicator} />}
 
           <div className={classes.eventNameLocationContainer}>
-            <Typography variant='subheading' noWrap>
+            <Typography variant='subtitle1' noWrap>
               <Link to={`/event/${event.key}`}>
                 <span className={classes.name}>{event.name}</span>
                 <span className={classes.nameMobile}>{event.safeShortName()}</span>
               </Link>
             </Typography>
-            <Typography variant='body1' noWrap>
+            <Typography noWrap>
               {event.getCityStateCountry()}
             </Typography>
           </div>
 
           <div className={classes.eventDateContainer}>
-            <Typography variant='body1'>
+            <Typography>
               {event.getDateString()}
             </Typography>
           </div>

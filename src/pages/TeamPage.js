@@ -222,7 +222,7 @@ class TeamPage extends PureComponent {
               {mainRobotImage ? null : <PhotoIcon />}
             </Avatar>
             <Hidden implementation='css' mdUp>
-              <Typography variant='display1' align='center'>{team ?
+              <Typography variant='h4' align='center'>{team ?
                 <React.Fragment>
                   {`Team ${teamNumber}`}
                   {team.nickname && <React.Fragment><br/>{team.nickname}</React.Fragment>}
@@ -259,9 +259,9 @@ class TeamPage extends PureComponent {
 
           <Grid item xs={12} md={9}>
             <Hidden implementation='css' smDown>
-              <Typography variant='display1' gutterBottom>{team ? teamTitle : <Skeleton width='75%'/>}</Typography>
+              <Typography variant='h4' gutterBottom>{team ? teamTitle : <Skeleton width='75%'/>}</Typography>
             </Hidden>
-            {(!team || team.getCityStateCountry()) && <Typography variant='body1'>
+            {(!team || team.getCityStateCountry()) && <Typography>
               <PlaceIcon fontSize='inherit' className={classes.icon} /> {team ?
                 <React.Fragment>
                   From <a
@@ -276,21 +276,21 @@ class TeamPage extends PureComponent {
                 <Skeleton width='200px'/>
               }
             </Typography>}
-            {(!team || team.getTeamNameWithBreaks()) && <Typography variant='body1'>
+            {(!team || team.getTeamNameWithBreaks()) && <Typography>
               <InfoIcon fontSize='inherit' className={classes.icon} /> {team ?
                 `aka ${team.getTeamNameWithBreaks()}`
                 :
                 <Skeleton width='50%' rows={3}/>
               }
             </Typography>}
-            {(!team || team.rookie_year) && <Typography variant='body1'>
+            {(!team || team.rookie_year) && <Typography>
               <EventIcon fontSize='inherit' className={classes.icon} /> {team ?
                 `Rookie Year: ${team.rookie_year}`
                 :
                 <Skeleton width='125px'/>}
               </Typography>
             }
-            {(!team || team.website) && <Typography variant='body1'>
+            {(!team || team.website) && <Typography>
               <LinkIcon fontSize='inherit' className={classes.icon} /> {team ?
                 <a href={team.website} target='_blank' rel='noopener noreferrer'>{team.website}</a>
                 :
@@ -326,13 +326,13 @@ class TeamPage extends PureComponent {
                   {!teamYearEvents &&
                     <div className={classes.zeroDataContainer}>
                       <CircularProgress color='secondary' size={120} className={classes.zeroDataSpinner} />
-                      <Typography variant='subheading'>Events loading</Typography>
+                      <Typography variant='subtitle1'>Events loading</Typography>
                     </div>
                   }
                   {teamYearEvents && teamYearEvents.size === 0 &&
                     <div className={classes.zeroDataContainer}>
                       <EventIcon className={classes.zeroDataIcon} />
-                      <Typography variant='subheading'>No events</Typography>
+                      <Typography variant='subtitle1'>No events</Typography>
                     </div>
                   }
                   {teamYearEvents && teamYearEvents.valueSeq().map(function(event) {
@@ -342,7 +342,7 @@ class TeamPage extends PureComponent {
                           sectionKey={event.event_code}
                           label={
                             <React.Fragment>
-                              <Typography variant='title'><Link to={{pathname: `/event/${event.key}`}}>{event.name}</Link></Typography>
+                              <Typography variant='h6'><Link to={{pathname: `/event/${event.key}`}}>{event.name}</Link></Typography>
                               <Typography variant='caption'>{event.getDateString()}</Typography>
                             </React.Fragment>
                           }

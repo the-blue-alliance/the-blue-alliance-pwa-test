@@ -41,8 +41,8 @@ class NotFoundPage extends PureComponent {
         <Paper className={classes.paper}>
           <Grid container spacing={24}>
             <Grid item xs={12} md={7}>
-              <Typography variant='display3' gutterBottom>Oh Noes!1!!</Typography>
-              <Typography variant='display1' gutterBottom>Error 404</Typography>
+              <Typography variant='h2' gutterBottom>Oh Noes!1!!</Typography>
+              <Typography variant='h4' gutterBottom>Error 404</Typography>
             </Grid>
             <Grid item xs={12} md={5}>
               <Typography>Sorry, we couldn't find the thing you were looking for. Try searching for it.</Typography>

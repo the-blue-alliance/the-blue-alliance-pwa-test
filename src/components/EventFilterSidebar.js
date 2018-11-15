@@ -76,7 +76,7 @@ class EventFilter extends PureComponent {
 
     return (
       <React.Fragment>
-        <Typography variant='title' className={classes.title}>Filters</Typography>
+        <Typography variant='h6' className={classes.title}>Filters</Typography>
         <TextField
           inputRef={this.locationInput}
           label='Location'

@@ -41,11 +41,11 @@ const SigninInfo = (props) => {
           <Typography>{infoText}</Typography>
           <br />
 
-          <Typography variant='title'>myTBA</Typography>
+          <Typography variant='h6'>myTBA</Typography>
           <Typography><MyTBABody classes={props.classes}/></Typography>
 
           <br />
-          <Typography variant='title'>About Google Accounts</Typography>
+          <Typography variant='h6'>About Google Accounts</Typography>
           <Typography>{aboutGoogleAccountsBody}</Typography>
         </DialogContent>
       </React.Fragment>
@@ -53,15 +53,15 @@ const SigninInfo = (props) => {
   } else {
     return (
       <React.Fragment>
-        <Typography variant='display1' gutterBottom>{titleText}</Typography>
+        <Typography variant='h4' gutterBottom>{titleText}</Typography>
         <Typography>{infoText}</Typography>
         <br />
 
-        <Typography variant='headline' gutterBottom>myTBA</Typography>
+        <Typography variant='h5' gutterBottom>myTBA</Typography>
         <Typography><MyTBABody classes={props.classes}/></Typography>
         <br />
 
-        <Typography variant='headline' gutterBottom>About Google Accounts</Typography>
+        <Typography variant='h5' gutterBottom>About Google Accounts</Typography>
         <Typography>{aboutGoogleAccountsBody}</Typography>
       </React.Fragment>
     )

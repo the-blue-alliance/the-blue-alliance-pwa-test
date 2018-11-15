@@ -84,7 +84,7 @@ class TeamsList extends PureComponent {
           :
           <div className={classes.zeroDataContainer}>
             <CircularProgress color='secondary' size={120} className={classes.zeroDataSpinner} />
-            <Typography variant='subheading'>Teams loading</Typography>
+            <Typography variant='subtitle1'>Teams loading</Typography>
           </div>
         }
       </Paper>

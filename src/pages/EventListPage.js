@@ -204,16 +204,16 @@ class EventListPage extends PureComponent {
             </div>
           </Grid>
           <Grid item xs={12} md={7} lg={8}>
-            <Typography variant='display1' gutterBottom>{year} <i>FIRST</i> Robotics Competition Events</Typography>
+            <Typography variant='h4' gutterBottom>{year} <i>FIRST</i> Robotics Competition Events</Typography>
             {!groupedEvents &&
               <div className={classes.zeroDataContainer}>
                 <CircularProgress color='secondary' size={120} className={classes.zeroDataSpinner} />
-                <Typography variant='subheading'>Events loading</Typography>
+                <Typography variant='subtitle1'>Events loading</Typography>
               </div>
             }
             {officialEventsGrouped && officialEventsGrouped.size !== 0 &&
               <div id='official'>
-                <Typography variant='headline'>Official Events</Typography>
+                <Typography variant='h5'>Official Events</Typography>
                 {officialEventsGrouped.map(group => {
                   return (
                     <div key={group.get('slug')} id={group.get('slug')}>
@@ -230,7 +230,7 @@ class EventListPage extends PureComponent {
             }
             {unofficialEventsGrouped && unofficialEventsGrouped.size !== 0 &&
               <div id='unofficial'>
-                <Typography variant='headline'>Unofficial Events</Typography>
+                <Typography variant='h5'>Unofficial Events</Typography>
                 {unofficialEventsGrouped.map(group => {
                   return (
                     <div key={group.get('slug')} id={group.get('slug')}>

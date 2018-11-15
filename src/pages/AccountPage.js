@@ -103,15 +103,15 @@ class AccountPage extends PureComponent {
             >
               Sign Out
             </Button>
-            <Typography variant='display1' gutterBottom>Welcome back!</Typography>
-            <Typography variant='title'>Profile</Typography>
+            <Typography variant='h4' gutterBottom>Welcome back!</Typography>
+            <Typography variant='h6'>Profile</Typography>
             <Card className={classes.card}>
               <CardContent>
                 <Typography><strong>Name:</strong> {auth.displayName}</Typography>
                 <Typography><strong>Email:</strong> {auth.email}</Typography>
               </CardContent>
             </Card>
-            <Typography variant='title'>myTBA</Typography>
+            <Typography variant='h6'>myTBA</Typography>
             <Card className={classes.card}>
               <CardContent>
                 <MyTBASettingsContainer />

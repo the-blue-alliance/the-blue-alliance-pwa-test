@@ -87,7 +87,7 @@ class TBAAppBar extends PureComponent {
               {title}
             </div>
             :
-            <Typography variant="title" color="inherit" className={classes.appBarTitle} noWrap>
+            <Typography variant="h6" color="inherit" className={classes.appBarTitle} noWrap>
               {title ? title : 'The Blue Alliance'}
             </Typography>
           }

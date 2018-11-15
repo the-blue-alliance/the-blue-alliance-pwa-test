@@ -17,19 +17,19 @@ const createTheme = darkTheme => {
       type: darkTheme ? 'dark' : 'light',
     },
     typography: {
-      display4: {
-        color: displayTextColor,
-      },
-      display3: {
-        color: displayTextColor,
-      },
-      display2: {
-        color: displayTextColor,
-      },
-      display1: {
-        color: displayTextColor,
-      },
-      title: {
+      // display4: {
+      //   color: displayTextColor,
+      // },
+      // display3: {
+      //   color: displayTextColor,
+      // },
+      // display2: {
+      //   color: displayTextColor,
+      // },
+      // display1: {
+      //   color: displayTextColor,
+      // },
+      h6: {
         fontWeight: 400,
       },
     },

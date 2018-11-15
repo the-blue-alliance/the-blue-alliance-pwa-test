@@ -67,7 +67,7 @@ class Home extends PureComponent {
         <Button
           color='default'
           className={classes.button}
-          variant="raised"
+          variant='contained'
           component={Link}
           to='/team/254/2017'
         >
@@ -76,7 +76,7 @@ class Home extends PureComponent {
         <Button
           color='default'
           className={classes.button}
-          variant="raised"
+          variant='contained'
           component={Link}
           to='/team/254/2017#2017casj'
         >
@@ -85,7 +85,7 @@ class Home extends PureComponent {
         <Button
           color='default'
           className={classes.button}
-          variant="raised"
+          variant='contained'
           component={Link}
           to='/event/2017casj'
         >
@@ -94,7 +94,7 @@ class Home extends PureComponent {
         <Button
           color='default'
           className={classes.button}
-          variant="raised"
+          variant='contained'
           component={Link}
           to='/match/2017casj_f1m2'
         >
@@ -103,7 +103,7 @@ class Home extends PureComponent {
         <Button
           color='default'
           className={classes.button}
-          variant="raised"
+          variant='contained'
           component={Link}
           to='/team/191/2018'
         >
@@ -112,7 +112,7 @@ class Home extends PureComponent {
 
         {weekEvents &&
           <React.Fragment>
-            <Typography variant='display1' gutterBottom>This Week's Events</Typography>
+            <Typography variant='h4' gutterBottom>This Week's Events</Typography>
             <Paper>
               {weekEvents.map(event => {
                 return <EventListItemContainer key={event.key} event={event}/>

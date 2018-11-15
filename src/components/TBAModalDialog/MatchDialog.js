@@ -105,10 +105,10 @@ class MatchDialog extends PureComponent {
               <ChevronLeftIcon />
             </IconButton>
             <div className={classes.flex}>
-              <Typography variant="title" color="inherit" className={classes.flex}>
+              <Typography variant='h6' className={classes.flex}>
                 {match.getDisplayName()}
               </Typography>
-              <Typography variant='subheading' noWrap>
+              <Typography variant='subtitle1' noWrap>
                 <Link to={{pathname: `/event/${event.key}`}}>@ {event.year} {event.name}</Link>
               </Typography>
             </div>
@@ -135,10 +135,10 @@ class MatchDialog extends PureComponent {
                 <ChevronLeftIcon />
               </IconButton>
               <div className={classes.flex}>
-                <Typography variant="title" color="inherit" className={classes.flex} noWrap>
+                <Typography variant='h6' className={classes.flex} noWrap>
                 {match.getDisplayName()}
               </Typography>
-                <Typography variant='subheading' noWrap>
+                <Typography variant='subtitle1' noWrap>
                   @ {event.year} {event.name}
                 </Typography>
               </div>

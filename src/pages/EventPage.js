@@ -108,16 +108,16 @@ class EventPage extends PureComponent {
       >
         <Grid container spacing={16}>
           <Grid item xs={12}>
-            <Typography variant='display1' gutterBottom>{event ? name : <Skeleton width='75%'/>}</Typography>
-            <Typography variant='body1'><EventIcon fontSize='inherit' className={classes.icon} /> {event ? event.getDateString() : <Skeleton width='200px'/>}</Typography>
-            <Typography variant='body1'><PlaceIcon fontSize='inherit' className={classes.icon} /> {event ?
+            <Typography variant='h4' gutterBottom>{event ? name : <Skeleton width='75%'/>}</Typography>
+            <Typography><EventIcon fontSize='inherit' className={classes.icon} /> {event ? event.getDateString() : <Skeleton width='200px'/>}</Typography>
+            <Typography><PlaceIcon fontSize='inherit' className={classes.icon} /> {event ?
               <React.Fragment>
                 <a href={event.gmaps_url} target='_blank' rel='noopener noreferrer'>{event.location_name}</a><span>{` in ${event.getCityStateCountry()}`}</span>
               </React.Fragment>
               :
               <Skeleton width='200px'/>
             }</Typography>
-            <Typography variant='body1'><LinkIcon fontSize='inherit' className={classes.icon} /> {event ? <a href={event.website} target='_blank' rel='noopener noreferrer'>{event.website}</a> : <Skeleton width='200px'/>}</Typography>
+            <Typography><LinkIcon fontSize='inherit' className={classes.icon} /> {event ? <a href={event.website} target='_blank' rel='noopener noreferrer'>{event.website}</a> : <Skeleton width='200px'/>}</Typography>
           </Grid>
           <Grid item xs={12}>
             <PageTabs
@@ -140,7 +140,7 @@ class EventPage extends PureComponent {
                   <Paper id='qual'>
                     <SectionHeaderWithScrollto
                       sectionKey='qual'
-                      label={<Typography variant='title'>Qualification Results</Typography>}
+                      label={<Typography variant='h6'>Qualification Results</Typography>}
                       sections={sections}
                       withSpace
                     />
@@ -151,7 +151,7 @@ class EventPage extends PureComponent {
                   <Paper id='alliances' className={classes.sectionCard}>
                     <SectionHeaderWithScrollto
                       sectionKey='alliances'
-                      label={<Typography variant='title'>Alliances</Typography>}
+                      label={<Typography variant='h6'>Alliances</Typography>}
                       sections={sections}
                       withSpace
                     />
@@ -160,7 +160,7 @@ class EventPage extends PureComponent {
                   <Paper id='playoff' className={classes.sectionCard}>
                     <SectionHeaderWithScrollto
                       sectionKey='playoff'
-                      label={<Typography variant='title'>Playoff Results</Typography>}
+                      label={<Typography variant='h6'>Playoff Results</Typography>}
                       sections={sections}
                       withSpace
                     />

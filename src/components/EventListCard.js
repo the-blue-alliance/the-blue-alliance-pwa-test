@@ -26,7 +26,7 @@ class EventListCard extends PureComponent {
         <SectionHeaderWithScrollto
           label={
             <React.Fragment>
-              <Typography variant='title'>{label}</Typography>
+              <Typography variant='h6'>{label}</Typography>
               <Typography variant='caption'>{events.size} Events</Typography>
             </React.Fragment>
           }

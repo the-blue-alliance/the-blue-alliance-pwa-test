@@ -29,10 +29,10 @@ class ErrorPage extends PureComponent {
     return (
       <div className={classes.container}>
         <Paper className={classes.paper}>
-          <Typography variant='display1' gutterBottom>
+          <Typography variant='h4' gutterBottom>
             Whoops!
           </Typography>
-          <Typography variant='display1' gutterBottom>
+          <Typography variant='h4' gutterBottom>
             Something went wrong on our end.
           </Typography>
           <Button

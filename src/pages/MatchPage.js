@@ -68,7 +68,7 @@ class MatchPage extends PureComponent {
         metaDescription={match && event && `Match results and video for ${match.getDisplayName()} at the ${event.year} ${event.name} FIRST Robotics Competition in ${event.getCityStateCountry()}.`}
         refreshFunction={this.refreshFunction}
       >
-        <Typography variant='display1' gutterBottom>
+        <Typography variant='h4' gutterBottom>
           {match && match.getDisplayName()} @ <small>{match && <Link to={{pathname: `/event/${match.event_key}`}}>{eventName}</Link>}</small>
         </Typography>
         <Grid container spacing={16}>

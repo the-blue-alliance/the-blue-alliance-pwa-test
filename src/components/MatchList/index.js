@@ -111,14 +111,14 @@ class MatchList extends Component {
       return (
         <div className={classes.zeroDataContainer}>
           <CircularProgress color='secondary' size={60} className={classes.zeroDataSpinner} />
-          <Typography variant='subheading'>Matches loading</Typography>
+          <Typography variant='subtitle1'>Matches loading</Typography>
         </div>
       )
     } else if (matches.size === 0) {
       return (
         <div className={classes.zeroDataContainer}>
           <VideogameAssetIcon className={classes.zeroDataIcon} />
-          <Typography variant='subheading'>No match results</Typography>
+          <Typography variant='subtitle1'>No match results</Typography>
         </div>
       )
     }

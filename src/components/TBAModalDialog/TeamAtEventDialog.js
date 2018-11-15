@@ -127,10 +127,10 @@ class TeamAtEventDialog extends PureComponent {
               <ChevronLeftIcon />
             </IconButton>
             <div className={classes.flex}>
-              <Typography variant='title' noWrap>
+              <Typography variant='h6' noWrap>
                 <Link to={{pathname: `/team/${teamNumber}/${event.year}`, hash: eventKey}}>{teamTitle}</Link>
               </Typography>
-              <Typography variant='subheading' noWrap>
+              <Typography variant='subtitle1' noWrap>
                 <Link to={{pathname: `/event/${eventKey}`}}>@ {event.year} {event.name}</Link>
               </Typography>
             </div>
@@ -153,10 +153,10 @@ class TeamAtEventDialog extends PureComponent {
                 <ChevronLeftIcon />
               </IconButton>
               <div className={classes.flex}>
-                <Typography variant='title' noWrap>
+                <Typography variant='h6' noWrap>
                   {teamTitle}
                 </Typography>
-                <Typography variant='subheading' noWrap>
+                <Typography variant='subtitle1' noWrap>
                   @ {event.year} {event.name}
                 </Typography>
               </div>
