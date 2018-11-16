@@ -57,7 +57,7 @@ const getSortedEventQualMatches = createSelector(
   }
 )
 
-const getSortedEventPlayoffMatches = createSelector(
+export const getSortedEventPlayoffMatches = createSelector(
   [getSortedEventMatches],
   (matches) => {
     if (matches) {

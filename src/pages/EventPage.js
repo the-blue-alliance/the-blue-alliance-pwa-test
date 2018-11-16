@@ -26,6 +26,7 @@ import EventAllianceTableContainer from '../containers/EventAllianceTableContain
 import EventMatchListContainer from '../containers/EventMatchListContainer'
 import SectionHeaderWithScrollto from '../components/SectionHeaderWithScrollto'
 import EventRankingsTableContainer from '../containers/EventRankingsTableContainer'
+import EventPlayoffBracketContainer from '../containers/EventPlayoffBracketContainer'
 import Skeleton from '../components/Skeleton'
 import PageTabs from '../components/PageTabs'
 
@@ -62,6 +63,7 @@ const sections = [
   {key: 'qual', label: 'Qualification Results'},
   {key: 'alliances', label: 'Alliances'},
   {key: 'playoff', label: 'Playoff Results'},
+  {key: 'bracket', label: 'Playoff Bracket'},
 ]
 
 class EventPage extends PureComponent {
@@ -165,6 +167,15 @@ class EventPage extends PureComponent {
                       withSpace
                     />
                     <EventMatchListContainer eventKey={eventKey} playoff/>
+                  </Paper>
+                  <Paper id='bracket' className={classes.sectionCard}>
+                    <SectionHeaderWithScrollto
+                      sectionKey='bracket'
+                      label={<Typography variant='h6'>Playoff Bracket</Typography>}
+                      sections={sections}
+                      withSpace
+                    />
+                    {event && <EventPlayoffBracketContainer eventKey={eventKey} playoffType={event.playoff_type} />}
                   </Paper>
                 </Grid>
               </Grid>
