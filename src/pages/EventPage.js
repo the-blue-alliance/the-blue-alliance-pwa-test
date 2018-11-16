@@ -175,7 +175,7 @@ class EventPage extends PureComponent {
                       sections={sections}
                       withSpace
                     />
-                    <EventPlayoffBracketContainer eventKey={eventKey}/>
+                    {event && <EventPlayoffBracketContainer eventKey={eventKey} playoffType={event.playoff_type} />}
                   </Paper>
                 </Grid>
               </Grid>

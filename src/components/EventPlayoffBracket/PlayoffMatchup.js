@@ -50,65 +50,82 @@ const styles = theme => ({
   },
 })
 
-const PlayoffMatchup = React.memo(({classes, compLevel, redSeed, blueSeed, redWins, blueWins, winner, rightSide}) => {
-  let winnerSeed = null
-  if (winner === 'red') {
-    winnerSeed = redSeed
-  } else if (winner === 'blue') {
-    winnerSeed = blueSeed
-  }
-
+const PlayoffMatchup = React.memo(({classes, eventKey, compLevel, setNumber, rightSide}) => {
   return (
     <BracketContext.Consumer>
-      {({selectedSeed}) => (
-        <React.Fragment>
-          <Spacer />
-          <PlayoffMatchupAlliance
-            color='red'
-            seed={redSeed}
-            wins={redWins}
-            isWinner={winner === 'red'}
-            spaceLeft={rightSide}
-            spaceRight={!rightSide}
-          />
-          <div
-            className={classNames({
-              [classes.centerSpacer]: true,
-              [classes.centerSpacerRight]: rightSide,
-            })}
-          >
+      {({selectedSeed, winStats}) => {
+        let redSeed = '?'
+        let redWins = '?'
+        let blueSeed = '?'
+        let blueWins = '?'
+        let winner = null
+        if (winStats) {
+          redSeed = winStats[compLevel][setNumber].redAllianceId + 1
+          redWins = winStats[compLevel][setNumber].redWins
+          blueSeed = winStats[compLevel][setNumber].blueAllianceId + 1
+          blueWins = winStats[compLevel][setNumber].blueWins
+          winner = winStats[compLevel][setNumber].winner
+        }
+
+        let winnerSeed = null
+        if (winner === 'red') {
+          winnerSeed = redSeed
+        } else if (winner === 'blue') {
+          winnerSeed = blueSeed
+        }
+
+        return (
+          <React.Fragment>
+            <Spacer />
+            <PlayoffMatchupAlliance
+              eventKey={eventKey}
+              color='red'
+              seed={redSeed}
+              wins={redWins}
+              isWinner={winner === 'red'}
+              spaceLeft={rightSide}
+              spaceRight={!rightSide}
+            />
             <div
               className={classNames({
-                [classes.join]: true,
-                [classes.joinLeft]: !rightSide,
-                [classes.joinRight]: rightSide,
-                [classes.joinBottom]: rightSide && compLevel === 'sf',
-                [classes.redWin]: winner === 'red',
-                [classes.blueWin]: winner === 'blue',
-                [classes.notSelected]: selectedSeed !== null && winnerSeed !== selectedSeed,
+                [classes.centerSpacer]: true,
+                [classes.centerSpacerRight]: rightSide,
               })}
             >
               <div
                 className={classNames({
-                  [classes.joinBar]: true,
+                  [classes.join]: true,
+                  [classes.joinLeft]: !rightSide,
+                  [classes.joinRight]: rightSide,
+                  [classes.joinBottom]: rightSide && compLevel === 'sf',
                   [classes.redWin]: winner === 'red',
                   [classes.blueWin]: winner === 'blue',
                   [classes.notSelected]: selectedSeed !== null && winnerSeed !== selectedSeed,
                 })}
-              />
+              >
+                <div
+                  className={classNames({
+                    [classes.joinBar]: true,
+                    [classes.redWin]: winner === 'red',
+                    [classes.blueWin]: winner === 'blue',
+                    [classes.notSelected]: selectedSeed !== null && winnerSeed !== selectedSeed,
+                  })}
+                />
+              </div>
             </div>
-          </div>
-          <PlayoffMatchupAlliance
-            color='blue'
-            seed={blueSeed}
-            wins={blueWins}
-            isWinner={winner === 'blue'}
-            spaceLeft={rightSide}
-            spaceRight={!rightSide}
-          />
-          <Spacer />
-        </React.Fragment>
-      )}
+            <PlayoffMatchupAlliance
+              eventKey={eventKey}
+              color='blue'
+              seed={blueSeed}
+              wins={blueWins}
+              isWinner={winner === 'blue'}
+              spaceLeft={rightSide}
+              spaceRight={!rightSide}
+            />
+            <Spacer />
+          </React.Fragment>
+        )
+      }}
     </BracketContext.Consumer>
   )
 })

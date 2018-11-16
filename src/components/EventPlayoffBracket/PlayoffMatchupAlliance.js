@@ -2,6 +2,7 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import classNames from 'classnames'
+import { Link } from 'react-router-dom'
 
 // Components
 
@@ -59,47 +60,55 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
   },
   teamContainer: {
+    fontSize: 14,
     padding: theme.spacing.unit/2,
   },
 })
 
-const PlayoffMatchupAlliance = React.memo(({classes, color, seed, wins, isWinner, spaceLeft, spaceRight}) => {
+const PlayoffMatchupAlliance = React.memo(({classes, eventKey, color, seed, wins, isWinner, spaceLeft, spaceRight}) => {
   const isRed = color === 'red'
   return (
     <BracketContext.Consumer>
-      {({selectedSeed, setSelectedSeed}) => (
-        <div
-          className={classNames({
-            [classes.alliance]: true,
-            [classes.red]: isRed,
-            [classes.blue]: !isRed,
-            [classes.selected]: selectedSeed === seed,
-            [classes.notSelected]: selectedSeed !== null && selectedSeed !== seed,
-            [classes.spaceLeft]: spaceLeft,
-            [classes.spaceRight]: spaceRight,
-          })}
-          onMouseEnter={() => setSelectedSeed(seed)}
-          onMouseLeave={() => setSelectedSeed(null)}
-        >
+      {({selectedSeed, setSelectedSeed, allianceTeamKeys}) => {
+        return (
           <div
             className={classNames({
-              [classes.winsContainer]: true,
-              [isRed ? classes.redWins : classes.blueWins]: true,
-              [classes.winner]: isWinner,
+              [classes.alliance]: true,
+              [classes.red]: isRed,
+              [classes.blue]: !isRed,
+              [classes.selected]: selectedSeed === seed,
+              [classes.notSelected]: selectedSeed !== null && selectedSeed !== seed,
+              [classes.spaceLeft]: spaceLeft,
+              [classes.spaceRight]: spaceRight,
             })}
+            onMouseEnter={() => setSelectedSeed(seed)}
+            onMouseLeave={() => setSelectedSeed(null)}
           >
-            <div className={classes.seed}>{seed}.</div>
-            <div>{wins}</div>
-            <div className={classes.seed} />
+            <div
+              className={classNames({
+                [classes.winsContainer]: true,
+                [isRed ? classes.redWins : classes.blueWins]: true,
+                [classes.winner]: isWinner,
+              })}
+            >
+              <div className={classes.seed}>{seed}.</div>
+              <div>{wins}</div>
+              <div className={classes.seed} />
+            </div>
+            <div className={classes.teamContainer}>
+              {allianceTeamKeys && allianceTeamKeys[seed-1].map(teamKey => (
+                <div key={teamKey}>
+                  <Link
+                    to={{pathname: `/team/${teamKey.substring(3)}/${eventKey.substring(0, 4)}`, hash: eventKey, state: {modal: true}}}
+                  >
+                    {teamKey.substring(3)}
+                  </Link>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className={classes.teamContainer}>
-            <div>9999</div>
-            <div>9999</div>
-            <div>9999</div>
-            <div>9999</div>
-          </div>
-        </div>
-      )}
+        )
+      }}
     </BracketContext.Consumer>
   )
 })
