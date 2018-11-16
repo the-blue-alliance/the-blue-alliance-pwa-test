@@ -47,11 +47,24 @@ const styles = theme => ({
   winner: {
     fontWeight: 'bold',
   },
+  hasMedal: {
+    padding: theme.spacing.unit,
+  },
   seed: {
     flex: 1,
     textAlign: 'left',
     fontSize: 12,
     paddingLeft: theme.spacing.unit/2,
+  },
+  medal: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingRight: theme.spacing.unit/2,
+  },
+  medalIcon: {
+    height: 18,
   },
   spaceRight: {
     marginRight: theme.spacing.unit,
@@ -65,7 +78,7 @@ const styles = theme => ({
   },
 })
 
-const PlayoffMatchupAlliance = React.memo(({classes, eventKey, color, seed, wins, isWinner, spaceLeft, spaceRight}) => {
+const PlayoffMatchupAlliance = React.memo(({classes, eventKey, color, seed, wins, isWinner, spaceLeft, spaceRight, isFinals}) => {
   const isRed = color === 'red'
   return (
     <BracketContext.Consumer>
@@ -89,14 +102,18 @@ const PlayoffMatchupAlliance = React.memo(({classes, eventKey, color, seed, wins
                 [classes.winsContainer]: true,
                 [isRed ? classes.redWins : classes.blueWins]: true,
                 [classes.winner]: isWinner,
+                [classes.hasMedal]: isFinals,
               })}
             >
               <div className={classes.seed}>{seed}.</div>
               <div>{wins}</div>
-              <div className={classes.seed} />
+              <div className={classes.medal}>
+                {isFinals && isWinner && <img src='/medal-gold.png' className={classes.medalIcon} alt='Gold medal'/>}
+                {isFinals && !isWinner && <img src='/medal-silver.png' className={classes.medalIcon} alt='Silver medal'/>}
+              </div>
             </div>
             <div className={classes.teamContainer}>
-              {allianceTeamKeys && allianceTeamKeys[seed-1].map(teamKey => (
+              {allianceTeamKeys && allianceTeamKeys[seed-1] && allianceTeamKeys[seed-1].map(teamKey => (
                 <div key={teamKey}>
                   <Link
                     to={{pathname: `/team/${teamKey.substring(3)}/${eventKey.substring(0, 4)}`, hash: eventKey, state: {modal: true}}}

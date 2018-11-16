@@ -40,6 +40,7 @@ const PlayoffFinalsMatchup = React.memo(({classes, eventKey, winner}) => {
               seed={redSeed}
               wins={redWins}
               isWinner={winner === 'red'}
+              isFinals
             />
             <div className={classes.centerSpacer} />
             <PlayoffMatchupAlliance
@@ -48,6 +49,7 @@ const PlayoffFinalsMatchup = React.memo(({classes, eventKey, winner}) => {
               seed={blueSeed}
               wins={blueWins}
               isWinner={winner === 'blue'}
+              isFinals
             />
             <Spacer />
           </React.Fragment>

@@ -79,10 +79,10 @@ class EventPlayoffBracket extends React.PureComponent {
         }
 
         const numToWin = playoffType === 6 ? 3 : 2
-        if (winStats[m.comp_level][m.set_number].redWins == numToWin) {
+        if (winStats[m.comp_level][m.set_number].redWins === numToWin) {
           winStats[m.comp_level][m.set_number].winner = 'red'
         }
-        if (winStats[m.comp_level][m.set_number].blueWins == numToWin) {
+        if (winStats[m.comp_level][m.set_number].blueWins === numToWin) {
           winStats[m.comp_level][m.set_number].winner = 'blue'
         }
       })
