@@ -6,102 +6,92 @@ import classNames from 'classnames'
 // Components
 
 // TBA Components
+import Spacer from './Spacer'
+import PlayoffMatchupAlliance from './PlayoffMatchupAlliance'
 
 const styles = theme => ({
-  spacer: {
-    flexGrow: 1,
-    '&:first-child': {
-      flexGrow: 0.5,
-    },
-    '&:last-child': {
-      flexGrow: 0.5,
-    },
-  },
-  label: {
+  centerSpacer: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'stretch',
+    justifyContent: 'flex-end',
     flexGrow: 1,
-    padding: theme.spacing.unit/2,
-    margin: `0 ${theme.spacing.unit/2}px`,
+    minHeight: theme.spacing.unit,
   },
-  labelLeft: {
-    borderRight: '1px solid #000',
+  centerSpacerRight: {
+    flexDirection: 'row-reverse',
   },
-  labelRight: {
-    borderLeft: '1px solid #000',
-  },
-  finalsLabel: {
-    flexGrow: 0,
-  },
-  alliance: {
+  join: {
     display: 'flex',
-    flexDirection: 'column',
-    textAlign: 'center',
-    padding: theme.spacing.unit/2,
-    backgroundColor: theme.palette.grey[100],
-    borderRadius: theme.spacing.unit/2,
-    boxShadow: theme.shadows[2],
+    alignItems: 'flex-start',
   },
-  red: {
-    marginTop: theme.spacing.unit,
+  joinLeft: {
+    borderLeft: '2px solid'
   },
-  blue: {
-    marginBottom: theme.spacing.unit,
+  joinRight: {
+    borderRight: '2px solid'
   },
-  redLeft: {
-    borderLeft: `5px solid ${theme.palette.type === 'light' ? '#FFDDDD' : '#802020'}`,
+  joinBottom: {
+    alignItems: 'flex-end',
   },
-  blueLeft: {
-    borderLeft: `5px solid ${theme.palette.type === 'light' ? '#DDDDFF' : '#202080'}`,
+  joinBar: {
+    borderBottom: '2px solid',
+    width: theme.spacing.unit*2,
+    margin: `${theme.spacing.unit}px 0`,
   },
-  redRight: {
-    borderRight: `5px solid ${theme.palette.type === 'light' ? '#FFDDDD' : '#802020'}`,
+  redWin: {
+    borderColor: 'red',
   },
-  blueRight: {
-    borderRight: `5px solid ${theme.palette.type === 'light' ? '#DDDDFF' : '#202080'}`,
+  blueWin: {
+    borderColor: 'blue',
   },
 })
 
-const PlayoffMatchup = ({classes, level, rightSide}) => {
-  const isFinals = level === 'F'
+const PlayoffMatchup = ({classes, compLevel, redSeed, blueSeed, redWins, blueWins, winner, rightSide}) => {
   return (
     <React.Fragment>
-      <div className={classes.spacer}/>
+      <Spacer />
+      <PlayoffMatchupAlliance
+        color='red'
+        seed={redSeed}
+        wins={redWins}
+        isWinner={winner === 'red'}
+        spaceLeft={rightSide}
+        spaceRight={!rightSide}
+      />
       <div
         className={classNames({
-          [classes.alliance]: true,
-          [classes.red]: true,
-          [rightSide ? classes.redRight : classes.redLeft]: true,
+          [classes.centerSpacer]: true,
+          [classes.centerSpacerRight]: rightSide,
         })}
       >
-        <div>9999</div>
-        <div>9999</div>
-        <div>9999</div>
-        <div>9999</div>
+        <div
+          className={classNames({
+            [classes.join]: true,
+            [classes.joinLeft]: !rightSide,
+            [classes.joinRight]: rightSide,
+            [classes.joinBottom]: rightSide && compLevel === 'sf',
+            [classes.redWin]: winner === 'red',
+            [classes.blueWin]: winner === 'blue',
+          })}
+        >
+          <div
+            className={classNames({
+              [classes.joinBar]: true,
+              [classes.redWin]: winner === 'red',
+              [classes.blueWin]: winner === 'blue',
+            })}
+          />
+        </div>
       </div>
-      <div
-        className={classNames({
-          [classes.label]: true,
-          [rightSide ? classes.labelRight : classes.labelLeft]: !isFinals,
-          [classes.finalsLabel]: isFinals,
-        })}
-      >
-        <div>2 - 1</div>
-      </div>
-      <div
-        className={classNames({
-          [classes.alliance]: true,
-          [classes.blue]: true,
-          [rightSide || isFinals ? classes.blueRight : classes.blueLeft]: true,
-        })}
-      >
-        <div>9999</div>
-        <div>9999</div>
-        <div>9999</div>
-        <div>9999</div>
-      </div>
-      <div className={classes.spacer}/>
+      <PlayoffMatchupAlliance
+        color='blue'
+        seed={blueSeed}
+        wins={blueWins}
+        isWinner={winner === 'blue'}
+        spaceLeft={rightSide}
+        spaceRight={!rightSide}
+      />
+      <Spacer />
     </React.Fragment>
   )
 }

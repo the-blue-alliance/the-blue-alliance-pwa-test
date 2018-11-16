@@ -6,19 +6,20 @@ import { withStyles } from '@material-ui/core/styles'
 
 // TBA Components
 import PlayoffMatchup from './PlayoffMatchup'
+import PlayoffFinalsMatchup from './PlayoffFinalsMatchup'
 
 const styles = theme => ({
   container: {
     display: 'flex',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
+    padding: theme.spacing.unit,
   },
   round: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-around',
     flexGrow: 1,
-    maxWidth: 80,
-    margin: theme.spacing.unit,
+    maxWidth: 100,
   },
 })
 
@@ -31,21 +32,72 @@ class EventPlayoffBracket extends React.PureComponent {
     return (
       <div className={classes.container}>
         <div className={classes.round}>
-          <PlayoffMatchup level='QF' />
-          <PlayoffMatchup level='QF' />
+          <PlayoffMatchup
+            compLevel='qf'
+            redSeed={1}
+            blueSeed={8}
+            redWins={2}
+            blueWins={1}
+            winner='red'
+          />
+          <PlayoffMatchup
+            compLevel='qf'
+            redSeed={4}
+            blueSeed={5}
+            redWins={2}
+            blueWins={1}
+            winner='red'
+          />
         </div>
         <div className={classes.round}>
-          <PlayoffMatchup level='SF' />
+          <PlayoffMatchup
+            compLevel='sf'
+            redSeed={1}
+            blueSeed={4}
+            redWins={2}
+            blueWins={1}
+            winner='red'
+          />
         </div>
         <div className={classes.round}>
-          <PlayoffMatchup level='F' />
+          <PlayoffFinalsMatchup
+            redSeed={1}
+            blueSeed={3}
+            redWins={0}
+            blueWins={2}
+            winner='blue'
+          />
         </div>
         <div className={classes.round}>
-          <PlayoffMatchup level='SF' rightSide/>
+          <PlayoffMatchup
+            compLevel='sf'
+            redSeed={2}
+            blueSeed={3}
+            redWins={0}
+            blueWins={2}
+            winner='blue'
+            rightSide
+          />
         </div>
         <div className={classes.round}>
-          <PlayoffMatchup level='QF' rightSide/>
-          <PlayoffMatchup level='QF' rightSide/>
+          <PlayoffMatchup
+            compLevel='qf'
+            redSeed={2}
+            blueSeed={7}
+            redWins={2}
+            blueWins={1}
+            winner='red'
+            rightSide
+          />
+          <PlayoffMatchup
+            compLevel='qf'
+            redSeed={3}
+            blueSeed={6}
+            redWins={2}
+            blueWins={1}
+            winner='red'
+            rightSide
+          />
         </div>
       </div>
     )
