@@ -125,9 +125,6 @@ class EventPage extends PureComponent {
             <PageTabs
               value={safeTabIdx}
               onChange={this.tabHandleChange}
-              fullWidth
-              scrollable
-              className='hide-scrollbar'
             >
               <Tab label='Results' />
               <Tab label='Rankings' />
