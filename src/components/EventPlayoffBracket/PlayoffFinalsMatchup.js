@@ -14,7 +14,7 @@ const styles = theme => ({
   },
 })
 
-const PlayoffFinalsMatchup = ({classes, redSeed, blueSeed, redWins, blueWins, winner}) => {
+const PlayoffFinalsMatchup = React.memo(({classes, redSeed, blueSeed, redWins, blueWins, winner}) => {
   return (
     <React.Fragment>
       <Spacer />
@@ -34,6 +34,6 @@ const PlayoffFinalsMatchup = ({classes, redSeed, blueSeed, redWins, blueWins, wi
       <Spacer />
     </React.Fragment>
   )
-}
+})
 
 export default withStyles(styles)(PlayoffFinalsMatchup)

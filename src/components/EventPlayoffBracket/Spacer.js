@@ -18,8 +18,8 @@ const styles = theme => ({
   },
 })
 
-const Spacer = ({classes}) => {
+const Spacer = React.memo(({classes}) => {
   return <div className={classes.spacer}/>
-}
+})
 
 export default withStyles(styles)(Spacer)

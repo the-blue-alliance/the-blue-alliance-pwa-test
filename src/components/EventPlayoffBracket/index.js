@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles'
 // Components
 
 // TBA Components
+import BracketContext from './BracketContext'
 import PlayoffMatchup from './PlayoffMatchup'
 import PlayoffFinalsMatchup from './PlayoffFinalsMatchup'
 
@@ -24,82 +25,91 @@ const styles = theme => ({
 })
 
 class EventPlayoffBracket extends React.PureComponent {
+  state = {
+    selectedSeed: null,
+    setSelectedSeed: seed => {
+      this.setState({selectedSeed: seed})
+    }
+  }
+
   render() {
     console.log("Render EventPlayoffBracket")
 
     const { classes, alliances, matches } = this.props
 
     return (
-      <div className={classes.container}>
-        <div className={classes.round}>
-          <PlayoffMatchup
-            compLevel='qf'
-            redSeed={1}
-            blueSeed={8}
-            redWins={2}
-            blueWins={1}
-            winner='red'
-          />
-          <PlayoffMatchup
-            compLevel='qf'
-            redSeed={4}
-            blueSeed={5}
-            redWins={2}
-            blueWins={1}
-            winner='red'
-          />
+      <BracketContext.Provider value={this.state}>
+        <div className={classes.container}>
+          <div className={classes.round}>
+            <PlayoffMatchup
+              compLevel='qf'
+              redSeed={1}
+              blueSeed={8}
+              redWins={2}
+              blueWins={1}
+              winner='red'
+            />
+            <PlayoffMatchup
+              compLevel='qf'
+              redSeed={4}
+              blueSeed={5}
+              redWins={2}
+              blueWins={1}
+              winner='red'
+            />
+          </div>
+          <div className={classes.round}>
+            <PlayoffMatchup
+              compLevel='sf'
+              redSeed={1}
+              blueSeed={4}
+              redWins={2}
+              blueWins={1}
+              winner='red'
+            />
+          </div>
+          <div className={classes.round}>
+            <PlayoffFinalsMatchup
+              redSeed={1}
+              blueSeed={3}
+              redWins={0}
+              blueWins={2}
+              winner='blue'
+            />
+          </div>
+          <div className={classes.round}>
+            <PlayoffMatchup
+              compLevel='sf'
+              redSeed={2}
+              blueSeed={3}
+              redWins={0}
+              blueWins={2}
+              winner='blue'
+              rightSide
+            />
+          </div>
+          <div className={classes.round}>
+            <PlayoffMatchup
+              compLevel='qf'
+              redSeed={2}
+              blueSeed={7}
+              redWins={2}
+              blueWins={1}
+              winner='red'
+              rightSide
+            />
+            <PlayoffMatchup
+              compLevel='qf'
+              redSeed={3}
+              blueSeed={6}
+              redWins={2}
+              blueWins={1}
+              winner='red'
+              rightSide
+            />
+          </div>
         </div>
-        <div className={classes.round}>
-          <PlayoffMatchup
-            compLevel='sf'
-            redSeed={1}
-            blueSeed={4}
-            redWins={2}
-            blueWins={1}
-            winner='red'
-          />
-        </div>
-        <div className={classes.round}>
-          <PlayoffFinalsMatchup
-            redSeed={1}
-            blueSeed={3}
-            redWins={0}
-            blueWins={2}
-            winner='blue'
-          />
-        </div>
-        <div className={classes.round}>
-          <PlayoffMatchup
-            compLevel='sf'
-            redSeed={2}
-            blueSeed={3}
-            redWins={0}
-            blueWins={2}
-            winner='blue'
-            rightSide
-          />
-        </div>
-        <div className={classes.round}>
-          <PlayoffMatchup
-            compLevel='qf'
-            redSeed={2}
-            blueSeed={7}
-            redWins={2}
-            blueWins={1}
-            winner='red'
-            rightSide
-          />
-          <PlayoffMatchup
-            compLevel='qf'
-            redSeed={3}
-            blueSeed={6}
-            redWins={2}
-            blueWins={1}
-            winner='red'
-            rightSide
-          />
-        </div>
-      </div>
+      </BracketContext.Provider>
     )
   }
 }

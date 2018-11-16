@@ -6,6 +6,7 @@ import classNames from 'classnames'
 // Components
 
 // TBA Components
+import BracketContext from './BracketContext'
 import Spacer from './Spacer'
 import PlayoffMatchupAlliance from './PlayoffMatchupAlliance'
 
@@ -44,56 +45,72 @@ const styles = theme => ({
   blueWin: {
     borderColor: 'blue',
   },
+  notSelected: {
+    opacity: 0.3,
+  },
 })
 
-const PlayoffMatchup = ({classes, compLevel, redSeed, blueSeed, redWins, blueWins, winner, rightSide}) => {
+const PlayoffMatchup = React.memo(({classes, compLevel, redSeed, blueSeed, redWins, blueWins, winner, rightSide}) => {
+  let winnerSeed = null
+  if (winner === 'red') {
+    winnerSeed = redSeed
+  } else if (winner === 'blue') {
+    winnerSeed = blueSeed
+  }
+
   return (
-    <React.Fragment>
-      <Spacer />
-      <PlayoffMatchupAlliance
-        color='red'
-        seed={redSeed}
-        wins={redWins}
-        isWinner={winner === 'red'}
-        spaceLeft={rightSide}
-        spaceRight={!rightSide}
-      />
-      <div
-        className={classNames({
-          [classes.centerSpacer]: true,
-          [classes.centerSpacerRight]: rightSide,
-        })}
-      >
-        <div
-          className={classNames({
-            [classes.join]: true,
-            [classes.joinLeft]: !rightSide,
-            [classes.joinRight]: rightSide,
-            [classes.joinBottom]: rightSide && compLevel === 'sf',
-            [classes.redWin]: winner === 'red',
-            [classes.blueWin]: winner === 'blue',
-          })}
-        >
+    <BracketContext.Consumer>
+      {({selectedSeed}) => (
+        <React.Fragment>
+          <Spacer />
+          <PlayoffMatchupAlliance
+            color='red'
+            seed={redSeed}
+            wins={redWins}
+            isWinner={winner === 'red'}
+            spaceLeft={rightSide}
+            spaceRight={!rightSide}
+          />
           <div
             className={classNames({
-              [classes.joinBar]: true,
-              [classes.redWin]: winner === 'red',
-              [classes.blueWin]: winner === 'blue',
+              [classes.centerSpacer]: true,
+              [classes.centerSpacerRight]: rightSide,
             })}
+          >
+            <div
+              className={classNames({
+                [classes.join]: true,
+                [classes.joinLeft]: !rightSide,
+                [classes.joinRight]: rightSide,
+                [classes.joinBottom]: rightSide && compLevel === 'sf',
+                [classes.redWin]: winner === 'red',
+                [classes.blueWin]: winner === 'blue',
+                [classes.notSelected]: selectedSeed !== null && winnerSeed !== selectedSeed,
+              })}
+            >
+              <div
+                className={classNames({
+                  [classes.joinBar]: true,
+                  [classes.redWin]: winner === 'red',
+                  [classes.blueWin]: winner === 'blue',
+                  [classes.notSelected]: selectedSeed !== null && winnerSeed !== selectedSeed,
+                })}
+              />
+            </div>
+          </div>
+          <PlayoffMatchupAlliance
+            color='blue'
+            seed={blueSeed}
+            wins={blueWins}
+            isWinner={winner === 'blue'}
+            spaceLeft={rightSide}
+            spaceRight={!rightSide}
           />
-        </div>
-      </div>
-      <PlayoffMatchupAlliance
-        color='blue'
-        seed={blueSeed}
-        wins={blueWins}
-        isWinner={winner === 'blue'}
-        spaceLeft={rightSide}
-        spaceRight={!rightSide}
-      />
-      <Spacer />
-    </React.Fragment>
+          <Spacer />
+        </React.Fragment>
+      )}
+    </BracketContext.Consumer>
   )
-}
+})
 
 export default withStyles(styles)(PlayoffMatchup)
