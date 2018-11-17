@@ -41,9 +41,11 @@ const styles = theme => ({
     backgroundColor: theme.palette.common.white,
     borderRadius: '20px 0 0 20px',
     boxShadow: theme.shadows[4],
+    cursor: 'pointer',
   },
   icon: {
     margin: -6,
+    pointerEvents: 'none',
   },
 })
 
@@ -61,23 +63,15 @@ class FastScroll extends PureComponent {
       return
     }
     this.scrolling = true
-    this.handleScrollStart()
+    this.show()
     this.detectScrollingInterval = setInterval(() => {
       if (this.lastScrollPos === this.scrollPos) {
         clearInterval(this.detectScrollingInterval)
         this.scrolling = false
-        this.handleScrollStop()
+        this.hide()
       }
       this.lastScrollPos = this.scrollPos
     }, 100)
-  }
-
-  handleScrollStart = () => {
-    this.setState({showScroll: true})
-  }
-
-  handleScrollStop = () => {
-    this.hideTimeout = setTimeout(() => this.setState({showScroll: false}), 3000)
   }
 
   updateScrollPosition = () => {
@@ -89,6 +83,29 @@ class FastScroll extends PureComponent {
         this.setState({scrollPos: scrollPercentage * (this.ref.clientHeight - 64)})  // Offset by dot size + margin (56 + 8)
       })
     }
+  }
+
+  handleMouseOver = () => {
+    this.mouseOver = true
+    this.show()
+  }
+
+  handleMouseOut = () => {
+    this.mouseOver = false
+    this.hide()
+  }
+
+  show = () => {
+    clearTimeout(this.hideTimeout)
+    this.setState({showScroll: true})
+  }
+
+  hide = () => {
+    if (this.scrolling || this.mouseOver) {
+      return
+    }
+    clearTimeout(this.hideTimeout)
+    this.hideTimeout = setTimeout(() => this.setState({showScroll: false}), 3000)
   }
 
   componentDidMount() {
@@ -117,6 +134,8 @@ class FastScroll extends PureComponent {
         <div
           className={classes.dot}
           style={{transform: `translateY(${scrollPos}px)`}}
+          onMouseOver={this.handleMouseOver}
+          onMouseOut={this.handleMouseOut}
         >
           <ArrowDropUpIcon className={classes.icon} />
           <ArrowDropDownIcon className={classes.icon} />
