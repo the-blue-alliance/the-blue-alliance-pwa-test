@@ -35,7 +35,7 @@ const styles = theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
     paddingLeft: 12,
-    height: 40,
+    height: 64,
     width: 32,
     margin: `${theme.spacing.unit}px 0 ${theme.spacing.unit}px 0`,
     backgroundColor: theme.palette.common.white,
@@ -44,7 +44,7 @@ const styles = theme => ({
     cursor: 'pointer',
   },
   icon: {
-    margin: -6,
+    margin: '0 -6px',
     pointerEvents: 'none',
   },
 })
@@ -80,7 +80,7 @@ class FastScroll extends PureComponent {
     if (!this.raf) {
       this.raf = requestAnimationFrame(() => {
         this.raf = undefined
-        this.setState({scrollPos: scrollPercentage * (this.ref.clientHeight - 64)})  // Offset by dot size + margin (56 + 8)
+        this.setState({scrollPos: scrollPercentage * (this.ref.clientHeight - 88)})  // Offset by dot size + margins
       })
     }
   }
