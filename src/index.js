@@ -5,7 +5,7 @@ import 'intersection-observer'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Loadable from 'react-loadable'
-import registerServiceWorker from './registerServiceWorker'
+import registerServiceWorker, { unregister } from './registerServiceWorker'
 
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router/immutable'
@@ -40,4 +40,5 @@ Loadable.preloadReady().then(() => ReactDOM.hydrate(
   document.getElementById('root'))
 )
 
-registerServiceWorker(store)
+// registerServiceWorker(store)
+unregister()
