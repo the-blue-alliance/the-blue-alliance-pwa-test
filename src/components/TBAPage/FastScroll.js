@@ -95,13 +95,43 @@ class FastScroll extends PureComponent {
     this.hide()
   }
 
+  handleDragStart = (e) => {
+    if (!this.dragging) {
+      document.body.style['user-select'] = 'none'
+      this.dragging = true
+      this.dragCursorStart = e.clientY || e.touches[0].clientY
+      this.dragScrollStart = window.pageYOffset
+      document.addEventListener('mousemove', this.handleDrag)
+      document.addEventListener('touchmove', this.handleDrag, {passive: false, cancelable: true})
+      document.addEventListener('mouseup', this.handleDragStop)
+      document.addEventListener('touchend', this.handleDragStop)
+    }
+  }
+
+  handleDragStop = () => {
+    document.body.style['user-select'] = ''
+    this.dragging = false
+    this.hide()
+    document.removeEventListener('mousemove', this.handleDrag)
+    document.removeEventListener('touchmove', this.handleDrag)
+    document.removeEventListener('mouseup', this.handleDragStop)
+    document.removeEventListener('touchend', this.handleDragStop)
+  }
+
+  handleDrag = (e) => {
+    e.preventDefault()
+    const diff = (e.clientY || e.touches[0].clientY) - this.dragCursorStart
+    const scrollPercentage = diff / (this.ref.clientHeight - 64)
+    window.scrollTo(0, this.dragScrollStart + scrollPercentage * (document.documentElement.offsetHeight - window.innerHeight))
+  }
+
   show = () => {
     clearTimeout(this.hideTimeout)
     this.setState({showScroll: true})
   }
 
   hide = () => {
-    if (this.scrolling || this.mouseOver) {
+    if (this.scrolling || this.mouseOver || this.dragging) {
       return
     }
     clearTimeout(this.hideTimeout)
@@ -111,11 +141,19 @@ class FastScroll extends PureComponent {
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll)
     window.addEventListener('resize', this.updateScrollPosition)
+    this.dotRef.addEventListener('mousedown', this.handleDragStart)
+    this.dotRef.addEventListener('touchstart', this.handleDragStart)
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
     window.removeEventListener('resize', this.updateScrollPosition)
+    this.dotRef.removeEventListener('mousedown', this.handleDragStart)
+    this.dotRef.removeEventListener('touchstart', this.handleDragStart)
+    document.removeEventListener('mousemove', this.handleDrag)
+    document.removeEventListener('touchmove', this.handleDrag)
+    document.removeEventListener('mouseup', this.handleDragStop)
+    document.removeEventListener('touchend', this.handleDragStop)
     clearInterval(this.detectScrollingInterval)
     clearTimeout(this.hideTimeout)
   }
@@ -123,7 +161,6 @@ class FastScroll extends PureComponent {
   render() {
     const { classes } = this.props
     const { showScroll, scrollPos } = this.state
-    console.log(showScroll)
 
     return (
       <div
@@ -134,6 +171,7 @@ class FastScroll extends PureComponent {
         <div
           className={classes.dot}
           style={{transform: `translateY(${scrollPos}px)`}}
+          ref={(el) => this.dotRef = el}
           onMouseOver={this.handleMouseOver}
           onMouseOut={this.handleMouseOut}
         >
