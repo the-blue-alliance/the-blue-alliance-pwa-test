@@ -13,6 +13,7 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row-reverse',
     position: 'fixed',
+    transition: '0.15s',
     right: 0,
     top: 56,
     height: 'calc(100% - 56px - 56px)',
@@ -48,36 +49,69 @@ const styles = theme => ({
 
 class FastScroll extends PureComponent {
   state = {
+    showScroll: false,
     scrollPos: 0,
   }
+  scrolling = false
 
-  updateScroll = () => {
-    const scrollPercentage = window.pageYOffset / (document.documentElement.offsetHeight - window.innerHeight)
+  handleScroll = () => {
+    clearTimeout(this.hideTimeout)
+    this.updateScrollPosition()
+    if (this.scrolling) {
+      return
+    }
+    this.scrolling = true
+    this.handleScrollStart()
+    this.detectScrollingInterval = setInterval(() => {
+      if (this.lastScrollPos === this.scrollPos) {
+        clearInterval(this.detectScrollingInterval)
+        this.scrolling = false
+        this.handleScrollStop()
+      }
+      this.lastScrollPos = this.scrollPos
+    }, 100)
+  }
+
+  handleScrollStart = () => {
+    this.setState({showScroll: true})
+  }
+
+  handleScrollStop = () => {
+    this.hideTimeout = setTimeout(() => this.setState({showScroll: false}), 3000)
+  }
+
+  updateScrollPosition = () => {
+    this.scrollPos = window.pageYOffset
+    const scrollPercentage = Math.min(1, this.scrollPos / (document.documentElement.offsetHeight - window.innerHeight))
     if (!this.raf) {
       this.raf = requestAnimationFrame(() => {
         this.raf = undefined
-        this.setState({scrollPos: scrollPercentage * (this.ref.clientHeight - 56)})  // Offset by dot size
+        this.setState({scrollPos: scrollPercentage * (this.ref.clientHeight - 64)})  // Offset by dot size + margin (56 + 8)
       })
     }
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', this.updateScroll)
-    window.addEventListener('resize', this.updateScroll)
+    window.addEventListener('scroll', this.handleScroll)
+    window.addEventListener('resize', this.updateScrollPosition)
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.updateScroll)
-    window.removeEventListener('resize', this.updateScroll)
+    window.removeEventListener('scroll', this.handleScroll)
+    window.removeEventListener('resize', this.updateScrollPosition)
+    clearInterval(this.detectScrollingInterval)
+    clearTimeout(this.hideTimeout)
   }
 
   render() {
     const { classes } = this.props
-    const { scrollPos } = this.state
+    const { showScroll, scrollPos } = this.state
+    console.log(showScroll)
 
     return (
       <div
         className={classes.container}
+        style={showScroll ? null : {right: -40}}
         ref={(el) => this.ref = el}
       >
         <div
