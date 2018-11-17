@@ -7,9 +7,13 @@ import { withStyles } from '@material-ui/core/styles'
 // Actions
 import { fetchAPIStatus } from '../../actions'
 
+// Components
+import NoSsr from '@material-ui/core/NoSsr'
+
 // TBA Components
 import TBAHelmet from '../TBAHelmet'
 import TBAAppBar from './TBAAppBar'
+import FastScroll from './FastScroll'
 
 const mapStateToProps = (state, props) => ({
 })
@@ -88,6 +92,9 @@ class TBAPage extends PureComponent {
             {children}
           </main>
         </div>
+        <NoSsr>
+          <FastScroll />
+        </NoSsr>
       </React.Fragment>
     )
   }
