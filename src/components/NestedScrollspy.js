@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
+import classNames from 'classnames'
 
 // Components
 import ScrollLink from '../components/ScrollLink'
@@ -59,8 +60,6 @@ const styles = theme => ({
       padding: '5px 10px',
     },
   },
-  sideNavItemInactive: {
-  },
   sideNavItemActive: {
     '& > a': {
       fontWeight: 'bold',
@@ -72,50 +71,79 @@ const styles = theme => ({
 class NestedScrollspy extends PureComponent {
   state = {
     activeSection: null,
-  }
-  activeSectionItem = {}
-
-  updateActiveSection = (el) => {
-    const section = el ? el.id : null
-    this.setState({activeSection: section})
-
+    activeItem: null,
   }
 
-  updateActiveItem = (el, section) => {
-    this.activeSectionItem[section] = el ? el.id : null
+  updateActive = (el) => {
+    const { sectionItems } = this.props
+    const id = el ? el.id : null
+
+    const itemSection = {} // {itemId: sectionKey}
+    for (let sectionKey in sectionItems) {
+      sectionItems[sectionKey].forEach(o => {
+        itemSection[o.id] = sectionKey
+      })
+    }
+    const section = itemSection[id]
+    if (section) {
+      this.setState({
+        activeSection: section,
+        activeItem: id,
+      })
+    } else {
+      this.setState({
+        activeSection: id,
+        activeItem: null,
+      })
+    }
   }
 
   render() {
     console.log("Render NestedScrollspy")
 
     const { classes, collapseSections, contentRef, sections, sectionLabels, sectionItems, scrollOffset } = this.props
+    const { activeSection, activeItem } = this.state
+
+    let keysToSpy = []
+    for (let sectionKey in sectionItems) {
+      keysToSpy = keysToSpy.concat(sectionItems[sectionKey].map(o => o.id))
+    }
+    if (!sectionItems) { // Only sections, no items
+      keysToSpy = sections
+    }
 
     return (
       <Scrollspy
         rootEl={contentRef ? `.${contentRef.className}` : null}
-        items={sections}
-        currentClassName={classes.sideNavSectionActive}
+        items={keysToSpy}
         className={classes.sideNavSectionContainer}
-        onUpdate={(el) => {this.updateActiveSection(el)}}
+        onUpdate={(el) => {this.updateActive(el)}}
         offset={-64 + (scrollOffset ? scrollOffset : 0)}
       >
         {sections.map((section, i) => {
           return (
-            <li key={section} className={collapseSections ? classes.sideNavSectionCollapsable : classes.sideNavSection}>
+            <li
+              key={section}
+              className={classNames({
+                [collapseSections ? classes.sideNavSectionCollapsable : classes.sideNavSection]: true,
+                [classes.sideNavSectionActive]: activeSection === section,
+              })}
+            >
               <ScrollLink scrollEl={contentRef} to={section} offset={scrollOffset}>{sectionLabels[i]}</ScrollLink>
               {sectionItems && sectionItems[section] &&
-                <Scrollspy
-                  rootEl={contentRef ? `.${contentRef.className}` : null}
-                  items={sectionItems[section].map(item => item.id)}
-                  currentClassName={this.state.activeSection === section ? classes.sideNavItemActive : classes.sideNavItemInactive}
-                  onUpdate={(el) => this.updateActiveItem(el, section)}
-                >
+                <ul>
                   {sectionItems[section].map(item =>
-                    <li key={item.id} className={classes.sideNavItem}>
+                    <li
+                      key={item.id}
+                      className={classNames({
+                        [classes.sideNavItem]: true,
+                        [classes.sideNavItemActive]: activeItem === item.id,
+                      })}
+                    >
                       <ScrollLink scrollEl={contentRef} to={item.id} offset={scrollOffset}>{item.label}</ScrollLink>
                     </li>
                   )}
-                </Scrollspy>
+                </ul>
               }
             </li>
           )
