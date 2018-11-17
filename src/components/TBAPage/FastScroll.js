@@ -13,17 +13,19 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row-reverse',
     position: 'fixed',
+    right: 0,
     top: 56,
+    height: 'calc(100% - 56px - 56px)',
     [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
       top: 48,
+      height: 'calc(100% - 48px - 56px)',
     },
     [theme.breakpoints.up('sm')]: {
       top: 64,
+      height: 'calc(100% - 64px - 56px)',
     },
-    right: 0,
-    bottom: 56,
     [theme.breakpoints.up('md')]: {
-      bottom: 0,
+      height: 'calc(100% - 56px)',
     },
     zIndex: theme.zIndex.appBar - 1,
   },
@@ -49,7 +51,7 @@ class FastScroll extends PureComponent {
     scrollPos: 0,
   }
 
-  handleScroll = () => {
+  updateScroll = () => {
     const scrollPercentage = window.pageYOffset / (document.documentElement.offsetHeight - window.innerHeight)
     if (!this.raf) {
       this.raf = requestAnimationFrame(() => {
@@ -60,11 +62,13 @@ class FastScroll extends PureComponent {
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll)
+    window.addEventListener('scroll', this.updateScroll)
+    window.addEventListener('resize', this.updateScroll)
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll)
+    window.removeEventListener('scroll', this.updateScroll)
+    window.removeEventListener('resize', this.updateScroll)
   }
 
   render() {
