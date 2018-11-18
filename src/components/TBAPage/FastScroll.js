@@ -28,7 +28,7 @@ const styles = theme => ({
     [theme.breakpoints.up('md')]: {
       height: 'calc(100% - 56px)',
     },
-    zIndex: theme.zIndex.appBar - 1,
+    zIndex: theme.zIndex.appBar,
   },
   dot: {
     display: 'flex',
