@@ -42,6 +42,7 @@ const styles = theme => ({
     borderRadius: '20px 0 0 20px',
     boxShadow: theme.shadows[4],
     cursor: 'pointer',
+    '-webkit-tap-highlight-color': 'transparent',
   },
   icon: {
     margin: '0 -6px',
@@ -119,10 +120,12 @@ class FastScroll extends PureComponent {
   }
 
   handleDrag = (e) => {
-    e.preventDefault()
-    const diff = (e.clientY || e.touches[0].clientY) - this.dragCursorStart
-    const scrollPercentage = diff / (this.ref.clientHeight - 88)
-    window.scrollTo(0, this.dragScrollStart + scrollPercentage * (document.documentElement.offsetHeight - window.innerHeight))
+    if (e.cancelable) {  // Disable drag if mid scroll
+      e.preventDefault()
+      const diff = (e.clientY || e.touches[0].clientY) - this.dragCursorStart
+      const scrollPercentage = diff / (this.ref.clientHeight - 88)
+      window.scrollTo(0, this.dragScrollStart + scrollPercentage * (document.documentElement.offsetHeight - window.innerHeight))
+    }
   }
 
   show = () => {
