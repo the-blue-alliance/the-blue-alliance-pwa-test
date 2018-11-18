@@ -121,7 +121,7 @@ class FastScroll extends PureComponent {
   handleDrag = (e) => {
     e.preventDefault()
     const diff = (e.clientY || e.touches[0].clientY) - this.dragCursorStart
-    const scrollPercentage = diff / (this.ref.clientHeight - 64)
+    const scrollPercentage = diff / (this.ref.clientHeight - 88)
     window.scrollTo(0, this.dragScrollStart + scrollPercentage * (document.documentElement.offsetHeight - window.innerHeight))
   }
 
