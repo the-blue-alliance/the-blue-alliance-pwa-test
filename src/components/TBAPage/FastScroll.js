@@ -78,9 +78,9 @@ class FastScroll extends PureComponent {
   updateScrollPosition = () => {
     this.scrollPos = window.pageYOffset
     const scrollPercentage = Math.min(1, this.scrollPos / (document.documentElement.offsetHeight - window.innerHeight))
-    if (!this.raf) {
-      this.raf = requestAnimationFrame(() => {
-        this.raf = undefined
+    if (!this.updateScrollPositionRAF) {
+      this.updateScrollPositionRAF = requestAnimationFrame(() => {
+        this.updateScrollPositionRAF = undefined
         this.setState({scrollPos: scrollPercentage * (this.ref.clientHeight - 88)})  // Offset by dot size + margins
       })
     }
@@ -159,6 +159,7 @@ class FastScroll extends PureComponent {
     document.removeEventListener('touchend', this.handleDragStop)
     clearInterval(this.detectScrollingInterval)
     clearTimeout(this.hideTimeout)
+    cancelAnimationFrame(this.updateScrollPositionRAF)
   }
 
   render() {
