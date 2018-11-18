@@ -144,12 +144,12 @@ class EventPlayoffBracket extends React.PureComponent {
               winner='red'
             />
           </div>}
-          <div className={classes.round}>
+          {winStats && winStats.f && <div className={classes.round}>
             <PlayoffFinalsMatchup
               eventKey={eventKey}
               winner='blue'
             />
-          </div>
+          </div>}
           {winStats && winStats.sf && hasSf && <div className={classes.round}>
             <PlayoffMatchup
               eventKey={eventKey}
