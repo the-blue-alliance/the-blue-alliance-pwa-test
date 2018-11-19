@@ -155,6 +155,7 @@ class EventListPage extends PureComponent {
         title={`${year} Events`}
         metaDescription={`Event list for the ${year} FIRST Robotics Competition.`}
         refreshFunction={this.refreshFunction}
+        sections={sections}
       >
         <Grid container spacing={16}>
           <Grid item xs={12} md={3} lg={2}>

@@ -68,6 +68,7 @@ class TBAPage extends PureComponent {
       title,
       metaDescription,
       metaImage,
+      sections,
     } = this.props
 
     return (
@@ -93,7 +94,7 @@ class TBAPage extends PureComponent {
           </main>
         </div>
         <NoSsr>
-          <FastScroll />
+          <FastScroll sections={sections}/>
         </NoSsr>
       </React.Fragment>
     )
@@ -106,6 +107,7 @@ TBAPage.propTypes = {
   metaDescription: PropTypes.string,
   metaImage: PropTypes.string,
   refreshFunction: PropTypes.func,
+  sections: PropTypes.array,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TBAPage))

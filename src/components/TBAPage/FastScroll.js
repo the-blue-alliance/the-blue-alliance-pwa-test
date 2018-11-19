@@ -8,10 +8,10 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 
 // TBA Components
 
+const SECTION_LABEL_HEIGHT = 18
+const DOT_HEIGHT = 80
 const styles = theme => ({
   container: {
-    display: 'flex',
-    flexDirection: 'row-reverse',
     position: 'fixed',
     transition: '0.15s',
     right: 0,
@@ -48,12 +48,31 @@ const styles = theme => ({
     margin: '0 -6px',
     pointerEvents: 'none',
   },
+  sectionLabel: {
+    position: 'absolute',
+    top: 0,
+    right: 40,
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    fontSize: 12,
+    whiteSpace: 'nowrap',
+    padding: `${theme.spacing.unit/2}px ${theme.spacing.unit}px`,
+    height: SECTION_LABEL_HEIGHT,
+    backgroundColor: theme.palette.common.white,
+    boxShadow: theme.shadows[4],
+    borderRadius: SECTION_LABEL_HEIGHT/2,
+    pointerEvents: 'none',
+    cursor: 'none',
+    transition: '0.15s',
+  },
 })
 
 class FastScroll extends PureComponent {
   state = {
     showScroll: false,
     scrollPos: 0,
+    sectionLabelOffsets: {},
   }
   scrolling = false
 
@@ -75,13 +94,18 @@ class FastScroll extends PureComponent {
     }, 100)
   }
 
+  handleResize = () => {
+    this.updateScrollPosition()
+    this.updateLabelOffsets()
+  }
+
   updateScrollPosition = () => {
     this.scrollPos = window.pageYOffset
     const scrollPercentage = Math.min(1, this.scrollPos / (document.documentElement.offsetHeight - window.innerHeight))
     if (!this.updateScrollPositionRAF) {
       this.updateScrollPositionRAF = requestAnimationFrame(() => {
         this.updateScrollPositionRAF = undefined
-        this.setState({scrollPos: scrollPercentage * (this.ref.clientHeight - 88)})  // Offset by dot size + margins
+        this.setState({scrollPos: scrollPercentage * (this.ref.clientHeight - DOT_HEIGHT)})  // Offset by dot size + margins
       })
     }
   }
@@ -123,7 +147,7 @@ class FastScroll extends PureComponent {
     if (e.cancelable) {  // Disable drag if mid scroll
       e.preventDefault()
       const diff = (e.clientY || e.touches[0].clientY) - this.dragCursorStart
-      const scrollPercentage = diff / (this.ref.clientHeight - 88)
+      const scrollPercentage = diff / (this.ref.clientHeight - DOT_HEIGHT)
       window.scrollTo(0, this.dragScrollStart + scrollPercentage * (document.documentElement.offsetHeight - window.innerHeight))
     }
   }
@@ -141,16 +165,39 @@ class FastScroll extends PureComponent {
     this.hideTimeout = setTimeout(() => this.setState({showScroll: false}), 3000)
   }
 
+  updateLabelOffsets = () => {
+    const { sections } = this.props
+    if (!sections) {
+      return
+    }
+    const sectionLabelOffsets = {}
+    let lastOffset = null
+    sections.forEach(section => {
+      const el = document.getElementById(section.key)
+      const percentage = (el.offsetTop - this.ref.offsetTop) / (document.documentElement.offsetHeight - window.innerHeight)
+      const offset = DOT_HEIGHT/2 + percentage*(this.ref.clientHeight - DOT_HEIGHT) - SECTION_LABEL_HEIGHT/2
+      sectionLabelOffsets[section.key] = offset
+    })
+    this.setState({sectionLabelOffsets})
+  }
+
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll)
-    window.addEventListener('resize', this.updateScrollPosition)
+    window.addEventListener('resize', this.handleResize)
     this.dotRef.addEventListener('mousedown', this.handleDragStart)
     this.dotRef.addEventListener('touchstart', this.handleDragStart)
+    this.updateLabelOffsets()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.sections !== this.props.sections) {
+      this.updateLabelOffsets()
+    }
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
-    window.removeEventListener('resize', this.updateScrollPosition)
+    window.removeEventListener('resize', this.handleResize)
     this.dotRef.removeEventListener('mousedown', this.handleDragStart)
     this.dotRef.removeEventListener('touchstart', this.handleDragStart)
     document.removeEventListener('mousemove', this.handleDrag)
@@ -163,8 +210,8 @@ class FastScroll extends PureComponent {
   }
 
   render() {
-    const { classes } = this.props
-    const { showScroll, scrollPos } = this.state
+    const { classes, sections } = this.props
+    const { showScroll, scrollPos, sectionLabelOffsets } = this.state
 
     return (
       <div
@@ -182,6 +229,20 @@ class FastScroll extends PureComponent {
           <ArrowDropUpIcon className={classes.icon} />
           <ArrowDropDownIcon className={classes.icon} />
         </div>
+        {sections && sections.map(section => {
+          return (
+            <div
+              key={section.key}
+              className={classes.sectionLabel}
+              style={{
+                transform: `translateY(${sectionLabelOffsets[section.key]}px)`,
+                opacity: showScroll ? 1 : 0,
+              }}
+            >
+              {section.label}
+            </div>
+          )
+        })}
       </div>
     )
   }
