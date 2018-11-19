@@ -35,6 +35,15 @@ const styles = theme => ({
     userSelect: 'none',
     pointerEvents: 'none',
   },
+  backdrop: {
+    background: 'linear-gradient(to right, rgba(0,0,0,0) 0%,rgba(0,0,0,0.15) 30%)',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 80,
+    height: '100%',
+    transition: '0.2s',
+  },
   dotContainer: {
     display: 'flex',
     alignItems: 'center',
@@ -281,6 +290,7 @@ class FastScroll extends PureComponent {
         style={showScroll ? {opacity: 1} : {right: -40}}
         ref={(el) => this.ref = el}
       >
+        <div className={classes.backdrop} style={{opacity: dragging ? 1 : 0}}/>
         <div className={classes.labelContainer} style={{opacity: dragging ? 1 : 0}}>
           {subSections && Object.keys(subSections).map(key => {
             return subSections[key].map((subSection, i) => {
