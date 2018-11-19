@@ -69,7 +69,7 @@ class EventAllianceTable extends PureComponent {
               } else if (a.getIn(['status', 'level']) === 'f') {
                 status = <Tooltip title='Finalist' placement='top'><img src='/medal-silver.png' className={classes.medalIcon} alt='Silver medal'/></Tooltip>
               } else {
-                status = a.getIn(['status', 'level']).toUpperCase()
+                status = a.getIn(['status', 'level']) ? a.getIn(['status', 'level']).toUpperCase() : '?'
               }
 
               return (
