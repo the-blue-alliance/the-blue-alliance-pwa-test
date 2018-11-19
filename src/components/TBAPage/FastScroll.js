@@ -33,6 +33,7 @@ const styles = theme => ({
     },
     zIndex: theme.zIndex.appBar,
     userSelect: 'none',
+    pointerEvents: 'none',
   },
   dotContainer: {
     display: 'flex',
@@ -51,6 +52,7 @@ const styles = theme => ({
     boxShadow: theme.shadows[4],
     cursor: 'pointer',
     '-webkit-tap-highlight-color': 'transparent',
+    pointerEvents: 'auto',
   },
   icon: {
     margin: '0 -6px',
@@ -70,6 +72,10 @@ const styles = theme => ({
     borderRadius: DOT_LABEL_HEIGHT/2,
     pointerEvents: 'none',
     cursor: 'none',
+    transition: '0.2s',
+  },
+  labelContainer: {
+    transition: '0.2s',
   },
   sectionLabel: {
     position: 'absolute',
@@ -108,6 +114,7 @@ class FastScroll extends PureComponent {
     scrollPos: 0,
     sectionLabelOffsets: {},
     dotLabel: null,
+    dragging: false,
   }
   scrolling = false
 
@@ -175,6 +182,7 @@ class FastScroll extends PureComponent {
       document.addEventListener('touchmove', this.handleDrag, {passive: false, cancelable: true})
       document.addEventListener('mouseup', this.handleDragStop)
       document.addEventListener('touchend', this.handleDragStop)
+      this.setState({dragging: true})
     }
   }
 
@@ -186,6 +194,7 @@ class FastScroll extends PureComponent {
     document.removeEventListener('touchmove', this.handleDrag)
     document.removeEventListener('mouseup', this.handleDragStop)
     document.removeEventListener('touchend', this.handleDragStop)
+    this.setState({dragging: false})
   }
 
   handleDrag = (e) => {
@@ -264,44 +273,46 @@ class FastScroll extends PureComponent {
 
   render() {
     const { classes, sections, subSections } = this.props
-    const { showScroll, scrollPos, sectionLabelOffsets, dotLabel } = this.state
+    const { showScroll, scrollPos, sectionLabelOffsets, dotLabel, dragging } = this.state
 
     return (
       <div
         className={classes.container}
-        style={showScroll ? {opacity: 1} : {right: -40, pointerEvents: 'none'}}
+        style={showScroll ? {opacity: 1} : {right: -40}}
         ref={(el) => this.ref = el}
       >
-        {subSections && Object.keys(subSections).map(key => {
-          return subSections[key].map((subSection, i) => {
-            if (i !== 0 && sectionLabelOffsets[subSection.key]) { // Skip first one
+        <div className={classes.labelContainer} style={{opacity: dragging ? 1 : 0}}>
+          {subSections && Object.keys(subSections).map(key => {
+            return subSections[key].map((subSection, i) => {
+              if (i !== 0 && sectionLabelOffsets[subSection.key]) { // Skip first one
+                return (
+                  <div
+                    key={subSection.key}
+                    className={classes.subSectionLabel}
+                    style={{
+                      transform: `translateY(${sectionLabelOffsets[subSection.key].offset - SUBSECTION_LABEL_HEIGHT/2}px)`,
+                    }}
+                  />
+                )
+              }
+            })
+          })}
+          {sections && sections.map(section => {
+            if (sectionLabelOffsets[section.key]) {
               return (
                 <div
-                  key={subSection.key}
-                  className={classes.subSectionLabel}
+                  key={section.key}
+                  className={classes.sectionLabel}
                   style={{
-                    transform: `translateY(${sectionLabelOffsets[subSection.key].offset - SUBSECTION_LABEL_HEIGHT/2}px)`,
+                    transform: `translateY(${sectionLabelOffsets[section.key].offset - SECTION_LABEL_HEIGHT/2}px)`,
                   }}
-                />
+                >
+                  {section.label}
+                </div>
               )
             }
-          })
-        })}
-        {sections && sections.map(section => {
-          if (sectionLabelOffsets[section.key]) {
-            return (
-              <div
-                key={section.key}
-                className={classes.sectionLabel}
-                style={{
-                  transform: `translateY(${sectionLabelOffsets[section.key].offset - SECTION_LABEL_HEIGHT/2}px)`,
-                }}
-              >
-                {section.label}
-              </div>
-            )
-          }
-        })}
+          })}
+        </div>
         <div
           style={{transform: `translateY(${scrollPos}px)`}}
           className={classes.dotContainer}
@@ -309,6 +320,7 @@ class FastScroll extends PureComponent {
           {dotLabel &&
             <div
               className={classes.dotLabel}
+              style={{opacity: dragging ? 1 : 0}}
             >
               {dotLabel}
             </div>
