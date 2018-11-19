@@ -10,6 +10,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 
 const SECTION_LABEL_HEIGHT = 18
 const DOT_HEIGHT = 80
+const DOT_LABEL_HEIGHT = 24
 const styles = theme => ({
   container: {
     position: 'fixed',
@@ -30,6 +31,10 @@ const styles = theme => ({
     },
     zIndex: theme.zIndex.appBar,
   },
+  dotContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
   dot: {
     display: 'flex',
     flexDirection: 'column',
@@ -48,6 +53,22 @@ const styles = theme => ({
     margin: '0 -6px',
     pointerEvents: 'none',
   },
+  dotLabel: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    fontSize: 16,
+    whiteSpace: 'nowrap',
+    padding: `${theme.spacing.unit}px ${theme.spacing.unit}px`,
+    margin: theme.spacing.unit,
+    height: DOT_LABEL_HEIGHT,
+    backgroundColor: theme.palette.common.white,
+    boxShadow: theme.shadows[4],
+    borderRadius: DOT_LABEL_HEIGHT/2,
+    pointerEvents: 'none',
+    cursor: 'none',
+    transition: '0.15s',
+  },
   sectionLabel: {
     position: 'absolute',
     top: 0,
@@ -60,7 +81,7 @@ const styles = theme => ({
     padding: `${theme.spacing.unit/2}px ${theme.spacing.unit}px`,
     height: SECTION_LABEL_HEIGHT,
     backgroundColor: theme.palette.common.white,
-    boxShadow: theme.shadows[4],
+    boxShadow: theme.shadows[2],
     borderRadius: SECTION_LABEL_HEIGHT/2,
     pointerEvents: 'none',
     cursor: 'none',
@@ -73,6 +94,7 @@ class FastScroll extends PureComponent {
     showScroll: false,
     scrollPos: 0,
     sectionLabelOffsets: {},
+    dotLabel: null,
   }
   scrolling = false
 
@@ -105,7 +127,17 @@ class FastScroll extends PureComponent {
     if (!this.updateScrollPositionRAF) {
       this.updateScrollPositionRAF = requestAnimationFrame(() => {
         this.updateScrollPositionRAF = undefined
-        this.setState({scrollPos: scrollPercentage * (this.ref.clientHeight - DOT_HEIGHT)})  // Offset by dot size + margins
+        const scrollPos = scrollPercentage * (this.ref.clientHeight - DOT_HEIGHT) // Offset by dot size + margins
+        // Find appropriate label
+        let dotLabel = null
+        for (let key in this.state.sectionLabelOffsets) {
+          const offset = this.state.sectionLabelOffsets[key].offset
+          if (offset > scrollPos + DOT_HEIGHT / 2) {
+            break
+          }
+          dotLabel = this.state.sectionLabelOffsets[key].label
+        }
+        this.setState({scrollPos, dotLabel})
       })
     }
   }
@@ -175,8 +207,8 @@ class FastScroll extends PureComponent {
     sections.forEach(section => {
       const el = document.getElementById(section.key)
       const percentage = (el.offsetTop - this.ref.offsetTop) / (document.documentElement.offsetHeight - window.innerHeight)
-      const offset = DOT_HEIGHT/2 + percentage*(this.ref.clientHeight - DOT_HEIGHT) - SECTION_LABEL_HEIGHT/2
-      sectionLabelOffsets[section.key] = offset
+      const offset = DOT_HEIGHT/2 + percentage*(this.ref.clientHeight - DOT_HEIGHT)
+      sectionLabelOffsets[section.key] = {offset, label: section.label}
     })
     this.setState({sectionLabelOffsets})
   }
@@ -211,7 +243,7 @@ class FastScroll extends PureComponent {
 
   render() {
     const { classes, sections } = this.props
-    const { showScroll, scrollPos, sectionLabelOffsets } = this.state
+    const { showScroll, scrollPos, sectionLabelOffsets, dotLabel } = this.state
 
     return (
       <div
@@ -219,30 +251,44 @@ class FastScroll extends PureComponent {
         style={showScroll ? null : {right: -40}}
         ref={(el) => this.ref = el}
       >
-        <div
-          className={classes.dot}
-          style={{transform: `translateY(${scrollPos}px)`}}
-          ref={(el) => this.dotRef = el}
-          onMouseOver={this.handleMouseOver}
-          onMouseOut={this.handleMouseOut}
-        >
-          <ArrowDropUpIcon className={classes.icon} />
-          <ArrowDropDownIcon className={classes.icon} />
-        </div>
         {sections && sections.map(section => {
-          return (
-            <div
-              key={section.key}
-              className={classes.sectionLabel}
-              style={{
-                transform: `translateY(${sectionLabelOffsets[section.key]}px)`,
-                opacity: showScroll ? 1 : 0,
-              }}
-            >
-              {section.label}
-            </div>
-          )
+          if (sectionLabelOffsets[section.key]) {
+            return (
+              <div
+                key={section.key}
+                className={classes.sectionLabel}
+                style={{
+                  transform: `translateY(${sectionLabelOffsets[section.key].offset - SECTION_LABEL_HEIGHT/2}px)`,
+                  opacity: showScroll ? 1 : 0,
+                }}
+              >
+                {section.label}
+              </div>
+            )
+          }
         })}
+        <div
+          style={{transform: `translateY(${scrollPos}px)`}}
+          className={classes.dotContainer}
+        >
+          {dotLabel &&
+            <div
+              className={classes.dotLabel}
+              style={{opacity: showScroll ? 1 : 0}}
+            >
+              {dotLabel}
+            </div>
+          }
+          <div
+            className={classes.dot}
+            ref={(el) => this.dotRef = el}
+            onMouseOver={this.handleMouseOver}
+            onMouseOut={this.handleMouseOut}
+          >
+            <ArrowDropUpIcon className={classes.icon} />
+            <ArrowDropDownIcon className={classes.icon} />
+          </div>
+        </div>
       </div>
     )
   }
