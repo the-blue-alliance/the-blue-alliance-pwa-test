@@ -182,7 +182,7 @@ class FastScroll extends PureComponent {
   }
 
   handleDragStart = (e) => {
-    if (!this.dragging) {
+    if (e.cancelable && !this.dragging) {
       document.body.style['user-select'] = 'none'
       this.dragging = true
       this.dragCursorStart = e.clientY || e.touches[0].clientY
