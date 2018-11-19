@@ -107,6 +107,7 @@ class EventPage extends PureComponent {
         title={name}
         metaDescription={event && `Videos and match results for the ${year} ${event.name} FIRST Robotics Competition in ${event.getCityStateCountry()}.`}
         refreshFunction={this.refreshFunction}
+        sections={safeTabIdx === 0 ? sections : null}
       >
         <Grid container spacing={16}>
           <Grid item xs={12}>
