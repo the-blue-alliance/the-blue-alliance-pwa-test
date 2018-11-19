@@ -9,13 +9,14 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 // TBA Components
 
 const SECTION_LABEL_HEIGHT = 18
-const SUBSECTION_LABEL_HEIGHT = 8
+const SUBSECTION_LABEL_HEIGHT = 6
 const DOT_HEIGHT = 80
 const DOT_LABEL_HEIGHT = 24
 const styles = theme => ({
   container: {
     position: 'fixed',
     transition: '0.2s',
+    opacity: 0,
     right: 0,
     top: 56,
     height: 'calc(100% - 56px - 56px)',
@@ -69,8 +70,6 @@ const styles = theme => ({
     borderRadius: DOT_LABEL_HEIGHT/2,
     pointerEvents: 'none',
     cursor: 'none',
-    transition: '0.2s',
-    opacity: 0,
   },
   sectionLabel: {
     position: 'absolute',
@@ -88,8 +87,6 @@ const styles = theme => ({
     borderRadius: SECTION_LABEL_HEIGHT/2,
     pointerEvents: 'none',
     cursor: 'none',
-    transition: '0.2s',
-    opacity: 0,
   },
   subSectionLabel: {
     position: 'absolute',
@@ -102,8 +99,6 @@ const styles = theme => ({
     borderRadius: SUBSECTION_LABEL_HEIGHT/2,
     pointerEvents: 'none',
     cursor: 'none',
-    transition: '0.2s',
-    opacity: 0,
   },
 })
 
@@ -274,7 +269,7 @@ class FastScroll extends PureComponent {
     return (
       <div
         className={classes.container}
-        style={showScroll ? null : {right: -40, pointerEvents: 'none'}}
+        style={showScroll ? {opacity: 1} : {right: -40, pointerEvents: 'none'}}
         ref={(el) => this.ref = el}
       >
         {sections && sections.map(section => {
@@ -285,7 +280,6 @@ class FastScroll extends PureComponent {
                 className={classes.sectionLabel}
                 style={{
                   transform: `translateY(${sectionLabelOffsets[section.key].offset - SECTION_LABEL_HEIGHT/2}px)`,
-                  opacity: showScroll ? 1 : 0,
                 }}
               >
                 {section.label}
@@ -302,7 +296,6 @@ class FastScroll extends PureComponent {
                   className={classes.subSectionLabel}
                   style={{
                     transform: `translateY(${sectionLabelOffsets[subSection.key].offset - SUBSECTION_LABEL_HEIGHT/2}px)`,
-                    opacity: showScroll ? 1 : 0,
                   }}
                 />
               )
@@ -316,7 +309,6 @@ class FastScroll extends PureComponent {
           {dotLabel &&
             <div
               className={classes.dotLabel}
-              style={{opacity: showScroll ? 1 : 0}}
             >
               {dotLabel}
             </div>
