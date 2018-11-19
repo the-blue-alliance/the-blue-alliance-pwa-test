@@ -262,7 +262,7 @@ class FastScroll extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.sections !== this.props.sections) {
+    if (prevProps.sections !== this.props.sections || prevProps.subSections !== this.props.subSections) {
       this.updateLabelOffsets()
     }
   }
