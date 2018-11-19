@@ -231,6 +231,7 @@ class FastScroll extends PureComponent {
   updateLabelOffsets = () => {
     const { sections, subSections } = this.props
     if (!sections) {
+      this.setState({sectionLabelOffsets: {}})
       return
     }
     const sectionLabelOffsets = {}
