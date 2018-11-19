@@ -245,7 +245,7 @@ class FastScroll extends PureComponent {
   }
 
   render() {
-    const { classes, sections } = this.props
+    const { classes, sections, subSections } = this.props
     const { showScroll, scrollPos, sectionLabelOffsets, dotLabel } = this.state
 
     return (
@@ -269,6 +269,11 @@ class FastScroll extends PureComponent {
               </div>
             )
           }
+        })}
+        {subSections && Object.keys(subSections).map(key => {
+          subSections[key].map(subSection => {
+            console.log(subSection)
+          })
         })}
         <div
           style={{transform: `translateY(${scrollPos}px)`}}

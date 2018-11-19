@@ -147,7 +147,7 @@ class EventListPage extends PureComponent {
       mainSections.push({key: 'official', label: 'Official'})
       subSections['official'] = officialEventsGrouped.map(group => {
         return ({
-          'id': group.get('slug'),
+          'key': group.get('slug'),
           'label': group.get('label'),
         })
       }).toJS()
@@ -157,7 +157,7 @@ class EventListPage extends PureComponent {
       mainSections.push({key: 'unofficial', label: 'Unofficial'})
       subSections['unofficial'] = unofficialEventsGrouped.map(group => {
         return ({
-          'id': group.get('slug'),
+          'key': group.get('slug'),
           'label': group.get('label'),
         })
       }).toJS()

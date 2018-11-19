@@ -81,7 +81,7 @@ class NestedScrollspy extends PureComponent {
     const itemSection = {} // {itemId: sectionKey}
     for (let sectionKey in subSections) {
       subSections[sectionKey].forEach(o => {
-        itemSection[o.id] = sectionKey
+        itemSection[o.key] = sectionKey
       })
     }
     const section = itemSection[id]
@@ -106,7 +106,7 @@ class NestedScrollspy extends PureComponent {
 
     let keysToSpy = []
     for (let sectionKey in subSections) {
-      keysToSpy = keysToSpy.concat(subSections[sectionKey].map(o => o.id))
+      keysToSpy = keysToSpy.concat(subSections[sectionKey].map(o => o.key))
     }
     if (!subSections) { // Only sections, no items
       keysToSpy = sections.map(s => s.key)
@@ -134,13 +134,13 @@ class NestedScrollspy extends PureComponent {
                 <ul>
                   {subSections[key].map(item =>
                     <li
-                      key={item.id}
+                      key={item.key}
                       className={classNames({
                         [classes.sideNavItem]: true,
-                        [classes.sideNavItemActive]: activeItem === item.id,
+                        [classes.sideNavItemActive]: activeItem === item.key,
                       })}
                     >
-                      <ScrollLink scrollEl={contentRef} to={item.id} offset={scrollOffset}>{item.label}</ScrollLink>
+                      <ScrollLink scrollEl={contentRef} to={item.key} offset={scrollOffset}>{item.label}</ScrollLink>
                     </li>
                   )}
                 </ul>
