@@ -9,6 +9,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 // TBA Components
 
 const SECTION_LABEL_HEIGHT = 18
+const SUBSECTION_LABEL_HEIGHT = 8
 const DOT_HEIGHT = 80
 const DOT_LABEL_HEIGHT = 24
 const styles = theme => ({
@@ -85,6 +86,20 @@ const styles = theme => ({
     backgroundColor: theme.palette.common.white,
     boxShadow: theme.shadows[2],
     borderRadius: SECTION_LABEL_HEIGHT/2,
+    pointerEvents: 'none',
+    cursor: 'none',
+    transition: '0.2s',
+    opacity: 0,
+  },
+  subSectionLabel: {
+    position: 'absolute',
+    top: 0,
+    right: 40,
+    height: SUBSECTION_LABEL_HEIGHT,
+    width: SUBSECTION_LABEL_HEIGHT,
+    backgroundColor: theme.palette.common.white,
+    boxShadow: theme.shadows[2],
+    borderRadius: SUBSECTION_LABEL_HEIGHT/2,
     pointerEvents: 'none',
     cursor: 'none',
     transition: '0.2s',
@@ -201,17 +216,25 @@ class FastScroll extends PureComponent {
   }
 
   updateLabelOffsets = () => {
-    const { sections } = this.props
+    const { sections, subSections } = this.props
     if (!sections) {
       return
     }
     const sectionLabelOffsets = {}
-    let lastOffset = null
     sections.forEach(section => {
       const el = document.getElementById(section.key)
       const percentage = (el.offsetTop - this.ref.offsetTop) / (document.documentElement.offsetHeight - window.innerHeight)
       const offset = DOT_HEIGHT/2 + percentage*(this.ref.clientHeight - DOT_HEIGHT)
       sectionLabelOffsets[section.key] = {offset, label: section.label}
+
+      if (subSections && subSections[section.key]) {
+        subSections[section.key].forEach(subSection => {
+          const el = document.getElementById(subSection.key)
+          const percentage = (el.offsetTop - this.ref.offsetTop) / (document.documentElement.offsetHeight - window.innerHeight)
+          const offset = DOT_HEIGHT/2 + percentage*(this.ref.clientHeight - DOT_HEIGHT)
+          sectionLabelOffsets[subSection.key] = {offset, label: subSection.label}
+        })
+      }
     })
     this.setState({sectionLabelOffsets})
   }
@@ -271,8 +294,19 @@ class FastScroll extends PureComponent {
           }
         })}
         {subSections && Object.keys(subSections).map(key => {
-          subSections[key].map(subSection => {
-            console.log(subSection)
+          return subSections[key].map((subSection, i) => {
+            if (i !== 0 && sectionLabelOffsets[subSection.key]) { // Skip first one
+              return (
+                <div
+                  key={subSection.key}
+                  className={classes.subSectionLabel}
+                  style={{
+                    transform: `translateY(${sectionLabelOffsets[subSection.key].offset - SUBSECTION_LABEL_HEIGHT/2}px)`,
+                    opacity: showScroll ? 1 : 0,
+                  }}
+                />
+              )
+            }
           })
         })}
         <div
