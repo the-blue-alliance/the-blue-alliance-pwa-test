@@ -272,21 +272,6 @@ class FastScroll extends PureComponent {
         style={showScroll ? {opacity: 1} : {right: -40, pointerEvents: 'none'}}
         ref={(el) => this.ref = el}
       >
-        {sections && sections.map(section => {
-          if (sectionLabelOffsets[section.key]) {
-            return (
-              <div
-                key={section.key}
-                className={classes.sectionLabel}
-                style={{
-                  transform: `translateY(${sectionLabelOffsets[section.key].offset - SECTION_LABEL_HEIGHT/2}px)`,
-                }}
-              >
-                {section.label}
-              </div>
-            )
-          }
-        })}
         {subSections && Object.keys(subSections).map(key => {
           return subSections[key].map((subSection, i) => {
             if (i !== 0 && sectionLabelOffsets[subSection.key]) { // Skip first one
@@ -301,6 +286,21 @@ class FastScroll extends PureComponent {
               )
             }
           })
+        })}
+        {sections && sections.map(section => {
+          if (sectionLabelOffsets[section.key]) {
+            return (
+              <div
+                key={section.key}
+                className={classes.sectionLabel}
+                style={{
+                  transform: `translateY(${sectionLabelOffsets[section.key].offset - SECTION_LABEL_HEIGHT/2}px)`,
+                }}
+              >
+                {section.label}
+              </div>
+            )
+          }
         })}
         <div
           style={{transform: `translateY(${scrollPos}px)`}}
