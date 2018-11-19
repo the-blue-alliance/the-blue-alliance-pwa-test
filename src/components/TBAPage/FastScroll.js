@@ -11,7 +11,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 const SECTION_LABEL_HEIGHT = 18
 const SUBSECTION_LABEL_HEIGHT = 6
 const DOT_HEIGHT = 80
-const DOT_LABEL_HEIGHT = 24
+const DOT_LABEL_HEIGHT = 36
 const styles = theme => ({
   container: {
     position: 'fixed',
@@ -71,10 +71,10 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    fontSize: 16,
+    fontSize: 20,
     whiteSpace: 'nowrap',
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit}px`,
-    marginRight: theme.spacing.unit*3,
+    padding: `${theme.spacing.unit*2}px ${theme.spacing.unit*2}px`,
+    marginRight: theme.spacing.unit*6,
     height: DOT_LABEL_HEIGHT,
     backgroundColor: theme.palette.common.white,
     boxShadow: theme.shadows[4],
