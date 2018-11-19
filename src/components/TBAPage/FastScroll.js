@@ -30,6 +30,7 @@ const styles = theme => ({
       height: 'calc(100% - 56px)',
     },
     zIndex: theme.zIndex.appBar,
+    userSelect: 'none',
   },
   dotContainer: {
     display: 'flex',
