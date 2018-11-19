@@ -318,6 +318,7 @@ class FastScroll extends PureComponent {
                   />
                 )
               }
+              return null
             })
           })}
           {sections && sections.map(section => {
@@ -334,6 +335,7 @@ class FastScroll extends PureComponent {
                 </div>
               )
             }
+            return null
           })}
         </div>
         <div
