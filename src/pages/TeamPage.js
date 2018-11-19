@@ -313,10 +313,7 @@ class TeamPage extends PureComponent {
                   <div className={classes.sideNav}>
                     {teamYearEvents && <NestedScrollspy
                       sections={teamYearEvents.map(event => {
-                        return event.event_code
-                      }).toJS()}
-                      sectionLabels={teamYearEvents.map(event => {
-                        return event.safeShortName()
+                        return {key: event.event_code, label: event.safeShortName()}
                       }).toJS()}
                       scrollOffset={-48}
                     />}

@@ -75,12 +75,12 @@ class NestedScrollspy extends PureComponent {
   }
 
   updateActive = (el) => {
-    const { sectionItems } = this.props
+    const { subSections } = this.props
     const id = el ? el.id : null
 
     const itemSection = {} // {itemId: sectionKey}
-    for (let sectionKey in sectionItems) {
-      sectionItems[sectionKey].forEach(o => {
+    for (let sectionKey in subSections) {
+      subSections[sectionKey].forEach(o => {
         itemSection[o.id] = sectionKey
       })
     }
@@ -101,15 +101,15 @@ class NestedScrollspy extends PureComponent {
   render() {
     console.log("Render NestedScrollspy")
 
-    const { classes, collapseSections, contentRef, sections, sectionLabels, sectionItems, scrollOffset } = this.props
+    const { classes, collapseSections, contentRef, sections, subSections, scrollOffset } = this.props
     const { activeSection, activeItem } = this.state
 
     let keysToSpy = []
-    for (let sectionKey in sectionItems) {
-      keysToSpy = keysToSpy.concat(sectionItems[sectionKey].map(o => o.id))
+    for (let sectionKey in subSections) {
+      keysToSpy = keysToSpy.concat(subSections[sectionKey].map(o => o.id))
     }
-    if (!sectionItems) { // Only sections, no items
-      keysToSpy = sections
+    if (!subSections) { // Only sections, no items
+      keysToSpy = sections.map(s => s.key)
     }
 
     return (
@@ -120,19 +120,19 @@ class NestedScrollspy extends PureComponent {
         onUpdate={(el) => {this.updateActive(el)}}
         offset={-64 + (scrollOffset ? scrollOffset : 0)}
       >
-        {sections.map((section, i) => {
+        {sections.map(({key, label}, i) => {
           return (
             <li
-              key={section}
+              key={key}
               className={classNames({
                 [collapseSections ? classes.sideNavSectionCollapsable : classes.sideNavSection]: true,
-                [classes.sideNavSectionActive]: activeSection === section,
+                [classes.sideNavSectionActive]: activeSection === key,
               })}
             >
-              <ScrollLink scrollEl={contentRef} to={section} offset={scrollOffset}>{sectionLabels[i]}</ScrollLink>
-              {sectionItems && sectionItems[section] &&
+              <ScrollLink scrollEl={contentRef} to={key} offset={scrollOffset}>{label}</ScrollLink>
+              {subSections && subSections[key] &&
                 <ul>
-                  {sectionItems[section].map(item =>
+                  {subSections[key].map(item =>
                     <li
                       key={item.id}
                       className={classNames({
@@ -158,8 +158,7 @@ NestedScrollspy.propTypes = {
   collapseSections: PropTypes.bool,
   contentRef: PropTypes.object,
   sections: PropTypes.array.isRequired,
-  sectionLabels: PropTypes.array.isRequired,
-  sectionItems: PropTypes.object,
+  subSections: PropTypes.object,
 }
 
 export default withStyles(styles)(NestedScrollspy)
