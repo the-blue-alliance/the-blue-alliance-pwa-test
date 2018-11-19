@@ -63,7 +63,7 @@ const styles = theme => ({
     fontSize: 16,
     whiteSpace: 'nowrap',
     padding: `${theme.spacing.unit}px ${theme.spacing.unit}px`,
-    margin: theme.spacing.unit,
+    marginRight: theme.spacing.unit*3,
     height: DOT_LABEL_HEIGHT,
     backgroundColor: theme.palette.common.white,
     boxShadow: theme.shadows[4],
@@ -74,7 +74,7 @@ const styles = theme => ({
   sectionLabel: {
     position: 'absolute',
     top: 0,
-    right: 40,
+    right: theme.spacing.unit*5,
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
@@ -91,7 +91,7 @@ const styles = theme => ({
   subSectionLabel: {
     position: 'absolute',
     top: 0,
-    right: 40,
+    right: theme.spacing.unit*5,
     height: SUBSECTION_LABEL_HEIGHT,
     width: SUBSECTION_LABEL_HEIGHT,
     backgroundColor: theme.palette.common.white,
