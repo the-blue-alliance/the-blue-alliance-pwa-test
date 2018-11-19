@@ -229,22 +229,34 @@ class FastScroll extends PureComponent {
   }
 
   updateLabelOffsets = () => {
-    const { sections, subSections } = this.props
+    const { sections, subSections, sectionOffsetTops } = this.props
     if (!sections) {
       this.setState({sectionLabelOffsets: {}})
       return
     }
     const sectionLabelOffsets = {}
     sections.forEach(section => {
-      const el = document.getElementById(section.key)
-      const percentage = (el.offsetTop - this.ref.offsetTop) / (document.documentElement.offsetHeight - window.innerHeight)
+      let offsetTop
+      if (sectionOffsetTops) {
+        offsetTop = sectionOffsetTops[section.key]
+      } else {
+        const el = document.getElementById(section.key)
+        offsetTop = el.offsetTop
+      }
+      const percentage = (offsetTop - this.ref.offsetTop) / (document.documentElement.offsetHeight - window.innerHeight)
       const offset = DOT_HEIGHT/2 + percentage*(this.ref.clientHeight - DOT_HEIGHT)
       sectionLabelOffsets[section.key] = {offset, label: section.label}
 
       if (subSections && subSections[section.key]) {
         subSections[section.key].forEach(subSection => {
-          const el = document.getElementById(subSection.key)
-          const percentage = (el.offsetTop - this.ref.offsetTop) / (document.documentElement.offsetHeight - window.innerHeight)
+          let offsetTop
+          if (sectionOffsetTops) {
+            offsetTop = sectionOffsetTops[subSection.key]
+          } else {
+            const el = document.getElementById(subSection.key)
+            offsetTop = el.offsetTop
+          }
+          const percentage = (offsetTop - this.ref.offsetTop) / (document.documentElement.offsetHeight - window.innerHeight)
           const offset = DOT_HEIGHT/2 + percentage*(this.ref.clientHeight - DOT_HEIGHT)
           sectionLabelOffsets[subSection.key] = {offset, label: subSection.label}
         })
@@ -295,7 +307,7 @@ class FastScroll extends PureComponent {
         <div className={classes.labelContainer} style={{opacity: dragging ? 1 : 0}}>
           {subSections && Object.keys(subSections).map(key => {
             return subSections[key].map((subSection, i) => {
-              if (i !== 0 && sectionLabelOffsets[subSection.key]) { // Skip first one
+              if (i !== 0 && !subSection.hide && sectionLabelOffsets[subSection.key]) { // Skip first one
                 return (
                   <div
                     key={subSection.key}

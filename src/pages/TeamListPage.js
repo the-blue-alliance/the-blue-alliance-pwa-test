@@ -81,12 +81,60 @@ class TeamListPage extends PureComponent {
   render() {
     console.log("Render TeamListPage")
     const { classes, allTeams, pageState } = this.props
+    const filter = pageState.get('filter')
+
+    let filteredTeams
+    if (filter) {
+      const filterLowerCase = filter.toLowerCase()
+      filteredTeams = allTeams.filter(team => (
+        team.getTeamNumberString().includes(filterLowerCase) ||
+        (team.getNicknameLower() && team.getNicknameLower().includes(filterLowerCase)) ||
+        (team.getCityStateCountryLower() && team.getCityStateCountryLower().includes(filterLowerCase))
+      ))
+    } else {
+      filteredTeams = allTeams
+    }
+
+    const sections = []
+    const subSections = {}
+    const sectionOffsetTops = {}
+    if (filteredTeams) {
+      filteredTeams.forEach((team, i) => {
+        // Sections
+        const thouPage = Math.floor(team.team_number / 1000)
+        const sectionKey = `section-${thouPage}`
+        if (sectionOffsetTops[sectionKey] === undefined) {
+          sections.push({
+            key: sectionKey,
+            label: thouPage === 0 ? '1-999' : `${thouPage*1000}`,
+          })
+          sectionOffsetTops[sectionKey] = i * 65 // TODO: depends on TeamsList implementation
+          if (subSections[sectionKey] === undefined) {
+            subSections[sectionKey] = []
+          }
+        }
+        // Subsections
+        const hundPage = Math.floor((team.team_number % 1000) / 100)
+        const subSectionKey = `section-${thouPage}-${hundPage}`
+        if (sectionOffsetTops[subSectionKey] === undefined) {
+          subSections[sectionKey].push({
+            key: subSectionKey,
+            label: (hundPage === 0 && thouPage === 0) ? '1-100' : `${thouPage*1000 + hundPage*100}`,
+            hide: true,
+          })
+          sectionOffsetTops[subSectionKey] = i * 65 // TODO: depends on TeamsList implementation
+        }
+      })
+    }
 
     return (
       <TBAPage
         title='Teams'
         metaDescription='List of FIRST Robotics Competition teams.'
         refreshFunction={this.refreshFunction}
+        sections={sections}
+        subSections={subSections}
+        sectionOffsetTops={sectionOffsetTops}
       >
         <Paper className={classes.inputCard} square>
           <TextField
@@ -94,13 +142,12 @@ class TeamListPage extends PureComponent {
             fullWidth
             margin="normal"
             onChange={this.handleTextFieldChange}
-            defaultValue={pageState.get('filter')}
+            defaultValue={filter}
           />
         </Paper>
         <div className={classes.list}>
           <TeamsList
-            teams={allTeams}
-            filter={pageState.get('filter')}
+            teams={filteredTeams}
           />
         </div>
       </TBAPage>

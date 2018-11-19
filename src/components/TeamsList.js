@@ -49,7 +49,7 @@ class TeamRow extends PureComponent {
 
 class TeamsList extends PureComponent {
   rowRenderer = ({index, isScrolling, isVisible, key, parent, style}) => {
-    const team = this.filteredTeams.get(index)
+    const team = this.props.teams.get(index)
     return (
       <div key={team.get('key')} style={style}>
         <TeamRow team={team} year={this.props.year} />
@@ -59,25 +59,14 @@ class TeamsList extends PureComponent {
 
   render() {
     console.log("Render TeamsList")
-    const { classes, teams, filter } = this.props
-
-    if (filter) {
-      const filterLowerCase = filter.toLowerCase()
-      this.filteredTeams = teams.filter(team => (
-        team.getTeamNumberString().includes(filterLowerCase) ||
-        (team.getNicknameLower() && team.getNicknameLower().includes(filterLowerCase)) ||
-        (team.getCityStateCountryLower() && team.getCityStateCountryLower().includes(filterLowerCase))
-      ))
-    } else {
-      this.filteredTeams = teams
-    }
+    const { classes, teams } = this.props
 
     return (
       <Paper>
         {teams !== undefined ?
           <WindowScrollerList
             scrollElement={this.props.scrollElement}
-            rowCount={this.filteredTeams.size}
+            rowCount={teams.size}
             rowHeight={65}
             rowRenderer={this.rowRenderer}
           />
