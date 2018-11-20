@@ -391,38 +391,14 @@ class FastScroll extends PureComponent {
       >
         <div className={classes.backdrop} style={{opacity: dragging ? 1 : 0}}/>
         <div className={classes.labelContainer} style={{opacity: dragging ? 1 : 0}}>
-          {subSections && Object.keys(subSections).map(key => {
-            return subSections[key].map((subSection, i) => {
-              if (i !== 0 && !subSection.hide && sectionLabelOffsets[subSection.key]) { // Skip first one
-                return (
-                  <div
-                    key={subSection.key}
-                    className={classes.subSectionLabel}
-                    style={{
-                      transform: `translateY(${sectionLabelOffsets[subSection.key].offset - SUBSECTION_LABEL_HEIGHT/2}px)`,
-                    }}
-                  />
-                )
-              }
-              return null
-            })
-          })}
-          {sections && sections.map(section => {
-            if (sectionLabelOffsets[section.key]) {
-              return (
-                <div
-                  key={section.key}
-                  className={classes.sectionLabel}
-                  style={{
-                    transform: `translateY(${sectionLabelOffsets[section.key].offset - SECTION_LABEL_HEIGHT/2}px)`,
-                  }}
-                >
-                  {section.label}
-                </div>
-              )
-            }
-            return null
-          })}
+          {subSections && <SubSectionLabels
+            subSections={subSections}
+            sectionLabelOffsets={sectionLabelOffsets}
+          />}
+          {sections && <SectionLabels
+            sections={sections}
+            sectionLabelOffsets={sectionLabelOffsets}
+          />}
         </div>
         <div
           style={{transform: `translateY(${scrollPos}px)`}}
@@ -452,3 +428,41 @@ class FastScroll extends PureComponent {
 }
 
 export default withStyles(styles)(FastScroll)
+
+const SectionLabels = React.memo(withStyles(styles)(({classes, sections, sectionLabelOffsets}) =>
+  sections.map(section => {
+    if (sectionLabelOffsets[section.key]) {
+      return (
+        <div
+          key={section.key}
+          className={classes.sectionLabel}
+          style={{
+            transform: `translateY(${sectionLabelOffsets[section.key].offset - SECTION_LABEL_HEIGHT/2}px)`,
+          }}
+        >
+          {section.label}
+        </div>
+      )
+    }
+    return null
+  })
+))
+
+const SubSectionLabels = React.memo(withStyles(styles)(({classes, subSections, sectionLabelOffsets}) =>
+  Object.keys(subSections).map(key => {
+    return subSections[key].map((subSection, i) => {
+      if (i !== 0 && !subSection.hide && sectionLabelOffsets[subSection.key]) { // Skip first one
+        return (
+          <div
+            key={subSection.key}
+            className={classes.subSectionLabel}
+            style={{
+              transform: `translateY(${sectionLabelOffsets[subSection.key].offset - SUBSECTION_LABEL_HEIGHT/2}px)`,
+            }}
+          />
+        )
+      }
+      return null
+    })
+  })
+))
