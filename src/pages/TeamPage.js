@@ -204,11 +204,15 @@ class TeamPage extends PureComponent {
     const images = teamYearMedias ? teamYearMedias.filter(m => m.isImage()) : undefined
     const mainRobotImage = images ? images.filter(i => i.preferred).toList().get(0) : undefined
 
-    let sections
+    let sections, officialEvents, unofficialEvents
     if (teamYearEvents) {
       sections = teamYearEvents.map(event => ({key: event.event_code, label: event.safeShortName()}))
-    }
+      officialEvents = teamYearEvents.filter(e => e.event_type <= 10)
+      unofficialEvents = teamYearEvents.filter(e => e.event_type > 10)
 
+    }
+    console.log(officialEvents)
+    
     return (
       <TBAPage
         title={`${teamTitle} (${year})`}
@@ -311,12 +315,23 @@ class TeamPage extends PureComponent {
               <Grid container spacing={8}>
                 <Grid item xs={12} md={3} lg={2} className={classes.sideNavContainer}>
                   <div className={classes.sideNav}>
+                    {officialEvents && <Typography variant='headline'>Official</Typography>}
                     {teamYearEvents && <NestedScrollspy
-                      sections={teamYearEvents.map(event => {
+                      sections={officialEvents.map(event => {
                         return event.event_code
                       }).toJS()}
-                      sectionLabels={teamYearEvents.map(event => {
-                        return event.safeShortName()
+                      sectionLabels={officialEvents.map(event => {
+                        return `${event.safeShortName()}`
+                      }).toJS()}
+                      scrollOffset={-48}
+                    />}
+                    {unofficialEvents && <Typography variant='headline'>Exhibition</Typography>}
+                    {teamYearEvents && <NestedScrollspy
+                      sections={unofficialEvents.map(event => {
+                        return event.event_code
+                      }).toJS()}
+                      sectionLabels={unofficialEvents.map(event => {
+                        return `${event.safeShortName()}`
                       }).toJS()}
                       scrollOffset={-48}
                     />}
