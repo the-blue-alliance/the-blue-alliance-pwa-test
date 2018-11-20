@@ -8,8 +8,8 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 
 // TBA Components
 
-const SECTION_LABEL_HEIGHT = 18
-const SUBSECTION_LABEL_HEIGHT = 6
+const SECTION_LABEL_HEIGHT = 24
+const SUBSECTION_LABEL_HEIGHT = 8
 const DOT_HEIGHT = 80
 const DOT_LABEL_HEIGHT = 36
 const styles = theme => ({
@@ -89,11 +89,11 @@ const styles = theme => ({
   sectionLabel: {
     position: 'absolute',
     top: 0,
-    right: theme.spacing.unit*5,
+    right: theme.spacing.unit*6,
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    fontSize: 12,
+    fontSize: 14,
     whiteSpace: 'nowrap',
     padding: `${theme.spacing.unit/2}px ${theme.spacing.unit}px`,
     height: SECTION_LABEL_HEIGHT,
@@ -106,7 +106,7 @@ const styles = theme => ({
   subSectionLabel: {
     position: 'absolute',
     top: 0,
-    right: theme.spacing.unit*5,
+    right: theme.spacing.unit*6,
     height: SUBSECTION_LABEL_HEIGHT,
     width: SUBSECTION_LABEL_HEIGHT,
     backgroundColor: theme.palette.common.white,
