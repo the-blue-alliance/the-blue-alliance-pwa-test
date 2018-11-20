@@ -88,10 +88,10 @@ export default class Event extends Record({
     if (this.dateStr === undefined) {
       const startDate = moment(this.start_date)
       const endDate = moment(this.end_date)
-      this.dateStr = endDate.format('MMM D, YYYY')
+      this.dateStr = endDate.format('MMM D, YYYY').replace(/ /g, '\u00a0')
       if (this.start_date !== this.end_date) {
         const startDateStr = startDate.format('MMM D')
-        this.dateStr = `${startDateStr} to ${this.dateStr}`
+        this.dateStr = `${startDateStr.replace(/ /g, '\u00a0')} to ${this.dateStr.replace(/ /g, '\u00a0')}`
       }
     }
     return this.dateStr
