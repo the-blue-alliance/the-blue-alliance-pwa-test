@@ -338,8 +338,8 @@ class TeamPage extends PureComponent {
                         <StickySectionHeader
                           label={
                             <React.Fragment>
-                              <Typography variant='h6'><Link to={{pathname: `/event/${event.key}`}}>{event.name}</Link></Typography>
-                              <Typography variant='caption'>{event.getDateString()}</Typography>
+                              <Typography variant='subtitle1' noWrap><Link to={{pathname: `/event/${event.key}`}}>{event.name}</Link></Typography>
+                              <Typography variant='caption' noWrap>{event.getDateString()}</Typography>
                             </React.Fragment>
                           }
                           withSpace

@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper'
 
 const styles = theme => ({
   paper: {
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit*3}px`,
+    padding: `${theme.spacing.unit/2}px ${theme.spacing.unit*2}px`,
     position: 'sticky',
     top: 56 - 1,
     [`${theme.breakpoints.up('xs')} and (orientation: landscape)`]: {
@@ -22,6 +22,7 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   paperWithSpace: {
     top: 56 + 48 - 1,
@@ -31,9 +32,6 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       top: 64 + 48 - 1,
     },
-  },
-  flex: {
-    flex: 1,
   },
   observer: {
     position: 'absolute',
@@ -81,9 +79,7 @@ class StickySectionHeader extends PureComponent {
             tag="div"
             onChange={this.observerChange}
           />
-          <div className={classes.flex}>
-            {label}
-          </div>
+          {label}
         </Paper>
         <Divider />
       </React.Fragment>
