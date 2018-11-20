@@ -120,34 +120,19 @@ class NestedScrollspy extends PureComponent {
         onUpdate={(el) => {this.updateActive(el)}}
         offset={-64 + (scrollOffset ? scrollOffset : 0)}
       >
-        {sections.map(({key, label}, i) => {
-          return (
-            <li
-              key={key}
-              className={classNames({
-                [collapseSections ? classes.sideNavSectionCollapsable : classes.sideNavSection]: true,
-                [classes.sideNavSectionActive]: activeSection === key,
-              })}
-            >
-              <ScrollLink scrollEl={contentRef} to={key} offset={scrollOffset}>{label}</ScrollLink>
-              {subSections && subSections[key] &&
-                <ul>
-                  {subSections[key].map(item =>
-                    <li
-                      key={item.key}
-                      className={classNames({
-                        [classes.sideNavItem]: true,
-                        [classes.sideNavItemActive]: activeItem === item.key,
-                      })}
-                    >
-                      <ScrollLink scrollEl={contentRef} to={item.key} offset={scrollOffset}>{item.label}</ScrollLink>
-                    </li>
-                  )}
-                </ul>
-              }
-            </li>
-          )
-        })}
+        {sections.map(({key, label}) =>
+          <ScrollListItem
+            key={key}
+            contentRef={contentRef}
+            sectionKey={key}
+            label={label}
+            subSections={subSections}
+            collapseSections={collapseSections}
+            scrollOffset={scrollOffset}
+            active={activeSection === key}
+            activeItem={activeSection === key ? activeItem : null}
+          />
+        )}
       </Scrollspy>
     )
   }
@@ -162,3 +147,40 @@ NestedScrollspy.propTypes = {
 }
 
 export default withStyles(styles)(NestedScrollspy)
+
+const ScrollListItem = React.memo(withStyles(styles)(({classes, sectionKey, contentRef, label, subSections, collapseSections, scrollOffset, active, activeItem}) =>
+  <li
+    className={classNames({
+      [collapseSections ? classes.sideNavSectionCollapsable : classes.sideNavSection]: true,
+      [classes.sideNavSectionActive]: active,
+    })}
+  >
+    <ScrollLink scrollEl={contentRef} to={sectionKey} offset={scrollOffset}>{label}</ScrollLink>
+    {subSections && subSections[sectionKey] &&
+      <ul>
+        {subSections[sectionKey].map(item =>
+          <ScrollListSubItem
+            key={item.key}
+            classes={classes}
+            contentRef={contentRef}
+            item={item}
+            scrollOffset={scrollOffset}
+            active={activeItem === item.key}
+          />
+        )}
+      </ul>
+    }
+  </li>
+))
+
+const ScrollListSubItem = React.memo(withStyles(styles)(({classes, contentRef, item, scrollOffset, active}) =>
+  <li
+    key={item.key}
+    className={classNames({
+      [classes.sideNavItem]: true,
+      [classes.sideNavItemActive]: active,
+    })}
+  >
+    <ScrollLink scrollEl={contentRef} to={item.key} offset={scrollOffset}>{item.label}</ScrollLink>
+  </li>
+))
