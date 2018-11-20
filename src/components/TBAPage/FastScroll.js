@@ -193,6 +193,10 @@ class FastScroll extends PureComponent {
     return percentChange < 0 ? -yOffsetChange : yOffsetChange
   }
 
+  getLimit = () => {
+    return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight) - window.innerHeight
+  }
+
   handleScroll = () => {
     clearTimeout(this.hideTimeout)
     this.updateScrollPosition()
@@ -289,7 +293,7 @@ class FastScroll extends PureComponent {
   }
 
   updateLabelOffsets = () => {
-    const { sections, subSections, sectionOffsetTops } = this.props
+    const { sections, subSections, sectionOffsetTops, maintainSectionSpacing } = this.props
     if (!sections) {
       this.setState({sectionLabelOffsets: {}})
       return
@@ -305,8 +309,9 @@ class FastScroll extends PureComponent {
     const spacing = 1 / (count + 1)
 
     const sectionLabelOffsets = {}
+    const limit = this.getLimit()
     let i = 1
-    this.labelBreakpoints = [{percentage: 0, key: null, offsetTop: 0}]
+    this.labelBreakpoints = [{percentage: 0, label: null, offsetTop: 0}]
     sections.forEach(section => {
       let offsetTop
       if (sectionOffsetTops) {
@@ -315,7 +320,7 @@ class FastScroll extends PureComponent {
         const el = document.getElementById(section.key)
         offsetTop = el.offsetTop
       }
-      const percentage = i * spacing
+      const percentage = maintainSectionSpacing ? (offsetTop / limit) : i * spacing
       const offset = DOT_HEIGHT/2 + percentage*(this.ref.clientHeight - DOT_HEIGHT)
       sectionLabelOffsets[section.key] = {offset, label: section.label}
       if (!subSections) {
@@ -331,7 +336,7 @@ class FastScroll extends PureComponent {
             const el = document.getElementById(subSection.key)
             offsetTop = el.offsetTop
           }
-          const percentage = i * spacing
+          const percentage = maintainSectionSpacing ? (offsetTop / limit) : i * spacing
           const offset = DOT_HEIGHT/2 + percentage*(this.ref.clientHeight - DOT_HEIGHT)
           sectionLabelOffsets[subSection.key] = {offset, label: subSection.label}
           this.labelBreakpoints.push({percentage, label: subSection.label, offsetTop: offsetTop - this.ref.offsetTop})
@@ -341,8 +346,7 @@ class FastScroll extends PureComponent {
         i++
       }
     })
-    const limit = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight) - window.innerHeight
-    this.labelBreakpoints.push({percentage: 1, key: null, offsetTop: limit})
+    this.labelBreakpoints.push({percentage: 1, label: null, offsetTop: limit})
 
     this.setState({sectionLabelOffsets})
   }

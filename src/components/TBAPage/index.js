@@ -71,6 +71,7 @@ class TBAPage extends PureComponent {
       sections,
       subSections,
       sectionOffsetTops,
+      maintainSectionSpacing
     } = this.props
 
     return (
@@ -96,7 +97,12 @@ class TBAPage extends PureComponent {
           </main>
         </div>
         <NoSsr>
-          <FastScroll sections={sections} subSections={subSections} sectionOffsetTops={sectionOffsetTops}/>
+          <FastScroll
+            sections={sections}
+            subSections={subSections}
+            sectionOffsetTops={sectionOffsetTops}
+            maintainSectionSpacing={maintainSectionSpacing}
+          />
         </NoSsr>
       </React.Fragment>
     )
