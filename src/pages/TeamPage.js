@@ -215,7 +215,7 @@ class TeamPage extends PureComponent {
         metaDescription={team && `Team information and competition results for ${teamTitle}` + (team.getCityStateCountry() ? ` from ${team.getCityStateCountry()}.` : '.')}
         metaImage={mainRobotImage && mainRobotImage.getThumbnailURL()}
         refreshFunction={this.refreshFunction}
-        sections={safeTabIdx === 0 ? sections : null}
+        sections={safeTabIdx === 0 && sections ? sections.toJS() : null}
       >
         <Grid container spacing={16}>
           <Grid item xs={12} md={3} className={classes.titleArea}>

@@ -127,6 +127,72 @@ class FastScroll extends PureComponent {
   }
   scrolling = false
 
+  yOffsetToPercent = (yOffset) => {
+    let percent = 0
+    let label = null
+    for (let i=0; i<this.labelBreakpoints.length; i++) {
+      const breakpoint = this.labelBreakpoints[i]
+      const lastBreakpoint = this.labelBreakpoints[i-1]
+      if (breakpoint.offsetTop <= yOffset) {
+        percent = breakpoint.percentage
+        if (i === this.labelBreakpoints.length - 1) {
+          label = lastBreakpoint.label
+        } else {
+          label = breakpoint.label
+        }
+      } else {
+        const percentageDiff = breakpoint.percentage - lastBreakpoint.percentage
+        const diff = breakpoint.offsetTop - lastBreakpoint.offsetTop
+        const partialPercentage = (yOffset - lastBreakpoint.offsetTop) / diff
+        percent += partialPercentage * percentageDiff
+        break
+      }
+    }
+    return {percent, label}
+  }
+
+  percentChangeToYOffsetChange = (startPercent, percentChange) => {
+    const start = Math.min(startPercent, startPercent + percentChange)
+    const end = Math.max(startPercent, startPercent + percentChange)
+
+    let yOffsetChange = 0
+    for (let i=0; i<this.labelBreakpoints.length-1; i++) {
+      const breakpoint = this.labelBreakpoints[i]
+      const nextBreakpoint = this.labelBreakpoints[i+1]
+      const lowerBound = breakpoint.percentage
+      const upperBound = nextBreakpoint.percentage
+
+      let overlap
+      if (end < lowerBound || start > upperBound) {
+        overlap = null
+      } else if (start < lowerBound) {
+        if (end > upperBound) {
+          overlap = upperBound - lowerBound
+        } else {
+          overlap = end - lowerBound
+        }
+      } else {
+        if (end > upperBound) {
+          overlap = upperBound - start
+        } else {
+          overlap = end - start
+        }
+      }
+
+      const diff = upperBound - lowerBound
+      let scale
+      if (overlap === null) {
+        scale = 0
+      } else if (diff === 0) {
+        scale = 1
+      } else {
+        scale = overlap / diff
+      }
+      yOffsetChange += scale * (nextBreakpoint.offsetTop - breakpoint.offsetTop)
+    }
+    return percentChange < 0 ? -yOffsetChange : yOffsetChange
+  }
+
   handleScroll = () => {
     clearTimeout(this.hideTimeout)
     this.updateScrollPosition()
@@ -136,12 +202,12 @@ class FastScroll extends PureComponent {
     this.scrolling = true
     this.show()
     this.detectScrollingInterval = setInterval(() => {
-      if (this.lastScrollPos === this.scrollPos) {
+      if (this.lastPageYOffset === this.pageYOffset) {
         clearInterval(this.detectScrollingInterval)
         this.scrolling = false
         this.hide()
       }
-      this.lastScrollPos = this.scrollPos
+      this.lastPageYOffset = this.pageYOffset
     }, 100)
   }
 
@@ -151,22 +217,14 @@ class FastScroll extends PureComponent {
   }
 
   updateScrollPosition = () => {
-    this.scrollPos = window.pageYOffset
-    const scrollPercentage = Math.min(1, this.scrollPos / (document.documentElement.offsetHeight - window.innerHeight))
-    if (!this.updateScrollPositionRAF) {
+    if (!this.updateScrollPositionRAF && this.labelBreakpoints) {
       this.updateScrollPositionRAF = requestAnimationFrame(() => {
         this.updateScrollPositionRAF = undefined
-        const scrollPos = scrollPercentage * (this.ref.clientHeight - DOT_HEIGHT) // Offset by dot size + margins
-        // Find appropriate label
-        let dotLabel = null
-        for (let key in this.state.sectionLabelOffsets) {
-          const offset = this.state.sectionLabelOffsets[key].offset
-          if (offset > scrollPos + DOT_HEIGHT / 2) {
-            break
-          }
-          dotLabel = this.state.sectionLabelOffsets[key].label
-        }
-        this.setState({scrollPos, dotLabel})
+        this.pageYOffset = window.pageYOffset
+
+        const { percent, label } = this.yOffsetToPercent(this.pageYOffset)
+        const scrollPos = percent * (this.ref.clientHeight - DOT_HEIGHT) // Offset by dot size + margins
+        this.setState({scrollPos, dotLabel: label})
       })
     }
   }
@@ -185,8 +243,9 @@ class FastScroll extends PureComponent {
     if (e.cancelable && !this.dragging) {
       document.body.style['user-select'] = 'none'
       this.dragging = true
-      this.dragCursorStart = e.clientY || e.touches[0].clientY
-      this.dragScrollStart = window.pageYOffset
+      this.dragStartCursorPos = e.clientY || e.touches[0].clientY
+      this.dragStartPageYOffset = window.pageYOffset
+      this.dragStartPercent = this.yOffsetToPercent(this.dragStartPageYOffset).percent
       document.addEventListener('mousemove', this.handleDrag)
       document.addEventListener('touchmove', this.handleDrag, {passive: false, cancelable: true})
       document.addEventListener('mouseup', this.handleDragStop)
@@ -209,9 +268,10 @@ class FastScroll extends PureComponent {
   handleDrag = (e) => {
     if (e.cancelable) {  // Disable drag if mid scroll
       e.preventDefault()
-      const diff = (e.clientY || e.touches[0].clientY) - this.dragCursorStart
-      const scrollPercentage = diff / (this.ref.clientHeight - DOT_HEIGHT)
-      window.scrollTo(0, this.dragScrollStart + scrollPercentage * (document.documentElement.offsetHeight - window.innerHeight))
+      const cursorDiff = (e.clientY || e.touches[0].clientY) - this.dragStartCursorPos
+      const percentChange = cursorDiff / (this.ref.clientHeight - DOT_HEIGHT)
+      const yOffsetChange = this.percentChangeToYOffsetChange(this.dragStartPercent, percentChange)
+      window.scrollTo(0, this.dragStartPageYOffset + yOffsetChange)
     }
   }
 
@@ -234,7 +294,19 @@ class FastScroll extends PureComponent {
       this.setState({sectionLabelOffsets: {}})
       return
     }
+
+    // Compute spacing (as a percentage) between sections
+    let count = sections.length
+    if (subSections) {
+      sections.forEach(section => {
+        count += subSections[section.key].length - 1 // Don't count first subSection
+      })
+    }
+    const spacing = 1 / (count + 1)
+
     const sectionLabelOffsets = {}
+    let i = 1
+    this.labelBreakpoints = [{percentage: 0, key: null, offsetTop: 0}]
     sections.forEach(section => {
       let offsetTop
       if (sectionOffsetTops) {
@@ -243,9 +315,12 @@ class FastScroll extends PureComponent {
         const el = document.getElementById(section.key)
         offsetTop = el.offsetTop
       }
-      const percentage = (offsetTop - this.ref.offsetTop) / (document.documentElement.offsetHeight - window.innerHeight)
+      const percentage = i * spacing
       const offset = DOT_HEIGHT/2 + percentage*(this.ref.clientHeight - DOT_HEIGHT)
       sectionLabelOffsets[section.key] = {offset, label: section.label}
+      if (!subSections) {
+        this.labelBreakpoints.push({percentage, label: section.label, offsetTop: offsetTop - this.ref.offsetTop})
+      }
 
       if (subSections && subSections[section.key]) {
         subSections[section.key].forEach(subSection => {
@@ -256,12 +331,19 @@ class FastScroll extends PureComponent {
             const el = document.getElementById(subSection.key)
             offsetTop = el.offsetTop
           }
-          const percentage = (offsetTop - this.ref.offsetTop) / (document.documentElement.offsetHeight - window.innerHeight)
+          const percentage = i * spacing
           const offset = DOT_HEIGHT/2 + percentage*(this.ref.clientHeight - DOT_HEIGHT)
           sectionLabelOffsets[subSection.key] = {offset, label: subSection.label}
+          this.labelBreakpoints.push({percentage, label: subSection.label, offsetTop: offsetTop - this.ref.offsetTop})
+          i++
         })
+      } else {
+        i++
       }
     })
+    const limit = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight) - window.innerHeight
+    this.labelBreakpoints.push({percentage: 1, key: null, offsetTop: limit})
+
     this.setState({sectionLabelOffsets})
   }
 

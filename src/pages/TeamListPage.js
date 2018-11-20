@@ -119,7 +119,7 @@ class TeamListPage extends PureComponent {
         if (sectionOffsetTops[subSectionKey] === undefined) {
           subSections[sectionKey].push({
             key: subSectionKey,
-            label: (hundPage === 0 && thouPage === 0) ? '1-100' : `${thouPage*1000 + hundPage*100}`,
+            label: (hundPage === 0 && thouPage === 0) ? '1-99' : `${thouPage*1000 + hundPage*100}`,
             hide: true,
           })
           sectionOffsetTops[subSectionKey] = i * 65 // TODO: depends on TeamsList implementation
