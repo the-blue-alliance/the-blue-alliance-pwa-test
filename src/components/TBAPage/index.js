@@ -96,14 +96,14 @@ class TBAPage extends PureComponent {
             {children}
           </main>
         </div>
-        <NoSsr>
+        {sections && <NoSsr>
           <FastScroll
             sections={sections}
             subSections={subSections}
             sectionOffsetTops={sectionOffsetTops}
             maintainSectionSpacing={maintainSectionSpacing}
           />
-        </NoSsr>
+        </NoSsr>}
       </React.Fragment>
     )
   }
