@@ -66,8 +66,6 @@ class StickySectionHeader extends PureComponent {
   }
 
   render() {
-    console.log("Render StickySectionHeader")
-
     const { classes, label, withSpace } = this.props
     const { isRaised } = this.state
 

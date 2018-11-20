@@ -99,8 +99,6 @@ class NestedScrollspy extends PureComponent {
   }
 
   render() {
-    console.log("Render NestedScrollspy")
-
     const { classes, collapseSections, contentRef, sections, subSections, scrollOffset } = this.props
     const { activeSection, activeItem } = this.state
 
