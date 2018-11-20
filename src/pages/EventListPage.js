@@ -221,8 +221,6 @@ class EventListPage extends PureComponent {
                       <EventListCard
                         events={group.get('events')}
                         label={group.get('label')}
-                        sections={sections}
-                        sectionKey={group.get('slug')}
                       />
                     </div>
                   )
@@ -238,8 +236,6 @@ class EventListPage extends PureComponent {
                       <EventListCard
                         events={group.get('events')}
                         label={group.get('label')}
-                        sections={sections}
-                        sectionKey={group.get('slug')}
                       />
                     </div>
                   )

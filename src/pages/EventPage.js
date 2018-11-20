@@ -24,7 +24,7 @@ import PlaceIcon from '@material-ui/icons/Place'
 import TBAPage from '../components/TBAPage'
 import EventAllianceTableContainer from '../containers/EventAllianceTableContainer'
 import EventMatchListContainer from '../containers/EventMatchListContainer'
-import SectionHeaderWithScrollto from '../components/SectionHeaderWithScrollto'
+import StickySectionHeader from '../components/StickySectionHeader'
 import EventRankingsTableContainer from '../containers/EventRankingsTableContainer'
 import EventPlayoffBracketContainer from '../containers/EventPlayoffBracketContainer'
 import Skeleton from '../components/Skeleton'
@@ -139,10 +139,8 @@ class EventPage extends PureComponent {
               <Grid container spacing={16}>
                 <Grid item xs={12} sm={6}>
                   <Paper id='qual'>
-                    <SectionHeaderWithScrollto
-                      sectionKey='qual'
+                    <StickySectionHeader
                       label={<Typography variant='h6'>Qualification Results</Typography>}
-                      sections={sections}
                       withSpace
                     />
                     <EventMatchListContainer eventKey={eventKey} qual/>
@@ -150,28 +148,22 @@ class EventPage extends PureComponent {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Paper id='alliances' className={classes.sectionCard}>
-                    <SectionHeaderWithScrollto
-                      sectionKey='alliances'
+                    <StickySectionHeader
                       label={<Typography variant='h6'>Alliances</Typography>}
-                      sections={sections}
                       withSpace
                     />
                     <EventAllianceTableContainer eventKey={eventKey} />
                   </Paper>
                   <Paper id='playoff' className={classes.sectionCard}>
-                    <SectionHeaderWithScrollto
-                      sectionKey='playoff'
+                    <StickySectionHeader
                       label={<Typography variant='h6'>Playoff Results</Typography>}
-                      sections={sections}
                       withSpace
                     />
                     <EventMatchListContainer eventKey={eventKey} playoff/>
                   </Paper>
                   <Paper id='bracket' className={classes.sectionCard}>
-                    <SectionHeaderWithScrollto
-                      sectionKey='bracket'
+                    <StickySectionHeader
                       label={<Typography variant='h6'>Playoff Bracket</Typography>}
-                      sections={sections}
                       withSpace
                     />
                     {event && <EventPlayoffBracketContainer eventKey={eventKey} playoffType={event.playoff_type} />}

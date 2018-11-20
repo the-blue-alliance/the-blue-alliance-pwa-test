@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
-import SectionHeaderWithScrollto from './SectionHeaderWithScrollto'
+import StickySectionHeader from './StickySectionHeader'
 import EventListItemContainer from '../containers/EventListItemContainer'
 
 const styles = theme => ({
@@ -19,19 +19,17 @@ class EventListCard extends PureComponent {
   render() {
     console.log("Render EventListCard")
 
-    const { classes, events, label, sections, sectionKey } = this.props
+    const { classes, events, label } = this.props
 
     return (
       <Paper className={classes.eventListCard}>
-        <SectionHeaderWithScrollto
+        <StickySectionHeader
           label={
             <React.Fragment>
               <Typography variant='h6'>{label}</Typography>
               <Typography variant='caption'>{events.size} Events</Typography>
             </React.Fragment>
           }
-          sections={sections}
-          sectionKey={sectionKey}
         />
         {events.map(event => {
           return <EventListItemContainer key={event.key} event={event}/>
