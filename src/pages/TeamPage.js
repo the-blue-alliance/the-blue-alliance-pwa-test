@@ -52,7 +52,7 @@ import TBAPage from '../components/TBAPage'
 import Skeleton from '../components/Skeleton'
 import PageTabs from '../components/PageTabs'
 import NestedScrollspy from '../components/NestedScrollspy'
-import SectionHeaderWithScrollto from '../components/SectionHeaderWithScrollto'
+import StickySectionHeader from '../components/StickySectionHeader'
 import TeamAtEvent from '../components/TeamAtEvent'
 
 const mapStateToProps = (state, props) => ({
@@ -60,7 +60,6 @@ const mapStateToProps = (state, props) => ({
   teamNumber: getTeamNumber(state, props),
   year: getYear(state, props),
   // States
-  tabIdx: getCurrentPageState(state, props).get('tabIdx'),
   yearMenuOpen: getCurrentPageState(state, props).get('yearMenuOpen'),
   // Data
   team: getTeamModel(state, props),
@@ -215,6 +214,7 @@ class TeamPage extends PureComponent {
         metaDescription={team && `Team information and competition results for ${teamTitle}` + (team.getCityStateCountry() ? ` from ${team.getCityStateCountry()}.` : '.')}
         metaImage={mainRobotImage && mainRobotImage.getThumbnailURL()}
         refreshFunction={this.refreshFunction}
+        sections={safeTabIdx === 0 && sections ? sections.toJS() : null}
       >
         <Grid container spacing={16}>
           <Grid item xs={12} md={3} className={classes.titleArea}>
@@ -313,10 +313,7 @@ class TeamPage extends PureComponent {
                   <div className={classes.sideNav}>
                     {teamYearEvents && <NestedScrollspy
                       sections={teamYearEvents.map(event => {
-                        return event.event_code
-                      }).toJS()}
-                      sectionLabels={teamYearEvents.map(event => {
-                        return event.safeShortName()
+                        return {key: event.event_code, label: event.safeShortName()}
                       }).toJS()}
                       scrollOffset={-48}
                     />}
@@ -338,15 +335,13 @@ class TeamPage extends PureComponent {
                   {teamYearEvents && teamYearEvents.valueSeq().map(function(event) {
                     return (
                       <Paper key={event.key} id={event.event_code} className={classes.eventCard}>
-                        <SectionHeaderWithScrollto
-                          sectionKey={event.event_code}
+                        <StickySectionHeader
                           label={
                             <React.Fragment>
-                              <Typography variant='h6'><Link to={{pathname: `/event/${event.key}`}}>{event.name}</Link></Typography>
-                              <Typography variant='caption'>{event.getDateString()}</Typography>
+                              <Typography variant='subtitle1' noWrap><Link to={{pathname: `/event/${event.key}`}}>{event.name}</Link></Typography>
+                              <Typography variant='caption' noWrap>{event.getDateString()}</Typography>
                             </React.Fragment>
                           }
-                          sections={sections}
                           withSpace
                         />
                         <TeamAtEvent

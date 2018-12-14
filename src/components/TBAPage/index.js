@@ -7,9 +7,13 @@ import { withStyles } from '@material-ui/core/styles'
 // Actions
 import { fetchAPIStatus } from '../../actions'
 
+// Components
+import NoSsr from '@material-ui/core/NoSsr'
+
 // TBA Components
 import TBAHelmet from '../TBAHelmet'
 import TBAAppBar from './TBAAppBar'
+import FastScroll from './FastScroll'
 
 const mapStateToProps = (state, props) => ({
 })
@@ -64,6 +68,10 @@ class TBAPage extends PureComponent {
       title,
       metaDescription,
       metaImage,
+      sections,
+      subSections,
+      sectionOffsetTops,
+      maintainSectionSpacing
     } = this.props
 
     return (
@@ -88,6 +96,14 @@ class TBAPage extends PureComponent {
             {children}
           </main>
         </div>
+        {sections && <NoSsr>
+          <FastScroll
+            sections={sections}
+            subSections={subSections}
+            sectionOffsetTops={sectionOffsetTops}
+            maintainSectionSpacing={maintainSectionSpacing}
+          />
+        </NoSsr>}
       </React.Fragment>
     )
   }
@@ -99,6 +115,8 @@ TBAPage.propTypes = {
   metaDescription: PropTypes.string,
   metaImage: PropTypes.string,
   refreshFunction: PropTypes.func,
+  sections: PropTypes.array,
+  subSections: PropTypes.object,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TBAPage))

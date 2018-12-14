@@ -139,15 +139,28 @@ class EventListPage extends PureComponent {
     const officialEventsGrouped = groupedEvents && groupedEvents.filter(group => group.get('isOfficial'))
     const unofficialEventsGrouped = groupedEvents && groupedEvents.filter(group => !group.get('isOfficial'))
 
-    let mainSections = []
-    let sections = []
+    const sections = []
+    const mainSections = []
+    const subSections = {}
     if (officialEventsGrouped && officialEventsGrouped.size > 0) {
-      mainSections.push('official')
       officialEventsGrouped.forEach(g => sections.push({key: g.get('slug'), label: g.get('label')}))
+      mainSections.push({key: 'official', label: 'Official'})
+      subSections['official'] = officialEventsGrouped.map(group => {
+        return ({
+          'key': group.get('slug'),
+          'label': group.get('label'),
+        })
+      }).toJS()
     }
     if (unofficialEventsGrouped && unofficialEventsGrouped.size > 0) {
-      mainSections.push('unofficial')
       unofficialEventsGrouped.forEach(g => sections.push({key: g.get('slug'), label: g.get('label')}))
+      mainSections.push({key: 'unofficial', label: 'Unofficial'})
+      subSections['unofficial'] = unofficialEventsGrouped.map(group => {
+        return ({
+          'key': group.get('slug'),
+          'label': group.get('label'),
+        })
+      }).toJS()
     }
 
     return (
@@ -155,6 +168,8 @@ class EventListPage extends PureComponent {
         title={`${year} Events`}
         metaDescription={`Event list for the ${year} FIRST Robotics Competition.`}
         refreshFunction={this.refreshFunction}
+        sections={mainSections}
+        subSections={subSections}
       >
         <Grid container spacing={16}>
           <Grid item xs={12} md={3} lg={2}>
@@ -184,21 +199,7 @@ class EventListPage extends PureComponent {
               {groupedEvents && <div className={classes.scrollSpy}>
                 <NestedScrollspy
                   sections={mainSections}
-                  sectionLabels={['Official', 'Unofficial']}
-                  sectionItems={{
-                    'official': officialEventsGrouped.map(group => {
-                      return ({
-                        'id': group.get('slug'),
-                        'label': group.get('label'),
-                      })
-                    }).toJS(),
-                    'unofficial': unofficialEventsGrouped.map(group => {
-                      return ({
-                        'id': group.get('slug'),
-                        'label': group.get('label'),
-                      })
-                    }).toJS(),
-                  }}
+                  subSections={subSections}
                 />
               </div>}
             </div>
@@ -220,8 +221,6 @@ class EventListPage extends PureComponent {
                       <EventListCard
                         events={group.get('events')}
                         label={group.get('label')}
-                        sections={sections}
-                        sectionKey={group.get('slug')}
                       />
                     </div>
                   )
@@ -237,8 +236,6 @@ class EventListPage extends PureComponent {
                       <EventListCard
                         events={group.get('events')}
                         label={group.get('label')}
-                        sections={sections}
-                        sectionKey={group.get('slug')}
                       />
                     </div>
                   )
